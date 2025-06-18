@@ -4,5 +4,13 @@
     "gh-pages": "^6.3.0",
     "react-helmet": "^6.1.0",
     "swiper": "^11.2.1"
+  },
+  "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "build": "react-scripts build"
+  },
+  "devDependencies": {
+    "react-scripts": "^5.0.1"
   }
 }
