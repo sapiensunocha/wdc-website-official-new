@@ -10,7 +10,7 @@ export const caseStudies = [
     image: imageCase2,
     coming_soon: false,
     // link: 'https://1drv.ms/p/s!AomLDkNDuTrRb_IYPECTx1n2Tpo?e=Gx4ayi?embed=1&amp;em=2&amp;wdAr=1.7777777777777777',
-    link : "https://michael-v2-workshop.vercel.app/",
+    link : "https://www.michael-wdc.com/",
     slideShow : "https://www.slideshare.net/slideshow/embed_code/key/4CANGsyqn4SmlV?hostedIn=slideshare&page=upload"
   },
   {
