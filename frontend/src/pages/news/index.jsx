@@ -38,7 +38,7 @@ const News = () => {
                       state={{ item }}
                       className="inline-block mt-4 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
                     >
-                      See More
+                      See More >
                     </Link>
                   </div>
                 </div>
