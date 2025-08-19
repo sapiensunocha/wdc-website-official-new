@@ -99,7 +99,7 @@ const HomePage = () => {
         : "bg-gray-200 text-gray-700 hover:bg-blue-400"
     }`}
   >
-    News
+    News & Info
     {activeSection === "News" && (
       <div
         className="absolute bottom-[-16px] left-1/2 transform -translate-x-1/2
