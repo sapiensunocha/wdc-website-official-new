@@ -4,7 +4,7 @@ import Heading from "./Heading";
 const WhoWeAre = () => {
   return (
     <>
-      <section className="overflow-hidden pb-12 lg:pt-[50px] lg:pb-[90px] bg-transparent dark:bg-dark">
+      <section className="overflow-hidden pb-12 lg:pt-[50px] lg:pb-[90px] bg-white">
         <div className="container mx-auto">
           <div className="flex flex-wrap items-center justify-between -mx-4">
             <div className="w-full px-4 lg:w-6/12">
@@ -612,10 +612,10 @@ const WhoWeAre = () => {
                 <span className="block mb-4 text-lg font-semibold text-primary">
                   Who We Are
                 </span>
-                <h2 className="mb-5 text-3xl font-bold text-dark dark:text-white sm:text-[40px]/[48px]">
+                <h2 className="mb-5 text-3xl font-bold text-content-primary sm:text-[40px]/[48px]">
                   Strengthening Resilience Against Disasters
                 </h2>
-                <p className="mb-5 text-base text-body-color dark:text-dark-6">
+                <p className="mb-5 text-base text-content-secondary">
                 Some of us have witnessed unimaginable loss—parents taken, uncles and aunts disappearing without a trace. For many, the ability to smile has faded. Yet, while 80% of the global population is exposed to disasters, the world remains largely indifferent. This cannot continue.
 <br></br>
 <br></br>

@@ -82,7 +82,7 @@ function NewFooter() {
                   ),
                 },
                 {
-                  href: "https://www.linkedin.com/company/world-disaster-center/",
+                  href: "https://www.linkedin.com/company/worlddisastercenter",
                   label: "LinkedIn",
                   icon: <LinkedIn style={{ fontSize: 15 }} />,
                 },
