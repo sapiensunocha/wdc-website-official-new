@@ -16,10 +16,10 @@ export default function DonorsPage() {
     setPending(true);
     emailjs
       .sendForm(
-        "service_d3yy0xf",
-        "template_0l6a5vh",
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
         form.current,
-        "S6rrT9Cqk-qhVNtap"
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
       )
       .then((result) => {
         setPending(false);

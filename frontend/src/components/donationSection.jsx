@@ -40,17 +40,17 @@ function DonationSection() {
 
         {/* Section 2: Global Disaster Safety Overview */}
         <div className="rounded-lg shadow-lg p-8 mb-12 w-full max-w-6xl text-center">
-          <p className="text-lg text-gray-100">
+          <p className="text-lg text-content-secondary">
             Out of 8 billion people, only 1.4 billion feel safe from disasters. For the rest, every day is a battle against uncertainty.
           </p>
           <div className="flex justify-center mt-8">
             {/* Typewriter Effect */}
             <div className="w-full  rounded-lg flex items-center justify-center p-4">
-              <p className="text-gray-100 text-3xl lg:text-5xl font-bold break-words">
+              <p className="text-content-primary text-3xl lg:text-5xl font-bold break-words">
                 {displayedText.split("HOPE")[0]}
-                <span className="text-blue-400">HOPE</span>
+                <span className="text-primary">HOPE</span>
                 {displayedText.split("HOPE")[1]?.split("YOU")[0]}
-                <span className="text-blue-400">YOU</span>
+                <span className="text-primary">YOU</span>
                 {displayedText.split("YOU")[1]}
                 {showCursor && <span className="blinking-cursor">|</span>}
               </p>
@@ -69,25 +69,25 @@ function DonationSection() {
   </p>
   <div className="flex flex-col sm:flex-row justify-center items-center gap-6 mt-8">
     <div className="flex flex-col items-center">
-      <div className="text-3xl sm:text-5xl mb-2 text-blue-600">
+      <div className="text-3xl sm:text-5xl mb-2 text-primary">
         <span className="inline-block">$</span>
         <span className="inline-block">5</span>
       </div>
-      <p className="text-sm sm:text-base font-medium text-blue-600">Donation</p>
+      <p className="text-sm sm:text-base font-medium text-primary">Donation</p>
     </div>
-    <div className="text-2xl sm:text-3xl text-blue-600">→</div>
+    <div className="text-2xl sm:text-3xl text-primary">→</div>
     <div className="flex flex-col items-center">
       <div className="text-3xl sm:text-5xl mb-2">
         <i className="fas fa-globe"></i> {/* Replace with your globe icon */}
       </div>
-      <p className="text-sm sm:text-2xl font-medium text-blue-600"><b>Michael</b> App <br></br>Access</p>
+      <p className="text-sm sm:text-2xl font-medium text-primary"><b>Michael</b> App <br></br>Access</p>
     </div>
-    <div className="text-2xl sm:text-3xl text-blue-600">→</div>
+    <div className="text-2xl sm:text-3xl text-primary">→</div>
     <div className="flex flex-col items-center">
       <div className="text-3xl sm:text-5xl mb-2">
         <i className="fas fa-users"></i> {/* Replace with your family icon */}
       </div>
-      <p className="text-sm sm:text-2xl font-medium text-blue-600">Increased <b>Safety </b><br></br>for 1 Family</p>
+      <p className="text-sm sm:text-2xl font-medium text-primary">Increased <b>Safety </b><br></br>for 1 Family</p>
     </div>
   </div>
 </div>
@@ -114,9 +114,9 @@ function DonationSection() {
             ].map(({ icon: Icon, text }, index) => (
               <div
                 key={index}
-                className="flex flex-col items-center justify-center bg-blue-100 rounded-full w-32 h-32 sm:w-40 sm:h-40 p-4 shadow-md"
+                className="flex flex-col items-center justify-center bg-primary-muted rounded-full w-32 h-32 sm:w-40 sm:h-40 p-4 shadow-md"
               >
-                <Icon className="text-blue-600 text-4xl mb-2" />
+                <Icon className="text-primary text-4xl mb-2" />
                 <h4 className="text-sm sm:text-base font-semibold text-gray-900 text-center">
                   {text}
                 </h4>
@@ -126,7 +126,7 @@ function DonationSection() {
         </div>
 
         {/* Section 6: Call to Action with Donation Boxes */}
-        <div className="text-center bg-blue-600 text-white rounded-lg p-12 mb-12 w-full max-w-6xl">
+        <div className="text-center bg-primary text-white rounded-lg p-12 mb-12 w-full max-w-6xl">
           <h2 className="text-3xl md:text-4xl font-bold mb-8">
             One Small Step for You, One Giant Leap for Safety
           </h2>
@@ -157,8 +157,8 @@ function DonationSection() {
                 key={index}
                 className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center"
               >
-                <Icon className="text-blue-500 text-5xl mb-4" />
-                <h3 className="text-xl font-bold text-blue-600 mb-2">
+                <Icon className="text-primary text-5xl mb-4" />
+                <h3 className="text-xl font-bold text-primary mb-2">
                   {title}
                 </h3>
                 <p className="text-gray-700 mb-4">{description}</p>
@@ -167,7 +167,7 @@ function DonationSection() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <button className="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold shadow-md hover:bg-blue-700 transition-all">
+                  <button className="bg-primary text-white px-6 py-3 rounded-lg font-bold shadow-md hover:bg-primary-dark transition-all">
                     Donate Now
                   </button>
                 </a>

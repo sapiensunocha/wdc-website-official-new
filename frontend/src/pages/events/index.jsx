@@ -29,14 +29,14 @@ const Events = () => {
                     style={{ backgroundImage: `url(${item.image})` }}
                   ></div>
                   <div className="p-4">
-                    <h3 className="text-xl text-n-4 font-semibold">
+                    <h3 className="text-xl text-content-secondary font-semibold">
                       {item.title}
                     </h3>
                     <p className="text-gray-600 mt-2">{item.description}</p>
                     <Link
                       to={`/Events/${item.title}`}
                       state={{ item }}
-                      className="inline-block mt-4 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+                      className="inline-block mt-4 px-4 py-2 text-white bg-primary rounded hover:bg-primary"
                     >
                       See More
                     </Link>

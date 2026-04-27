@@ -1,10 +1,8 @@
-import { Circle } from "@mui/icons-material";
-import { Adjust } from "@mui/icons-material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
-const DropdownItem = ({ title, routings }) => {
+const DropdownItem = ({ title, routings, setOpenNavigation }) => {
   const [isOpen, setIsOpen] = useState(false);
   const popupRef = useRef();
 
@@ -22,40 +20,48 @@ const DropdownItem = ({ title, routings }) => {
   }, []);
 
   return (
-    <div className="relative inline-block text-left ">
+    <div className="relative inline-block text-left" ref={popupRef}>
       <button
         onClick={toggleDropdown}
         type="button"
-        className={`inline-flex items-center px-1   leading-2 text-base  bg-transparent py-2 space-x-1 font-light text-gray-50 ${isOpen && 'text-n-3' } hover:text-n-3`}
+        className={`inline-flex items-center gap-0.5 px-3 py-2 text-sm font-semibold rounded transition-colors ${
+          isOpen
+            ? "text-primary bg-primary-muted"
+            : "text-gray-700 hover:text-primary hover:bg-primary-muted"
+        }`}
         aria-expanded={isOpen}
         aria-haspopup="true"
       >
         {title}
-        {isOpen ? <ExpandLess /> : <ExpandMore />}
+        {isOpen ? (
+          <ExpandLess fontSize="small" />
+        ) : (
+          <ExpandMore fontSize="small" />
+        )}
       </button>
 
       {isOpen && (
         <div
-          ref={popupRef}
-          className={`absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition-transform transform ${
-            isOpen ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0"
-          }`}
+          className="absolute left-0 z-50 mt-1 w-56 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black/10 animate-fade-in"
           role="menu"
           aria-orientation="vertical"
-          style={{ transformOrigin: "bottom" }}
         >
-          {/* Triangle pointer above the dropdown */}
-          <div className="absolute -top-2 right-4 w-4 h-4 bg-white border-t-2 border-l-2 border-n-2  rotate-45 rounded-t rounded-l transform origin-center "></div>
-          <div className="py-5">
+          {/* Blue top accent */}
+          <div className="h-0.5 w-full bg-primary rounded-t-md" />
+          <div className="py-2">
             {Object.entries(routings).map(([item, path], index) => (
               <Link
                 key={index}
                 to={path}
-                className="block px-4 py-2 text-sm font-normal text-n-7 hover:text-n-4"
-                onClick={() => setIsOpen(false)}
+                className="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-primary-muted hover:text-primary transition-colors"
+                onClick={() => {
+                  setIsOpen(false);
+                  setOpenNavigation && setOpenNavigation(false);
+                }}
                 role="menuitem"
               >
-                <Adjust fontSize="8"/> {item}
+                <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                {item}
               </Link>
             ))}
           </div>

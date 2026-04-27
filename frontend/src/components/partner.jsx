@@ -240,7 +240,7 @@ const PartnersPage = ({ className = "" }) => {
             { title: "Financial Partner", logos: financialpartner_companyLogos },
           ].map((section, idx) => (
             <div key={idx} className="mb-16">
-              <div className="bg-blue-500 py-4 rounded-lg shadow-md mb-8">
+              <div className="bg-primary py-4 rounded-lg shadow-md mb-8">
                 <h3 className="text-white text-3xl font-semibold text-center">{section.title}</h3>
               </div>
               <ul className={`grid gap-10 ${getGridClass(section.logos.length)}`}>
@@ -262,11 +262,11 @@ const PartnersPage = ({ className = "" }) => {
         </div>
                 {/* Partner With Us Section */}
                 <div className="bg-white py-10 px-4 sm:px-6 rounded-lg shadow-md mt-10 text-center">
-          <h2 className="text-3xl font-semibold text-blue-600 mb-4">Partner With Us</h2>
+          <h2 className="text-3xl font-semibold text-primary mb-4">Partner With Us</h2>
           <p className="text-md text-gray-700 mb-2">
             World Disaster Center welcomes partnerships that align with our mission to enhance disaster preparedness, response, and recovery through cutting-edge technology and collaborative solutions.
             We work with governments, NGOs, private-sector organizations, and international bodies to build resilient communities and reduce the impact of disasters worldwide.
-            Visit our <a href="/contact" className="text-blue-500 underline hover:text-blue-700">Contact Us</a> page to submit your request.
+            Visit our <a href="/contact" className="text-primary underline hover:text-primary-dark">Contact Us</a> page to submit your request.
           </p>
         </div>
 

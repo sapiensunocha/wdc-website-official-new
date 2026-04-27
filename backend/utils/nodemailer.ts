@@ -1,22 +1,16 @@
 import nodemailer from "nodemailer";
 
-const auth = {
-    user: "noreply@worlddisastercenter.org",
-    pass: "irzqmslnxgxvydsm",
-}
-
-
 export const sendEmailVerificationCode = async (email: string,code: string) => {
     try {
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: "noreply@worlddisastercenter.org",
-                pass: "irzqmslnxgxvydsm",
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS,
             }
         });
         await transporter.sendMail({
-            from: "noreply@worlddisastercenter.org",
+            from: process.env.EMAIL_USER,
             to: email,
             subject: "Your World Disaster Center Verification Code",
             html: template(code)

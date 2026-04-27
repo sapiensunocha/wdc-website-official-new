@@ -44,6 +44,11 @@ import burohelp from "../assets/logos/burohelp_logo.png";
 import canadagovernment from "../assets/logos/govermentofcanada_logo.png";
 import ada from "../assets/logos/ada_logo.png";
 import esa from "../assets/logos/esa_logo.png";
+import ifb from "../assets/logos/ifb-logo.jpeg";
+import microsoft from "../assets/logos/Microsoft-Logo.png";
+import techsoup from "../assets/logos/TechSoup_Logo.svg.png";
+import stripe from "../assets/logos/Stripe_Logo,_revised_2016.svg.png";
+import paypal from "../assets/logos/paypal-new-logo-v0-rn30nd8uqzpd1.jpg";
 // import raindrop from '../assets/'
 
 export const navigation = [
@@ -100,12 +105,12 @@ export const heroIcons = [homeSmile, file02, searchMd, plusSquare];
 export const notificationImages = [];
 
 // export const companyLogos = [ghtc, avielon, pui, opendeved, ada];
-export const strategicpartner_companyLogos = [ canadagovernment, esa, orange, gcse, pui, kaizenmind, burohelp,rapidgrowth];
+export const strategicpartner_companyLogos = [canadagovernment, esa, orange, gcse, pui, kaizenmind, burohelp, rapidgrowth, microsoft, stripe, paypal];
 export const collaborator_companyLogos = [ada, codeforafrica, opendeved];
-export const technicalsponsor_companyLogos = [google, esri];
+export const technicalsponsor_companyLogos = [google, esri, techsoup];
 export const implmentationpartner_companyLogos = [undp, rha, ghtc];
 export const financialpartner_companyLogos = [equity];
-export const technicalpartner_companyLogos = [avielon];
+export const technicalpartner_companyLogos = [avielon, ifb];
 
 export const brainwaveServices = ["Detection System", "Real-Time Alerts"];
 

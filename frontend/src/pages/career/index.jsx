@@ -43,7 +43,7 @@ function CareerPage() {
               >
                 <h3 className="text-gray-800 text-lg font-medium">{item.position}</h3>
                 <a href={item.link} target="_blank" rel="noopener noreferrer">
-                  <button className="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-all">
+                  <button className="px-4 py-2 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-primary-dark transition-all">
                     Apply
                   </button>
                 </a>
@@ -60,7 +60,7 @@ function CareerPage() {
           </p>
           <button
             onClick={() => toast("Coming Soon", { theme: "dark" })}
-            className="px-6 py-3 bg-blue-600 text-white text-lg font-semibold rounded-full hover:bg-blue-700 transition-all"
+            className="px-6 py-3 bg-primary text-white text-lg font-semibold rounded-full hover:bg-primary-dark transition-all"
           >
             Send Your CV
             <svg
@@ -143,7 +143,7 @@ function CareerPage() {
                 href="https://www.ic3.gov"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 underline"
+                className="text-primary underline"
               >
                 www.ic3.gov
               </a>
@@ -152,9 +152,9 @@ function CareerPage() {
           </div>
 
           {/* Equal Opportunity Employer Section */}
-          <div className="bg-gray-800 text-white p-6 rounded-lg shadow-md w-full max-w-4xl text-center">
-            <h3 className="text-xl font-bold mb-4">Equal Opportunity Employer</h3>
-            <p className="text-gray-300">
+          <div className="bg-primary-muted border border-primary/20 p-6 rounded-lg shadow-sm w-full max-w-4xl text-center">
+            <h3 className="text-xl font-bold text-content-primary mb-4">Equal Opportunity Employer</h3>
+            <p className="text-content-secondary">
               World Disaster Center is an equal-opportunity employer. We conduct
               hiring without regard to race, color, ancestry, national origin,
               citizenship, age, sex, marital status, parental status, membership

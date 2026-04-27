@@ -2,8 +2,6 @@ import { benefits } from "../constants";
 import Heading from "./Heading";
 import Section from "./Section";
 import Arrow from "../assets/svg/Arrow";
-import { GradientLight } from "./design/Benefits";
-import ClipPath from "../assets/svg/ClipPath";
 import DottedWorld from "../assets/hero/dottedWord.jpg";
 import { Link } from "react-router-dom";
 
@@ -14,68 +12,40 @@ const Benefits = () => {
         <Heading
           className="md:max-w-md lg:max-w-2xl"
           title="What We Offer"
-          tag=" Benefits"
+          tag="Benefits"
         />
 
-        <div className="flex flex-wrap gap-2 mb-10 justify-between">
+        <div className="flex flex-wrap gap-6 mb-10 justify-center">
           {benefits.map((item) => (
             <Link
               to={item.url === "" ? "/" : item.url}
-              className="block relative p-0.5 bg-no-repeat bg-[length:100%_100%] flex-grow md:basis-[35%]"
-              style={{
-                backgroundImage: `url(${item.backgroundUrl})`,
-              }}
+              className="block relative flex-grow md:basis-[45%] lg:basis-[30%] bg-white border border-gray-200 hover:border-gray-300 hover:shadow-xl transition-all duration-300 rounded-xl overflow-hidden group"
               key={item.id}
             >
-              <div className="relative z-2 flex flex-col min-h-[18rem] p-[2.4rem] pointer-events-none">
-                <h5 className="h5 mb-3">{item.title}</h5>
-                <p className="body-2 text-n-3">{item.text}</p>
-                <div className="flex items-center mt-auto">
-                  {/* <img
-                    src={item.iconUrl}
-                    width={48}
-                    height={48}
-                    alt={item.title}
-                  /> */}
-
-                  <a
-                    href={item?.url}
-                    className="ml-auto font-code text-xs font-bold uppercase tracking-wider hover:text-cyan-300"
-                  >
+              <div className="relative z-10 flex flex-col min-h-[22rem] p-8">
+                <h5 className="text-2xl font-bold mb-4 text-gray-900 transition-colors">{item.title}</h5>
+                <p className="text-gray-600 leading-relaxed mb-6 flex-grow">{item.text}</p>
+                
+                <div className="flex items-center mt-auto border-t border-gray-100 pt-4">
+                  <span className="font-bold uppercase tracking-wider text-xs text-gray-500 group-hover:text-black transition-colors">
                     {item?.url === "" ? "Coming soon" : `Explore ${item.title}`}
-                  </a>
-
-                  {item?.url === "" ? "" : <Arrow />}
-                </div>
-              </div>
-
-              {item.light && <GradientLight />}
-              <GradientLight />
-              <div
-                className="absolute inset-0.5 hover:scale-105"
-                style={{
-                  clipPath: "url(#benefits)",
-                  background: "transparent",
-                  backdropFilter: "blur(40px)",
-                  border: "1px solid #ffaass",
-                  borderLeft: "2px solid #5948b8",
-                  borderBottom: "2px solid #6e71ff44",
-                }}
-              >
-                <div className="absolute inset-0 transition-opacity ">
-                  {item.imageUrl && (
-                    <img
-                      src={DottedWorld}
-                      width={380}
-                      height={362}
-                      alt={item.title}
-                      className="w-full h-full object-cover"
-                    />
+                  </span>
+                  {item?.url !== "" && (
+                     <div className="ml-auto opacity-50 group-hover:opacity-100 transform group-hover:translate-x-1 transition-all">
+                       <Arrow />
+                     </div>
                   )}
                 </div>
               </div>
 
-              <ClipPath />
+              {/* Made the dotted map a very subtle, light watermark instead of dark blue */}
+              <div className="absolute inset-0 opacity-[0.03] grayscale transition-opacity group-hover:opacity-[0.06] pointer-events-none">
+                <img
+                  src={DottedWorld}
+                  alt={item.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
             </Link>
           ))}
         </div>

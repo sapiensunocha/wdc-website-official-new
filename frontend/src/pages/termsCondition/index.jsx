@@ -8,13 +8,13 @@ function TermsAndConditionPage() {
       <div className="container p">
         <Heading title="Terms & Conditions" tag='Last Updated: 4 January, 2025' />
         <div className="flex flex-col gap-6 leading-8">
-          <div className=" flex flex-col gap-6 text-gray-300 ">
+          <div className=" flex flex-col gap-6 text-content-secondary ">
             <h1 className="  h3">Overview</h1>
             <p className="">;
-              The sites, <i className=" text-n-4">https://www.worlddisastercenter.org</i> (together, <b className=" text-gray-50">“Site”</b>), are owned and operated by World Disaster Center (<b className=" text-gray-50">“Organization,” “we,” “us,” or “our”</b>). These Terms of Use (<b className=" text-gray-50">“Terms of Use”</b>) are applicable to you (<b className=" text-gray-50">“User,” “you,”</b> or <b className=" text-gray-50">“your”</b>). The terms contained herein apply to all Users of our Site.
+              The sites, <i className=" text-primary">https://www.worlddisastercenter.org</i> (together, <b className=" text-content-primary">“Site”</b>), are owned and operated by World Disaster Center (<b className=" text-content-primary">“Organization,” “we,” “us,” or “our”</b>). These Terms of Use (<b className=" text-content-primary">“Terms of Use”</b>) are applicable to you (<b className=" text-content-primary">“User,” “you,”</b> or <b className=" text-content-primary">“your”</b>). The terms contained herein apply to all Users of our Site.
             </p>
             <p>
-              Read these Terms of Use carefully before you begin using this Site.<b className=" text-gray-50"> BY ENTERING, ACCESSING, BROWSING, SUBMITTING INFORMATION TO, OR OTHERWISE USING THE SITE, ITS SERVICES, AND THE CONTENT AVAILABLE HEREIN, YOU ACKNOWLEDGE AND AGREE TO THESE TERMS.</b>
+              Read these Terms of Use carefully before you begin using this Site.<b className=" text-content-primary"> BY ENTERING, ACCESSING, BROWSING, SUBMITTING INFORMATION TO, OR OTHERWISE USING THE SITE, ITS SERVICES, AND THE CONTENT AVAILABLE HEREIN, YOU ACKNOWLEDGE AND AGREE TO THESE TERMS.</b>
             </p>
             <p>
               Note that these Terms of Use may be updated from time to time, and any User’s continued use of the Site after we have made updates to the terms is considered acceptance of those updates. For clarity, all updates are effective immediately when posted. It is your responsibility to check the Terms of Use periodically for updates.
@@ -22,14 +22,14 @@ function TermsAndConditionPage() {
             <p></p>
           </div>
 
-          <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+          <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
             <h1 className="  h3 ">1. Access and Use of The Site</h1>
             <h2 className="h4">Access to the Site:</h2>
             <p>
               Access to certain portions of our Site is restricted to registered Users with an account on the Site (<b className="text-n-4">“Account”</b>). You may be required to provide personal information such as your name, telephone number(s), e-mail, street address, credit card number, debit card number, charge card number, or other payment information, along with other personally identifiable information <b className="text-n-4">(“Personal Data”)</b>. Your Personal Data is associated with your Account. By providing such information, you acknowledge and agree that we may, and you specifically authorize us, or permitted third parties, to process all transactions related to the Site and its operation, including but not limited to purchases and/or registration for products and/or services on the Site. You agree to pay all fees and charges, including applicable taxes and surcharges, incurred through your activity on or through the Site and/or through your Account.
             </p>
           </div>
-          <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+          <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
             <h1 className="  h3 ">2. Registration and Security</h1>
             <h2 className="h4">Account Information:</h2>
             <p>
@@ -40,7 +40,7 @@ function TermsAndConditionPage() {
               We strongly recommend that you do not use the Site or access your Account on any public computer. Avoid storing your password through your web browser or other software.
             </p>
           </div>
-          <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+          <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
             <h1 className="  h3 ">3. Limitations on Use</h1>
             <h2 className="h4">Lawful Purposes Only:</h2>
             <p>The Site may be used and accessed for lawful purposes only. You agree to abide by all applicable local, state, national, and foreign laws, treaties, and regulations in connection with your use of the Site and its content.</p>
@@ -75,19 +75,19 @@ function TermsAndConditionPage() {
             <p>We disclaim any obligation to monitor the use of the Site or retain its content unless otherwise agreed.            </p>
           </div>
 
-          <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+          <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
             <h1 className="  h3 ">4. Donations</h1>
             <h2 className="h4">Use of Donations:</h2>
             <div>While we strive to implement your donation as intended, Organization leadership reserves the right to use donations where most needed as programmatic needs and capabilities evolve. By donating, you authorize the Organization to allocate your donation accordingly.</div>
             <h2 className="h4">Contact for Donation Use:</h2>
         <p>For more information regarding the use of your donation, email office@worlddisastercenter.org.</p>
           </div>
-          <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+          <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
             <h1 className="  h3 ">5. Account Deletion</h1>
             <h2 className="h4">Modifications to the Site:</h2>
             <p>You may delete your Account at any time by emailing us at office@worlddisastercenter.org. Upon deletion, your Account will be inactivated, and you will no longer be able to log into it.</p>
           </div>
-          <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+          <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
             <h1 className="  h3 ">6. Links to Third-Party Websites</h1>
             <h2 className="h4">Third-Party Links:</h2>
             <p>
@@ -95,7 +95,7 @@ function TermsAndConditionPage() {
             </p>
           </div>
 
-          <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+          <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
             <h1 className="  h3 ">7. Reliance on Information Posted</h1>
             <h2 className="h4">Modifications to the Site:</h2>
             <p>
@@ -103,14 +103,14 @@ function TermsAndConditionPage() {
             </p>
           </div>
 
-          <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+          <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
             <h1 className="  h3 ">8. Exiting Our Site</h1>
             <h2 className="h4">Signing Out:</h2>
             <p>
                You agree to sign out of your Account each time you prepare to leave our Site.
             </p>
           </div>
-          <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+          <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
             <h1 className="  h3 ">9. Conduct and Behavior</h1>
             <h2 className="h4">User Responsibility:</h2>
             <p>
@@ -128,7 +128,7 @@ function TermsAndConditionPage() {
           </div>
 
           
-          <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+          <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
             <h1 className="  h3 "> 10. Feedback </h1>
             <h2 className="h4">Submitting Feedback:</h2>
             <p>You can submit feedback via office@worlddisastercenter.org. By submitting feedback (“User Submissions”), you grant the Organization a royalty-free, irrevocable, transferable license to use, modify, publish, translate, create derivative works from, sell, and distribute such submissions.</p>
@@ -136,7 +136,7 @@ function TermsAndConditionPage() {
             <p>The Organization is not obligated to maintain any User Submissions in confidence, pay compensation, or respond to submissions. You agree that your submissions do not violate third-party rights and are not libelous or contain unlawful material.</p>
           </div>
 
-          <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+          <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
             <h1 className="  h3 ">11. Intellectual Property</h1>
             <h2 className="h4">Ownership:</h2>
             <p>Our Site, including all content, designs, graphics, source code, and functionality, is owned by us or our licensors and is protected by intellectual property laws.</p>
@@ -152,7 +152,7 @@ function TermsAndConditionPage() {
           <p>Users must not use the Site to infringe upon others’ intellectual property rights. If you believe your rights have been infringed, please contact us immediately at office@worlddisastercenter.org</p>
           </div>
 
-          <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+          <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
             <h1 className="  h3 ">12. Additional User Restrictions Related to Intellectual Property</h1>
             <h2 className="h4">Responsibility for Content:</h2>
             <p>When posting or submitting information to the Site, you represent that you have ownership, authority, or permission to do so. You further warrant that the information does not infringe upon any third-party rights and will indemnify the Organization against any claims arising from such submissions.</p>
@@ -169,7 +169,7 @@ function TermsAndConditionPage() {
 <p className="">You grant us a worldwide, non-exclusive, royalty-free, sub-licensable, and transferable license to use any User-Submitted Content you provide.</p>
             </div>
 
-            <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+            <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
               <h1 className="  h3 ">13. Disclaimer of Warranties</h1>
               <h2 className="h4">As-Is Basis:</h2>
               <p>The Site and all information contained herein are provided &quot;as is&quot; without any warranties of any kind.</p>
@@ -187,7 +187,7 @@ function TermsAndConditionPage() {
       
             </div>
 
-            <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+            <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
               <h1 className="  h3 ">14. Limitation of Liability</h1>
               <h2 className="h4"> Release of Liability:</h2>
              <p>To the fullest extent permitted by law, you release World Disaster Center and its affiliates from all liability associated with your use of the Site.</p>
@@ -198,7 +198,7 @@ function TermsAndConditionPage() {
 
             </div>
 
-            <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+            <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
          <h1 className=" h3"> 15. Indemnification</h1>
            
          <h2 className="h4">Your Responsibility to Indemnify:</h2>
@@ -213,38 +213,38 @@ function TermsAndConditionPage() {
             <p>We reserve the right to assume the exclusive defense and control of any matter subject to indemnification by you, in which case you agree to cooperate with us.</p>
           </div> 
 
-          <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+          <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
               <h1 className="  h3 "> 16. Compliance with COPPA</h1>
               <h2 className="h4">Children’s Online Privacy Protection Act (COPPA):</h2>
                 <p>This Site is not intended for users under eighteen (18) years of age. If you are under 18, do not provide any personally identifiable information without parental or guardian consent.</p>
                 <h2 className="h4">Parental Consent:</h2>
                 <p>If you are under 18, you must obtain permission from a parent or guardian before providing personal information on the Site.</p>
                 </div>
-                <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+                <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
                 <h1 className="  h3 ">17. Governing Law and Venue</h1>
                 <h2 className="h4">Applicable Law:</h2>
                 <p>These Terms of Use are governed by the laws of the United States and the State of [Your State], without regard to its conflict of laws principles.</p>
                 <h2 className="h4">Venue:</h2>
                 <p>Any legal actions related to these Terms of Use shall be brought in the federal or state courts located in Austria, Vienna. Both parties waive any objection based on forum non conveniens.</p>
                 </div>
-                <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+                <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
                 <h1 className="  h3 ">18. Severability and Waiver</h1>
                 <h2 className="h4">Severability:</h2>
                 <p>If any provision of these Terms is found to be invalid or unenforceable, the remaining provisions will continue in full force and effect.</p>
                 <h2 className="h4">No Waiver:</h2>
                 <p>Failure to enforce any provision does not constitute a waiver of that provision or any other provision.</p>
                 </div>
-                <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+                <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
                   <h1 className="  h3 ">19. Changes to the Terms of Use</h1>
                   <h2 className="h4">Modifications:</h2>
                 <p>We may update these Terms of Use from time to time. The effective date of the latest revision is identified at the top of the page. It is your responsibility to periodically review the Terms for any changes.</p>
                 </div>
-                <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+                <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
                   <h1 className="  h3 ">20. Contact Us</h1>
                   <h2 className="h4">Questions or Comments:</h2>
                   <p>For questions or comments about these Terms of Use, contact us at: office@worlddisastercenter.org</p>
                 </div>
-                <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+                <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
                     <h1 className="  h3 ">21. Entire Agreement</h1>
                     <h2 className="h4">Complete Agreement:</h2>
                     <p>These Terms of Use, along with our Privacy Policy, constitute the entire agreement between you and World Disaster Center regarding your use of the Site.</p>

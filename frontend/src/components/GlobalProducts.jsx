@@ -69,7 +69,7 @@ export default function GlobalProducts() {
           <div className="flex justify-center mt-8">
             <button
               onClick={handleLoadMore}
-              className="bg-blue-600 text-white px-6 py-2 rounded-full shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300"
+              className="bg-primary text-white px-6 py-2 rounded-full shadow-md hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition duration-300"
             >
               Load More
             </button>

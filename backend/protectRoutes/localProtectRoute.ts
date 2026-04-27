@@ -6,7 +6,7 @@ async function protectRoute(req:Request,res:Response,next:NextFunction) {
     req.user = undefined
     const token = req.cookies.jwt
     if(token) {
-        const decoded = jwt.verify(token,process.env.JWTSK || "159874598742568756") as jwt.JwtPayload
+        const decoded = jwt.verify(token, process.env.JWTSK as string) as jwt.JwtPayload
         if (!decoded) {
             res.status(401).json({error:"Not Authorized"})
             return

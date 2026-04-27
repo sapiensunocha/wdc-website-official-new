@@ -26,7 +26,7 @@ const CaseDetail = () => {
             href= {caseStudy.link} // Replace with your specific URL
             target="_blank"
             rel="noopener noreferrer"
-            className="px-6 py-3 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-600"
+            className="px-6 py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary"
           >
             Try Now
           </a>

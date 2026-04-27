@@ -7,11 +7,11 @@ function Modal({ onClose }) {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white rounded-lg shadow-lg w-11/12 max-w-sm p-6 text-center">
-        <h2 className="text-2xl font-bold text-blue-600 mb-4">Coming Soon</h2>
+        <h2 className="text-2xl font-bold text-primary mb-4">Coming Soon</h2>
         <p className="text-gray-600 mb-6">We're working hard to bring this feature to you. Stay tuned!</p>
         <button
           onClick={onClose}
-          className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700"
+          className="bg-primary text-white px-6 py-3 rounded-lg shadow hover:bg-primary-dark"
         >
           Close
         </button>
@@ -92,8 +92,8 @@ function MembershipPage() {
         <button
           onClick={() => handleTabChange("professionals")}
           className={
-            `px-6 py-4 sm:py-6 rounded-lg border-4 border-blue-800 font-semibold text-center ${
-            activeTab === "professionals" ? "bg-blue-600 border-4 border-white text-white" : "bg-gray-200 text-gray-700"  
+            `px-6 py-4 sm:py-6 rounded-lg border-4 border-primary-dark font-semibold text-center ${
+            activeTab === "professionals" ? "bg-primary border-4 border-white text-white" : "bg-gray-200 text-gray-700"  
             } ${clickedTab === "professionals" ? "animate-bounce" : ""}`}
         >
             <span className="block text-3xl font-bold">Professionals</span>
@@ -109,8 +109,8 @@ function MembershipPage() {
 
         <button
           onClick={() => handleTabChange("locals")}
-          className={`px-6 py-4 sm:py-6 rounded-lg border-4 border-blue-800 font-semibold text-center ${
-            activeTab === "locals" ? "bg-blue-600 border-4 border-white text-white" : "bg-gray-200 text-gray-700"
+          className={`px-6 py-4 sm:py-6 rounded-lg border-4 border-primary-dark font-semibold text-center ${
+            activeTab === "locals" ? "bg-primary border-4 border-white text-white" : "bg-gray-200 text-gray-700"
           } ${clickedTab === "locals" ? "animate-bounce" : ""}`}
         >
           <span className="block text-3xl font-bold">Locals</span>
@@ -126,8 +126,8 @@ function MembershipPage() {
 
         <button
           onClick={() => handleTabChange("NGOS")}
-          className={`px-6 py-4 sm:py-6 rounded-lg border-4 border-blue-800 font-semibold text-center ${
-            activeTab === "NGOS" ? "bg-blue-600 border-4 border-white text-white" : "bg-gray-200 text-gray-700"
+          className={`px-6 py-4 sm:py-6 rounded-lg border-4 border-primary-dark font-semibold text-center ${
+            activeTab === "NGOS" ? "bg-primary border-4 border-white text-white" : "bg-gray-200 text-gray-700"
           } ${clickedTab === "NGOS" ? "animate-bounce" : ""}`}
         >
           <span className="block text-3xl font-bold">NGOs</span>
@@ -147,7 +147,7 @@ function MembershipPage() {
         {currentData && (
           // <div className="relative rounded-3xl mt-10 bg-white p-6 ring-1 shadow-2xl ring-gray-900/10 sm:p-10 transition-opacity duration-500 ease-in-out opacity-100">
           <div className="relative mt-10 bg-white p-6 ring-1 shadow-2xl ring-gray-900/10 sm:p-10 rounded-3xl w-full max-w-2xl mx-auto">
-            <h2 className="text-2xl font-bold text-blue-600 text-center break-words">
+            <h2 className="text-2xl font-bold text-primary text-center break-words">
               {currentData.title}
             </h2>
             <p className="mt-2 text-1xl italic text-gray-600 text-center">
@@ -161,7 +161,7 @@ function MembershipPage() {
                     </th>
               {currentData.benefits.map((benefit, index) => (
                 <div key={index} className="flex items-start space-x-3">
-                  <span className="flex-shrink-0 text-blue-600">
+                  <span className="flex-shrink-0 text-primary">
                     {/* Checkmark icon */}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -183,8 +183,8 @@ function MembershipPage() {
             {/* Apply Button */}
             <div className="mt-8 flex justify-center">
               <button
-                // className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700"
-                className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 flex items-center space-x-2"
+                // className="bg-primary text-white px-6 py-3 rounded-lg shadow hover:bg-primary-dark"
+                className="bg-primary text-white px-6 py-3 rounded-lg shadow hover:bg-primary-dark flex items-center space-x-2"
                 onClick={() => setShowModal(true)}
               >
               

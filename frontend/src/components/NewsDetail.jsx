@@ -64,7 +64,7 @@ const NewsDetail = () => {
                     return (
                       <blockquote
                           key={index}
-                          className="mt-4 italic border-l-4 border-blue-500 pl-4 mb-10"
+                          className="mt-4 italic border-l-4 border-primary pl-4 mb-10"
                       >
                           {block.content}
                       </blockquote>

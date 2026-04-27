@@ -1,186 +1,245 @@
-import React, { useState } from "react";
-import ButtonGradient from "../../assets/svg/ButtonGradient";
+import React, { useState, useEffect } from "react";
+import { ArrowRight, Share2, X, Loader2 } from "lucide-react";
+import { Link } from "react-router-dom";
+import DOMPurify from "dompurify";
+import { supabase } from "../../lib/supabase";
+
+import Hero from "../../components/Hero";
+import VideoSection from "../../components/videosection";
 import Benefits from "../../components/Benefits";
 import Solutions from "../../components/CaseStudies";
 import GlobalProducts from "../../components/GlobalProducts";
-import Collaboration from "../../components/Collaboration";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
-import Heading from "../../components/Heading";
-import Hero from "../../components/Hero";
-import NewsGrid from "../../components/NewsGrid";
-import Pricing from "../../components/Pricing";
-import Roadmap from "../../components/Roadmap";
-import Services from "../../components/Services";
-import Blogs from "../../components/blogs";
-import ContactForm from "../../components/contactForm";
-import NewsLetter2 from "../../components/newsletter2";
-import VideoSection from "../../components/videosection";
-import TopHero from "../../components/TopHero";
-import Slideshow from "../../components/Slideshow";
-import News from "../news";
-import Events from "../events";
 import Animation from "../../components/animator";
+import Testimonials from "../../components/Testimonials";
 
 const HomePage = () => {
-    // // State to manage the active section
-    const [activeSection, setActiveSection] = useState("News");
+  const [activeSection, setActiveSection] = useState("News");
+  const [solutionsSection, setSolutionsSection] = useState("Solutions");
 
-    // Function to switch between sections
-    const handleSwitchSection = () => {
-      setActiveSection((prevSection) =>
-        prevSection === "News" ? "Events" : "News"
-      );
+  const [news, setNews] = useState([]);
+  const [isLoadingNews, setIsLoadingNews] = useState(true);
+  const [activeArticle, setActiveArticle] = useState(null);
+
+  useEffect(() => {
+    const fetchLatestIntel = async () => {
+      setIsLoadingNews(true);
+      const { data, error } = await supabase
+        .from("news_articles")
+        .select("*")
+        .eq("status", "published")
+        .eq("category", "Disaster")
+        .order("created_at", { ascending: false })
+        .limit(3);
+      if (data && !error) setNews(data);
+      setIsLoadingNews(false);
     };
-    
-    const [solutionsSection, setSolutionsSection] = useState("Solutions");
-    const handleSolutionsSwitch = () => {
-      setSolutionsSection((prevSection) =>
-        prevSection === "Solutions" ? "GlobalProducts" : "Solutions"
-      );
-    };
+    fetchLatestIntel();
+  }, [activeSection]);
+
+  const handleShare = (id) => {
+    const shareUrl = `${window.location.origin}/news?article=${id}`;
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      alert("Link copied to clipboard!");
+    });
+  };
 
   return (
-    <>
-    {/* <TopHero/> */}
+    <div className="bg-white overflow-hidden">
       <Hero />
-      {/* <Slideshow /> */}
       <VideoSection />
       <Benefits />
-      <div className="container sm:px-2">
-  <button
-    onClick={() => setSolutionsSection("GlobalProducts")}
-    className={`w-1/2 px-6 py-4 font-semibold text-lg focus:outline-none transition-colors duration-300 relative ${
-      solutionsSection === "GlobalProducts"
-        ? "bg-blue-600 text-white"
-        : "bg-gray-200 text-gray-700 hover:bg-blue-400"
-    }`}
-  >
-    Global Products
-    {solutionsSection === "GlobalProducts" && (
-      <div
-        className="absolute bottom-[-16px] left-1/2 transform -translate-x-1/2
-                   w-0 h-0 border-l-[16px] border-r-[16px] border-t-[16px]
-                   border-transparent border-t-blue-600"
-      ></div>
-    )}
-  </button>
-  <button
-    onClick={() => setSolutionsSection("Solutions")}
-    className={`w-1/2 px-6 py-4 font-semibold text-lg focus:outline-none transition-colors duration-300 relative ${
-      solutionsSection === "Solutions"
-        ? "bg-blue-600 text-white"
-        : "bg-gray-200 text-gray-700 hover:bg-blue-400"
-    }`}
-  >
-    Tailored Solutions
-    {solutionsSection === "Solutions" && (
-      <div
-        className="absolute bottom-[-16px] left-1/2 transform -translate-x-1/2
-                   w-0 h-0 border-l-[16px] border-r-[16px] border-t-[16px]
-                   border-transparent border-t-blue-600"
-      ></div>
-    )}
-  </button>
-</div>
 
-{/* Content for Products/Solutions */}
-<div className="w-full rounded-lg">
-  {solutionsSection === "Solutions" ? <Solutions /> : <GlobalProducts />}
-</div>
+      {/* Solutions Switcher */}
+      <div className="bg-surface-subtle">
+        <div className="container sm:px-2 py-16">
+          <div className="flex w-full border-b border-gray-200 mb-10">
+            <button
+              onClick={() => setSolutionsSection("GlobalProducts")}
+              className={`w-1/2 py-5 font-bold text-lg transition-all ${
+                solutionsSection === "GlobalProducts"
+                  ? "text-primary border-b-4 border-primary"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              Global Products
+            </button>
+            <button
+              onClick={() => setSolutionsSection("Solutions")}
+              className={`w-1/2 py-5 font-bold text-lg transition-all ${
+                solutionsSection === "Solutions"
+                  ? "text-primary border-b-4 border-primary"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              Tailored Solutions
+            </button>
+          </div>
+          <div className="w-full transition-all duration-500">
+            {solutionsSection === "Solutions" ? <Solutions /> : <GlobalProducts />}
+          </div>
+        </div>
+      </div>
 
-{/* Tab Navigation for News/Events */}
-<div className="container sm:px-2">
-  <button
-    onClick={() => setActiveSection("News")}
-    className={`w-1/2 px-6 py-4 font-semibold text-lg focus:outline-none transition-colors duration-300 relative ${
-      activeSection === "News"
-        ? "bg-blue-600 text-white"
-        : "bg-gray-200 text-gray-700 hover:bg-blue-400"
-    }`}
-  >
-    News & Info
-    {activeSection === "News" && (
-      <div
-        className="absolute bottom-[-16px] left-1/2 transform -translate-x-1/2
-                   w-0 h-0 border-l-[16px] border-r-[16px] border-t-[16px]
-                   border-transparent border-t-blue-600"
-      ></div>
-    )}
-  </button>
-  <button
-    onClick={() => setActiveSection("Events")}
-    className={`w-1/2 px-6 py-4 font-semibold text-lg focus:outline-none transition-colors duration-300 relative ${
-      activeSection === "Events"
-        ? "bg-blue-600 text-white"
-        : "bg-gray-200 text-gray-700 hover:bg-blue-400"
-    }`}
-  >
-    Events
-    {activeSection === "Events" && (
-      <div
-        className="absolute bottom-[-16px] left-1/2 transform -translate-x-1/2
-                   w-0 h-0 border-l-[16px] border-r-[16px] border-t-[16px]
-                   border-transparent border-t-blue-600"
-      ></div>
-    )}
-  </button>
-</div>
+      {/* Intelligence / News Section */}
+      <div className="bg-white">
+        <div className="container sm:px-2 py-20">
+          {/* Section header */}
+          <div className="flex justify-between items-end mb-10">
+            <div>
+              <p className="tagline text-primary mb-2">Latest Updates</p>
+              <h2 className="h2 text-content-primary mb-4">Latest Intelligence</h2>
+              <div className="flex gap-6">
+                <button
+                  onClick={() => setActiveSection("News")}
+                  className={`pb-1 text-sm font-bold tracking-wider uppercase transition-colors border-b-2 ${
+                    activeSection === "News"
+                      ? "text-primary border-primary"
+                      : "text-gray-400 border-transparent hover:text-gray-600"
+                  }`}
+                >
+                  News &amp; Info
+                </button>
+                <button
+                  onClick={() => setActiveSection("Events")}
+                  className={`pb-1 text-sm font-bold tracking-wider uppercase transition-colors border-b-2 ${
+                    activeSection === "Events"
+                      ? "text-primary border-primary"
+                      : "text-gray-400 border-transparent hover:text-gray-600"
+                  }`}
+                >
+                  Global Events
+                </button>
+              </div>
+            </div>
+            <Link
+              to="/news"
+              className="hidden md:flex items-center gap-2 text-primary font-bold hover:underline tracking-wide uppercase text-sm"
+            >
+              View All <ArrowRight size={16} />
+            </Link>
+          </div>
 
+          {/* Cards grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {isLoadingNews ? (
+              <div className="col-span-3 flex justify-center py-20">
+                <Loader2 className="animate-spin text-primary" size={36} />
+              </div>
+            ) : news.length > 0 ? (
+              news.map((item) => (
+                <div
+                  key={item.id}
+                  onClick={() => setActiveArticle(item)}
+                  className="bg-white rounded border border-gray-200 border-t-4 border-t-primary hover:shadow-lg transition-all cursor-pointer group flex flex-col"
+                >
+                  {item.image_url && (
+                    <div className="w-full h-44 overflow-hidden">
+                      <img
+                        src={item.image_url}
+                        alt={item.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                      />
+                    </div>
+                  )}
+                  <div className="p-5 flex flex-col flex-1">
+                    <span className="inline-block px-2.5 py-0.5 text-[10px] font-black uppercase tracking-widest bg-primary-muted text-primary rounded mb-3">
+                      {item.category}
+                    </span>
+                    <h3 className="text-base font-bold text-content-primary leading-snug group-hover:text-primary transition-colors line-clamp-3 flex-1">
+                      {item.title}
+                    </h3>
+                    <div className="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center">
+                      <p className="text-gray-400 text-xs tracking-wider uppercase">
+                        {new Date(item.created_at).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })}
+                      </p>
+                      <ArrowRight
+                        size={16}
+                        className="text-primary opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300"
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="col-span-3 text-center text-gray-400 py-10 uppercase tracking-widest text-sm">
+                No recent intelligence available.
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
 
-{/* Content for News/Events */}
-<div className="w-full rounded-lg">
-  {activeSection === "News" ? <News /> : <Events />}
-</div>
-<Animation />
-    </>
-    
+      {/* Article Modal */}
+      {activeArticle && (
+        <div
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 md:p-6"
+          onClick={() => setActiveArticle(null)}
+        >
+          <div
+            className="bg-white rounded-lg w-full max-w-4xl max-h-[85vh] overflow-y-auto border-t-4 border-t-primary shadow-2xl relative flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setActiveArticle(null)}
+              className="absolute top-4 right-4 w-9 h-9 bg-white border border-gray-200 rounded-full flex items-center justify-center text-gray-500 hover:border-primary hover:text-primary transition-all z-10"
+            >
+              <X size={18} />
+            </button>
+
+            {activeArticle.image_url && (
+              <div className="w-full h-[35vh] relative flex-shrink-0">
+                <img
+                  src={activeArticle.image_url}
+                  alt={activeArticle.title}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+              </div>
+            )}
+
+            <div className="p-8 md:p-12 flex-1">
+              <div className="flex justify-between items-center mb-6 pb-4 border-b border-gray-100">
+                <div className="flex items-center gap-3">
+                  <span className="px-3 py-1 text-[10px] font-black uppercase tracking-widest bg-primary text-white rounded">
+                    {activeArticle.category}
+                  </span>
+                  <span className="text-gray-400 text-xs tracking-wider uppercase">
+                    {new Date(activeArticle.created_at).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </span>
+                </div>
+                <button
+                  onClick={() => handleShare(activeArticle.id)}
+                  className="flex items-center gap-1.5 text-xs font-bold text-gray-400 hover:text-primary transition-colors uppercase tracking-widest"
+                >
+                  <Share2 size={13} /> Share
+                </button>
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-content-primary mb-6 leading-tight">
+                {activeArticle.title}
+              </h2>
+              <div
+                className="text-base text-content-secondary leading-relaxed space-y-4"
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(activeArticle.content),
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      <Testimonials />
+      <Animation />
+    </div>
   );
-};
-
-      {/* <Events /> */}
-      {/* <Collaboration /> */}
-      {/* <Services /> */}
-      {/* <Blogs isHome={false} /> */}
-      {/* <NewsLetter2 /> */}
-      {/* <Pricing /> */}
-      {/* <Pricing />
-      <Roadmap /> */}
-  
-const styles = {
-  
-  sectionContainer: {
-    position: "relative",
-    marginBottom: "30px",
-  },
-  arrowButton: {
-    position: "absolute",
-    backgroundColor: "#fff",
-    border: "none",
-    borderRadius: "50%",
-    width: "60px",
-    height: "60px",
-    fontSize: "28px",
-    cursor: "pointer",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    color: "#333",
-    zIndex: 10,
-    transition: "transform 0.2s ease, box-shadow 0.2s ease",
-  },
-  leftArrow: {
-    left: "100px", // Adjust this value to move it closer to the center
-    top: "50%",
-    transform: "translateY(-50%)",
-  },
-  rightArrow: {
-    right: "100px", // Adjust this value to move it closer to the center
-    top: "50%",
-    transform: "translateY(-50%)",
-  },
-
 };
 
 export default HomePage;

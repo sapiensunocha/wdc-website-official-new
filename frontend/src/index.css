@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300&display=swap");
@@ -65,136 +66,64 @@
     animation: scaleUp 2s ease-in-out forwards;
   }
 }
-/* Scale-up animation */
-  @keyframes scaleUp {
-    0% {
-      transform: scale(0.8);
-      opacity: 0;
-    }
-    100% {
-      transform: scale(1);
-      opacity: 1;
-    }
-  }
-  .animate-scale-up {
-    animation: scaleUp 2s ease-in-out forwards;
-  }
 
 :root {
+  --font-open-sans: "Open Sans", sans-serif;
   --font-sora: "Sora", sans-serif;
   --font-code: "Source Code Pro", monospace;
   --font-grotesk: "Space Grotesk", sans-serif;
-  color-scheme: dark;
+  color-scheme: light;
 }
 
-* {
-  scroll-behavior: smooth
+html {
+  scroll-behavior: smooth;
 }
 
 @layer base {
   body {
-    @apply font-sans bg-n-8 text-n-1 text-base;
+    /* CHANGED: Stripped out bg-n-8 and text-n-1. Replaced with pure white background and dark text */
+    @apply font-sans bg-white text-gray-900 text-base;
   }
 }
 
-.rotate-45 {
-  @apply rotate-[45deg]
-}
-
-.rotate-90 {
-  @apply rotate-[90deg]
-}
-
-.rotate-135 {
-  @apply rotate-[135deg]
-}
-
-.rotate-180 {
-  @apply rotate-[180deg]
-}
-
-.rotate-225 {
-  @apply rotate-[225deg]
-}
-
-.rotate-270 {
-  @apply rotate-[270deg]
-}
-
-.rotate-315 {
-  @apply rotate-[315deg]
-}
-
-.rotate-360 {
-  @apply rotate-[360deg]
-}
-
-.-rotate-45 {
-  @apply rotate-[-45deg]
-}
-
-.-rotate-90 {
-  @apply rotate-[-90deg]
-}
-
-.-rotate-135 {
-  @apply rotate-[-135deg]
-}
-
-.-rotate-180 {
-  @apply rotate-[-180deg]
-}
-
-.-rotate-225 {
-  @apply rotate-[-225deg]
-}
-
-.-rotate-270 {
-  @apply rotate-[-270deg]
-}
-
-.-rotate-315 {
-  @apply rotate-[-315deg]
-}
-
-.-rotate-360 {
-  @apply rotate-[-360deg]
-}
-
-.animatingwobble {
-  /* animation: wobble 1s ease infinite; */
-}
+.rotate-45 { @apply rotate-[45deg] }
+.rotate-90 { @apply rotate-[90deg] }
+.rotate-135 { @apply rotate-[135deg] }
+.rotate-180 { @apply rotate-[180deg] }
+.rotate-225 { @apply rotate-[225deg] }
+.rotate-270 { @apply rotate-[270deg] }
+.rotate-315 { @apply rotate-[315deg] }
+.rotate-360 { @apply rotate-[360deg] }
+.-rotate-45 { @apply rotate-[-45deg] }
+.-rotate-90 { @apply rotate-[-90deg] }
+.-rotate-135 { @apply rotate-[-135deg] }
+.-rotate-180 { @apply rotate-[-180deg] }
+.-rotate-225 { @apply rotate-[-225deg] }
+.-rotate-270 { @apply rotate-[-270deg] }
+.-rotate-315 { @apply rotate-[-315deg] }
+.-rotate-360 { @apply rotate-[-360deg] }
 
 @keyframes wobble {
-
-  0%,
-  100% {
-    /* -webkit-transform: translateX(0%);
-      transform: translateX(0%); */
+  0%, 100% {
     -webkit-transform-origin: 50% 50%;
     transform: 50% 50%;
   }
-
   15% {
     -webkit-transform: translateX(-32px) rotate(-10deg);
     transform: translateX(-32px) rotate(-10deg);
   }
-
   30% {
     -webkit-transform: translateX(calc(32px / 2)) rotate(10deg);
     transform: translateX(calc(32px / 2)) rotate(10deg);
   }
-
   45% {
     -webkit-transform: translateX(calc(-32px / 2)) rotate(calc(-10deg / 1.8));
     transform: translateX(calc(-32px / 2)) rotate(calc(-10deg / 1.8));
   }
-
   60% {
     -webkit-transform: translateX(calc(32px / 3.3)) rotate(calc(10deg / 3));
     transform: translateX(calc(32px / 3.3)) rotate(calc(10deg / 3));
   }
-
   75% {
     -webkit-transform: translateX(calc(-32px / 5.5)) rotate(calc(-10deg / 5));
     transform: translateX(calc(-32px / 5.5)) rotate(calc(-10deg / 5));
@@ -227,7 +156,6 @@
   margin-top: 2px;
 }
 
-
 .rcb-toggle-button {
   width: 60px !important;
   height: 60px !important;
@@ -241,8 +169,8 @@
   height: 100vh;
   overflow: hidden;
   position: absolute;
-  z-index: 99999 !important;
-  background: #01043683
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.9);
 }
 
 .animate-rotation {
@@ -259,25 +187,16 @@
   width: 100%;
 }
 
-.animate-rotation:hover {
-  animation-play-state: paused;
-
-}
-
-.animate-rotation-opposite:hover {
+.animate-rotation:hover, .animate-rotation-opposite:hover {
   animation-play-state: paused;
 }
 
 @keyframes rotate-around {
-  100% {
-    transform: rotate(360deg);
-  }
+  100% { transform: rotate(360deg); }
 }
 
 @keyframes rotate-around-opposite {
-  100% {
-    transform: rotate(-360deg);
-  }
+  100% { transform: rotate(-360deg); }
 }
 
 .popupInfo {
@@ -287,10 +206,6 @@
   color: black;
   padding: 8px;
   border-radius: 8px;
-  /* transform: translate(-50%, -50%); */
-  /* transform: translateX(-50%); */
-  /* transform: translateY(-50%); */
-
 }
 
 .discover-button {
@@ -303,20 +218,16 @@
 }
 
 .text-span-discover {
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.8); /* Changed shadow to fit light theme */
   text-decoration: none !important;
   border: none !important;
   cursor: pointer !important;
 }
 
-.loader-container {
-  overflow: hidden !important;
-  overflow: none !important;
-}
-
 .rcb-chat-tooltip,
 .rcb-tooltip-show {
-  background: rgba(32, 32, 32, 0.5) !important;
+  background: rgba(240, 240, 240, 0.9) !important; /* Lighter chat tooltip */
+  color: #111 !important;
   backdrop-filter: blur(20px);
 }
 
@@ -325,6 +236,6 @@
 }
 
 .rcb-chat-tooltip-tail {
-  color: rgba(32, 32, 32, 0.411) !important;
-  border-color: transparent transparent transparent rgba(32, 32, 32, 0.5) !important;
+  color: rgba(240, 240, 240, 0.9) !important;
+  border-color: transparent transparent transparent rgba(240, 240, 240, 0.9) !important;
 }

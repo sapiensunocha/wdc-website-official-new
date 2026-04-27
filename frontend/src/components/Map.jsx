@@ -1,115 +1,76 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import jsVectorMap from "jsvectormap";
-// import "jsvectormap/dist/css/jsvectormap.css"; // Import styles
-import "jsvectormap/dist/maps/world.js"; // Import world map
+import "jsvectormap/dist/maps/world.js";
+import { mapCountryCodes } from "../assets/data/impact";
 
-import { impact } from "../assets/data/impact";
+// jsvectormap scale array — exact discrete mapping:
+// scale.length - 1 === max - min  →  4 === 4  →  each integer hits one color exactly
+const SCALE = ["#22c55e", "#f59e0b", "#009EDB", "#f97316", "#1C2B39"];
 
-const mapData = { // 1 = In progress 2 = Completed
-  CD: 1, // Democratic Republic of Congo
-  BI: 2, // Burundi
-  MG: 3,
-  HT: 3
-};
-
-const VectorMapComponent = () => {
-  const mapRef = useRef(null);
+const VectorMapComponent = ({ onCountrySelect, selectedCode }) => {
+  const mapRef      = useRef(null);
   const containerRef = useRef(null);
-  const [key, setKey] = useState(0);
-  const [mapSize, setMapSize] = useState({ width: "900px", height: "600px" });
+  const callbackRef = useRef(onCountrySelect);
+  const [initKey, setInitKey] = useState(0);
+  const [mapHeight, setMapHeight] = useState(400);
 
-  // Function to initialize the map
-  const initializeMap = () => {
-    if (mapRef.current) {
-      new jsVectorMap({
-        selector: mapRef.current,
-        map: "world",
-        backgroundColor: "transparent",
-        zoomOnScroll: false,
-        regionStyle: {
-          initial: {
-            fill: "#c0c0c0", // Default color for all countries
-          },
-          hover: {
-            fill: "#1e40af", // Dark blue on hover
-          },
-          selected: {
-            fill: "#1e40af", // Dark blue when selected
-          },
-        },
-        series: {
-          regions: [
-            {
-              values: mapData, // Assigns predefined data values
-              scale: ["#c0c0c0", "#22c55e", "#facc15", "#f97316"], // Scale for coloring
+  // Keep callback ref fresh without triggering re-init
+  useEffect(() => { callbackRef.current = onCountrySelect; }, [onCountrySelect]);
 
-              normalizeFunction: "polynomial",
-            },
-          ],
-        },
-        // selectedRegions: ["CD", "BI"], // Preselect these countries
-      });
-    }
-  };
-  
+  // Re-init when selected country changes (to update highlighted region)
+  useEffect(() => { setInitKey((k) => k + 1); }, [selectedCode]);
 
-  // Update map size dynamically based on screen width
-  const updateMapSize = () => {
-    if (containerRef.current) {
-      const width = containerRef.current.clientWidth;
-
-      // Dynamically set height based on screen width
-      let height;
-      if (width > 1000) {
-        height = width * 0.6; // Larger screens: 60% of width
-      } else if (width > 600) {
-        height = width * 0.5; // Medium screens: 50% of width
-      } else {
-        height = width * 0.4; // Small screens: 40% of width
-      }
-
-      // Prevent excessive whitespace by limiting height to 80% of viewport height
-      height = Math.min(height, window.innerHeight * 0.8);
-
-      setMapSize({ width: `${width}px`, height: `${height}px` });
-      setKey((prev) => prev + 1);
-    }
-  };
-
+  // Responsive height
   useEffect(() => {
-    initializeMap();
-    return () => {
-      if (mapRef.current) {
-        mapRef.current.innerHTML = ""; // Destroy the map on unmount
-      }
+    const measure = () => {
+      if (!containerRef.current) return;
+      const w = containerRef.current.clientWidth;
+      const h = Math.min(Math.max(w * 0.55, 260), window.innerHeight * 0.62);
+      setMapHeight(Math.round(h));
+      setInitKey((k) => k + 1);
     };
-  }, [key]);
-
-  useEffect(() => {
-    updateMapSize(); // Adjust size on mount
-    window.addEventListener("resize", updateMapSize);
-    return () => window.removeEventListener("resize", updateMapSize);
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
   }, []);
 
+  // Map init / destroy
+  useEffect(() => {
+    const el = mapRef.current;
+    if (!el) return;
+    el.innerHTML = "";
+
+    new jsVectorMap({
+      selector: el,
+      map: "world",
+      backgroundColor: "transparent",
+      zoomOnScroll: false,
+      zoomButtons: false,
+      regionStyle: {
+        initial:      { fill: "#d1d5db", stroke: "#ffffff", strokeWidth: 0.4 },
+        hover:        { fill: "#60a5fa", cursor: "pointer" },
+        selected:     { fill: "#1d4ed8", stroke: "#1e3a8a", strokeWidth: 1.5 },
+        selectedHover:{ fill: "#1e40af" },
+      },
+      series: {
+        regions: [{
+          values: mapCountryCodes,
+          scale: SCALE,
+          normalizeFunction: "linear",
+        }],
+      },
+      selectedRegions: selectedCode ? [selectedCode] : [],
+      onRegionClick: (_event, code) => {
+        if (callbackRef.current) callbackRef.current(code);
+      },
+    });
+
+    return () => { if (el) el.innerHTML = ""; };
+  }, [initKey]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
-    <div
-      ref={containerRef}
-      className="w-full mx-auto max-w-[1300px] flex justify-center items-center"
-      style={{
-        minHeight: "100px",
-        maxHeight: "80vh", // Prevents too much white space
-        width: "100%",
-        height: mapSize.height, // Dynamically changes height
-      }}
-    >
-      <div
-        ref={mapRef}
-        className="rounded-lg p-4 w-full"
-        style={{
-          width: mapSize.width,
-          height: mapSize.height,
-        }}
-      />
+    <div ref={containerRef} className="w-full">
+      <div ref={mapRef} style={{ width: "100%", height: `${mapHeight}px` }} />
     </div>
   );
 };

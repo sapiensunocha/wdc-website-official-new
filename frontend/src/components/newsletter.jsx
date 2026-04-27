@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./style.css";
 
 function NewsLetter() {
   const [email, setEmail] = useState("");
@@ -9,77 +8,75 @@ function NewsLetter() {
   const [birthdayDay, setBirthdayDay] = useState("");
 
   return (
-    <div className="news-letter-container bg-blue-900 text-white p-8 rounded-lg shadow-lg">
+    <div className="bg-white border border-gray-200 rounded-lg p-8 shadow-sm">
       <form
-        className="form-news-letter validate"
         action="https://worlddisastercenter.us22.list-manage.com/subscribe/post?u=c90ad2e6157e6eac27328c681&amp;id=a73ca4362c&amp;f_id=0044d6e1f0"
         method="post"
         id="mc-embedded-subscribe-form"
         name="mc-embedded-subscribe-form"
         target="_blank"
       >
-        <h2 className="text-2xl font-bold mb-4">Subscribe to Our Impact360 Newsletter</h2>
-        <p className="text-sm mb-6">
-        Stay connected with news, impactful stories, and exclusive insights from the World Disaster Center. Be part of the movement for a safer world.
+        <div className="h-1 w-10 bg-primary mb-6" />
+        <h2 className="text-2xl font-bold text-content-primary mb-2">
+          Subscribe to Our Impact360 Newsletter
+        </h2>
+        <p className="text-sm text-content-secondary mb-8 max-w-xl">
+          Stay connected with news, impactful stories, and exclusive insights from the World Disaster Center.
+          Be part of the movement for a safer world.
         </p>
 
-        {/* Input Fields in One Compact Row */}
-        <div className="flex flex-wrap gap-4 items-center">
-          {/* Email Address */}
-          <div className="flex-1">
-            <label htmlFor="email-address" className="block text-sm font-semibold mb-1">
+        <div className="flex flex-wrap gap-4 items-end">
+          <div className="flex-1 min-w-[160px]">
+            <label htmlFor="email-address" className="block text-sm font-semibold text-content-secondary mb-1.5">
               Email Address <span className="text-red-500">*</span>
             </label>
             <input
               value={email}
               name="EMAIL"
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
+              placeholder="you@example.com"
               type="email"
               id="email-address"
               required
-              className="input-field"
+              className="w-full px-4 py-2.5 border border-gray-300 rounded focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-content-primary bg-white transition-colors"
             />
           </div>
 
-          {/* First Name */}
-          <div className="flex-1">
-            <label htmlFor="first-name" className="block text-sm font-semibold mb-1">
+          <div className="flex-1 min-w-[120px]">
+            <label htmlFor="first-name" className="block text-sm font-semibold text-content-secondary mb-1.5">
               First Name <span className="text-red-500">*</span>
             </label>
             <input
               value={firstName}
               name="FNAME"
               onChange={(e) => setFirstName(e.target.value)}
-              placeholder="Enter your first name"
+              placeholder="First name"
               type="text"
               id="first-name"
               required
-              className="input-field"
+              className="w-full px-4 py-2.5 border border-gray-300 rounded focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-content-primary bg-white transition-colors"
             />
           </div>
 
-          {/* Last Name */}
-          <div className="flex-1">
-            <label htmlFor="last-name" className="block text-sm font-semibold mb-1">
+          <div className="flex-1 min-w-[120px]">
+            <label htmlFor="last-name" className="block text-sm font-semibold text-content-secondary mb-1.5">
               Last Name <span className="text-red-500">*</span>
             </label>
             <input
               value={lastName}
               name="LNAME"
               onChange={(e) => setLastName(e.target.value)}
-              placeholder="Enter your last name"
+              placeholder="Last name"
               type="text"
               id="last-name"
               required
-              className="input-field"
+              className="w-full px-4 py-2.5 border border-gray-300 rounded focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-content-primary bg-white transition-colors"
             />
           </div>
 
-          {/* Birthday (Compact) */}
-          <div className="flex flex-col gap-2">
-            <label className="block text-sm font-semibold mb-1">Birthday</label>
-            <div className="flex gap-1">
+          <div className="shrink-0">
+            <label className="block text-sm font-semibold text-content-secondary mb-1.5">Birthday</label>
+            <div className="flex gap-2">
               <input
                 type="text"
                 pattern="[0-9]*"
@@ -89,7 +86,7 @@ function NewsLetter() {
                 value={birthdayMonth}
                 name="BIRTHDAY[month]"
                 onChange={(e) => setBirthdayMonth(e.target.value)}
-                className="input-field w-16 text-center"
+                className="w-14 px-3 py-2.5 border border-gray-300 rounded text-center focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-content-primary bg-white transition-colors"
               />
               <input
                 type="text"
@@ -100,17 +97,16 @@ function NewsLetter() {
                 value={birthdayDay}
                 name="BIRTHDAY[day]"
                 onChange={(e) => setBirthdayDay(e.target.value)}
-                className="input-field w-16 text-center"
+                className="w-14 px-3 py-2.5 border border-gray-300 rounded text-center focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-content-primary bg-white transition-colors"
               />
             </div>
           </div>
         </div>
 
-        {/* Subscribe Button */}
-        <div className="text-center mt-6">
+        <div className="mt-6">
           <button
             type="submit"
-            className="bg-blue-500 text-white px-12 py-3 rounded-lg shadow-lg font-bold text-lg hover:bg-blue-700 transition-all"
+            className="bg-primary hover:bg-primary-dark text-white font-bold px-10 py-3 rounded transition-colors duration-200"
           >
             Subscribe
           </button>

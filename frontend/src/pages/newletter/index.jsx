@@ -115,7 +115,7 @@ function NewsLetterPage() {
                 {/* Main Card */}
                 <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col justify-between" style={{ minHeight: "450px" }}>
                   {/* Section Title */}
-                  <h3 className="text-2xl font-bold text-blue-600 mb-3 uppercase text-center">
+                  <h3 className="text-2xl font-bold text-primary mb-3 uppercase text-center">
                     {section.title}
                   </h3>
 
@@ -135,7 +135,7 @@ function NewsLetterPage() {
                     href={section.buttonLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-blue-600 text-white px-4 py-2 rounded-lg text-center hover:bg-blue-700 transition-all"
+                    className="bg-primary text-white px-4 py-2 rounded-lg text-center hover:bg-primary-dark transition-all"
                   >
                     Browse on the Internet
                   </a>
@@ -145,7 +145,7 @@ function NewsLetterPage() {
                 <div className="bg-gray-100 p-4 rounded-lg mt-4">
                   <button
                     onClick={() => toggleDropdown(index)}
-                    className="bg-gray-200 text-blue-600 px-4 py-2 rounded-lg text-center w-full hover:bg-gray-300 transition-all"
+                    className="bg-gray-200 text-primary px-4 py-2 rounded-lg text-center w-full hover:bg-gray-300 transition-all"
                   >
                     {openDropdown[index] ? "Hide Past Newsletters" : "View Past Newsletters"}
                   </button>
@@ -162,7 +162,7 @@ function NewsLetterPage() {
                                   href={newsletter.link}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="text-blue-800 hover:underline"
+                                  className="text-primary-dark hover:underline"
                                 >
                                   Read More
                                 </a>
@@ -181,7 +181,7 @@ function NewsLetterPage() {
       </Section>
 
       {/* Newsletter Signup Section at the Bottom */}
-      <Section className="bg-blue-600 py-12">
+      <Section className="bg-primary py-12">
         <div className="container">
           <NewsLetter />
         </div>

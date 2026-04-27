@@ -19,7 +19,7 @@ const CookieConsent = () => {
   if (!showBanner) return null;
 
   return (
-    <div className="  fixed z-10 bottom-0 left-0 w-full bg-blue-900 text-white py-4 flex items-center justify-center px-4">
+    <div className="  fixed z-10 bottom-0 left-0 w-full bg-primary-dark text-white py-4 flex items-center justify-center px-4">
         <div className="container flex">
            <p className="text-center ">
                     We use cookies to provide you with the best possible experience on our website.

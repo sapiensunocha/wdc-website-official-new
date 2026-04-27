@@ -65,7 +65,7 @@ const SingleCard = ({
             <a
               href={titleHref ? titleHref : "/#"}
               style={{ color: "#00004b" }}
-              className="mb-4 block text-xl font-semibold text-dark hover:text-primary dark:text-blue-900 sm:text-[22px] md:text-xl lg:text-[22px] xl:text-xl 2xl:text-[22px]"
+              className="mb-4 block text-xl font-semibold text-content-primary hover:text-primary sm:text-[22px] md:text-xl lg:text-[22px] xl:text-xl 2xl:text-[22px]"
             >
               {CardTitle}
             </a>

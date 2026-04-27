@@ -20,6 +20,13 @@ import nodemailerRoutes from "./routes/nodemailerRoutes"
 const app = express(); //Initialize Express Server
 dotenv.config(); //Initialize dotenv
 
+// Fail fast if required secrets are missing
+const requiredEnv = ['JWTSK', 'DATABASE', 'EMAIL_USER', 'EMAIL_PASS'];
+const missingEnv = requiredEnv.filter((key) => !process.env[key]);
+if (missingEnv.length > 0) {
+  throw new Error(`Missing required environment variables: ${missingEnv.join(', ')}`);
+}
+
 mongoose //Connect to MongoDB
   .connect(process.env.DATABASE || "mongodb", {dbName: "wdc"})
   .then(() => console.log("DB connected"))
@@ -30,7 +37,7 @@ app.use(morgan("dev")); // Request Logger
 app.use(express.json()); // Body Parser
 app.use(express.urlencoded({ extended: true })); // Body Parser With URL Encoded
 app.use(cookieParser()); // Cookie Parser
-app.use(cors({credentials: true, origin: "http://localhost:5173"})); // CORS
+app.use(cors({credentials: true, origin: process.env.ALLOWED_ORIGIN || "http://localhost:5173"})); // CORS
 app.use(mongoSanitize()); // Sanitize MongoDB / Prevent NoSQL Injection
 app.use(rateLimit({ //Rate Limit / Limit Request per 15 minutes
   windowMs: 15 * 60 * 1000,

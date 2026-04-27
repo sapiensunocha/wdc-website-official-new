@@ -7,12 +7,12 @@ function PrivacyPolicyPage() {
      <div className="container p">
     <Heading title="Privacy Policy" tag='Last updated: 4 January, 2025' />
     <div className="flex flex-col gap-6 leading-8">
-      <div className=" flex flex-col gap-6 text-gray-300 ">
+      <div className=" flex flex-col gap-6 text-content-secondary ">
         <h1 className="  h3">Overview</h1>
         <p className="">
-          Welcome to <i className=" text-n-4">worlddisastercenter.org</i> (the <b className=" text-gray-50">“Site”</b>). The Site and related 
+          Welcome to <i className=" text-primary">worlddisastercenter.org</i> (the <b className=" text-content-primary">“Site”</b>). The Site and related 
           services are owned and operated by World Disaster Center 
-          (<b className=" text-gray-50">“Organization,” “us,” “we,” or “our”</b>). We understand that you care about how your information is used and shared. 
+          (<b className=" text-content-primary">“Organization,” “us,” “we,” or “our”</b>). We understand that you care about how your information is used and shared. 
           This Privacy Policy (“Privacy Policy”) is designed to inform users (“User(s),” “you,” or “your”) about how we collect 
           information during the course of conducting our business, 
           including on the Site, how we use the collected information, and your rights regarding the collected information. 
@@ -26,7 +26,7 @@ function PrivacyPolicyPage() {
            or using the contact information below.
         </p>
       </div>
-       <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+       <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
         <h1 className="  h3 ">1. Information We Collect</h1>
         <p className=" ">
           When you use the Site, we collect and/or process the following types of data:
@@ -139,7 +139,7 @@ function PrivacyPolicyPage() {
         </p>
       </div>
 
-      <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+      <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
         <h1 className="  h3 ">2. Use of Information</h1>
         <h4 className="  p">a. For Legitimate Interests</h4>
         <p>
@@ -193,7 +193,7 @@ function PrivacyPolicyPage() {
 
         </ul>
       </div>
-      <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+      <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
         <h1 className="  h3 ">3. How We Share Information</h1>
         <p>We share your Data in the following ways:</p>
         <ul className=" list-disc list-inside">
@@ -225,7 +225,7 @@ function PrivacyPolicyPage() {
           </li>
         </ul>
       </div>
-       <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+       <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
         <h1 className="  h3 ">4. Third-Party Service Providers</h1>
         <p>We use third-party service providers to help us operate our Site, who may collect, store, and/or process the information detailed herein. We allow access to our Site and databases by third parties that provide us with services, such as technical maintenance, market research, shopping functionality, and ads functionality, but only for the purpose of and to the extent necessary to provide those services.</p>
         <p>If you choose to make a donation or purchase products and/or services on or through features on the Site, we may forward your information to third parties for services such as credit card or other payment processing, order fulfillment, credit pre-authorization, and address verification. There are also times when you provide information about yourself to us in areas of the Site that may be managed or participated in by third parties. In such cases, the information may be used by us and by such third party, each pursuant to its own policies.</p>
@@ -238,7 +238,7 @@ function PrivacyPolicyPage() {
         </ul>
       </div>
 
-      <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+      <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
         <h1 className="  h3 ">5. Information Security</h1>
         <p>We take reasonable steps both online and offline to safeguard the Personal Data that you provide to us, including:</p>
         <ul className=" list-disc list-inside">
@@ -253,7 +253,7 @@ function PrivacyPolicyPage() {
 
         </p>
       </div>
-      <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+      <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
         <h1 className="  h3 ">6. Rights to Your Personal Data</h1>
           <p>
             You may change, edit, update, or delete the information that you provided when you set up your Account through our Site via your Account settings. You may also request the deletion of this information by sending an e-mail to <a href="mailto:office@worlddisastercenter.org" className="text-n-4 italic"> office@worlddisastercenter.org </a>.
@@ -274,7 +274,7 @@ If you are not satisfied with how we manage your Personal Data, you have the rig
         </p>
       </div>
       
-      <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+      <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
         <h1 className="  h3 ">7. Information Retention</h1>
           <p>
             We retain the Personal Data we receive as described in this Privacy Policy for as long as you use our Site or as necessary to:
@@ -294,33 +294,33 @@ If you are not satisfied with how we manage your Personal Data, you have the rig
         </p>
       </div>
       
-      <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+      <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
         <h1 className="  h3 ">8. Geographic Data Transfers</h1>
         <p>
           In some instances, we may need to transfer your Personal Data across borders. In all cases, we take steps to ensure that transfers of such Personal Data are performed in accordance with applicable law and carefully managed to protect your privacy rights and interests. Transfers are limited to countries that are recognized as providing an adequate level of legal protection or where we can be satisfied that alternative arrangements are in place to protect your privacy rights. Therefore, where we transfer your Personal Data outside our corporate affiliates or to third parties who help provide our products and services, we obtain contractual commitments to protect your Personal Data under Data Protection Agreements and pursuant to Standard Contractual Clauses. Some of these assurances are well-recognized certification schemes, such as the EU–US Privacy Shield, for the protection of Personal Data transferred from within the EU to the United States. Where we receive requests for information from law enforcement or regulators, we carefully validate these requests before disclosing any Personal Data.
         </p>
       </div>
-      <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+      <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
         <h1 className="  h3 ">9. Links to Third-Party Sites</h1>
         <p>
           The Site may contain links to other sites that are not operated by us. If you click on a third-party link, you will be directed to that third party’s site. Such links do not constitute an endorsement by us of those other websites, their content or services, or the persons or entities associated with those websites. This Privacy Policy does not apply to third-party websites. We have no control over, and assume no responsibility for, the content, privacy policies, or practices of any third-party sites or services. We encourage you to review the privacy policies and terms of all third-party websites or services that you may visit.
         </p>
       </div>
-      <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+      <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
         <h1 className="  h3 ">10. Children’s Privacy</h1>
         <p>
           We do not sell products or services to anyone under the age of thirteen (13). In accordance with the Children’s Online Privacy Protection Act  <b className="text-n-4">(“COPPA”)</b>, we will never knowingly request or solicit Personal Data from anyone under the age of thirteen (13) without verifiable parental consent. In the event that we receive actual knowledge that we have collected such Personal Data without the requisite and verifiable parental consent, we will delete that information from our database as quickly as is practical. We reserve the right to request proof of age at any stage so that we can verify that minors are not using the Site.
         </p>
       </div>
 
-      <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+      <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
         <h1 className="  h3 ">11. Changes in the Privacy Policy</h1>
         <p>
          We reserve the right to modify and update this Privacy Policy at any time by posting an amended version of the statement on our Site. Please refer to this policy regularly. If at any time we decide to use Personal Data in a manner different from that stated at the time it was collected, we will notify you either on the Site’s home page or via e-mail.
         </p>
       </div>
 
-      <div className=" flex flex-col gap-6 p text-gray-300 leading-8">
+      <div className=" flex flex-col gap-6 p text-content-secondary leading-8">
         <h1 className="  h3 ">12. How to Contact Us</h1>
         <p>
           Because protecting your privacy is important to us, you may always submit concerns regarding our Privacy Policy. We will attempt to respond to all reasonable concerns and inquiries expeditiously.

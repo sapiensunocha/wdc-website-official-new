@@ -1,151 +1,136 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { profile, signin, signup } from "../../api/user";
+import { profile, signup } from "../../api/user";
 import { Link, useNavigate } from "react-router-dom";
 
 function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
-  const [pending, setPending] = useState(false);
   const [name, setName] = useState("");
+  const [pending, setPending] = useState(false);
   const navigate = useNavigate();
 
-  const myprofile = async () => {
-    const res = await profile();
-    if (res?.success) {
-      //   console.log(res);
-      navigate("/profile");
-    }
-  };
-
   useEffect(() => {
-    // navigate("");
-    myprofile();
+    profile().then((res) => {
+      if (res?.success) navigate("/profile");
+    });
   }, []);
 
-  const HandleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
-      toast.warn("Fill all the required field first");
+      toast.warn("Please fill in all required fields.");
+      return;
     }
     if (password !== confirm) {
-      toast.warn("The two password do not match!");
+      toast.warn("Passwords do not match.");
+      return;
     }
     setPending(true);
     const res = await signup({ name, email, password });
     if (res?.success) {
-      toast.success(`Sign up Complete`);
-      //   console.log(res);
+      toast.success("Registration complete. Please sign in.");
       navigate("/signin");
-      setPending(false);
     } else {
-      //   console.log(res.response.data);
-      toast.error(
-        res?.response?.data?.error || "Erreur! Verifier votre connection"
-      );
-      setPending(false);
+      toast.error(res?.response?.data?.error || "Registration failed. Please try again.");
     }
+    setPending(false);
   };
 
   return (
-    <div className="m-4">
-      <br />
-      <br />
-      <div className="max-w-md mx-auto relative overflow-hidden z-10 bg-gray-800 p-8 rounded-lg shadow-md before:w-24 before:h-24 before:absolute before:bg-blue-600 before:rounded-full before:-z-10 before:blur-2xl after:w-32 after:h-32 after:absolute after:bg-green-400 after:rounded-full after:-z-10 after:blur-xl after:top-24 after:-right-12">
-        <h2 className="text-2xl text-center font-bold text-white mb-6">
-          Register
-        </h2>
+    <div className="min-h-screen bg-surface-subtle flex items-center justify-center px-4 py-16">
+      <div className="w-full max-w-md">
+        <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+          <div className="h-1 w-full bg-primary" />
+          <div className="p-8">
+            <h1 className="text-2xl font-bold text-content-primary mb-1">Create an Account</h1>
+            <p className="text-sm text-content-secondary mb-8">
+              Join the World Disaster Center network.
+            </p>
 
-        <form onSubmit={HandleSubmit}>
-          <div className="mb-4">
-            <label
-              className="block text-sm font-medium text-gray-300"
-              htmlFor="name"
-            >
-              Full Name
-            </label>
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="mt-1 p-2 w-full bg-gray-700 border border-gray-600 rounded-md text-white"
-              name="name"
-              id="email"
-              type="text"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              className="block text-sm font-medium text-gray-300"
-              htmlFor="email"
-            >
-              Email Address
-            </label>
-            <input
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 p-2 w-full bg-gray-700 border border-gray-600 rounded-md text-white"
-              name="email"
-              id="email"
-              type="email"
-              required
-            />
-          </div>
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div>
+                <label className="block text-sm font-semibold text-content-secondary mb-1.5" htmlFor="name">
+                  Full Name
+                </label>
+                <input
+                  id="name"
+                  type="text"
+                  name="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  placeholder="Your full name"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-content-primary bg-white transition-colors"
+                />
+              </div>
 
-          <div className="mb-4">
-            <label
-              className="block text-sm font-medium text-gray-300"
-              htmlFor="password"
-            >
-              Password
-            </label>
-            <input
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 p-2 w-full bg-gray-700 border border-gray-600 rounded-md text-white"
-              rows="3"
-              name="password"
-              type="password"
-              id="bio"
-              required
-            ></input>
-          </div>
-          <div className="mb-4">
-            <label
-              className="block text-sm font-medium text-gray-300"
-              htmlFor="confirmpassword"
-            >
-              Confirm Password
-            </label>
-            <input
-              value={confirm}
-              onChange={(e) => setConfirm(e.target.value)}
-              className="mt-1 p-2 w-full bg-gray-700 border border-gray-600 rounded-md text-white"
-              rows="3"
-              name="confirmpassword"
-              type="password"
-              id="bio"
-              required
-            ></input>
-          </div>
+              <div>
+                <label className="block text-sm font-semibold text-content-secondary mb-1.5" htmlFor="email">
+                  Email Address
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  placeholder="you@example.com"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-content-primary bg-white transition-colors"
+                />
+              </div>
 
-          <div className="flex justify-center">
-            <button
-              disabled={pending}
-              className="bg-gradient-to-r from-purple-600 via-purple-400 to-blue-500 text-white px-4 py-2 font-bold rounded-md hover:opacity-80"
-              type="submit"
-            >
-              {!pending ? "Sign Up" : "..."}
-            </button>
+              <div>
+                <label className="block text-sm font-semibold text-content-secondary mb-1.5" htmlFor="password">
+                  Password
+                </label>
+                <input
+                  id="password"
+                  type="password"
+                  name="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  placeholder="Create a password"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-content-primary bg-white transition-colors"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-content-secondary mb-1.5" htmlFor="confirm">
+                  Confirm Password
+                </label>
+                <input
+                  id="confirm"
+                  type="password"
+                  name="confirmpassword"
+                  value={confirm}
+                  onChange={(e) => setConfirm(e.target.value)}
+                  required
+                  placeholder="Repeat your password"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-content-primary bg-white transition-colors"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={pending}
+                className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-3 rounded transition-colors duration-200 disabled:opacity-60"
+              >
+                {pending ? "Creating account…" : "Create Account"}
+              </button>
+            </form>
+
+            <p className="text-center text-sm text-content-secondary mt-6">
+              Already have an account?{" "}
+              <Link to="/signin" className="text-primary font-semibold hover:underline">
+                Sign In
+              </Link>
+            </p>
           </div>
-          <div className="text-center m-2">
-            <span>Already have an account ? </span>{" "}
-            <Link className="underline text-center" to="/signin">
-              Login
-            </Link>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
   );

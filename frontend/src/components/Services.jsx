@@ -28,7 +28,7 @@ const Services = () => {
         className="w-16 h-16 mb-4"
       />
       <h3 className="text-xl font-bold mb-2">Innovates for People</h3>
-      <p className="text-sm text-gray-100">
+      <p className="text-sm text-content-secondary">
         We place people at the heart of every solution, developing tools and insights that are simple, actionable, and transformative.
       </p>
     </div>
@@ -40,7 +40,7 @@ const Services = () => {
         className="w-16 h-16 mb-4"
       />
       <h3 className="text-xl font-bold mb-2">Connects the World</h3>
-      <p className="text-sm text-gray-100">
+      <p className="text-sm text-content-secondary">
       Our global network spans governments, NGOs, businesses, and individuals, ensuring that we leverage existing expertise & resources.
       </p>
       <br></br>
@@ -53,7 +53,7 @@ const Services = () => {
         className="w-16 h-16 mb-4"
       />
       <h3 className="text-xl font-bold mb-2">Operates in Real Time</h3>
-      <p className="text-sm text-gray-100">
+      <p className="text-sm text-content-secondary">
         From global systems to local communities, we provide real-time alerts, advice, and data to mitigate disaster impacts effectively.
       </p>
     </div>
@@ -65,7 +65,7 @@ const Services = () => {
         className="w-16 h-16 mb-4"
       />
       <h3 className="text-xl font-bold mb-2">Is Inclusive</h3>
-      <p className="text-sm text-gray-100">
+      <p className="text-sm text-content-secondary">
         We are a diverse, collaborative hub, uniting people from all backgrounds, ages, and expertise to create holistic solutions.
       </p>
     </div>
@@ -78,7 +78,7 @@ const Services = () => {
             className=""
           />
         </div> */}
-<div className="text-4xl font-bold text-center text-white py-16">
+<div className="text-4xl font-bold text-center text-content-primary py-16">
   Our Values
 </div>
 
@@ -117,13 +117,13 @@ const Services = () => {
           text-white
           font-bold
           border-4
-          border-blue-300
+          border-primary-light
           rounded-full
           cursor-pointer
           transition-all
           duration-300
           ease-in-out
-          hover:bg-blue-500
+          hover:bg-primary
           hover:border-transparent
           hover:text-white
 
@@ -151,7 +151,7 @@ const Services = () => {
               flex
               justify-center
               items-center
-              bg-blue-500
+              bg-primary
               bg-opacity-90
               rounded-full
               p-2

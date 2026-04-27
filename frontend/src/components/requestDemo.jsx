@@ -21,10 +21,10 @@ function RequestDemo() {
     // console.log("working")
     emailjs
       .sendForm(
-        "service_d3yy0xf",
-        "template_0l6a5vh",
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
         form.current,
-        "S6rrT9Cqk-qhVNtap"
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
       )
       .then((result) => {
         setPending(false);
@@ -142,7 +142,7 @@ function RequestDemo() {
                   <button
                     type="submit"
                     disabled={pending}
-                    className="py-3 px-5 w-full text-sm font-medium text-center text-white rounded-lg border cursor-pointer bg-blue-600 border-primary-600 sm:rounded-none sm:rounded-r-lg hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 hover:bg-blue-700 dark:focus:ring-primary-800"
+                    className="py-3 px-5 w-full text-sm font-medium text-center text-white rounded-lg border border-primary cursor-pointer bg-primary sm:rounded-none sm:rounded-r-lg hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary"
                   >
                     {pending ? " Submiting..." : "Submit"}
                   </button>
