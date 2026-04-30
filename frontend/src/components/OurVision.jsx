@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const OurVision = () => {
   return (
     <>
-      <section className="py-20 lg:py-[120px] bg-n-11 dark:bg-dark">
+      <section className="py-20 lg:py-[120px] bg-surface-subtle">
         <div className="container mx-auto">
           <div className="relative z-10 overflow-hidden rounded bg-primary py-12 px-8 md:p-[70px]">
             <div className="flex flex-wrap items-center -mx-4">
@@ -12,7 +12,7 @@ const OurVision = () => {
                 <span className="block mb-4 text-2xl font-medium text-white">
                   Our Vision
                 </span>
-                <p>
+                <p className="text-white">
                   Our vision at the World Disaster Center is to cultivate a
                   world where communities are not only resilient to disasters
                   but can also perceive and utilize these events as

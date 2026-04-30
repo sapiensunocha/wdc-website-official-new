@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const ProjectsPage = () => {
   return (
     <>
-      <section className="bg-transparent pb-10 pt-20 dark:bg-dark lg:pb-20 lg:pt-[120px]">
+      <section className="bg-white pb-10 pt-20 lg:pb-20 lg:pt-[120px]">
         <div className="container">
           <div className="-mx-4 flex flex-wrap">
             <div className="w-full px-4">
@@ -12,7 +12,7 @@ const ProjectsPage = () => {
                 <span className="mb-2 block text-lg font-semibold text-primary">
                   Our Projects
                 </span>
-                <h2 className="mb-4 text-3xl font-bold text-dark dark:text-white sm:text-4xl md:text-[40px]">
+                <h2 className="mb-4 text-3xl font-bold text-content-primary sm:text-4xl md:text-[40px]">
                   Our Recent Works
                 </h2>
               </div>
@@ -54,12 +54,12 @@ const BlogCard = ({ image, date, CardTitle, CardDescription }) => {
             <h3>
               <a
                 href="/#"
-                className="mb-4 inline-block text-xl font-semibold text-dark hover:text-primary dark:text-white sm:text-2xl lg:text-xl xl:text-2xl"
+                className="mb-4 inline-block text-xl font-semibold text-content-primary hover:text-primary sm:text-2xl lg:text-xl xl:text-2xl"
               >
                 {CardTitle}
               </a>
             </h3>
-            <p className="text-base text-body-color dark:text-dark-6">
+            <p className="text-base text-content-secondary">
               {CardDescription}
             </p>
           </div>

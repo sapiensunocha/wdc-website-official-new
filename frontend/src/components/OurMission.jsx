@@ -5,14 +5,14 @@ const ServiceCard = ({ icon, title, details }) => {
   return (
     <>
       <div className="w-full px-4 md:w-1/2 lg:w-1/3 ">
-        <div className="mb-9 rounded-[20px] min-h-[500px] bg-transparent p-10 shadow-2 hover:shadow-lg dark:bg-dark-2 md:px-7 xl:px-10 border-[1px] border-color-5">
+        <div className="mb-9 rounded-[20px] min-h-[500px] bg-white p-10 shadow-sm hover:shadow-md md:px-7 xl:px-10 border border-gray-200">
           <div className="mb-8 flex h-[70px] w-[70px] items-center justify-center rounded-2xl bg-primary">
             {icon}
           </div>
-          <h4 className="mb-[14px] text-2xl font-semibold text-dark dark:text-white">
+          <h4 className="mb-[14px] text-2xl font-semibold text-content-primary">
             {title}
           </h4>
-          <p className="text-body-color dark:text-dark-6">{details}</p>
+          <p className="text-content-secondary">{details}</p>
         </div>
       </div>
     </>
@@ -21,7 +21,7 @@ const ServiceCard = ({ icon, title, details }) => {
 
 const OurMission = () => {
   return (
-    <section className="pb-12 pt-20 dark:bg-dark lg:pb-[90px] lg:pt-[120px]">
+    <section className="pb-12 pt-20 bg-white lg:pb-[90px] lg:pt-[120px]">
       <div className="container mx-auto">
         <div className="-mx-4 flex flex-wrap">
           <div className="w-full px-4">
