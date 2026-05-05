@@ -22,6 +22,8 @@ const navItems = [
     items: [
       { label: "Tailored Solutions", to: "/solution" },
       { label: "Global Products", to: "/global-products" },
+      { label: "Our Services", to: "/services" },
+      { label: "Training Academy", to: "/training" },
       { label: "Request a Demo", to: "/request-demo" },
     ],
   },

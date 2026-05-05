@@ -167,7 +167,7 @@ Working at WDC means:
         title: "The Global Disaster Landscape",
         duration: "30 min",
         type: "video+text",
-        youtubeId: "oHg5SJYRHA0",
+        youtubeId: null,
         youtubeSearch: "global disaster risk landscape 2024 climate humanitarian crisis",
         content: `
 ## Understanding the World You Are Working In
@@ -658,7 +658,7 @@ The world needs you. Your communities need you. WDC needs you.
         title: "Understanding Disaster Risk",
         duration: "25 min",
         type: "video+text",
-        youtubeId: "NpBOsVgBUlI",
+        youtubeId: null,
         youtubeSearch: "understanding disaster risk UNDRR explained",
         content: `
 ## What is Disaster Risk?
@@ -768,7 +768,7 @@ A plan on paper is not enough. Practice your plan at least twice a year, includi
         title: "Building Your Emergency Kit",
         duration: "25 min",
         type: "video+text",
-        youtubeId: "rOgIy4fapNA",
+        youtubeId: null,
         youtubeSearch: "emergency preparedness kit how to build FEMA 72 hours",
         content: `
 ## Your 72-Hour Emergency Kit
@@ -836,7 +836,7 @@ Authorities may take up to 72 hours (3 days) to reach you after a major disaster
         title: "Community-Level Preparedness",
         duration: "40 min",
         type: "video+text+quiz",
-        youtubeId: "1F_AX_HVMBE",
+        youtubeId: null,
         youtubeSearch: "community disaster preparedness resilience planning",
         content: `
 ## Why Communities Must Prepare Together
@@ -916,7 +916,7 @@ The Sendai Framework for Disaster Risk Reduction (2015–2030) calls for a **sub
         title: "Basic Life Support & CPR",
         duration: "35 min",
         type: "video+text",
-        youtubeId: "cosVnTKWMjk",
+        youtubeId: null,
         youtubeSearch: "CPR basic life support tutorial Red Cross",
         content: `
 ## Basic Life Support (BLS)
@@ -979,7 +979,7 @@ AEDs are found in many public places. They are designed for use by non-medical p
         title: "Wound Care & Trauma Management",
         duration: "35 min",
         type: "video+text",
-        youtubeId: "VXRpwpqBQA0",
+        youtubeId: null,
         youtubeSearch: "wound care bleeding control first aid trauma",
         content: `
 ## Managing Wounds and Trauma in the Field
@@ -1177,7 +1177,7 @@ Use the INSARAG standard:
         title: "Psychological First Aid",
         duration: "25 min",
         type: "text+quiz",
-        youtubeId: "OaOSqZXFJKE",
+        youtubeId: null,
         youtubeSearch: "psychological first aid training WHO disaster mental health",
         content: `
 ## Psychological First Aid (PFA)
@@ -1861,7 +1861,7 @@ The humanitarian system's **Grand Bargain** commitments (2016) call for greater 
         title: "Climate Science for Disaster Professionals",
         duration: "35 min",
         type: "video+text",
-        youtubeId: "G4LHmS-yMI8",
+        youtubeId: null,
         youtubeSearch: "climate change science explained IPCC global warming disasters",
         content: `
 ## The Climate System and Disaster Risk

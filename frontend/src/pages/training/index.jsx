@@ -649,6 +649,317 @@ function NameDialog({ onSave }) {
   );
 }
 
+// ─── Training Plan Estimator ──────────────────────────────────────────────────
+
+const TRAINING_TOPICS = [
+  { id: "preparedness", label: "Disaster Preparedness Fundamentals" },
+  { id: "response", label: "Emergency Response & First Aid" },
+  { id: "data-tech", label: "Humanitarian Data & Technology" },
+  { id: "community", label: "Community Resilience Building" },
+  { id: "climate", label: "Climate Change & Disaster Risk" },
+  { id: "communication", label: "Crisis Communication in Emergencies" },
+  { id: "early-warning", label: "Early Warning Systems & Technologies" },
+  { id: "needs-assessment", label: "Rapid Needs Assessment" },
+  { id: "coordination", label: "Humanitarian Coordination & Clusters" },
+  { id: "psychosocial", label: "Psychosocial Support (PFA)" },
+  { id: "drr-policy", label: "DRR Policy & Governance" },
+  { id: "gender", label: "Gender, Inclusion & Disaster Risk" },
+  { id: "search-rescue", label: "Search & Rescue Operations" },
+  { id: "wash", label: "WASH in Emergencies" },
+  { id: "food-security", label: "Food Security & Livelihoods in Crisis" },
+  { id: "protection", label: "Protection in Humanitarian Settings" },
+  { id: "tot", label: "Training of Trainers (ToT) Programme" },
+  { id: "custom", label: "Custom / Organisation-Specific Training" },
+];
+
+function getEstimate(format, groupSize, duration) {
+  if (!format || !groupSize) return null;
+  if (format === "online") {
+    const map = {
+      "1":    { label: "Free", note: "Access the WDC Academy courses above at no cost." },
+      "2-5":  { label: "Free – USD 200/year", note: "Individual access is free. Optional institutional package for shared reporting." },
+      "6-15": { label: "USD 500 – 1,500/year", note: "Institutional licence for up to 15 users with admin dashboard." },
+      "16+":  { label: "From USD 1,500/year", note: "Enterprise licence. Contact us for a custom multi-seat quote." },
+    };
+    return map[groupSize] || null;
+  }
+  if (!duration) return null;
+  const TABLE = {
+    "virtual-live": {
+      "half-day": { "1": "USD 200",           "2-5": "USD 600 – 800",     "6-15": "USD 1,200 – 1,500", "16+": "From USD 2,000" },
+      "1-day":    { "1": "USD 350",           "2-5": "USD 1,000 – 1,500", "6-15": "USD 2,000 – 2,800", "16+": "From USD 3,500" },
+      "3-5-day":  { "1": "USD 900 – 1,400",  "2-5": "USD 2,500 – 4,000", "6-15": "USD 5,000 – 8,000", "16+": "From USD 8,000" },
+      "1-week":   { "1": "USD 1,500 – 2,000", "2-5": "USD 4,000 – 6,000","6-15": "USD 8,000 – 12,000","16+": "From USD 12,000" },
+    },
+    "in-person": {
+      "half-day": { "1": "USD 1,200 – 1,500", "2-5": "USD 1,800 – 2,200", "6-15": "USD 2,500 – 3,500", "16+": "From USD 3,500" },
+      "1-day":    { "1": "USD 1,800 – 2,200", "2-5": "USD 2,500 – 3,500", "6-15": "USD 3,500 – 5,000", "16+": "From USD 5,000" },
+      "3-5-day":  { "1": "USD 4,500 – 6,000", "2-5": "USD 7,000 – 10,000","6-15": "USD 10,000 – 15,000","16+": "From USD 15,000" },
+      "1-week":   { "1": "USD 7,000 – 9,000", "2-5": "USD 12,000 – 16,000","6-15": "USD 18,000 – 25,000","16+": "From USD 25,000" },
+    },
+  };
+  const label = TABLE[format]?.[duration]?.[groupSize];
+  if (!label) return null;
+  const note = format === "in-person"
+    ? "Excludes travel and accommodation. Travel costs apply for locations outside Geneva/Brussels."
+    : "Per session fees. Content customisation and facilitator selection may affect final price.";
+  return { label, note };
+}
+
+function TrainingPlanEstimator() {
+  const [topics, setTopics] = useState([]);
+  const [format, setFormat] = useState("");
+  const [groupSize, setGroupSize] = useState("");
+  const [duration, setDuration] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [org, setOrg] = useState("");
+  const [notes, setNotes] = useState("");
+
+  const toggleTopic = (id) =>
+    setTopics((prev) => (prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]));
+
+  const needsDuration = format === "virtual-live" || format === "in-person";
+  const isReady =
+    topics.length > 0 &&
+    format &&
+    groupSize &&
+    (!needsDuration || duration);
+
+  const estimate = getEstimate(format, groupSize, duration);
+
+  const buildBody = () => {
+    const topicNames = topics.map((id) => TRAINING_TOPICS.find((t) => t.id === id)?.label).join(", ");
+    const fmtLabel = { online: "Online Self-Paced", "virtual-live": "Virtual Instructor-Led", "in-person": "In-Person Workshop" }[format] || format;
+    const grpLabel = { "1": "Individual (1 person)", "2-5": "Small Group (2–5)", "6-15": "Medium Group (6–15)", "16+": "Large Group (16+)" }[groupSize] || groupSize;
+    const durLabel = { "half-day": "Half-Day (3–4 h)", "1-day": "Full Day (6–8 h)", "3-5-day": "3–5 Days", "1-week": "1 Week" }[duration] || (format === "online" ? "Self-paced" : "–");
+    return `Training Plan Request — World Disaster Center
+
+Name: ${name}
+Organisation: ${org || "–"}
+Email: ${email}
+
+─── Training Plan ───────────────
+Topics selected:
+${topicNames || "Not specified"}
+
+Format:      ${fmtLabel}
+Group size:  ${grpLabel}
+Duration:    ${durLabel}
+Estimate:    ${estimate?.label || "To be discussed"}
+
+─── Additional Notes ───────────
+${notes || "–"}
+
+──────────────────────────────────
+Generated via WDC Training Academy
+worlddisastercenter.org`;
+  };
+
+  const handleSend = () => {
+    if (!name.trim() || !email.trim()) return;
+    const subject = encodeURIComponent("Training Plan Request — WDC Academy");
+    const body = encodeURIComponent(buildBody());
+    window.open(`mailto:office@worlddisastercenter.org?subject=${subject}&body=${body}`, "_blank");
+  };
+
+  return (
+    <div id="estimator" className="bg-gray-50 border-t-2 border-[#418FDE] py-16">
+      <div className="container">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="mb-10">
+            <span className="text-xs font-black uppercase tracking-widest text-[#418FDE] mb-2 block">WDC Academy</span>
+            <h2 className="text-3xl font-bold text-gray-900 mb-3">Request Custom Training</h2>
+            <p className="text-gray-600 max-w-2xl">
+              Need training tailored to your organisation, team, or community? Select your requirements to get an instant estimate, then send a request — our team responds within 48 hours.
+            </p>
+          </div>
+
+          {/* Step 1: Topics */}
+          <div className="bg-white border border-gray-200 rounded-lg p-6 mb-5">
+            <h3 className="font-bold text-gray-900 mb-1 flex items-center gap-2">
+              <span className="w-6 h-6 rounded-full bg-[#418FDE] text-white text-xs font-black flex items-center justify-center shrink-0">1</span>
+              Select Training Topics
+              <span className="text-xs font-normal text-gray-400 ml-1">(choose one or more)</span>
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4 ml-8">
+              {TRAINING_TOPICS.map((t) => (
+                <button
+                  key={t.id}
+                  onClick={() => toggleTopic(t.id)}
+                  className={`text-left px-4 py-2.5 rounded text-sm transition-all border ${
+                    topics.includes(t.id)
+                      ? "bg-[#E8F5FC] border-[#418FDE] text-[#418FDE] font-semibold"
+                      : "bg-white border-gray-200 text-gray-700 hover:border-[#418FDE]"
+                  }`}
+                >
+                  {topics.includes(t.id) && <span className="mr-1.5 font-black">✓</span>}
+                  {t.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Step 2: Format */}
+          <div className="bg-white border border-gray-200 rounded-lg p-6 mb-5">
+            <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <span className="w-6 h-6 rounded-full bg-[#418FDE] text-white text-xs font-black flex items-center justify-center shrink-0">2</span>
+              Training Format
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 ml-8">
+              {[
+                { id: "online", icon: "💻", label: "Online Self-Paced", desc: "Learners access WDC Academy courses at their own pace, anytime." },
+                { id: "virtual-live", icon: "📡", label: "Virtual Instructor-Led", desc: "Live online sessions facilitated by a WDC expert trainer." },
+                { id: "in-person", icon: "🏛️", label: "In-Person Workshop", desc: "On-site training at your location or a WDC venue." },
+              ].map((f) => (
+                <button
+                  key={f.id}
+                  onClick={() => { setFormat(f.id); setDuration(""); }}
+                  className={`text-left p-4 rounded-lg border-2 transition-all ${
+                    format === f.id ? "border-[#418FDE] bg-[#E8F5FC]" : "border-gray-200 hover:border-[#418FDE]/50"
+                  }`}
+                >
+                  <div className="text-2xl mb-2">{f.icon}</div>
+                  <p className={`font-bold text-sm mb-1 ${format === f.id ? "text-[#418FDE]" : "text-gray-900"}`}>{f.label}</p>
+                  <p className="text-xs text-gray-500 leading-relaxed">{f.desc}</p>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Step 3: Group size */}
+          {format && (
+            <div className="bg-white border border-gray-200 rounded-lg p-6 mb-5 animate-fade-in">
+              <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <span className="w-6 h-6 rounded-full bg-[#418FDE] text-white text-xs font-black flex items-center justify-center shrink-0">3</span>
+                Number of Participants
+              </h3>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 ml-8">
+                {[
+                  { id: "1", label: "Individual", desc: "1 person" },
+                  { id: "2-5", label: "Small Group", desc: "2–5 people" },
+                  { id: "6-15", label: "Medium Group", desc: "6–15 people" },
+                  { id: "16+", label: "Large Group", desc: "16+ people" },
+                ].map((g) => (
+                  <button
+                    key={g.id}
+                    onClick={() => setGroupSize(g.id)}
+                    className={`text-center p-3 rounded-lg border-2 transition-all ${
+                      groupSize === g.id ? "border-[#418FDE] bg-[#E8F5FC]" : "border-gray-200 hover:border-[#418FDE]/50"
+                    }`}
+                  >
+                    <p className={`font-bold text-sm ${groupSize === g.id ? "text-[#418FDE]" : "text-gray-900"}`}>{g.label}</p>
+                    <p className="text-xs text-gray-500">{g.desc}</p>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Step 4: Duration (ILT / in-person only) */}
+          {needsDuration && groupSize && (
+            <div className="bg-white border border-gray-200 rounded-lg p-6 mb-5 animate-fade-in">
+              <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <span className="w-6 h-6 rounded-full bg-[#418FDE] text-white text-xs font-black flex items-center justify-center shrink-0">4</span>
+                Training Duration
+              </h3>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 ml-8">
+                {[
+                  { id: "half-day", label: "Half-Day", desc: "3–4 hours" },
+                  { id: "1-day", label: "Full Day", desc: "6–8 hours" },
+                  { id: "3-5-day", label: "3–5 Days", desc: "Intensive training" },
+                  { id: "1-week", label: "1 Week", desc: "Comprehensive programme" },
+                ].map((d) => (
+                  <button
+                    key={d.id}
+                    onClick={() => setDuration(d.id)}
+                    className={`text-center p-3 rounded-lg border-2 transition-all ${
+                      duration === d.id ? "border-[#418FDE] bg-[#E8F5FC]" : "border-gray-200 hover:border-[#418FDE]/50"
+                    }`}
+                  >
+                    <p className={`font-bold text-sm ${duration === d.id ? "text-[#418FDE]" : "text-gray-900"}`}>{d.label}</p>
+                    <p className="text-xs text-gray-500">{d.desc}</p>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Estimate banner */}
+          {isReady && estimate && (
+            <div className="bg-[#009EDB] text-white rounded-lg p-7 mb-5 animate-fade-in">
+              <p className="text-xs font-black uppercase tracking-widest text-white/70 mb-1">Estimated Investment</p>
+              <p className="text-4xl font-black mb-2">{estimate.label}</p>
+              <p className="text-white/80 text-sm">{estimate.note}</p>
+            </div>
+          )}
+
+          {/* Contact / email form */}
+          {isReady && (
+            <div className="bg-white border border-gray-200 rounded-lg p-6 animate-fade-in">
+              <h3 className="font-bold text-gray-900 mb-1">Send Your Training Request</h3>
+              <p className="text-sm text-gray-500 mb-5">
+                Your selections will be pre-filled in the email. Our team responds within 48 hours with a detailed proposal.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label className="text-xs font-bold text-gray-700 mb-1 block uppercase tracking-wide">Full Name *</label>
+                  <input
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Your full name"
+                    className="w-full border border-gray-300 rounded px-4 py-2.5 text-sm outline-none focus:border-[#418FDE] focus:ring-1 focus:ring-[#418FDE]"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-gray-700 mb-1 block uppercase tracking-wide">Email Address *</label>
+                  <input
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="your@email.com"
+                    type="email"
+                    className="w-full border border-gray-300 rounded px-4 py-2.5 text-sm outline-none focus:border-[#418FDE] focus:ring-1 focus:ring-[#418FDE]"
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="text-xs font-bold text-gray-700 mb-1 block uppercase tracking-wide">Organisation</label>
+                  <input
+                    value={org}
+                    onChange={(e) => setOrg(e.target.value)}
+                    placeholder="Your organisation or agency (optional)"
+                    className="w-full border border-gray-300 rounded px-4 py-2.5 text-sm outline-none focus:border-[#418FDE] focus:ring-1 focus:ring-[#418FDE]"
+                  />
+                </div>
+              </div>
+              <div className="mb-5">
+                <label className="text-xs font-bold text-gray-700 mb-1 block uppercase tracking-wide">Additional Notes</label>
+                <textarea
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  rows={3}
+                  placeholder="Preferred dates, location, specific objectives, languages needed, or any other context..."
+                  className="w-full border border-gray-300 rounded px-4 py-2.5 text-sm outline-none focus:border-[#418FDE] focus:ring-1 focus:ring-[#418FDE] resize-none"
+                />
+              </div>
+              <button
+                onClick={handleSend}
+                disabled={!name.trim() || !email.trim()}
+                className="bg-[#418FDE] hover:bg-[#005b9f] text-white font-bold px-8 py-3 rounded transition-colors disabled:opacity-40 text-sm"
+              >
+                Send Training Request via Email
+              </button>
+              <p className="text-xs text-gray-400 mt-2">
+                Opens your email client pre-filled with your plan. Fields marked * are required.
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
 export default function TrainingPage() {
@@ -793,6 +1104,9 @@ export default function TrainingPage() {
           )}
         </div>
       </Section>
+
+      {/* Custom training estimator — shown only from the catalog view */}
+      {view === "catalog" && <TrainingPlanEstimator />}
     </>
   );
 }

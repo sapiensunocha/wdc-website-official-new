@@ -38,6 +38,7 @@ import Story from "./pages/story";
 import Africa from "./pages/where_we_work/africa";
 import PartnerWithUs from "./pages/partnerWithUs";
 import TrainingPage from "./pages/training";
+import ServicesPage from "./pages/services";
 import SingleBlogDisplay from "./pages/blog";
 import AdminPage from "./pages/admin";
 import ProfilePage from "./pages/profile";
@@ -117,6 +118,9 @@ const App = () => {
 
           {/* Training */}
           <Route path="/training" element={<TrainingPage />} />
+
+          {/* Services */}
+          <Route path="/services" element={<ServicesPage />} />
 
           {/* Resources */}
           <Route path="/newsletter" element={<NewsLetterPage />} />
