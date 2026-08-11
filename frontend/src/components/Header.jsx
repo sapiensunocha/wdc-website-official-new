@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { ExpandMore, ExpandLess } from "@mui/icons-material";
-import { Menu, X, Search } from "lucide-react";
+import { Menu, X, Search, ChevronDown } from "lucide-react";
 import PropTypes from "prop-types";
 // Correct relative path for your horizontal logo asset
 import WDC_HORIZ_Logo from "../assets/images/WDC-HORIZ-logo.png";
@@ -131,6 +131,46 @@ NavDropdown.propTypes = {
   onClose: PropTypes.func,
 };
 
+function SignInDropdown() {
+  const [open, setOpen] = useState(false);
+  const ref = { current: null };
+
+  useEffect(() => {
+    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  const portals = [
+    { label: "Disaster Heroes", to: "/disaster-heroes/login", desc: "Heroes member portal" },
+    { label: "Expert Roster",   to: "/roster/login",          desc: "Deployment roster" },
+    { label: "My Account",      to: "/signin",                desc: "General account" },
+  ];
+
+  return (
+    <div className="relative" ref={(el) => (ref.current = el)}>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="flex items-center gap-1 text-gray-300 hover:text-white transition-colors text-xs font-semibold"
+      >
+        Sign In <ChevronDown size={12} className={`transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      {open && (
+        <div className="absolute right-0 top-full mt-2 w-48 bg-white shadow-lg border-t-2 border-[#009EDB] z-50 rounded-b-sm">
+          {portals.map((p) => (
+            <Link key={p.label} to={p.to}
+              onClick={() => setOpen(false)}
+              className="flex flex-col px-4 py-3 hover:bg-[#E8F5FC] transition-colors border-b border-gray-100 last:border-0">
+              <span className="text-sm font-semibold text-gray-800">{p.label}</span>
+              <span className="text-xs text-gray-400 mt-0.5">{p.desc}</span>
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 const Header = () => {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -177,12 +217,7 @@ const Header = () => {
             <a href="mailto:office@worlddisastercenter.org" className="text-gray-300 hover:text-white transition-colors hidden md:block">
               office@worlddisastercenter.org
             </a>
-            <Link to="/roster/login" className="text-gray-300 hover:text-white transition-colors">
-              Roster Login
-            </Link>
-            <Link to="/signin" className="text-gray-300 hover:text-white transition-colors">
-              Sign In
-            </Link>
+            <SignInDropdown />
           </div>
         </div>
       </div>
