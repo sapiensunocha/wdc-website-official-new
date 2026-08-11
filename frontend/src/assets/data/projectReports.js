@@ -2483,15 +2483,15 @@ export const PROJECT_REPORTS = [
   },
 
   {
-    id: "research-founding-2020",
+    id: "research-founding-2023",
     category: "Research & Publications",
-    title: "WDC Founding Research Paper 2020",
-    subtitle: "The Case for AI-Powered Humanitarian Early Warning: Market Failure and the WDC Response",
-    date: "October 2020",
-    year: 2020,
+    title: "WDC Founding Research Paper 2023",
+    subtitle: "The Market Failure That Created World Disaster Center — Published at Launch",
+    date: "March 2023",
+    year: 2023,
     pages: 22,
-    description: "The founding document of World Disaster Center: the original research paper by Sapiens Ndatabaye that identified the humanitarian early warning market failure, quantified the AI opportunity, and laid out the institutional design of WDC — written during his OCHA service.",
-    tags: ["Founding", "Research", "2020", "OCHA", "Market Failure", "Theory of Change"],
+    description: "The founding document of World Disaster Center: the original research paper by Sapiens Ndatabaye that identified the humanitarian early warning market failure, quantified the AI opportunity, and laid out the institutional design of WDC — published at WDC's official launch in 2023.",
+    tags: ["Founding", "Research", "2023", "OCHA", "Market Failure", "Theory of Change"],
     signedBy: SIG,
     signedTitle: SIG_TITLE,
     coverImage: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1400&q=80",
@@ -2499,7 +2499,7 @@ export const PROJECT_REPORTS = [
       {
         type: "stats",
         items: [
-          { icon: "flag", value: "2020", label: "WDC Founding Year" },
+          { icon: "flag", value: "2023", label: "WDC Official Launch Year" },
           { icon: "alert", value: "38%", label: "Africa Share of Global Disaster Deaths" },
           { icon: "trending", value: "9–18×", label: "Projected AI Cost Advantage" },
           { icon: "building", value: "OCHA", label: "Institutional Context of Author" },
@@ -2512,7 +2512,7 @@ export const PROJECT_REPORTS = [
       {
         type: "text",
         heading: "The Market Failure That Created WDC",
-        content: "This paper was written during the author's service as a humanitarian coordinator with OCHA, drawing on direct operational experience across DRC, Sudan, Haiti, and Bangladesh. It identifies the humanitarian early warning market failure that WDC was created to address.\n\nThe market failure is structural: the communities most exposed to disaster risk (rural, poor, fragile-state, Global South) are the least served by early warning systems, because the economics of traditional warning infrastructure (meteorological stations, radar networks, professional forecaster cadres) make those systems prohibitively expensive to deploy in low-income country contexts. The communities that can afford the infrastructure — upper-middle-income countries with functioning governments — are also the communities that face lower disaster mortality because of their baseline resilience. The communities that cannot afford it — DRC, Bangladesh, Haiti, Sudan — face the highest mortality with the least warning.\n\nAI changes the economics. A machine learning model, once trained, costs a fraction of a meteorological forecaster to run. Satellite data from ESA and NASA is freely available. SMS networks reach communities that have no internet. The only missing link, at the time of writing in 2020, was the organizational model: an institution purpose-built to operate at the intersection of AI, satellite data, community networks, and humanitarian coordination.\n\nWorld Disaster Center was the institutional response to that gap. This paper is its founding argument."
+        content: "This paper was written by Sapiens Ndatabaye based on his experience as a humanitarian coordinator with OCHA, drawing on direct operational experience across DRC, Sudan, Haiti, and Bangladesh, published at WDC's official 2023 launch. It identifies the humanitarian early warning market failure that WDC was created to address.\n\nThe market failure is structural: the communities most exposed to disaster risk (rural, poor, fragile-state, Global South) are the least served by early warning systems, because the economics of traditional warning infrastructure (meteorological stations, radar networks, professional forecaster cadres) make those systems prohibitively expensive to deploy in low-income country contexts. The communities that can afford the infrastructure — upper-middle-income countries with functioning governments — are also the communities that face lower disaster mortality because of their baseline resilience. The communities that cannot afford it — DRC, Bangladesh, Haiti, Sudan — face the highest mortality with the least warning.\n\nAI changes the economics. A machine learning model, once trained, costs a fraction of a meteorological forecaster to run. Satellite data from ESA and NASA is freely available. SMS networks reach communities that have no internet. The only missing link was the organizational model: an institution purpose-built to operate at the intersection of AI, satellite data, community networks, and humanitarian coordination.\n\nWorld Disaster Center was officially launched in 2023 as the institutional response to that gap. This paper — published at WDC's 2023 launch — is its founding argument."
       },
       {
         type: "quote",
@@ -2548,7 +2548,7 @@ export const PROJECT_REPORTS = [
       {
         type: "text",
         heading: "About the Book",
-        content: "Breaking Barriers is the practitioner's guide to humanitarian AI that did not exist when WDC was founded in 2020. It is not an academic text — it is a field manual written for humanitarian coordinators, NGO program managers, national disaster management authorities, and technology practitioners who want to deploy AI in crisis contexts without the trial and error that WDC has absorbed over five years.\n\nThe book is structured around WDC's six field missions — DRC, Burundi, Haiti, Sudan, Jamaica, and Afghanistan — using each as a case study for a different dimension of humanitarian AI deployment: community reporter networks (DRC), institutional integration (Burundi), compound emergency operations (Haiti), remote-sensing-only contexts (Sudan), complementary deployment alongside national systems (Jamaica), and access-constrained contexts (Afghanistan).\n\nThree principles run through every chapter: AI should enhance human judgment, not replace it; the technology only works if the community network works; and failure documentation is as important as success documentation — every false positive, every missed warning, every community that did not receive the alert it needed is documented in these pages, because the humanitarian sector learns from failure, not only from success.\n\nThe book is published open-access by the Canadian Humanitarian Press and available as a free PDF download on WDC's website — because a practitioner's guide to humanitarian AI should be accessible to the practitioners who need it most."
+        content: "Breaking Barriers is the practitioner's guide to humanitarian AI that did not exist when WDC was officially launched in 2023. It is not an academic text — it is a field manual written for humanitarian coordinators, NGO program managers, national disaster management authorities, and technology practitioners who want to deploy AI in crisis contexts without the trial and error that WDC has absorbed over five years.\n\nThe book is structured around WDC's six field missions — DRC, Burundi, Haiti, Sudan, Jamaica, and Afghanistan — using each as a case study for a different dimension of humanitarian AI deployment: community reporter networks (DRC), institutional integration (Burundi), compound emergency operations (Haiti), remote-sensing-only contexts (Sudan), complementary deployment alongside national systems (Jamaica), and access-constrained contexts (Afghanistan).\n\nThree principles run through every chapter: AI should enhance human judgment, not replace it; the technology only works if the community network works; and failure documentation is as important as success documentation — every false positive, every missed warning, every community that did not receive the alert it needed is documented in these pages, because the humanitarian sector learns from failure, not only from success.\n\nThe book is published open-access by the Canadian Humanitarian Press and available as a free PDF download on WDC's website — because a practitioner's guide to humanitarian AI should be accessible to the practitioners who need it most."
       },
       {
         type: "icon-grid",

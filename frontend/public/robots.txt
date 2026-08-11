@@ -1,0 +1,93 @@
+# World Disaster Center — robots.txt
+# https://www.worlddisastercenter.org
+
+# All search engines and AI crawlers — welcome
+User-agent: *
+Allow: /
+Disallow: /management/
+Disallow: /profile/
+Disallow: /signin
+Disallow: /signup
+Disallow: /roster/dashboard
+Disallow: /roster/admin
+Disallow: /roster/login
+
+# OpenAI / ChatGPT
+User-agent: GPTBot
+Allow: /
+Disallow: /management/
+Disallow: /profile/
+
+# OpenAI SearchBot
+User-agent: OAI-SearchBot
+Allow: /
+
+# Anthropic / Claude
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+# Google
+User-agent: Googlebot
+Allow: /
+Disallow: /management/
+Disallow: /profile/
+
+# Bing / Microsoft Copilot
+User-agent: bingbot
+Allow: /
+
+User-agent: msnbot
+Allow: /
+
+# Meta (Facebook / Instagram)
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+# Common Crawl (used by many AI training datasets)
+User-agent: CCBot
+Allow: /
+
+# Cohere
+User-agent: cohere-ai
+Allow: /
+
+# AI2 / Allen Institute
+User-agent: AI2Bot
+Allow: /
+
+# You.com
+User-agent: YouBot
+Allow: /
+
+# Diffbot
+User-agent: Diffbot
+Allow: /
+
+# ByteDance / TikTok
+User-agent: Bytespider
+Allow: /
+
+# DuckDuckGo
+User-agent: DuckDuckBot
+Allow: /
+
+# Apple
+User-agent: Applebot
+Allow: /
+
+# Sitemaps
+Sitemap: https://www.worlddisastercenter.org/sitemap.xml
+Sitemap: https://www.worlddisastercenter.org/sitemap-reports.xml

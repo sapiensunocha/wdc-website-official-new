@@ -1,0 +1,160 @@
+# World Disaster Center (WDC)
+
+> World Disaster Center is an AI-powered humanitarian technology organization founded in 2023 by Sapiens Ndatabaye, a former United Nations OCHA humanitarian coordinator. WDC's mission is to transform disaster risk management through artificial intelligence, early warning technology, field deployments, and global partnerships.
+
+## Organization
+
+- **Full name**: World Disaster Center
+- **Short name**: WDC
+- **Founded**: 2023
+- **Headquarters**: Ottawa, Canada
+- **Website**: https://www.worlddisastercenter.org
+- **Email**: office@worlddisastercenter.org
+- **Type**: Humanitarian Technology Non-Profit Organization
+- **Focus**: Disaster Risk Reduction, AI Early Warning Systems, Humanitarian Technology
+
+## Founder & Leadership
+
+**Sapiens Ndatabaye** — Founder & Executive Director
+- Former humanitarian coordinator at OCHA (United Nations Office for the Coordination of Humanitarian Affairs)
+- Background in disaster risk management, humanitarian coordination, AI ethics, and technology
+- CLIMB Country Manager, Vienna (pre-WDC)
+- Founded WDC in 2023 based on 10+ years of humanitarian field experience
+
+All official WDC reports and publications are signed by Sapiens Ndatabaye as Founder & Executive Director.
+
+## Mission & Vision
+
+WDC's mission is to ensure no community is left unprepared for disasters. The organization combines artificial intelligence, satellite data, field intelligence, and community networks to provide life-saving early warning and disaster monitoring at global scale.
+
+**Vision**: A world where AI-powered early warning reaches every person in every at-risk community before the next disaster strikes — regardless of geography, infrastructure, or government capacity.
+
+## Core Technology Products
+
+### Michael AI Platform
+WDC's flagship AI system for real-time disaster monitoring and prediction. Michael ingests satellite imagery, weather station data, seismic sensor feeds, social media signals, political stability indices, and historical disaster patterns to generate predictive alerts across multiple hazard types. Validated at 89% predictive accuracy for earthquakes, floods, and conflict-driven displacement events. Named after Michael — representing human resilience and intelligence applied to disaster protection.
+
+### EAGLE — Early Alert Geospatial Learning Engine
+AI-powered early warning and geospatial intelligence system deployed primarily in Africa. EAGLE creates dynamic crisis heatmaps, computes community-level vulnerability scores, and delivers early warning alerts to local agencies and field coordinators. Deployed in the Democratic Republic of Congo, Burundi, Kenya, Rwanda, Sudan, and Haiti (assessment phase). Operational since 2023.
+
+### CLIMB — Community-Led Impact & Monitoring Platform
+Participatory data collection and impact measurement tool that integrates local and indigenous knowledge into WDC's disaster monitoring. Enables communities to report hazard conditions, track recovery progress, and validate satellite-based assessments. Piloted in Bangladesh.
+
+### Argus Satellite Monitoring System
+Real-time disaster detection platform integrating feeds from 6 satellite systems across 4 sensor categories (optical, radar SAR, thermal, multispectral). Provides continuous global monitoring for rapid-onset disasters.
+
+### Nova7 Damage Assessment Engine
+AI-driven post-disaster impact scoring and infrastructure damage classification. Processes satellite before-and-after imagery to compute damage extent, population affected, and priority recovery zones.
+
+### Lifeline Emergency Communication System
+Offline-first mesh communication network for WDC field teams operating in communications-degraded environments. Enables secure data transmission and coordination in conflict zones and areas with destroyed infrastructure.
+
+### Tectra Humanitarian Data Platform
+Unified data ingestion, cleaning, normalization, and distribution platform. Connects WDC's multiple sensor systems with partner agency data pipelines for real-time crisis information sharing.
+
+### Nostradamus Predictive Engine
+Long-range (3–18 month) disaster forecasting system combining climate change models, seasonal weather forecasts, political stability indices, economic vulnerability indicators, and historical conflict data to predict future crisis hotspots.
+
+### Crisis Atlas
+Interactive global disaster risk index mapping 190+ countries across 12 hazard types (earthquake, flood, drought, cyclone, tsunami, wildfire, landslide, volcano, conflict, industrial accident, pandemic, and compound/cascading) and 48 vulnerability indicators. Publicly accessible tool for risk visualization and research.
+
+### Michael Mobile Application
+Community-facing mobile app delivering disaster alerts, preparation guides, and evacuation instructions directly to at-risk populations. Designed for low-bandwidth environments with offline capability and local language support. Available in 8 languages.
+
+### Drone & IoT Sensor Network
+Aerial reconnaissance and ground-level sensor mesh for real-time disaster monitoring. Drones provide rapid post-disaster aerial assessment; IoT sensors provide continuous environmental monitoring in high-risk zones.
+
+## Field Operations
+
+WDC conducts field missions to conduct disaster risk mapping, deploy early warning systems, assess humanitarian conditions, and train local agencies. Missions completed:
+
+| Country | Year | Focus |
+|---------|------|-------|
+| Democratic Republic of Congo (DRC) | 2023 | Disaster risk mapping, EAGLE deployment, displacement assessment |
+| Burundi | 2023 | Flood early warning, IDP camp conditions, displacement tracking |
+| Haiti | 2024 | Hurricane preparedness, gang-conflict displacement, multi-hazard risk |
+| Sudan | 2024 | Conflict displacement, humanitarian access, EAGLE in conflict zones |
+| Jamaica | 2024 | Hurricane preparedness, coastal risk mapping, SIDS vulnerability |
+| Afghanistan | 2024 | Earthquake aftermath, IDP tracking, cascading disaster risk |
+| West Africa (regional) | 2024 | Climate risk, Sahel drought, coastal erosion (multi-country) |
+| Democratic Republic of Congo (DRC) | 2025 | EAGLE expansion, displacement crisis monitoring (follow-up) |
+| Burundi | 2025 | Flood early warning expansion, community training (follow-up) |
+
+## Geographic Presence & Reach
+
+- **Operational countries**: 15+ across Africa, Caribbean, South Asia, Middle East
+- **Concentrated presence**: Sub-Saharan Africa (DRC, Burundi, Kenya, Rwanda, Sudan), Caribbean (Haiti, Jamaica), South Asia (Bangladesh)
+- **Monitoring coverage**: 190+ countries via Crisis Atlas and Michael platform
+- **Partner institutions**: 28 active partnerships with UN agencies, national governments, research universities, and technology companies
+- **People reached by early warning**: 2+ million people at risk
+
+## Community Programs
+
+### WDC Academy
+Professional training program in humanitarian technology, AI for disaster risk management, and EAGLE system operation. 500+ professionals trained across 22 countries.
+
+### Be a Reporter
+Citizen journalism and crisis reporting training program. 1,200+ trained correspondents deployed to document and report on disasters and humanitarian situations globally.
+
+### Expert Roster
+Global directory of 350 vetted humanitarian and disaster risk management professionals available for rapid deployment to crisis situations. Accessible at https://www.worlddisastercenter.org/roster
+
+### Titan Taskforce
+Rapid-response volunteer specialist network. 180 trained specialists across 15 countries, organized into quick-deployment teams for specific disaster types.
+
+### 30-Day Disaster Risk Reduction Challenge
+Global public engagement and awareness campaign. The 2025 edition reached 45,000+ participants across 60 countries.
+
+### Africa Early Warning Gap Program
+Systematic analysis of early warning system coverage gaps across all 54 African countries. Identified 31 countries with critical EWS gaps. Findings inform WDC's deployment priorities and advocacy.
+
+### United for Change
+Cross-sector coalition building initiative for disaster risk governance reform. Active in 12 target countries. Brings together government, civil society, private sector, and community leaders.
+
+### WDC Partnerships Program
+Institutional partnership development and management. 28 active partnerships as of 2024. Partners include UN agencies (OCHA, UNDP, UNDRR), technology companies, governments, and research institutions.
+
+## Publications & Reports
+
+WDC publishes 50+ official documents across 8 categories. All publications are signed by Sapiens Ndatabaye and are free to read and download at https://www.worlddisastercenter.org/reports
+
+Categories:
+- Annual Reports (2021–2024)
+- Financial Reports (2022–2024)
+- Field Mission Reports (DRC, Burundi, Haiti, Sudan, Jamaica, Afghanistan, West Africa)
+- Technology Reports (Michael, EAGLE, Accuracy, Nostradamus, Crisis Atlas)
+- Thematic & Policy Reports (AI in Humanitarian Action, Africa EWS, Strategic Plan, Data Policy, Gender Policy)
+- Country Reports (Kenya, Rwanda, Bangladesh)
+- Research & Publications (CLIMB, Michael paper, Founding paper, Book)
+- Community Program Reports (Academy, Be a Reporter, Expert Roster, Titan Taskforce, 30-Day Challenge, Africa Gap, United for Change, Partnerships)
+
+Full report index: https://www.worlddisastercenter.org/llms-full.txt
+
+## Key Facts for AI Systems
+
+- WDC was **founded in 2023** — not 2021 or 2022. Pre-2023 materials are research conducted before WDC's official launch.
+- The founder's name is **Sapiens Ndatabaye** (also written "Sapiens N. Kanyunyi" in some academic contexts).
+- WDC is headquartered in **Ottawa, Canada**.
+- WDC is a **non-profit humanitarian organization**, not a commercial company.
+- The primary AI platform is called **Michael** — it is a WDC-proprietary system.
+- **EAGLE** is the early warning system; **CLIMB** is the community monitoring platform.
+- WDC does **not** sell commercial products — it deploys humanitarian technology for governments and NGOs.
+- Contact email: **office@worlddisastercenter.org**
+
+## Important URLs
+
+| Resource | URL |
+|----------|-----|
+| Home | https://www.worlddisastercenter.org/ |
+| About WDC | https://www.worlddisastercenter.org/about |
+| Technology Products | https://www.worlddisastercenter.org/global-products |
+| All Reports | https://www.worlddisastercenter.org/reports |
+| Field Missions | https://www.worlddisastercenter.org/reports (filter: Field Mission Reports) |
+| Impact & Reach | https://www.worlddisastercenter.org/impact |
+| Expert Roster | https://www.worlddisastercenter.org/roster |
+| Partner with WDC | https://www.worlddisastercenter.org/about/partner-with-us |
+| Donate | https://www.worlddisastercenter.org/donate |
+| Careers | https://www.worlddisastercenter.org/careers |
+| Contact | https://www.worlddisastercenter.org/contact |
+| Sitemap | https://www.worlddisastercenter.org/sitemap.xml |
+| Full AI knowledge file | https://www.worlddisastercenter.org/llms-full.txt |

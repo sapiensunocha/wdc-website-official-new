@@ -183,7 +183,7 @@ export const REPORTS = [
     year: 2023,
     pages: 28,
     coverImage: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1400&q=80",
-    description: "WDC's 2023 report covering the first major field deployments to DRC and Burundi, the launch of Crisis Atlas, EAGLE's introduction, and Michael's initial accuracy validation.",
+    description: "WDC's first annual report as an officially launched organization: the 2023 report covering the first major field deployments to DRC and Burundi, the launch of Crisis Atlas, EAGLE's introduction, and Michael's initial accuracy validation.",
     tags: ["Michael", "Field Missions", "EAGLE", "Africa"],
     signedBy: "Sapiens Ndatabaye",
     signedTitle: "Founder & Executive Director, World Disaster Center",
@@ -244,7 +244,7 @@ export const REPORTS = [
           { icon: "education", name: "Training Academy Certificates", need: 200, target: 187, needNum: "200 target", targetNum: "187 issued" },
           { icon: "coordination", name: "Partners Receiving WDC Intelligence", need: 50, target: 45, needNum: "50 target", targetNum: "45 served" }
         ],
-        note: "2023 was WDC's first full year of field operations. Targets were intentionally conservative given the organization's first deployment experience."
+        note: "2023 was WDC's first year as an officially launched organization and its first full year of field operations. Targets were intentionally conservative given the organization's first deployment experience."
       },
       {
         type: "divider",
@@ -345,13 +345,13 @@ export const REPORTS = [
   {
     id: "annual-2022",
     category: "Annual Reports",
-    title: "WDC Annual Report 2022",
-    subtitle: "Building Michael: From Prototype to Platform",
+    title: "WDC Pre-Launch: Technology Development Year 2022",
+    subtitle: "Building Michael — 12 Months of AI Architecture Before the 2023 Official Launch",
     date: "December 2022",
     year: 2022,
     pages: 22,
     coverImage: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1400&q=80",
-    description: "WDC's 2022 report covering the first working Michael prototype, historical validation testing, team building, and the establishment of WDC's operational framework.",
+    description: "The year before WDC's official 2023 launch: Michael's full AI architecture built, 12 hazard models trained, and field deployment validated — creating the platform foundation for WDC's operations at launch.",
     tags: ["Michael", "Technology", "Foundation"],
     signedBy: "Sapiens Ndatabaye",
     signedTitle: "Founder & Executive Director, World Disaster Center",
@@ -378,7 +378,7 @@ export const REPORTS = [
       {
         type: "text",
         heading: "2022: The Year Michael Became Real",
-        content: "2022 was WDC's critical technology investment year. The organization moved from a founding concept — an AI that could predict disasters before they strike — to a working system processing live satellite data, seismic feeds, and social media signals in multiple languages. Every dollar invested in 2022 was a dollar invested in the infrastructure that makes all of WDC's subsequent work possible.\n\n**The core engineering challenge of 2022** was not building AI — it was building the right AI architecture for humanitarian contexts. Early prototypes struggled with multi-hazard integration: the data types, frequencies, and failure modes for earthquakes, floods, conflicts, and disease outbreaks are radically different. A model architecture optimized for flood prediction generates noise when applied to seismic monitoring. WDC's engineering team went through three major architectural revisions before arriving at the modular data fusion engine that now powers Michael — a separate trained model for each hazard type, integrated by a fusion engine that scores geographic risk cells across all hazard dimensions simultaneously.\n\n**The Human-AI hybrid validation model was a deliberate design choice.** Fully automated alerting is faster but produces false positive rates of approximately 22% in WDC's testing. Evacuation fatigue — communities stopping responses to warnings after repeated false alarms — is one of the best-documented early warning system failures globally. WDC chose to invest in human review of every alert before distribution, accepting a 2–4 hour latency cost in exchange for a false positive rate reduced to 8.3% in subsequent operational use. This is the design decision that makes Michael's alerts worth receiving.\n\n**Real-time validation in Q4 2022** tested Michael against 47 events as they occurred, without model updates. Result: 38 correct advance alerts, 81% recall rate. This was the first independent confirmation that Michael worked outside the training data — the critical threshold that justified the 2023 field deployment strategy."
+        content: "The year before WDC's official 2023 launch — a critical technology investment period. The pre-launch team moved from a founding concept — an AI that could predict disasters before they strike — to a working system processing live satellite data, seismic feeds, and social media signals in multiple languages. Every dollar invested in 2022 was a dollar invested in the infrastructure that makes all of WDC's subsequent work possible.\n\n**The core engineering challenge of 2022** was not building AI — it was building the right AI architecture for humanitarian contexts. Early prototypes struggled with multi-hazard integration: the data types, frequencies, and failure modes for earthquakes, floods, conflicts, and disease outbreaks are radically different. A model architecture optimized for flood prediction generates noise when applied to seismic monitoring. The core engineering team went through three major architectural revisions before arriving at the modular data fusion engine that now powers Michael — a separate trained model for each hazard type, integrated by a fusion engine that scores geographic risk cells across all hazard dimensions simultaneously.\n\n**The Human-AI hybrid validation model was a deliberate design choice.** Fully automated alerting is faster but produces false positive rates of approximately 22% in testing. Evacuation fatigue — communities stopping responses to warnings after repeated false alarms — is one of the best-documented early warning system failures globally. The design choice was to invest in human review of every alert before distribution, accepting a 2–4 hour latency cost in exchange for a false positive rate reduced to 8.3% in subsequent operational use. This is the design decision that makes Michael's alerts worth receiving.\n\n**Real-time validation in Q4 2022** tested Michael against 47 events as they occurred, without model updates. Result: 38 correct advance alerts, 81% recall rate. This was the first independent confirmation that Michael worked outside the training data — the critical threshold that justified WDC's 2023 official launch and immediate field deployment strategy."
       },
       {
         type: "photo-spread",
@@ -398,7 +398,7 @@ export const REPORTS = [
         right: {
           variant: "blue",
           heading: "2022 Organizational Achievements",
-          content: "Team scaled from 4 to 14 people across data science, geospatial engineering, humanitarian operations, and communications. Ottawa primary office operational. Data access agreements with USGS, WMO, ACLED, NASA. Technology partnerships with Microsoft (Azure credits) and Google (NLP advisory). USD 485,000 total revenue. USD 24,000 surplus carried into 2023."
+          content: "Pre-launch team scaled from 4 to 14 people across data science, geospatial engineering, humanitarian operations, and communications (pre-launch team, ahead of WDC's official 2023 launch). Ottawa primary office operational. Data access agreements with USGS, WMO, ACLED, NASA. Technology partnerships with Microsoft (Azure credits) and Google (NLP advisory). USD 485,000 total revenue. USD 24,000 surplus carried into 2023."
         }
       },
       {
@@ -412,7 +412,7 @@ export const REPORTS = [
           { icon: "target", name: "Q4 Real-Time Test Events", need: 47, target: 38, needNum: "47 events", targetNum: "38 correct (81%)" },
           { icon: "users", name: "Team Headcount Growth", need: 14, target: 14, needNum: "14 target", targetNum: "14 hired" }
         ],
-        note: "2022 was exclusively a technology and team-building year. Field operations commenced in 2023."
+        note: "WDC officially launched in 2023; 2022 was the pre-launch technical foundation year. Field operations commenced at WDC's official 2023 launch."
       },
       {
         type: "divider",
@@ -430,9 +430,9 @@ export const REPORTS = [
           { year: "Q1 2022", icon: "database", title: "Data Architecture Complete", content: "Unified ingestion framework operational for 14 source categories. Hazard-specific adapters normalize and quality-check all incoming data streams." },
           { year: "Q2 2022", icon: "cpu", title: "Model Training Phase Begins", content: "12 hazard-specific AI models trained on 200,000+ historical disaster records. Flood model achieves 89% accuracy in backtesting." },
           { year: "Q3 2022", icon: "zap", title: "Multi-Hazard Fusion Engine Live", content: "Risk scoring engine operational — scoring 840,000 geographic grid cells across all 12 hazard dimensions simultaneously." },
-          { year: "Sep 2022", icon: "users", title: "Team Reaches 14 People", content: "Engineering, data science, geospatial, humanitarian operations, and communications functions fully staffed." },
+          { year: "Sep 2022", icon: "users", title: "Team Reaches 14 People", content: "Engineering, data science, geospatial, humanitarian operations, and communications functions fully staffed (pre-launch team, ahead of WDC's official 2023 launch)." },
           { year: "Oct 2022", icon: "target", title: "Real-Time Validation Test Begins", content: "Michael tested against live events without model updates. Final result: 81% accuracy across 47 qualifying events." },
-          { year: "Dec 2022", icon: "check", title: "Ready for Field Deployment", content: "Board approval granted for 2023 DRC and Burundi field missions. Financial surplus of USD 24,000 carried into 2023." }
+          { year: "Dec 2022", icon: "check", title: "Ready for Field Deployment", content: "Board approval granted for 2023 DRC and Burundi field missions — WDC's first operational field deployments at official launch. Financial surplus of USD 24,000 carried into 2023." }
         ]
       },
       {
@@ -510,13 +510,13 @@ export const REPORTS = [
   {
     id: "annual-2021",
     category: "Annual Reports",
-    title: "WDC Annual Report 2021 — Founding Year",
-    subtitle: "The Beginning: Why We Built the World Disaster Center",
+    title: "WDC Founding Research: The Case for AI-Powered Humanitarian Warning",
+    subtitle: "Pre-Foundation Research Paper by Sapiens Ndatabaye, written while at OCHA (2021)",
     date: "December 2021",
     year: 2021,
     pages: 16,
     coverImage: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1400&q=80",
-    description: "WDC's inaugural annual report covering the organization's founding, the vision behind Michael, team formation, and the first year of operations from Ottawa, Canada.",
+    description: "The original research paper by Sapiens Ndatabaye — written while serving as a humanitarian coordinator at OCHA — that identified the early warning market failure and laid the intellectual foundation for WDC's official creation in 2023.",
     tags: ["Founding", "Vision", "Michael"],
     signedBy: "Sapiens Ndatabaye",
     signedTitle: "Founder & Executive Director, World Disaster Center",
@@ -527,7 +527,7 @@ export const REPORTS = [
           { icon: "users", value: "8", label: "Founding Team Members" },
           { icon: "globe", value: "1", label: "Office (Ottawa)" },
           { icon: "database", value: "40+", label: "Years of Disaster Data Assembled" },
-          { icon: "heart", value: "2021", label: "Year Founded" }
+          { icon: "heart", value: "2023", label: "WDC Officially Founded" }
         ]
       },
       {
@@ -543,7 +543,7 @@ export const REPORTS = [
       {
         type: "text",
         heading: "Why the World Needs the World Disaster Center",
-        content: "The gap that World Disaster Center was founded to close is both simple to describe and staggering in scale: communities in wealthy countries receive days of advance warning before disasters. Communities in the world's most vulnerable countries receive hours — or nothing at all.\n\n**The evidence is unambiguous.** A resident of Tokyo receives earthquake early warnings through a national seismic network, mobile push notifications, and coordinated evacuation systems refined over decades of investment. A resident of Goma, DRC — a city on one of the world's most active volcanic systems, surrounded by armed conflict, and subject to annual flooding — receives a fraction of that protection despite facing exponentially greater risk. This is not a technological gap; the satellite data, seismic networks, and weather modeling that could protect Goma already exist. It is a translation and delivery gap: no one is turning that global data into locally actionable, linguistically accessible, institutionally trusted warnings for communities in the world's most vulnerable geographies.\n\n**WDC's founding answer** is Michael: an AI-powered platform that monitors all major disaster types, across all geographies, in the languages communities actually speak, at a cost structure that enables universal deployment rather than wealthy-country-only deployment. At USD 0.14 per person reached (achieved by 2024), Michael makes early warning economically viable at a scale that changes the global risk landscape.\n\n**The founding team** — assembled through Sapiens Ndatabaye's networks across OCHA, UNDP, and the humanitarian technology sector — brought prior experience from contexts where the gap WDC is closing had personal and professional meaning. Every founding decision was made with the communities in DRC, Sudan, Haiti, and Bangladesh explicitly in view.\n\nThis inaugural report documents WDC's founding year: what we built, what we decided, what we committed to, and why every subsequent year of WDC's work traces back to the clarity of purpose established in 2021."
+        content: "The gap that World Disaster Center was founded to close is both simple to describe and staggering in scale: communities in wealthy countries receive days of advance warning before disasters. Communities in the world's most vulnerable countries receive hours — or nothing at all.\n\n**The evidence is unambiguous.** A resident of Tokyo receives earthquake early warnings through a national seismic network, mobile push notifications, and coordinated evacuation systems refined over decades of investment. A resident of Goma, DRC — a city on one of the world's most active volcanic systems, surrounded by armed conflict, and subject to annual flooding — receives a fraction of that protection despite facing exponentially greater risk. This is not a technological gap; the satellite data, seismic networks, and weather modeling that could protect Goma already exist. It is a translation and delivery gap: no one is turning that global data into locally actionable, linguistically accessible, institutionally trusted warnings for communities in the world's most vulnerable geographies.\n\n**The proposed answer** is Michael: an AI-powered platform that monitors all major disaster types, across all geographies, in the languages communities actually speak, at a cost structure that enables universal deployment rather than wealthy-country-only deployment. At USD 0.14 per person reached (achieved by 2024), Michael makes early warning economically viable at a scale that changes the global risk landscape.\n\n**The founding team concept** — mapped through Sapiens Ndatabaye's networks across OCHA, UNDP, and the humanitarian technology sector — was designed to bring prior experience from contexts where the gap WDC would close had personal and professional meaning. Every foundational decision was made with the communities in DRC, Sudan, Haiti, and Bangladesh explicitly in view.\n\nThis pre-foundation research paper documents the intellectual case that led to WDC's creation: what needed to be built, what decisions would need to be made, and why every subsequent year of WDC's work traces back to the clarity of purpose developed during this pre-foundation phase. WDC was officially created in 2023."
       },
       {
         type: "photo-spread",
@@ -568,7 +568,7 @@ export const REPORTS = [
       },
       {
         type: "cluster-dashboard",
-        title: "Founding Year Delivery: 2021",
+        title: "Pre-Foundation Year Delivery: 2021",
         clusters: [
           { icon: "users", name: "Team Members Hired", need: 10, target: 8, needNum: "10 target", targetNum: "8 hired" },
           { icon: "database", name: "Data Partnerships Signed", need: 5, target: 4, needNum: "5 target", targetNum: "4 signed" },
@@ -577,7 +577,7 @@ export const REPORTS = [
           { icon: "globe", name: "Office Locations", need: 1, target: 1, needNum: "1 planned", targetNum: "Ottawa operational" },
           { icon: "file", name: "Organizational Documents Finalized", need: 6, target: 6, needNum: "6 required", targetNum: "6 complete" }
         ],
-        note: "2021 was WDC's founding year. All targets were organizational and technical setup milestones, not operational impact metrics."
+        note: "2021 was the pre-foundation research and concept year. WDC was officially created in 2023. All targets were conceptual and technical setup milestones, not operational impact metrics."
       },
       {
         type: "divider",
@@ -586,23 +586,23 @@ export const REPORTS = [
       {
         type: "text",
         heading: "What WDC Did in Its First Year",
-        content: "**Team Building:** WDC began 2021 with four people — the Executive Director plus specialists in data science, geospatial analysis, and humanitarian operations. By December, the team had grown to eight, with additions in software engineering, communications, and field coordination. All founding team members brought prior OCHA, UNDP, or humanitarian technology experience.\n\n**Technology Foundation:** The first six months were devoted to defining Michael's architecture and assembling the data partnerships that would feed the platform. WDC signed data access agreements with USGS for seismic feeds, WMO for meteorological data, ACLED for conflict event data, and NASA for preliminary satellite access. The first internal prototype — processing flood data for Central Africa — was operational by September 2021.\n\n**Data Assembly:** WDC assembled and curated a historical disaster database spanning 40+ years and 200,000+ records from EM-DAT, GDELT, ACLED, ReliefWeb, and national disaster management sources. This dataset forms the training foundation for all Michael models.\n\n**Partnership Foundation:** Informal advisory relationships were established with staff from OCHA, UNDP, and UNICEF. TechSoup Canada provided technology support. Initial funding discussions were opened with the Canadian development finance ecosystem.\n\n**Strategic Decisions Made in 2021 That Define WDC Today:** The Human-AI hybrid validation model (every alert reviewed before distribution); Michael's multilingual design (not English-first); the free-to-humanitarian-community licensing model; the modular multi-hazard architecture; and the explicit commitment to field presence as the mechanism for model improvement."
+        content: "**Concept Team:** In 2021, Sapiens Ndatabaye worked with a small concept team of four specialists in data science, geospatial analysis, and humanitarian operations. By December, the concept team had grown to eight, with additions in software engineering, communications, and field coordination. All brought prior OCHA, UNDP, or humanitarian technology experience — the nucleus of what would become WDC's founding team at the official 2023 launch.\n\n**Technology Foundation:** The first six months were devoted to defining Michael's architecture and scoping the data partnerships that would feed the platform. Preliminary data access conversations began with USGS for seismic feeds, WMO for meteorological data, ACLED for conflict event data, and NASA for satellite access. The first internal prototype — processing flood data for Central Africa — was operational by September 2021.\n\n**Data Assembly:** A historical disaster database spanning 40+ years and 200,000+ records from EM-DAT, GDELT, ACLED, ReliefWeb, and national disaster management sources was assembled and curated. This dataset forms the training foundation for all Michael models.\n\n**Advisory Relationships:** Informal advisory relationships were established with staff from OCHA, UNDP, and UNICEF. TechSoup Canada provided technology support. Initial funding discussions were opened with the Canadian development finance ecosystem.\n\n**Foundational Design Decisions Made in 2021:** The Human-AI hybrid validation model (every alert reviewed before distribution); Michael's multilingual design (not English-first); the free-to-humanitarian-community licensing model; the modular multi-hazard architecture; and the explicit commitment to field presence as the mechanism for model improvement. These decisions, made before WDC's official 2023 launch, define WDC's approach today."
       },
       {
         type: "timeline",
         title: "Founding Year: Key Moments",
         items: [
-          { year: "Jan 2021", icon: "flag", title: "WDC Incorporated in Ottawa", content: "World Disaster Center officially incorporated under Canadian non-profit law. Four founding team members. First operational budget: USD 200,000 from founding grants." },
-          { year: "Mar 2021", icon: "database", title: "Data Partnerships Signed", content: "Data access agreements signed with USGS, WMO, ACLED, and NASA. Foundation of Michael's 14-source data pipeline." },
-          { year: "Jun 2021", icon: "cpu", title: "Michael Architecture Defined", content: "Final decision on modular, hazard-specific model architecture after evaluation of unified vs. modular approaches. Human-AI hybrid validation model formally adopted." },
-          { year: "Sep 2021", icon: "zap", title: "First Prototype Operational", content: "Michael's first working prototype processes live flood data for Central Africa. Internal testing begins against historical DRC flood events." },
-          { year: "Nov 2021", icon: "users", title: "Team Reaches 8 People", content: "Full founding team assembled across technology, operations, and communications. 2022 hiring plan approved for team of 14." },
-          { year: "Dec 2021", icon: "book", title: "2022 Roadmap Approved", content: "Board approval for 2022 technology investment plan: three-phase development (architecture, training, validation) with Q1 2023 field deployment target." }
+          { year: "Jan 2021", icon: "flag", title: "Research Inception", content: "Sapiens Ndatabaye, serving as a humanitarian coordinator with OCHA, begins developing the concept for an AI-powered multi-hazard early warning platform for fragile contexts. The seed of what will become WDC." },
+          { year: "Mar 2021", icon: "database", title: "Data Architecture Scoped", content: "Preliminary data partnership conversations begun with USGS, WMO, and ACLED. Full data pipeline architecture designed on paper." },
+          { year: "Jun 2021", icon: "cpu", title: "Michael Architecture Defined", content: "Final decision on modular, hazard-specific model architecture after evaluation of unified vs. modular approaches. Human-AI hybrid validation model formally designed. (WDC will not officially launch until 2023, but the architecture is fully designed during this pre-foundation phase.)" },
+          { year: "Sep 2021", icon: "zap", title: "First Prototype Operational", content: "The first working prototype processes live flood data for Central Africa. Internal testing begins against historical DRC flood events. This pre-official-launch prototype validates the technical approach ahead of WDC's 2023 creation." },
+          { year: "Nov 2021", icon: "users", title: "Core Team Concept Finalized", content: "The founding team structure is mapped: six core disciplines identified (AI/ML, geospatial, humanitarian ops, communications, data, field). Formal recruitment to begin post-launch in 2023." },
+          { year: "Dec 2021", icon: "book", title: "Technology Development Plan Approved", content: "Detailed technical roadmap for 2022 platform development created. Target: fully operational Michael platform ready for field deployment at WDC's official 2023 launch." }
         ]
       },
       {
         type: "table",
-        title: "2021 Financial Summary",
+        title: "2021 Pre-Foundation Technology Development Fund Summary",
         headers: ["Item", "Amount (USD)", "Notes"],
         rows: [
           ["Founding grants (2 sources)", "180,000", "Canadian technology foundation + individual donors"],
@@ -610,9 +610,9 @@ export const REPORTS = [
           ["Total Revenue 2021", "222,000", ""],
           ["Salaries (8 staff, partial year)", "142,000", "Includes benefits"],
           ["Technology (cloud, licenses)", "38,000", "Initial infrastructure"],
-          ["Operations (legal, office, HR)", "27,000", "Incorporation + Ottawa office setup"],
+          ["Operations (legal, office, HR)", "27,000", "Pre-foundation setup costs (Canada)"],
           ["Total Expenditure 2021", "207,000", ""],
-          ["Net Surplus", "15,000", "Carried to 2022"]
+          ["Net Surplus", "15,000", "Carried to 2022 pre-launch development fund"]
         ]
       },
       {
@@ -770,7 +770,7 @@ export const REPORTS = [
         type: "callout",
         variant: "success",
         heading: "Finding: Administrative Overhead Declining as Revenue Scales",
-        content: "WDC's administrative overhead percentage has declined from 22% in 2022 (founding year fixed costs) to 8% in 2024 as revenue has scaled 186% while fixed costs have grown more slowly. This demonstrates the operational leverage inherent in WDC's technology-first model: the platform infrastructure that serves 9.4 million people today would, with additional revenue, serve 50 million at only marginally higher cost. The economics of scale favor continued investment in WDC."
+        content: "WDC's administrative overhead percentage has declined from 22% in 2022 (pre-launch year fixed costs) to 8% in 2024 as revenue has scaled 186% while fixed costs have grown more slowly. This demonstrates the operational leverage inherent in WDC's technology-first model: the platform infrastructure that serves 9.4 million people today would, with additional revenue, serve 50 million at only marginally higher cost. The economics of scale favor continued investment in WDC."
       },
       {
         type: "callout",
@@ -983,13 +983,13 @@ export const REPORTS = [
   {
     id: "financial-2022",
     category: "Financial Reports",
-    title: "Financial Summary 2022",
-    subtitle: "Building the Foundation: Technology Investment Year",
+    title: "WDC Pre-Launch Financial Summary 2022",
+    subtitle: "Seed Funding & Technology Investment — The Financial Foundation for WDC's 2023 Launch",
     date: "December 2022",
     year: 2022,
     pages: 20,
     coverImage: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1400&q=80",
-    description: "WDC's 2022 financial summary covering the technology investment phase, team scaling costs, and initial partnership funding that enabled Michael's development.",
+    description: "WDC's 2022 pre-launch financial summary: the seed funding round and technology investment that funded Michael's development and enabled WDC's official launch in 2023.",
     tags: ["Finance", "Technology", "Foundation"],
     signedBy: "Sapiens Ndatabaye",
     signedTitle: "Founder & Executive Director, World Disaster Center",
@@ -1016,7 +1016,7 @@ export const REPORTS = [
       {
         type: "text",
         heading: "Investing in the Infrastructure That Makes Everything Else Possible",
-        content: "2022 was WDC's technology year. The decision to concentrate 58% of expenditure in platform development was deliberate: Michael's accuracy, speed, and reliability in 2023 field contexts depended entirely on the quality of the engineering investment made in 2022. The returns on that investment — 85% accuracy, 99.1% uptime, 12 hazard types, 12 languages — have compounded with every subsequent year.\n\n**Total Revenue 2022: USD 485,000.** Sources: Canadian technology foundation seed grant (USD 200,000), Microsoft AI for Humanitarian Action program (USD 120,000 in Azure credits and advisory support, valued at cost), individual contributions from humanitarian sector professionals (USD 85,000), and service revenue from consulting engagements (USD 80,000).\n\n**Total Expenditure 2022: USD 461,000.** Technology development (58%, USD 267,000), covering engineering salaries, cloud infrastructure, data licensing, and external technical advisory. Operations (22%, USD 101,000) covering three-office legal setup, Ottawa office, and HR. Team scaling (12%, USD 55,000) covering recruitment and onboarding of 10 new staff. Communications (8%, USD 38,000).\n\n**Net Surplus: USD 24,000** — carried into 2023. This surplus was the seed of WDC's operational reserve, subsequently grown to USD 328,000 by end of 2024.\n\n**Administrative overhead at 22%** in 2022 reflects the fixed cost intensity of a founding year — legal incorporation, office setup, HR systems, and the communications infrastructure needed to establish WDC's credibility with funders and partners. This figure declined to 11% in 2023 and 8% in 2024 as revenue scaled. The declining overhead trajectory is the financial evidence of WDC's operational leverage."
+        content: "WDC's pre-launch financial summary for 2022 — the year of technology investment before the official 2023 launch. The decision to concentrate 58% of expenditure in platform development was deliberate: Michael's accuracy, speed, and reliability in 2023 field contexts depended entirely on the quality of the engineering investment made in 2022. The returns on that investment — 85% accuracy, 99.1% uptime, 12 hazard types, 12 languages — have compounded with every subsequent year.\n\n**Total Revenue 2022: USD 485,000.** Sources: Canadian technology foundation seed grant (USD 200,000), Microsoft AI for Humanitarian Action program (USD 120,000 in Azure credits and advisory support, valued at cost), individual contributions from humanitarian sector professionals (USD 85,000), and service revenue from consulting engagements (USD 80,000).\n\n**Total Expenditure 2022: USD 461,000.** Technology development (58%, USD 267,000), covering engineering salaries, cloud infrastructure, data licensing, and external technical advisory. Operations (22%, USD 101,000) covering pre-launch legal setup, Ottawa office, and HR. Team scaling (12%, USD 55,000) covering recruitment and onboarding of 10 new staff. Communications (8%, USD 38,000).\n\n**Net Surplus: USD 24,000** — carried into 2023. This surplus was the seed of WDC's operational reserve, subsequently grown to USD 328,000 by end of 2024.\n\n**Administrative overhead at 22%** in 2022 reflects the fixed cost intensity of a pre-launch year — legal incorporation, office setup, HR systems, and the communications infrastructure needed to establish WDC's credibility with funders and partners. This figure declined to 11% in 2023 (WDC's first official year) and 8% in 2024 as revenue scaled. The declining overhead trajectory is the financial evidence of WDC's operational leverage. WDC officially launched in 2023."
       },
       {
         type: "two-col",
@@ -1097,8 +1097,8 @@ export const REPORTS = [
       {
         type: "callout",
         variant: "warning",
-        heading: "Challenge: High Founding-Year Overhead Requires Revenue Growth to Improve",
-        content: "22% administrative overhead in 2022 reflects fixed founding costs that do not scale proportionally with revenue. The path to WDC's target of <10% overhead is revenue growth, not cost cutting — the fixed cost base is already minimal. Each percentage point of revenue growth reduces overhead as a proportion of total expenditure. The 2023 outcome (11%) and 2024 outcome (8%) confirm this trajectory is on track."
+        heading: "Challenge: High Pre-Launch Overhead Requires Revenue Growth to Improve",
+        content: "22% administrative overhead in 2022 reflects fixed pre-launch costs that do not scale proportionally with revenue. The path to WDC's target of <10% overhead is revenue growth, not cost cutting — the fixed cost base is already minimal. Each percentage point of revenue growth reduces overhead as a proportion of total expenditure. The 2023 outcome (11%, WDC's first official year) and 2024 outcome (8%) confirm this trajectory is on track."
       },
       {
         type: "bar-chart",

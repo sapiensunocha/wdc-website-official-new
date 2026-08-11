@@ -236,6 +236,35 @@ const HomePage = () => {
         </div>
       )}
 
+      {/* Roster CTA */}
+      <div className="bg-[#1C2B39] text-white py-16">
+        <div className="container sm:px-2 flex flex-col md:flex-row items-center justify-between gap-10">
+          <div className="max-w-xl">
+            <p className="text-[#009EDB] text-xs font-black uppercase tracking-widest mb-3">Join Our Network</p>
+            <h2 className="text-3xl md:text-4xl font-bold leading-tight mb-4">
+              Are you a disaster response expert?
+            </h2>
+            <p className="text-gray-300 text-base leading-relaxed">
+              WDC connects vetted humanitarian professionals with global deployment opportunities. Join our expert roster and help communities before, during, and after disasters.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row md:flex-col gap-3 shrink-0">
+            <Link
+              to="/roster/apply"
+              className="bg-[#009EDB] hover:bg-[#0080b5] text-white font-bold px-8 py-3.5 rounded-sm text-sm tracking-wide transition-colors text-center whitespace-nowrap"
+            >
+              Apply to the Roster
+            </Link>
+            <Link
+              to="/roster"
+              className="border border-white/30 hover:border-white text-white font-bold px-8 py-3.5 rounded-sm text-sm tracking-wide transition-colors text-center whitespace-nowrap"
+            >
+              Learn More
+            </Link>
+          </div>
+        </div>
+      </div>
+
       <Testimonials />
       <Animation />
     </div>

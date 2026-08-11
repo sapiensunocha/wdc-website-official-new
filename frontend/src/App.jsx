@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { HelmetProvider } from "react-helmet-async";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 
@@ -40,6 +41,8 @@ import PartnerWithUs from "./pages/partnerWithUs";
 import TrainingPage from "./pages/training";
 import ServicesPage from "./pages/services";
 import SingleBlogDisplay from "./pages/blog";
+import ReportsPage from "./pages/reports";
+import ReportDetail from "./pages/reports/ReportDetail";
 import AdminPage from "./pages/admin";
 import ProfilePage from "./pages/profile";
 import ProfileForm from "./pages/profileForm";
@@ -54,6 +57,14 @@ import NewsDetail from "./components/NewsDetail.jsx";
 import EventsDetail from "./components/EventsDetail.jsx";
 import ProductDetail from "./components/ProductDetail.jsx";
 
+// Roster pages (standalone layouts — no shared header/footer)
+import RosterPage from "./pages/roster";
+import RosterApplyPage from "./pages/roster/apply";
+import RosterLoginPage from "./pages/roster/login";
+import RosterDashboard from "./pages/roster/dashboard";
+import RosterAdminPage from "./pages/roster/admin";
+import RosterPartnerPage from "./pages/roster/partner";
+
 const App = () => {
   const [loading, setLoading] = useState(false);
 
@@ -63,10 +74,18 @@ const App = () => {
   }, []);
 
   return (
-    <>
+    <HelmetProvider>
       {loading && <LoaderAnimation />}
 
       <Routes>
+        {/* Roster — standalone full-page layouts (no shared nav/footer) */}
+        <Route path="/roster" element={<RosterPage />} />
+        <Route path="/roster/apply" element={<RosterApplyPage />} />
+        <Route path="/roster/login" element={<RosterLoginPage />} />
+        <Route path="/roster/dashboard" element={<RosterDashboard />} />
+        <Route path="/roster/admin" element={<RosterAdminPage />} />
+        <Route path="/roster/partner" element={<RosterPartnerPage />} />
+
         <Route element={<Layout />}>
           {/* Home */}
           <Route path="/" element={<HomePage />} />
@@ -127,6 +146,8 @@ const App = () => {
           <Route path="/blog/:id" element={<SingleBlogDisplay />} />
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/projects/eagle" element={<EagleProject />} />
+          <Route path="/reports" element={<ReportsPage />} />
+          <Route path="/reports/:reportId" element={<ReportDetail />} />
 
           {/* Legal */}
           <Route path="/policy" element={<PrivacyPolicyPage />} />
@@ -144,7 +165,7 @@ const App = () => {
       <CookieConsent />
       <ChatBotComponent />
       <ButtonGradient />
-    </>
+    </HelmetProvider>
   );
 };
 

@@ -24,6 +24,7 @@ const navItems = [
       { label: "Global Products", to: "/global-products" },
       { label: "Our Services", to: "/services" },
       { label: "Training Academy", to: "/training" },
+      { label: "Reports & Documents", to: "/reports" },
       { label: "Request a Demo", to: "/request-demo" },
     ],
   },
@@ -45,6 +46,7 @@ const navItems = [
   {
     title: "Get Involved",
     items: [
+      { label: "Expert Roster", to: "/roster" },
       { label: "Membership", to: "/membership" },
       { label: "Donate", href: "https://www.paypal.com/donate/?hosted_button_id=XXS7D6VJDM2YE" },
       { label: "Partner With Us", to: "/partnerWithUs" },
@@ -175,6 +177,9 @@ const Header = () => {
             <a href="mailto:office@worlddisastercenter.org" className="text-gray-300 hover:text-white transition-colors hidden md:block">
               office@worlddisastercenter.org
             </a>
+            <Link to="/roster/login" className="text-gray-300 hover:text-white transition-colors">
+              Roster Login
+            </Link>
             <Link to="/signin" className="text-gray-300 hover:text-white transition-colors">
               Sign In
             </Link>
@@ -215,7 +220,7 @@ const Header = () => {
             href="https://www.paypal.com/donate/?hosted_button_id=XXS7D6VJDM2YE"
             target="_blank"
             rel="noreferrer"
-            className="bg-[#418FDE] hover:bg-[#005b9f] text-white text-sm font-bold px-5 py-2 rounded-sm transition-colors duration-200 ml-1"
+            className="bg-[#418FDE] hover:bg-[#005b9f] text-white text-sm font-bold px-5 py-2 rounded-sm transition-colors duration-200"
           >
             Donate
           </a>
