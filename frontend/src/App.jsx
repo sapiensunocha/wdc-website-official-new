@@ -65,6 +65,12 @@ import RosterDashboard from "./pages/roster/dashboard";
 import RosterAdminPage from "./pages/roster/admin";
 import RosterPartnerPage from "./pages/roster/partner";
 
+// Disaster Heroes pages
+import DisasterHeroesApply from "./pages/disaster-heroes/apply";
+import DisasterHeroesLogin from "./pages/disaster-heroes/login";
+import DisasterHeroesAdmin from "./pages/disaster-heroes/admin";
+import DisasterHeroesDashboard from "./pages/disaster-heroes/dashboard";
+
 const App = () => {
   const [loading, setLoading] = useState(false);
 
@@ -126,6 +132,12 @@ const App = () => {
           <Route path="/news/:newsName" element={<NewsDetail />} />
           <Route path="/events" element={<Events />} />
           <Route path="/events/:eventsName" element={<EventsDetail />} />
+
+          {/* Disaster Heroes */}
+          <Route path="/disaster-heroes/apply" element={<DisasterHeroesApply />} />
+          <Route path="/disaster-heroes/login" element={<DisasterHeroesLogin />} />
+          <Route path="/disaster-heroes/admin" element={<DisasterHeroesAdmin />} />
+          <Route path="/disaster-heroes/dashboard" element={<DisasterHeroesDashboard />} />
 
           {/* Get Involved */}
           <Route path="/membership" element={<MembershipPage />} />

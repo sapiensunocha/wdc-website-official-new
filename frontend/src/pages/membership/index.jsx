@@ -65,7 +65,7 @@ const SLIDES = [
   },
   {
     title: "Turn Field Knowledge Into Global Standards",
-    desc:  "Field practitioners across 72 countries generate invaluable knowledge — and most of it disappears into field reports nobody reads. WDC Heroes share, validate, and codify what works: from flood-hardening infrastructure to post-earthquake livelihoods. Your local lesson becomes a global standard.",
+    desc:  "Field practitioners across 135 countries generate invaluable knowledge — and most of it disappears into field reports nobody reads. WDC Heroes share, validate, and codify what works: from flood-hardening infrastructure to post-earthquake livelihoods. Your local lesson becomes a global standard.",
     cta:   "Explore the community",
     img:   IMG.slide3,
     accent: "#16A34A",
@@ -76,7 +76,7 @@ const SLIDES = [
 // ── problem + scope ───────────────────────────────────────────────────────────
 const SCOPE_FACTORS = [
   { num: "01", title: "No global peer network", desc: "Disaster practitioners — early warning engineers, field coordinators, GIS analysts — work in silos. No continent-spanning peer mechanism exists for knowledge-sharing across hazard types and response cycles." },
-  { num: "02", title: "Active crisis window", desc: "34 active disaster situations. 72 countries with open humanitarian operations. WDC Heroes community outputs — frameworks, tools, assessments — can directly influence response quality this year." },
+  { num: "02", title: "Active crisis window", desc: "34 active disaster situations. 135 countries with open humanitarian operations. WDC Heroes community outputs — frameworks, tools, assessments — can directly influence response quality this year." },
   { num: "03", title: "Largest knowledge gap in humanitarian tech", desc: "Less than 8% of field-tested disaster response methodologies are ever formalised or shared across organisations. WDC Heroes closes that gap by design." },
   { num: "04", title: "Partner readiness", desc: "OCHA, UNDP, ESA, UNDRR, and WMO have frameworks and datasets ready. The Disaster Heroes community contextualises global tools for field realities — reducing duplication and accelerating adoption." },
 ];
@@ -84,11 +84,24 @@ const SCOPE_FACTORS = [
 const LAUNCH_STEPS = [
   {
     step: "Step 1", label: "Apply & Get Accepted", period: "Rolling applications — response within 7 days", accent: T.blue,
-    items: ["Submit your field experience and expertise areas", "WDC reviews your profile in 5–7 business days", "Accepted Heroes receive onboarding pack and community credentials", "Join your first channel and introduce yourself"],
+    items: [
+      "Fill your profile: skills, availability per week, exact location, photo",
+      "Tell us why you want to serve your community and the world",
+      "WDC reviews your profile in 5–7 business days",
+      "Accepted Heroes get onboarding credentials and community access",
+    ],
   },
   {
-    step: "Step 2", label: "Access Everything", period: "From day one of acceptance", accent: "#0072BC",
-    items: ["Full community channels — all hazard types and regions", "Events: webinars, field sessions, WDC Global Forum priority access", "Resource library: tools, assessments, datasets, templates", "Mentoring, certifications, and deployment opportunities"],
+    step: "Step 2", label: "Access Everything, Free", period: "From day one of acceptance", accent: "#0072BC",
+    items: [
+      "Training on Google, Coursera, LinkedIn Learning — fully covered",
+      "Access to laptops and work equipment for your mission",
+      "University credits earned through WDC programme participation",
+      "Mentoring by leading disaster professionals worldwide",
+      "Free access to Michael — AI field assistant for disaster practitioners",
+      "WDC certifications in your domain, recognised globally",
+      "Priority invitations to the WDC Global Summit and regional events",
+    ],
   },
 ];
 
@@ -383,9 +396,9 @@ export default function DisasterHeroesPage() {
                 <span style={{ fontSize: 11, fontWeight: 700, color: T.blue, letterSpacing: "0.1em", textTransform: "uppercase" }}>WDC · Disaster Heroes Community</span>
               </div>
               <h1 style={{ fontSize: 24, fontWeight: 800, letterSpacing: "-0.02em", color: T.fg, margin: 0 }}>Disaster Heroes</h1>
-              <p style={{ fontSize: 13, color: T.muted, marginTop: 4 }}>1,840 Heroes · 72 countries · 3 focus areas</p>
+              <p style={{ fontSize: 13, color: T.muted, marginTop: 4 }}>1,840 Heroes · 135 countries · 3 focus areas</p>
             </div>
-            <Link to="/contact"
+            <Link to="/disaster-heroes/apply"
               style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 20px", borderRadius: 10,
                        background: T.blue, color: "#fff", fontWeight: 700, fontSize: 13, textDecoration: "none",
                        boxShadow: `0 4px 12px rgba(0,158,219,.3)` }}>
@@ -397,7 +410,7 @@ export default function DisasterHeroesPage() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12 }}>
             {[
               { label: "Heroes",       value: "1,840", icon: <Users size={15} />,      color: T.blue },
-              { label: "Countries",    value: "72",    icon: <Globe size={15} />,      color: T.darkBlue },
+              { label: "Countries",    value: "135",   icon: <Globe size={15} />,      color: T.darkBlue },
               { label: "Focus Areas",  value: "3",     icon: <Layers size={15} />,     color: "#7C3AED" },
               { label: "Applications", value: "112",   icon: <CheckCircle2 size={15}/>,color: "#DC6B19" },
             ].map(s => (
@@ -463,7 +476,7 @@ export default function DisasterHeroesPage() {
                                    lineHeight: 1.2, letterSpacing: "-0.02em", maxWidth: 540, marginBottom: 28 }}>
                         {s.title}
                       </h2>
-                      <Link to="/contact"
+                      <Link to="/disaster-heroes/apply"
                         style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "11px 22px",
                                  borderRadius: 10, background: s.accent, color: "#fff", fontWeight: 700, fontSize: 14,
                                  textDecoration: "none", width: "fit-content", boxShadow: `0 4px 20px ${s.accent}55` }}>
@@ -635,7 +648,7 @@ export default function DisasterHeroesPage() {
                 </p>
                 <SlideToJoin />
                 <p style={{ fontSize: 12, color: T.muted, margin: 0 }}>
-                  Or <Link to="/contact" style={{ color: T.blue, fontWeight: 600 }}>contact us</Link> to apply by email — <a href="mailto:office@worlddisastercenter.org" style={{ color: T.blue }}>office@worlddisastercenter.org</a>
+                  Or email us at <a href="mailto:office@worlddisastercenter.org" style={{ color: T.blue }}>office@worlddisastercenter.org</a> — <Link to="/disaster-heroes/login" style={{ color: T.muted }}>member login</Link>
                 </p>
               </div>
 
@@ -927,7 +940,7 @@ export default function DisasterHeroesPage() {
                       </span>
                     </div>
                     <div style={{ display: "flex", gap: 10 }}>
-                      <Link to="/contact"
+                      <Link to="/disaster-heroes/apply"
                         style={{ padding: "10px 22px", borderRadius: 10, background: T.blue, color: "#fff",
                                  fontWeight: 700, fontSize: 13, textDecoration: "none" }}>
                         Register Now
@@ -1002,7 +1015,7 @@ export default function DisasterHeroesPage() {
                               <div style={{ height: "100%", borderRadius: 2, background: T.blue, width: `${ev.enrolled/ev.capacity*100}%` }} />
                             </div>
                           </div>
-                          <Link to="/contact"
+                          <Link to="/disaster-heroes/apply"
                             style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: 8,
                                      borderRadius: 8, background: `rgba(0,158,219,.08)`, border: `1px solid rgba(0,158,219,.2)`,
                                      color: T.blue, fontSize: 12, fontWeight: 600, textDecoration: "none" }}>
