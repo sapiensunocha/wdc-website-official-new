@@ -26,6 +26,14 @@ const T = {
   shadowLg: "0 8px 30px rgba(0,0,0,.12), 0 0 0 0.5px rgba(0,0,0,.04)",
 };
 
+// ── real team photos ──────────────────────────────────────────────────────────
+import ruthImg    from "../../assets/team/Ruth.png";
+import zainabImg  from "../../assets/team/Zainab.png";
+import sapiensImg from "../../assets/team/sapiens.png";
+import davidImg   from "../../assets/team/DavidKabanga.png";
+import jamesImg   from "../../assets/team/JamesMbogo.png";
+import anselmeImg from "../../assets/team/AnselmeKonan.png";
+
 // ── images ────────────────────────────────────────────────────────────────────
 const IMG = {
   slide1: "https://images.unsplash.com/photo-1547683905-f686c993aae5?w=900&q=75",
@@ -53,7 +61,7 @@ const SLIDES = [
     cta:   "Join the Heroes",
     img:   IMG.slide1,
     accent: T.blue,
-    quote: { text: "The time to prepare for disaster is before it strikes. Every early warning station we build is a life saved — not a statistic, a person.", author: "Dr. Amara Diallo", role: "WDC Disaster Hero · Senegal", img: "https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?w=200&q=80" },
+    quote: { text: "The Gates Foundation has proven it through Malaria. And The World Disaster Center is doing it as well to tackle the remaining disasters.", author: "Ramesh Rajasingham", role: "Humanitarian Leader", img: null },
   },
   {
     title: "Coordinate When It Matters Most",
@@ -61,7 +69,7 @@ const SLIDES = [
     cta:   "See how we respond",
     img:   IMG.slide2,
     accent: "#E05F1A",
-    quote: { text: "The network WDC gave me meant I had trusted contacts in-country before my flight landed. That's what coordination actually looks like.", author: "Yuki Tanaka",  role: "WDC Disaster Hero · Japan", img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&q=80" },
+    quote: { text: "The World Disaster Center's approach to coordinating disaster intelligence and making it actionable for responders is a genuine contribution to the humanitarian ecosystem.", author: "Joyce Msuya", role: "Humanitarian Leader · UN", img: null },
   },
   {
     title: "Turn Field Knowledge Into Global Standards",
@@ -69,7 +77,7 @@ const SLIDES = [
     cta:   "Explore the community",
     img:   IMG.slide3,
     accent: "#16A34A",
-    quote: { text: "For the first time I could publish my field findings and have them reach practitioners in 30 countries the same week. WDC made that possible.", author: "Fatima Al-Rashid", role: "WDC Disaster Hero · Jordan", img: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=200&q=80" },
+    quote: { text: "The approach WDC is taking for real-time monitoring and AI-driven alerts is exactly what the humanitarian sector needs to move faster.", author: "Moustapha Fall", role: "UN OCHA", img: null },
   },
 ];
 
@@ -107,12 +115,12 @@ const LAUNCH_STEPS = [
 
 // ── community ─────────────────────────────────────────────────────────────────
 const PROFILE_IMGS = {
-  "Amara Diallo":    "https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?w=100&q=80",
-  "Yuki Tanaka":     "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&q=80",
-  "Fatima Al-Rashid":"https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100&q=80",
-  "Mwila Banda":     "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80",
-  "Nadia Al-Hassan": "https://images.unsplash.com/photo-1589156280159-27698a70f29e?w=100&q=80",
-  "Kofi Mensah":     "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&q=80",
+  "Ruth Ndegwa":       ruthImg,
+  "Zainab Akhtar":     zainabImg,
+  "Sapiens Ndatabaye": sapiensImg,
+  "David Kabanga":     davidImg,
+  "James Mbogo":       jamesImg,
+  "Anselme Konan":     anselmeImg,
 };
 
 const CHANNELS = [
@@ -128,14 +136,14 @@ const CHANNELS = [
 
 const POSTS = [
   {
-    id: "p1", author: "Amara Diallo", org: "WDC West Africa",   role: "Field Coordinator",  pillar: "P1",
+    id: "p1", author: "Ruth Ndegwa", org: "WDC · Forecast Lead",   role: "Forecast Lead",  pillar: "P1",
     time: "2h ago",
     text: "Just finished a post-flood WASH assessment in the Saint-Louis region. Key finding: 60% of boreholes contaminated within 500m of overflow zones. Sharing the full field methodology — happy to answer questions from anyone running similar assessments. #flood-wash #WASH #West-Africa",
     image: IMG.post1, doc: null,
     reactions: { "👍": 41, "❤️": 14, "💡": 22, "🎉": 8 }, comments: 17, pinned: true,
   },
   {
-    id: "p2", author: "Yuki Tanaka",  org: "WDC Asia-Pacific",  role: "GIS & Remote Sensing", pillar: "P2",
+    id: "p2", author: "Zainab Akhtar", org: "WDC · Co-Founder & CSO", role: "GIS & Remote Sensing", pillar: "P2",
     time: "5h ago",
     text: "Tested Copernicus EMS rapid mapping on the Miyazaki landslide event. Concordance with field ground-truth data: 87% — strong enough for initial response prioritisation. Sharing the comparison methodology. Anyone else running this validation workflow?",
     image: null,
@@ -143,14 +151,14 @@ const POSTS = [
     reactions: { "👍": 67, "❤️": 21, "💡": 44, "🎉": 9 }, comments: 23, pinned: false,
   },
   {
-    id: "p3", author: "Fatima Al-Rashid", org: "WDC MENA", role: "Response Coordinator", pillar: "P3",
+    id: "p3", author: "Sapiens Ndatabaye", org: "WDC · Co-Founder & CEO", role: "Executive Director", pillar: "P3",
     time: "1d ago",
-    text: "Hosting a 30-min session this Wednesday on cluster coordination gaps — drawn from 3 years in Syria, Lebanon, and Iraq. No slides, just open discussion. Join link in the Events tab. All time zones welcome. #coordination #cluster #MENA",
+    text: "Hosting a 30-min session this Wednesday on cluster coordination gaps — drawn from field work across DRC, Burundi, Haiti, Jamaica, and Afghanistan. No slides, just open discussion. Join link in the Events tab. All time zones welcome. #coordination #cluster #field",
     image: IMG.post2, doc: null,
     reactions: { "👍": 89, "❤️": 32, "💡": 27, "🎉": 19 }, comments: 41, pinned: false,
   },
   {
-    id: "p4", author: "Mwila Banda", org: "WDC Southern Africa", role: "Resilience Specialist", pillar: "P4",
+    id: "p4", author: "David Kabanga", org: "WDC · CTO", role: "Chief Technology Officer", pillar: "P4",
     time: "2d ago",
     text: "Updated framework on community-led recovery monitoring across 8 southern African countries. Key finding: community-owned post-disaster tracking reduces recovery timeline by ~23% vs. externally managed assessments. Full methodology below. #recovery #resilience #Southern-Africa",
     image: null,
@@ -161,11 +169,11 @@ const POSTS = [
 
 const COMMENTS_MAP = {
   p1: [
-    { author: "Nadia Al-Hassan", pillar: "P1", text: "We ran a similar assessment in the Niger Delta — the 500m contamination radius matches our findings exactly. Happy to share the borehole testing protocol we used.", time: "1h ago" },
-    { author: "Kofi Mensah",     pillar: "P2", text: "Amara, can you share the rapid turbidity test kit you're using in the field? We're equipping a new WASH team for the rainy season.", time: "45m ago" },
+    { author: "James Mbogo",    pillar: "P1", text: "We ran a similar assessment in the Niger Delta — the 500m contamination radius matches our findings exactly. Happy to share the borehole testing protocol we used.", time: "1h ago" },
+    { author: "Anselme Konan",  pillar: "P2", text: "Ruth, can you share the rapid turbidity test kit you're using in the field? We're equipping a new WASH team for the rainy season.", time: "45m ago" },
   ],
   p3: [
-    { author: "Mwila Banda", pillar: "P4", text: "I'll be there, Fatima. Cluster gaps in recovery phase are something I'd like to discuss — specifically handover timing from emergency to recovery clusters.", time: "20h ago" },
+    { author: "David Kabanga", pillar: "P4", text: "I'll be there, Sapiens. Cluster gaps in recovery phase are something I'd like to discuss — specifically handover timing from emergency to recovery clusters.", time: "20h ago" },
   ],
 };
 
@@ -189,7 +197,7 @@ const NEWSLETTERS = [
   { issue: 6, month: "June 2026",     topic: "Field Insights",   title: "The Flood WASH Gap: Field Evidence from 4 Countries",      excerpt: "What our Heroes found when they compared borehole contamination data across Bangladesh, Senegal, Nigeria, and Uganda.",                   img: IMG.nl3, color: "#7C3AED",  featured: false, readTime: "7 min" },
   { issue: 5, month: "May 2026",      topic: "Research",         title: "Community Recovery: A Continental Benchmark",               excerpt: "First pan-African study on community-led vs. externally managed recovery — 8 countries, 62 disaster sites, 3 years of data.",            img: IMG.nl4, color: T.darkBlue, featured: false, readTime: "10 min" },
   { issue: 4, month: "April 2026",    topic: "Field Insights",   title: "Cyclone Preparedness: Three Countries, Three Models",       excerpt: "How Mozambique, Vanuatu, and the Philippines approach cyclone preparedness differently — and what each can learn from the others.",       img: IMG.nl5, color: "#DC6B19",  featured: false, readTime: "6 min" },
-  { issue: 3, month: "March 2026",    topic: "Community",        title: "Hero Spotlight: Field Lessons from 5 Years in the Sahel",  excerpt: "Mwila Banda on drought response, the limits of satellite data, and why community trust matters more than any tool.",                    img: IMG.nl6, color: "#BE185D",  featured: false, readTime: "9 min" },
+  { issue: 3, month: "March 2026",    topic: "Community",        title: "Hero Spotlight: Field Lessons from 5 Years in the Sahel",  excerpt: "David Kabanga on drought response, the limits of satellite data, and why community trust matters more than any tool.",                   img: IMG.nl6, color: "#BE185D",  featured: false, readTime: "9 min" },
 ];
 
 const NL_TOPICS = ["All", "Early Warning", "Field Insights", "Research", "Events Recap", "Community"];
@@ -225,9 +233,11 @@ function QuoteAvatar({ name, img, accent }) {
                     fontSize: 15, fontWeight: 800, color: "#fff" }}>
         {name.split(" ").map(w => w[0]).join("").slice(0, 2)}
       </div>
-      <img src={img} alt={name} loading="lazy"
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
-        onError={e => { e.currentTarget.style.display = "none"; }} />
+      {img && (
+        <img src={img} alt={name} loading="lazy"
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+          onError={e => { e.currentTarget.style.display = "none"; }} />
+      )}
     </div>
   );
 }
@@ -688,7 +698,7 @@ export default function DisasterHeroesPage() {
                   <p style={{ fontSize: 10, fontWeight: 700, color: T.muted, textTransform: "uppercase",
                                letterSpacing: "0.08em", marginBottom: 10 }}>Online now</p>
                   {[
-                    { n: "Amara Diallo" }, { n: "Yuki Tanaka" }, { n: "Fatima Al-Rashid" }, { n: "Mwila Banda" }
+                    { n: "Ruth Ndegwa" }, { n: "Zainab Akhtar" }, { n: "Sapiens Ndatabaye" }, { n: "David Kabanga" }
                   ].map((m, i) => (
                     <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
                       <div style={{ position: "relative" }}>
