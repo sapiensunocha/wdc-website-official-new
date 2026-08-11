@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
@@ -34,7 +35,7 @@ function PartnerLoginGate({ onLogin }) {
   const inp = "w-full px-4 py-3 rounded-xl text-sm border border-border outline-none focus:border-primary transition-colors bg-white";
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-surface-subtle px-4 py-12">
+    <div className="min-h-[80vh] flex items-center justify-center bg-surface-subtle px-4 py-12">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4"
@@ -405,7 +406,7 @@ export default function RosterPartnerPage() {
 
   if (loadingAuth) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-surface-subtle">
+      <div className="min-h-[60vh] flex items-center justify-center">
         <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
       </div>
     );
@@ -441,9 +442,14 @@ export default function RosterPartnerPage() {
   const inp = "w-full px-3 py-2 rounded-xl text-sm border border-border outline-none focus:border-primary transition-colors bg-white";
 
   return (
-    <div className="min-h-screen flex" style={{ background: "#f8fafc" }}>
+    <>
+    <Helmet>
+      <title>Partner Portal | WDC Expert Roster</title>
+      <meta name="robots" content="noindex" />
+    </Helmet>
+    <div className="flex min-h-[calc(100vh-7rem)]" style={{ background: "#f8fafc" }}>
       {/* Sidebar */}
-      <aside className="w-64 flex-shrink-0 bg-white border-r border-border flex flex-col shadow-sm">
+      <aside className="w-64 flex-shrink-0 bg-white border-r border-border flex flex-col shadow-sm sticky top-[6.5rem] lg:top-[7rem] h-[calc(100vh-6.5rem)] lg:h-[calc(100vh-7rem)]">
         <div className="p-5 border-b border-border" style={{ background: "linear-gradient(135deg, #001129, #002050)" }}>
           <div className="flex items-center gap-3 mb-3">
             <div className="w-10 h-10 rounded-xl flex items-center justify-center"
@@ -835,5 +841,6 @@ export default function RosterPartnerPage() {
         />
       )}
     </div>
+    </>
   );
 }

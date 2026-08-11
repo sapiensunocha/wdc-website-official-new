@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { toast } from "react-toastify";
 import {
   User, Briefcase, Globe, Award, MapPin, Users, FileText,
@@ -154,7 +155,14 @@ export default function RosterApplyPage() {
   }
 
   return (
-    <div className="min-h-screen bg-surface-subtle py-12 px-4">
+    <>
+      <Helmet>
+        <title>Apply to the WDC Expert Roster | World Disaster Center</title>
+        <meta name="description" content="Join the WDC Global Expert Roster. Apply as a certified humanitarian professional and get deployed to disaster response missions worldwide." />
+        <link rel="canonical" href="https://www.worlddisastercenter.org/roster/apply" />
+      </Helmet>
+
+    <div className="bg-surface-subtle py-12 px-4">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
@@ -162,7 +170,7 @@ export default function RosterApplyPage() {
             <ChevronLeft size={14} /> Back to Roster
           </Link>
           <h1 className="h2 text-content-primary">Join the WDC Expert Roster</h1>
-          <p className="body-3 text-content-secondary mt-2">Complete all 7 steps to submit your application. Be thorough — quality profiles get deployed first.</p>
+          <p className="body-3 text-content-secondary mt-2 max-w-lg mx-auto">Complete all 7 steps to submit your application. Quality profiles get deployed first.</p>
         </div>
 
         <div className="bg-white rounded-3xl p-8 shadow-sm border border-border">
@@ -449,7 +457,15 @@ export default function RosterApplyPage() {
             )}
           </div>
         </div>
+
+        <p className="text-center text-xs text-content-tertiary mt-6">
+          Having trouble with your application?{" "}
+          <a href="mailto:office@worlddisastercenter.org" className="text-primary hover:underline font-medium">
+            office@worlddisastercenter.org
+          </a>
+        </p>
       </div>
     </div>
+    </>
   );
 }

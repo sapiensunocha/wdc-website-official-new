@@ -78,15 +78,14 @@ const App = () => {
       {loading && <LoaderAnimation />}
 
       <Routes>
-        {/* Roster — standalone full-page layouts (no shared nav/footer) */}
-        <Route path="/roster" element={<RosterPage />} />
-        <Route path="/roster/apply" element={<RosterApplyPage />} />
-        <Route path="/roster/login" element={<RosterLoginPage />} />
-        <Route path="/roster/dashboard" element={<RosterDashboard />} />
-        <Route path="/roster/admin" element={<RosterAdminPage />} />
-        <Route path="/roster/partner" element={<RosterPartnerPage />} />
-
         <Route element={<Layout />}>
+          {/* Roster */}
+          <Route path="/roster" element={<RosterPage />} />
+          <Route path="/roster/apply" element={<RosterApplyPage />} />
+          <Route path="/roster/login" element={<RosterLoginPage />} />
+          <Route path="/roster/dashboard" element={<RosterDashboard />} />
+          <Route path="/roster/admin" element={<RosterAdminPage />} />
+          <Route path="/roster/partner" element={<RosterPartnerPage />} />
           {/* Home */}
           <Route path="/" element={<HomePage />} />
 

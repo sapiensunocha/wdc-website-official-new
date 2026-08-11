@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import {
   Globe, Shield, Award, Zap, Users, CheckCircle, ArrowRight,
   MapPin, Clock, Star, TrendingUp, BookOpen, Briefcase,
@@ -120,6 +121,16 @@ export default function RosterPage() {
   const [activeTab, setActiveTab] = useState("talent");
 
   return (
+    <>
+    <Helmet>
+      <title>WDC Expert Roster | Global Humanitarian Talent Pool</title>
+      <meta name="description" content="Join the WDC Global Expert Roster — a network of 1,200+ certified humanitarian professionals deployed to disaster response missions in 68 countries. Apply as an expert or find talent for your organisation." />
+      <meta name="keywords" content="humanitarian roster, disaster response experts, WDC roster, humanitarian deployment, disaster specialists, NGO talent" />
+      <link rel="canonical" href="https://www.worlddisastercenter.org/roster" />
+      <meta property="og:title" content="WDC Expert Roster | Global Humanitarian Talent Pool" />
+      <meta property="og:description" content="1,200+ certified disaster experts. 68 countries. 18-day average deployment. Join the world's most rigorous humanitarian talent platform." />
+      <meta property="og:url" content="https://www.worlddisastercenter.org/roster" />
+    </Helmet>
     <div className="bg-white overflow-hidden">
 
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
@@ -449,5 +460,6 @@ export default function RosterPage() {
         </div>
       </section>
     </div>
+    </>
   );
 }

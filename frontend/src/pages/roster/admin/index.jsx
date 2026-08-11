@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { toast } from "react-toastify";
 import {
   LayoutDashboard, Users, Send, Building2, Calendar, ShieldCheck,
@@ -46,7 +47,7 @@ function AdminLogin({ onLogin }) {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-surface-subtle px-4">
+    <div className="min-h-[80vh] flex items-center justify-center bg-surface-subtle px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ background: "linear-gradient(135deg, #001129, #002050)" }}>
@@ -218,9 +219,14 @@ export default function RosterAdminPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-surface-subtle flex">
+    <>
+    <Helmet>
+      <title>Roster Admin | World Disaster Center</title>
+      <meta name="robots" content="noindex" />
+    </Helmet>
+    <div className="bg-surface-subtle flex min-h-[calc(100vh-7rem)]">
       {/* Sidebar */}
-      <aside className="w-60 bg-white border-r border-border flex flex-col h-screen sticky top-0 shrink-0">
+      <aside className="w-60 bg-white border-r border-border flex flex-col shrink-0 sticky top-[6.5rem] lg:top-[7rem] h-[calc(100vh-6.5rem)] lg:h-[calc(100vh-7rem)]">
         <div className="px-4 pt-5 pb-4 border-b border-border">
           <div className="flex items-center gap-2 mb-1">
             <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg, #001129, #002050)" }}>
@@ -628,5 +634,6 @@ export default function RosterAdminPage() {
         )}
       </main>
     </div>
+    </>
   );
 }
