@@ -8,11 +8,46 @@ import {
   AlertCircle, LogIn,
 } from "lucide-react";
 import { registerRosterMember, updateMyRosterProfile } from "../../../api/roster";
+import SearchableSelect from "../../../components/SearchableSelect";
 
 const SECTORS = ["Early Warning", "Emergency Response", "Health & Medical", "WASH", "Shelter & NFI", "GIS & Remote Sensing", "Data & AI", "Training & Capacity Building", "Protection & Human Rights", "M&E", "Coordination & IM", "Policy & Strategy", "Logistics", "Communications", "Finance", "Legal & Compliance", "Psychosocial Support"];
 const REGIONS = ["Africa — East", "Africa — West", "Africa — Central", "Africa — Southern", "Africa — North", "Asia — South", "Asia — Southeast", "Asia — Central", "Middle East", "Europe", "Latin America", "Pacific", "Global / Remote"];
 const SKILL_LEVELS = ["beginner", "intermediate", "advanced", "expert"];
 const LANG_LEVELS = ["basic", "conversational", "professional", "native"];
+
+const COUNTRIES = [
+  "Afghanistan","Albania","Algeria","Angola","Argentina","Armenia","Australia",
+  "Austria","Azerbaijan","Bangladesh","Belgium","Benin","Bolivia","Bosnia",
+  "Botswana","Brazil","Burkina Faso","Burundi","Cambodia","Cameroon","Canada",
+  "Central African Republic","Chad","Chile","China","Colombia","Comoros",
+  "Congo (DRC)","Congo (Republic)","Costa Rica","Côte d'Ivoire","Croatia","Cuba",
+  "Djibouti","Dominican Republic","Ecuador","Egypt","El Salvador","Eritrea",
+  "Ethiopia","Fiji","France","Gambia","Georgia","Germany","Ghana","Greece",
+  "Guatemala","Guinea","Guinea-Bissau","Haiti","Honduras","Hungary","India",
+  "Indonesia","Iran","Iraq","Ireland","Italy","Jamaica","Japan","Jordan",
+  "Kazakhstan","Kenya","Kosovo","Kyrgyzstan","Laos","Lebanon","Lesotho",
+  "Liberia","Libya","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta",
+  "Mauritania","Mauritius","Mexico","Moldova","Mongolia","Morocco","Mozambique",
+  "Myanmar","Namibia","Nepal","Netherlands","Nicaragua","Niger","Nigeria",
+  "North Korea","Norway","Pakistan","Palestine","Panama","Papua New Guinea",
+  "Paraguay","Peru","Philippines","Poland","Portugal","Rwanda","Saudi Arabia",
+  "Senegal","Sierra Leone","Solomon Islands","Somalia","South Africa",
+  "South Sudan","Spain","Sri Lanka","Sudan","Sweden","Syria","Tajikistan",
+  "Tanzania","Thailand","Timor-Leste","Togo","Trinidad & Tobago","Tunisia",
+  "Turkey","Turkmenistan","Uganda","Ukraine","United Kingdom","United States",
+  "Uzbekistan","Vanuatu","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe","Other",
+];
+
+const LANG_LIST = [
+  "English","French","Arabic","Spanish","Portuguese","Russian",
+  "Swahili","Hausa","Amharic","Somali","Tigrinya","Oromo","Lingala",
+  "Kinyarwanda","Kirundi","Luganda","Shona","Zulu","Wolof","Bambara",
+  "Dioula","Twi","Yoruba","Igbo","Kiswahili",
+  "Hindi","Urdu","Pashto","Dari","Bengali","Indonesian","Malay",
+  "Filipino","Burmese","Khmer","Chinese (Mandarin)","Chinese (Cantonese)",
+  "Japanese","Korean","Turkish","Persian/Farsi","Kurdish",
+  "German","Italian","Dutch","Polish","Ukrainian","Haitian Creole","Other",
+];
 
 const PW_RULES = [
   { id: "len",   label: "At least 8 characters",             test: (p) => p.length >= 8 },
@@ -74,6 +109,13 @@ function Field({ label, required, children, hint, error }) {
 
 const inputCls    = "w-full px-3 py-2.5 rounded-xl text-sm outline-none border border-border focus:border-primary transition-colors bg-white";
 const inputErrCls = "w-full px-3 py-2.5 rounded-xl text-sm outline-none border border-red-400 focus:border-red-500 transition-colors bg-white";
+
+const selectStyle = {
+  width: "100%", padding: "10px 12px", borderRadius: 12, fontSize: 14,
+  border: "1px solid #E2E8F0", background: "#fff", color: "#1e293b",
+  transition: "border-color .2s", fontFamily: "inherit",
+};
+const selectErrStyle = { ...selectStyle, border: "1px solid #f87171" };
 
 function PasswordStrength({ password }) {
   if (!password) return null;
@@ -281,10 +323,22 @@ export default function RosterApplyPage() {
                     </select>
                   </Field>
                   <Field label="Nationality">
-                    <input value={form.nationality} onChange={e => set("nationality", e.target.value)} className={inputCls} placeholder="e.g. Kenyan" />
+                    <SearchableSelect
+                      options={COUNTRIES}
+                      value={form.nationality}
+                      onChange={v => set("nationality", v)}
+                      placeholder="Select nationality…"
+                      style={selectStyle}
+                    />
                   </Field>
                   <Field label="Country of Residence">
-                    <input value={form.countryOfResidence} onChange={e => set("countryOfResidence", e.target.value)} className={inputCls} placeholder="e.g. Kenya" />
+                    <SearchableSelect
+                      options={COUNTRIES}
+                      value={form.countryOfResidence}
+                      onChange={v => set("countryOfResidence", v)}
+                      placeholder="Select country…"
+                      style={selectStyle}
+                    />
                   </Field>
                   <Field label="City">
                     <input value={form.city} onChange={e => set("city", e.target.value)} className={inputCls} placeholder="e.g. Nairobi" />
@@ -373,12 +427,12 @@ export default function RosterApplyPage() {
                 <div>
                   <p className="text-sm font-semibold text-content-secondary mb-3">Languages</p>
                   <div className="flex flex-col gap-2 mb-4">
-                    <input
+                    <SearchableSelect
+                      options={LANG_LIST}
                       value={newLang.language}
-                      onChange={e => setNewLang(v => ({ ...v, language: e.target.value }))}
-                      onKeyDown={e => { if (e.key === "Enter" && newLang.language.trim()) { addToArray("languages", { ...newLang }); setNewLang({ language: "", proficiency: "professional" }); }}}
-                      className={inputCls}
-                      placeholder="Language (e.g. French, Swahili, Arabic)"
+                      onChange={v => setNewLang(prev => ({ ...prev, language: v }))}
+                      placeholder="Select a language…"
+                      style={selectStyle}
                     />
                     <div className="flex gap-2">
                       <select value={newLang.proficiency} onChange={e => setNewLang(v => ({ ...v, proficiency: e.target.value }))} className={`${inputCls} flex-1`}>
@@ -443,7 +497,13 @@ export default function RosterApplyPage() {
                     <input value={newEdu.institution} onChange={e => setNewEdu(v => ({ ...v, institution: e.target.value }))} className={inputCls} placeholder="Institution" />
                     <input value={newEdu.degree}      onChange={e => setNewEdu(v => ({ ...v, degree: e.target.value }))}      className={inputCls} placeholder="Degree (e.g. MSc, PhD)" />
                     <input value={newEdu.field}       onChange={e => setNewEdu(v => ({ ...v, field: e.target.value }))}       className={inputCls} placeholder="Field of study" />
-                    <input value={newEdu.country}     onChange={e => setNewEdu(v => ({ ...v, country: e.target.value }))}     className={inputCls} placeholder="Country" />
+                    <SearchableSelect
+                      options={COUNTRIES}
+                      value={newEdu.country}
+                      onChange={v => setNewEdu(prev => ({ ...prev, country: v }))}
+                      placeholder="Country…"
+                      style={selectStyle}
+                    />
                     <input type="date" value={newEdu.from} onChange={e => setNewEdu(v => ({ ...v, from: e.target.value }))} className={inputCls} />
                     <div className="flex gap-2">
                       <input type="date" value={newEdu.to} onChange={e => setNewEdu(v => ({ ...v, to: e.target.value }))} className={`${inputCls} flex-1`} />

@@ -5,8 +5,9 @@ import { supabase } from "../../../lib/supabase";
 import {
   Shield, Upload, CheckCircle2, ArrowRight, ArrowLeft,
   MapPin, Clock, User, Mail, Briefcase, Globe, Camera,
-  AlertCircle, ChevronDown,
+  AlertCircle,
 } from "lucide-react";
+import SearchableSelect from "../../../components/SearchableSelect";
 
 const T = {
   bg:      "#F5F5F7",
@@ -396,14 +397,13 @@ export default function DisasterHeroesApply() {
 
                 <div>
                   <label style={{ fontSize: 12, fontWeight: 600, color: T.muted, display: "block", marginBottom: 6 }}>Country *</label>
-                  <div style={{ position: "relative" }}>
-                    <select style={{ ...field, appearance: "none", paddingRight: 36 }}
-                      value={form.country} onChange={e => set("country", e.target.value)}>
-                      <option value="">Select your country</option>
-                      {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
-                    </select>
-                    <ChevronDown size={14} style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", color: T.muted, pointerEvents: "none" }} />
-                  </div>
+                  <SearchableSelect
+                    options={COUNTRIES}
+                    value={form.country}
+                    onChange={v => set("country", v)}
+                    placeholder="Select your country…"
+                    style={{ ...field }}
+                  />
                 </div>
 
                 <div>
