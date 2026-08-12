@@ -30,14 +30,14 @@ const Hero = () => {
       <div className="absolute inset-0 bg-gradient-to-r from-[#003366]/80 via-[#005B9F]/60 to-transparent" />
 
       {/* Content */}
-      <div className="container relative z-10 py-24 lg:py-32">
+      <div className="container relative z-10 py-16 sm:py-20 lg:py-32">
         <div className="max-w-2xl">
           {/* Eyebrow tag */}
           <span className="inline-block px-3 py-1 bg-primary text-white text-xs font-bold uppercase tracking-widest rounded mb-6">
             Global Early Warning System
           </span>
 
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
             The Global Disaster{" "}
             <span className="relative inline-block">
               Monitoring &amp; Alert
@@ -51,7 +51,7 @@ const Hero = () => {
             System &ldquo;Michael&rdquo;
           </h1>
 
-          <p className="text-lg text-white/90 leading-relaxed mb-8 max-w-xl font-light">
+          <p className="text-base sm:text-lg text-white/90 leading-relaxed mb-8 max-w-xl font-light">
             Michael harnesses advanced AI and real-time data to deliver life-saving insights,
             empowering communities to navigate disasters with confidence and control.
           </p>

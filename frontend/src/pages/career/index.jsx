@@ -14,7 +14,7 @@ function CareerPage() {
         />
 
         {/* Open Volunteering Positions Section */}
-        <div className="w-full mt-12 bg-white border border-gray-300 p-6 rounded-lg shadow-md max-w-4xl">
+        <div className="w-full mt-12 bg-white border border-gray-300 p-4 sm:p-6 rounded-lg shadow-md max-w-4xl">
           <h5 className="text-gray-900 text-center text-2xl font-bold mb-4">
             Open Positions
           </h5>
@@ -39,11 +39,11 @@ function CareerPage() {
             ].map((item, index) => (
               <div
                 key={index}
-                className="flex justify-between items-center bg-gray-100 p-4 rounded-lg border border-gray-200 shadow-sm"
+                className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-gray-100 p-4 rounded-lg border border-gray-200 shadow-sm"
               >
                 <h3 className="text-gray-800 text-lg font-medium">{item.position}</h3>
                 <a href={item.link} target="_blank" rel="noopener noreferrer">
-                  <button className="px-4 py-2 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-primary-dark transition-all">
+                  <button className="px-5 py-2.5 w-full sm:w-auto text-center bg-primary text-white text-sm font-semibold rounded-lg hover:bg-primary-dark transition-all">
                     Apply
                   </button>
                 </a>
@@ -85,7 +85,7 @@ function CareerPage() {
         {/* Fraud Alert and Equal Opportunity Employer Section */}
         <div className="w-full mt-12 flex flex-col gap-6 items-center">
           {/* Fraud Alert Section */}
-          <div className="bg-red-100 border border-red-400 p-6 rounded-lg shadow-md w-full max-w-4xl text-center">
+          <div className="bg-red-100 border border-red-400 p-4 sm:p-6 rounded-lg shadow-md w-full max-w-4xl text-center">
             <div className="flex items-center justify-center mb-4">
               {/* <div className="bg-red-500 text-white rounded-full p-4 mr-4">
                 <svg

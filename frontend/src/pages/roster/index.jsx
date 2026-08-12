@@ -147,7 +147,7 @@ export default function RosterPage() {
               <span className="tagline text-primary-light">WDC Global Roster — Talent Pool</span>
             </div>
 
-            <h1 className="h1 text-n-1 mb-6 leading-tight">
+            <h1 className="h1 text-n-1 mb-6 leading-tight !text-[1.75rem] sm:!text-[2.5rem] md:!text-[2.75rem] lg:!text-[3.25rem] xl:!text-[3.75rem]">
               Deploy World-Class<br />
               <span style={{ background: "linear-gradient(90deg, #009EDB, #4DC0E8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                 Disaster Experts
@@ -173,7 +173,7 @@ export default function RosterPage() {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
               {STATS.map(({ label, value, suffix, icon: Icon }) => {
                 const isLive = label === "Open Opportunities";
                 return (
@@ -195,7 +195,7 @@ export default function RosterPage() {
       {/* ── Live Pulse Strip ──────────────────────────────────────────────────── */}
       <div style={{ background: "#009EDB" }}>
         <div className="container py-3">
-          <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8 text-white text-xs font-semibold tracking-wide">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 md:gap-8 text-white text-xs font-semibold tracking-wide">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-green-300 animate-pulse shrink-0" />
               <span>24 Open Opportunities Right Now</span>
@@ -234,7 +234,7 @@ export default function RosterPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {(activeTab === "talent" ? STEPS_TALENT : STEPS_PARTNER).map(({ icon: Icon, step, title, desc }) => (
               <div key={step} className="relative p-6 rounded-2xl bg-white border border-border text-center group hover:-translate-y-1 transition-transform duration-300">
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs font-bold px-3 py-1 rounded-full text-white" style={{ background: "#009EDB" }}>{step}</div>
@@ -385,7 +385,7 @@ export default function RosterPage() {
                     {opp.urgency}
                   </span>
                 </div>
-                <h4 className="font-bold text-content-primary mb-3 leading-snug text-sm">{opp.title}</h4>
+                <h4 className="font-bold text-content-primary mb-3 leading-snug text-sm line-clamp-2">{opp.title}</h4>
                 <div className="space-y-1 mb-3 text-xs text-content-secondary">
                   <div className="flex items-center gap-1.5"><MapPin size={11} />{opp.location}</div>
                   <div className="flex items-center gap-1.5"><Clock size={11} />{opp.duration}</div>
@@ -412,7 +412,7 @@ export default function RosterPage() {
       {/* ── Quality promise ───────────────────────────────────────────────── */}
       <section className="py-16 bg-surface-subtle">
         <div className="container">
-          <div className="grid md:grid-cols-4 gap-6 text-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-center">
             {[
               { icon: Shield, label: "Zero Tolerance", desc: "Full background checks. Every single roster member." },
               { icon: Award, label: "Certified Only", desc: "All certifications verified before roster activation." },
@@ -432,7 +432,7 @@ export default function RosterPage() {
       </section>
 
       {/* ── Final CTA ─────────────────────────────────────────────────────── */}
-      <section className="py-24 text-center relative overflow-hidden" style={{ background: "linear-gradient(135deg, #001129 0%, #002050 100%)" }}>
+      <section className="py-12 sm:py-16 md:py-24 text-center relative overflow-hidden" style={{ background: "linear-gradient(135deg, #001129 0%, #002050 100%)" }}>
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: "linear-gradient(rgba(0,158,219,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(0,158,219,0.5) 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
         <div className="container relative">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary-light/30 bg-primary/10 mb-6">

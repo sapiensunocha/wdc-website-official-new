@@ -55,7 +55,7 @@ const HomePage = () => {
           <div className="flex w-full border-b border-gray-200 mb-10">
             <button
               onClick={() => setSolutionsSection("GlobalProducts")}
-              className={`w-1/2 py-5 font-bold text-lg transition-all ${
+              className={`w-1/2 py-3 sm:py-5 font-bold text-sm sm:text-lg transition-all ${
                 solutionsSection === "GlobalProducts"
                   ? "text-primary border-b-4 border-primary"
                   : "text-gray-500 hover:text-gray-700"
@@ -65,7 +65,7 @@ const HomePage = () => {
             </button>
             <button
               onClick={() => setSolutionsSection("Solutions")}
-              className={`w-1/2 py-5 font-bold text-lg transition-all ${
+              className={`w-1/2 py-3 sm:py-5 font-bold text-sm sm:text-lg transition-all ${
                 solutionsSection === "Solutions"
                   ? "text-primary border-b-4 border-primary"
                   : "text-gray-500 hover:text-gray-700"
@@ -84,7 +84,7 @@ const HomePage = () => {
       <div className="bg-white">
         <div className="container sm:px-2 py-20">
           {/* Section header */}
-          <div className="flex justify-between items-end mb-10">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4 mb-8">
             <div>
               <p className="tagline text-primary mb-2">Latest Updates</p>
               <h2 className="h2 text-content-primary mb-4">Latest Intelligence</h2>
@@ -113,14 +113,14 @@ const HomePage = () => {
             </div>
             <Link
               to="/news"
-              className="hidden md:flex items-center gap-2 text-primary font-bold hover:underline tracking-wide uppercase text-sm"
+              className="flex items-center gap-2 text-primary font-bold hover:underline tracking-wide uppercase text-sm mt-2 sm:mt-0"
             >
               View All <ArrowRight size={16} />
             </Link>
           </div>
 
           {/* Cards grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
             {isLoadingNews ? (
               <div className="col-span-3 flex justify-center py-20">
                 <Loader2 className="animate-spin text-primary" size={36} />
@@ -237,27 +237,27 @@ const HomePage = () => {
       )}
 
       {/* Roster CTA */}
-      <div className="bg-[#1C2B39] text-white py-16">
-        <div className="container sm:px-2 flex flex-col md:flex-row items-center justify-between gap-10">
+      <div className="bg-[#1C2B39] text-white py-10 sm:py-16">
+        <div className="container sm:px-2 flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-10">
           <div className="max-w-xl">
             <p className="text-[#009EDB] text-xs font-black uppercase tracking-widest mb-3">Join Our Network</p>
-            <h2 className="text-3xl md:text-4xl font-bold leading-tight mb-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight mb-4">
               Are you a disaster response expert?
             </h2>
             <p className="text-gray-300 text-base leading-relaxed">
               WDC connects vetted humanitarian professionals with global deployment opportunities. Join our expert roster and help communities before, during, and after disasters.
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row md:flex-col gap-3 shrink-0">
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <Link
               to="/roster/apply"
-              className="bg-[#009EDB] hover:bg-[#0080b5] text-white font-bold px-8 py-3.5 rounded-sm text-sm tracking-wide transition-colors text-center whitespace-nowrap"
+              className="bg-[#009EDB] hover:bg-[#0080b5] text-white font-bold px-8 py-3.5 rounded-sm text-sm tracking-wide transition-colors text-center whitespace-nowrap w-full sm:w-auto"
             >
               Apply to the Roster
             </Link>
             <Link
               to="/roster"
-              className="border border-white/30 hover:border-white text-white font-bold px-8 py-3.5 rounded-sm text-sm tracking-wide transition-colors text-center whitespace-nowrap"
+              className="border border-white/30 hover:border-white text-white font-bold px-8 py-3.5 rounded-sm text-sm tracking-wide transition-colors text-center whitespace-nowrap w-full sm:w-auto"
             >
               Learn More
             </Link>

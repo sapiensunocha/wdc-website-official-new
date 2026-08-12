@@ -14,7 +14,7 @@ const Footer = () => {
         </div>
       </div>
       <br />
-      <div className="" style={{ marginInline: "50px" }}>
+      <div className="px-4 sm:px-12">
         <hr
           style={{
             borderColor: "#6c8fa3",
@@ -56,7 +56,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="container flex justify-around">
+      <div className="container flex flex-wrap justify-around gap-6 px-4">
         <div>
           <br />
           <br />
@@ -129,7 +129,7 @@ const Footer = () => {
         </div>
       </div>
       <br />
-      <div className="container flex sm:justify-between justify-center items-center gap-10 max-sm:flex-col">
+      <div className="container flex sm:justify-between justify-center items-center gap-4 sm:gap-8 flex-col sm:flex-row text-center sm:text-left">
         <div className="flex justify-center">
           <a href="mailto:office@worlddisastercenter.org">
             office@worlddisastercenter.org

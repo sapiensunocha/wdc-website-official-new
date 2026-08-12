@@ -57,11 +57,11 @@ function FounderSection() {
   return (
     <section className="bg-[#1C2B39] text-white py-20">
       <div className="container">
-        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+        <div className="flex flex-col lg:flex-row items-center gap-8 sm:gap-12 lg:gap-20">
 
           {/* Photo */}
           <div className="shrink-0 flex flex-col items-center gap-4">
-            <div className="w-52 h-52 lg:w-64 lg:h-64 rounded-full overflow-hidden border-4 border-[#009EDB] shadow-2xl">
+            <div className="w-40 h-40 sm:w-52 sm:h-52 lg:w-64 lg:h-64 rounded-full overflow-hidden border-4 border-[#009EDB] shadow-2xl">
               <img
                 src={FounderPhoto}
                 alt="Sapiens Ndatabaye — Founder, World Disaster Center"
@@ -99,7 +99,7 @@ function FounderSection() {
           <div className="flex-1">
             <div className="h-1 w-12 bg-[#009EDB] mb-6" />
             <p className="tagline text-[#009EDB] mb-4">A Message from the Founder</p>
-            <blockquote className="text-2xl lg:text-3xl font-light text-white leading-relaxed">
+            <blockquote className="text-xl sm:text-2xl lg:text-3xl font-light text-white leading-relaxed">
               &ldquo;The world can no longer afford to face disasters{" "}
               <span className="font-bold text-white">unprepared, uninformed, and divided</span>{" "}
               in the moments that matter most. The World Disaster Center exists to deliver
@@ -111,18 +111,18 @@ function FounderSection() {
               This is not an initiative of convenience, but a global necessity to protect
               lives, strengthen resilience, and redefine how humanity responds to crisis.&rdquo;
             </p>
-            <div className="mt-8 pt-6 border-t border-white/10 flex flex-wrap gap-4">
+            <div className="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row flex-wrap gap-3">
               <a
                 href="https://www.linkedin.com/in/sapiens-ndatabaye-227425165"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 bg-[#009EDB] hover:bg-[#0072BC] text-white text-sm font-bold px-5 py-2.5 rounded transition-colors"
+                className="inline-flex items-center gap-2 bg-[#009EDB] hover:bg-[#0072BC] text-white text-sm font-bold px-5 py-2.5 rounded transition-colors w-full sm:w-auto"
               >
                 Connect on LinkedIn ↗
               </a>
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-2 border border-white/30 hover:border-white text-white text-sm font-bold px-5 py-2.5 rounded transition-colors"
+                className="inline-flex items-center gap-2 border border-white/30 hover:border-white text-white text-sm font-bold px-5 py-2.5 rounded transition-colors w-full sm:w-auto"
               >
                 Contact WDC
               </Link>
@@ -136,9 +136,9 @@ function FounderSection() {
 
 function FollowSection() {
   return (
-    <section className="bg-[#009EDB] py-10">
+    <section className="bg-[#009EDB] py-8 sm:py-10">
       <div className="container flex flex-col sm:flex-row items-center justify-between gap-6">
-        <div>
+        <div className="text-center sm:text-left">
           <p className="text-white font-bold text-xl">Follow World Disaster Center</p>
           <p className="text-white/80 text-sm mt-1">Stay updated on missions, tools, and disaster intelligence worldwide.</p>
         </div>
@@ -167,23 +167,23 @@ function AboutPage() {
 
       {/* ── Page hero ── */}
       <div className="bg-[#1C2B39] text-white">
-        <div className="container py-16">
+        <div className="container py-10 sm:py-14 md:py-16">
           <div className="h-1 w-12 bg-[#009EDB] mb-5" />
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">About World Disaster Center</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">About World Disaster Center</h1>
           <p className="text-white/70 text-lg max-w-2xl leading-relaxed">
             A global organization dedicated to disaster monitoring, early warning systems,
             and humanitarian intelligence — so no community faces a crisis alone.
           </p>
-          <div className="flex flex-wrap gap-4 mt-8">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-3 mt-6 sm:mt-8">
             <Link
               to="/impact"
-              className="inline-flex items-center gap-2 bg-[#009EDB] hover:bg-[#0072BC] text-white font-bold px-6 py-3 rounded text-sm transition-colors uppercase tracking-wider"
+              className="inline-flex items-center gap-2 bg-[#009EDB] hover:bg-[#0072BC] text-white font-bold px-6 py-3 rounded text-sm transition-colors uppercase tracking-wider w-full sm:w-auto"
             >
               Our Impact
             </Link>
             <Link
               to="/about/partners"
-              className="inline-flex items-center gap-2 border border-white/30 hover:border-white text-white font-bold px-6 py-3 rounded text-sm transition-colors uppercase tracking-wider"
+              className="inline-flex items-center gap-2 border border-white/30 hover:border-white text-white font-bold px-6 py-3 rounded text-sm transition-colors uppercase tracking-wider w-full sm:w-auto"
             >
               Our Partners
             </Link>
@@ -196,7 +196,7 @@ function AboutPage() {
         <div className="container py-14">
           <div className="max-w-4xl">
             <p className="tagline text-primary mb-3">Our Mission</p>
-            <p className="text-3xl md:text-4xl font-semibold text-content-primary leading-tight">
+            <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-content-primary leading-tight">
               &ldquo;We are on a mission to{" "}
               <span className="text-primary">end disaster impacts</span>{" "}
               everywhere.&rdquo;
@@ -215,7 +215,7 @@ function AboutPage() {
         <div className="container py-14">
           <div className="max-w-4xl">
             <p className="tagline text-primary mb-3">Our Vision</p>
-            <p className="text-3xl md:text-4xl font-semibold text-content-primary leading-tight">
+            <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-content-primary leading-tight">
               &ldquo;We envision a world where disasters no longer disrupt{" "}
               <span className="text-primary">determination, dreams, or aspiration.</span>&rdquo;
             </p>
@@ -246,7 +246,7 @@ function AboutPage() {
         <div className="container py-14">
           <div className="max-w-4xl">
             <p className="tagline text-primary mb-3">Our Commitment</p>
-            <p className="text-3xl md:text-4xl font-semibold text-content-primary leading-tight">
+            <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-content-primary leading-tight">
               &ldquo;We are dedicated to transforming{" "}
               <span className="text-primary">challenges into opportunities.</span>&rdquo;
             </p>

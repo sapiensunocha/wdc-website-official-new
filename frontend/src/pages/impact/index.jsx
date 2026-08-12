@@ -203,7 +203,7 @@ function CountryPanel({ country, index, total, onPrev, onNext, onClose }) {
 
           {/* Partner logos */}
           {country.images?.length > 0 && (
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               {country.images.map((img, i) => (
                 <div key={i} className="w-10 h-10 rounded border border-gray-200 overflow-hidden bg-white flex items-center justify-center">
                   <img src={img} alt="org logo" className="w-full h-full object-contain p-0.5" />
@@ -328,13 +328,13 @@ function ImpactPage() {
       <div className="bg-[#1C2B39] text-white">
         <div className="container py-14">
           <div className="h-1 w-12 bg-[#009EDB] mb-5" />
-          <h1 className="text-4xl md:text-5xl font-bold mb-3 text-white">Where We Work</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 text-white">Where We Work</h1>
           <p className="text-white/70 text-base max-w-2xl leading-relaxed">
             WDC operates across Africa, the Americas, Asia, and Europe — with offices in
             Ottawa, New York, and Vienna — delivering disaster monitoring, early warning
             systems, and community resilience programs worldwide.
           </p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 mt-10">
             {STATS.map((s) => (
               <div key={s.label}>
                 <div className="text-3xl font-black text-[#009EDB]">{s.n}</div>
@@ -347,7 +347,7 @@ function ImpactPage() {
 
       {/* ── Map + Side Panel ── */}
       <div className="container py-10">
-        <div className="flex flex-col lg:flex-row border border-gray-200 rounded-xl overflow-hidden shadow-lg min-h-[520px]">
+        <div className="flex flex-col lg:flex-row border border-gray-200 rounded-xl overflow-hidden shadow-lg min-h-[350px] sm:min-h-[450px] lg:min-h-[520px]">
 
           {/* Left: Map */}
           <div className="w-full lg:w-[60%] bg-slate-50 relative flex flex-col">
@@ -392,7 +392,7 @@ function ImpactPage() {
 
       {/* ── Country status summary cards ── */}
       <div className="container pb-10">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
           {Object.entries(STATUS_CFG).map(([status, cfg]) => {
             const countries = impactCountries.filter((c) => c.status === status);
             const isHQ = status === "HQ";

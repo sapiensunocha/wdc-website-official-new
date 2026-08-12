@@ -18,14 +18,14 @@ const Events = () => {
 
           <div className="container">
             {/* Updated grid to be responsive */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               {eventItemsSpecial.map((item, index) => (
                 <div
                   key={index}
                   className={`bg-white mb-4 rounded-lg shadow-md overflow-hidden`}
                 >
                   <div
-                    className="h-52 bg-cover bg-center"
+                    className="h-36 sm:h-44 md:h-52 bg-cover bg-center"
                     style={{ backgroundImage: `url(${item.image})` }}
                   ></div>
                   <div className="p-4">
@@ -36,7 +36,7 @@ const Events = () => {
                     <Link
                       to={`/Events/${item.title}`}
                       state={{ item }}
-                      className="inline-block mt-4 px-4 py-2 text-white bg-primary rounded hover:bg-primary"
+                      className="inline-block mt-4 px-4 py-2.5 text-white bg-primary rounded hover:bg-primary min-h-[44px] flex items-center"
                     >
                       See More
                     </Link>

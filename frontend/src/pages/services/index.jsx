@@ -236,25 +236,25 @@ export default function ServicesPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}
-      <div className="bg-[#418FDE] py-16 px-4">
+      <div className="bg-[#418FDE] py-12 sm:py-16 md:py-20 px-4">
         <div className="container max-w-4xl">
           <span className="text-xs font-black uppercase tracking-widest text-white/70 mb-2 block">
             World Disaster Center
           </span>
-          <h1 className="text-4xl font-bold text-white mb-3">Our Services</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3">Our Services</h1>
           <p className="text-white/85 text-lg max-w-2xl leading-relaxed">
             From free online training to government-scale technology deployments — WDC supports every organisation working to reduce disaster risk and save lives.
           </p>
-          <div className="flex flex-wrap gap-4 mt-8">
+          <div className="flex flex-col sm:flex-row gap-3 mt-8">
             <Link
               to="/training#estimator"
-              className="bg-white text-[#418FDE] font-bold px-6 py-3 rounded text-sm hover:bg-gray-100 transition-colors"
+              className="w-full sm:w-auto bg-white text-[#418FDE] font-bold px-6 py-3 rounded text-sm hover:bg-gray-100 transition-colors text-center"
             >
               Plan Your Training
             </Link>
             <Link
               to="/contact"
-              className="border-2 border-white text-white font-bold px-6 py-3 rounded text-sm hover:bg-white/10 transition-colors"
+              className="w-full sm:w-auto border-2 border-white text-white font-bold px-6 py-3 rounded text-sm hover:bg-white/10 transition-colors text-center"
             >
               Request a Proposal
             </Link>
@@ -266,7 +266,7 @@ export default function ServicesPage() {
       <div className="h-1 w-full bg-[#009EDB]" />
 
       {/* Services grid */}
-      <div className="bg-gray-50 py-16 px-4">
+      <div className="bg-gray-50 py-12 sm:py-16 md:py-20 px-4">
         <div className="container max-w-6xl">
           <div className="text-center mb-12">
             <span className="text-xs font-black uppercase tracking-widest text-[#418FDE] mb-2 block">
@@ -277,7 +277,7 @@ export default function ServicesPage() {
               WDC operates across four core service areas, each designed to make communities and organisations more resilient.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8">
             {SERVICES.map((s, i) => (
               <ServiceCard key={i} service={s} />
             ))}
@@ -286,7 +286,7 @@ export default function ServicesPage() {
       </div>
 
       {/* Training pricing */}
-      <div className="py-16 px-4 bg-white">
+      <div className="py-12 sm:py-16 md:py-20 px-4 bg-white">
         <div className="container max-w-6xl">
           <div className="text-center mb-12">
             <span className="text-xs font-black uppercase tracking-widest text-[#418FDE] mb-2 block">
@@ -306,7 +306,7 @@ export default function ServicesPage() {
       </div>
 
       {/* How We Charge */}
-      <div className="bg-gray-50 border-t border-gray-200 py-16 px-4">
+      <div className="bg-gray-50 border-t border-gray-200 py-12 sm:py-16 md:py-20 px-4">
         <div className="container max-w-5xl">
           <div className="text-center mb-12">
             <span className="text-xs font-black uppercase tracking-widest text-[#418FDE] mb-2 block">
@@ -318,8 +318,9 @@ export default function ServicesPage() {
             </p>
           </div>
 
-          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
-            <table className="w-full text-sm">
+          <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
+          <div className="bg-white overflow-hidden">
+            <table className="w-full text-sm min-w-[480px]">
               <thead>
                 <tr className="bg-[#418FDE] text-white">
                   <th className="text-left px-6 py-4 font-bold uppercase tracking-wide text-xs w-1/5">Service</th>
@@ -338,6 +339,7 @@ export default function ServicesPage() {
               </tbody>
             </table>
           </div>
+          </div>
 
           <p className="text-center text-xs text-gray-500 mt-4">
             All prices are indicative. Final fees depend on scope, location, duration, and number of participants. NGOs, local governments, and community-based organisations may be eligible for reduced rates.
@@ -346,7 +348,7 @@ export default function ServicesPage() {
       </div>
 
       {/* Why WDC */}
-      <div className="bg-white py-14 px-4 border-t border-gray-200">
+      <div className="bg-white py-10 sm:py-14 px-4 border-t border-gray-200">
         <div className="container max-w-5xl">
           <h2 className="text-2xl font-bold text-gray-900 text-center mb-10">Why Choose WDC?</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -371,27 +373,27 @@ export default function ServicesPage() {
       </div>
 
       {/* CTA */}
-      <div className="bg-[#418FDE] py-14 px-4 text-center text-white">
-        <h2 className="text-3xl font-bold mb-3">Ready to Work With WDC?</h2>
+      <div className="bg-[#418FDE] py-10 sm:py-14 px-4 text-center text-white">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-3">Ready to Work With WDC?</h2>
         <p className="text-white/80 mb-8 max-w-xl mx-auto">
           Tell us about your training or technical needs and our team will respond within 48 hours with a tailored proposal.
         </p>
-        <div className="flex flex-wrap justify-center gap-4">
+        <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3">
           <Link
             to="/training#estimator"
-            className="bg-white text-[#418FDE] font-bold px-8 py-3 rounded hover:bg-gray-100 transition-colors"
+            className="w-full sm:w-auto bg-white text-[#418FDE] font-bold px-8 py-3 rounded hover:bg-gray-100 transition-colors text-center"
           >
             Plan Your Training
           </Link>
           <Link
             to="/contact"
-            className="border-2 border-white text-white font-bold px-8 py-3 rounded hover:bg-white/10 transition-colors"
+            className="w-full sm:w-auto border-2 border-white text-white font-bold px-8 py-3 rounded hover:bg-white/10 transition-colors text-center"
           >
             Contact Our Team
           </Link>
           <Link
             to="/request-demo"
-            className="border-2 border-white text-white font-bold px-8 py-3 rounded hover:bg-white/10 transition-colors"
+            className="w-full sm:w-auto border-2 border-white text-white font-bold px-8 py-3 rounded hover:bg-white/10 transition-colors text-center"
           >
             Request a Demo
           </Link>
