@@ -69,8 +69,14 @@ export default function RosterLoginPage() {
             </form>
 
             <div className="mt-6 text-center space-y-2">
-              <p className="text-sm text-content-secondary">Not on the roster yet?</p>
-              <Link to="/roster/apply" className="text-sm font-bold text-primary hover:underline">Apply to Join →</Link>
+              <p className="text-sm text-content-secondary">
+                Started an application?{" "}
+                <Link to="/roster/apply" className="text-sm font-bold text-primary hover:underline">Continue applying →</Link>
+              </p>
+              <p className="text-sm text-content-secondary">
+                Not on the roster yet?{" "}
+                <Link to="/roster/apply" className="text-sm font-bold text-primary hover:underline">Apply to Join →</Link>
+              </p>
             </div>
             <div className="mt-4 pt-4 border-t border-border text-center">
               <p className="text-xs text-content-tertiary mb-1">Are you an organisation?</p>
