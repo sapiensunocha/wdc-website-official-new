@@ -35,7 +35,16 @@ app.use(morgan("dev")); // Request Logger
 app.use(express.json()); // Body Parser
 app.use(express.urlencoded({ extended: true })); // Body Parser With URL Encoded
 app.use(cookieParser()); // Cookie Parser
-app.use(cors({credentials: true, origin: process.env.ALLOWED_ORIGIN || "http://localhost:5173"})); // CORS
+// Support comma-separated origins (e.g. www and non-www)
+const allowedOrigins = (process.env.ALLOWED_ORIGIN || "http://localhost:5173")
+  .split(",").map(o => o.trim()).filter(Boolean);
+app.use(cors({
+  credentials: true,
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) callback(null, true);
+    else callback(new Error(`CORS blocked: ${origin}`));
+  },
+})); // CORS
 app.use(rateLimit({ //Rate Limit / Limit Request per 15 minutes
   windowMs: 15 * 60 * 1000,
   max: 100,
