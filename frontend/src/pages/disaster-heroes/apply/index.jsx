@@ -5,7 +5,7 @@ import { supabase } from "../../../lib/supabase";
 import {
   Shield, Upload, CheckCircle2, ArrowRight, ArrowLeft,
   MapPin, Clock, User, Mail, Briefcase, Globe, Camera,
-  AlertCircle,
+  AlertCircle, Eye, EyeOff, Check, LogIn,
 } from "lucide-react";
 import SearchableSelect from "../../../components/SearchableSelect";
 
@@ -71,6 +71,14 @@ const COUNTRIES = [
   "Other",
 ];
 
+const PW_RULES = [
+  { id: "len",   label: "At least 8 characters",           test: p => p.length >= 8 },
+  { id: "upper", label: "One uppercase letter (A–Z)",       test: p => /[A-Z]/.test(p) },
+  { id: "lower", label: "One lowercase letter (a–z)",       test: p => /[a-z]/.test(p) },
+  { id: "num",   label: "One number (0–9)",                 test: p => /[0-9]/.test(p) },
+  { id: "spec",  label: "One special character (!@#$%…)",  test: p => /[^A-Za-z0-9]/.test(p) },
+];
+
 const STEPS = ["Personal Info","Skills & Expertise","Location & Availability","Motivation","Review"];
 
 export default function DisasterHeroesApply() {
@@ -82,21 +90,25 @@ export default function DisasterHeroesApply() {
   const [error, setError]     = useState("");
   const [photoPreview, setPhotoPreview] = useState(null);
   const [photoFile, setPhotoFile]       = useState(null);
+  const [showPw, setShowPw]   = useState(false);
+  const [alreadyExists, setAlreadyExists] = useState(false);
 
   const [form, setForm] = useState({
-    full_name:    "",
-    email:        "",
-    organization: "",
-    hero_role: "",
-    linkedin_url: "",
-    sectors:      [],
-    skills:       [],
-    languages:    [],
-    availability: "",
-    country:      "",
-    city:         "",
-    motivation:   "",
-    experience:   "",
+    full_name:       "",
+    email:           "",
+    organization:    "",
+    hero_role:       "",
+    linkedin_url:    "",
+    password:        "",
+    confirmPassword: "",
+    sectors:         [],
+    skills:          [],
+    languages:       [],
+    availability:    "",
+    country:         "",
+    city:            "",
+    motivation:      "",
+    experience:      "",
   });
 
   function set(key, val) { setForm(f => ({ ...f, [key]: val })); }
@@ -119,6 +131,9 @@ export default function DisasterHeroesApply() {
     if (step === 0) {
       if (!form.full_name.trim()) return "Full name is required";
       if (!form.email.trim() || !form.email.includes("@")) return "Valid email is required";
+      if (!form.password) return "Password is required";
+      if (!PW_RULES.every(r => r.test(form.password))) return "Password does not meet all requirements";
+      if (form.password !== form.confirmPassword) return "Passwords do not match";
       if (!photoFile) return "Profile photo is required";
     }
     if (step === 1) {
@@ -145,8 +160,25 @@ export default function DisasterHeroesApply() {
 
   async function submit() {
     setError("");
+    setAlreadyExists(false);
     setSubmitting(true);
     try {
+      // Create Supabase Auth account first
+      const { data: authData, error: authErr } = await supabase.auth.signUp({
+        email: form.email,
+        password: form.password,
+        options: { data: { full_name: form.full_name } },
+      });
+      if (authErr) {
+        if (authErr.message?.toLowerCase().includes("already registered") || authErr.message?.toLowerCase().includes("already exists")) {
+          setAlreadyExists(true);
+          setError("This email already has an account. Please log in instead.");
+        } else {
+          throw new Error(authErr.message);
+        }
+        return;
+      }
+
       let photo_url = null;
 
       // Upload photo to Supabase Storage
@@ -278,6 +310,26 @@ export default function DisasterHeroesApply() {
               <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
                 <h2 style={{ fontSize: 18, fontWeight: 700, color: T.fg, margin: 0 }}>Tell us about yourself</h2>
 
+                {alreadyExists && (
+                  <div style={{ padding: "12px 14px", borderRadius: 10, background: "rgba(251,191,36,.08)",
+                                border: "1.5px solid rgba(251,191,36,.4)", display: "flex", alignItems: "flex-start", gap: 10 }}>
+                    <AlertCircle size={16} style={{ color: "#b45309", marginTop: 1, flexShrink: 0 }} />
+                    <div style={{ flex: 1 }}>
+                      <p style={{ fontSize: 13, fontWeight: 700, color: "#92400e", margin: "0 0 2px" }}>
+                        This email is already registered
+                      </p>
+                      <p style={{ fontSize: 12, color: "#78350f", margin: 0 }}>
+                        An account with <strong>{form.email}</strong> already exists.
+                      </p>
+                    </div>
+                    <a href="/disaster-heroes/login"
+                      style={{ flexShrink: 0, padding: "6px 14px", borderRadius: 8, background: "#009EDB",
+                               color: "#fff", fontSize: 12, fontWeight: 700, textDecoration: "none" }}>
+                      Log In
+                    </a>
+                  </div>
+                )}
+
                 {/* Photo upload */}
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
                   <div
@@ -310,6 +362,64 @@ export default function DisasterHeroesApply() {
                     <input style={field} type="email" placeholder="you@example.com" value={form.email}
                       onChange={e => set("email", e.target.value)} />
                   </div>
+
+                  {/* Password */}
+                  <div style={{ gridColumn: "1/-1" }}>
+                    <label style={{ fontSize: 12, fontWeight: 600, color: T.muted, display: "block", marginBottom: 6 }}>
+                      Password * <span style={{ fontWeight: 400, fontSize: 11 }}>(to access your hero account)</span>
+                    </label>
+                    <div style={{ position: "relative" }}>
+                      <input
+                        type={showPw ? "text" : "password"}
+                        style={field}
+                        placeholder="Create a strong password"
+                        value={form.password}
+                        onChange={e => set("password", e.target.value)}
+                      />
+                      <button type="button" onClick={() => setShowPw(v => !v)}
+                        style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)",
+                                 background: "none", border: "none", cursor: "pointer", color: T.muted }}>
+                        {showPw ? <EyeOff size={14} /> : <Eye size={14} />}
+                      </button>
+                    </div>
+                    {/* Password strength */}
+                    {form.password && (
+                      <div style={{ marginTop: 8, padding: "10px 12px", borderRadius: 10,
+                                    background: T.bg, border: `1px solid ${T.border}`, display: "flex", flexDirection: "column", gap: 6 }}>
+                        {PW_RULES.map(({ id, label, test }) => {
+                          const ok = test(form.password);
+                          return (
+                            <div key={id} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                              <div style={{ width: 16, height: 16, borderRadius: "50%", flexShrink: 0,
+                                            display: "flex", alignItems: "center", justifyContent: "center",
+                                            background: ok ? "#22c55e" : "#e2e8f0" }}>
+                                {ok && <Check size={10} color="#fff" />}
+                              </div>
+                              <span style={{ fontSize: 11, fontWeight: 500, color: ok ? "#16a34a" : "#94a3b8" }}>{label}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Confirm Password */}
+                  <div style={{ gridColumn: "1/-1" }}>
+                    <label style={{ fontSize: 12, fontWeight: 600, color: T.muted, display: "block", marginBottom: 6 }}>
+                      Confirm Password *
+                    </label>
+                    <input
+                      type={showPw ? "text" : "password"}
+                      style={{ ...field, borderColor: form.confirmPassword && form.confirmPassword !== form.password ? "#f87171" : undefined }}
+                      placeholder="Repeat your password"
+                      value={form.confirmPassword}
+                      onChange={e => set("confirmPassword", e.target.value)}
+                    />
+                    {form.confirmPassword && form.confirmPassword !== form.password && (
+                      <p style={{ fontSize: 11, color: "#dc2626", marginTop: 4 }}>Passwords don't match</p>
+                    )}
+                  </div>
+
                   <div>
                     <label style={{ fontSize: 12, fontWeight: 600, color: T.muted, display: "block", marginBottom: 6 }}>Organisation</label>
                     <input style={field} placeholder="Organisation / Agency" value={form.organization}

@@ -5,6 +5,7 @@ import {
   getMyProfile, updateMyProfile,
   getOpportunities, applyToOpportunity,
   getMyDeployments, getMyEvents,
+  forgotPassword, resetPassword,
 } from '../controllers/rosterMemberController';
 
 const router = express.Router();
@@ -12,6 +13,8 @@ const router = express.Router();
 router.post('/register', registerRosterMember);
 router.post('/login', loginRosterMember);
 router.post('/logout', logoutRosterMember);
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password', resetPassword);
 router.get('/me', rosterMemberProtect, getMyProfile);
 router.put('/me', rosterMemberProtect, updateMyProfile);
 router.get('/opportunities', rosterMemberProtect, getOpportunities);

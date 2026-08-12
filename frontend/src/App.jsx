@@ -61,6 +61,7 @@ import ProductDetail from "./components/ProductDetail.jsx";
 import RosterPage from "./pages/roster";
 import RosterApplyPage from "./pages/roster/apply";
 import RosterLoginPage from "./pages/roster/login";
+import RosterResetPasswordPage from "./pages/roster/reset-password";
 import RosterDashboard from "./pages/roster/dashboard";
 import RosterAdminPage from "./pages/roster/admin";
 import RosterPartnerPage from "./pages/roster/partner";
@@ -89,6 +90,7 @@ const App = () => {
           <Route path="/roster" element={<RosterPage />} />
           <Route path="/roster/apply" element={<RosterApplyPage />} />
           <Route path="/roster/login" element={<RosterLoginPage />} />
+          <Route path="/roster/reset-password" element={<RosterResetPasswordPage />} />
           <Route path="/roster/dashboard" element={<RosterDashboard />} />
           <Route path="/roster/admin" element={<RosterAdminPage />} />
           <Route path="/roster/partner" element={<RosterPartnerPage />} />

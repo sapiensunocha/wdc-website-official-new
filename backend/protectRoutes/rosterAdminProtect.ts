@@ -13,7 +13,9 @@ declare global {
 
 async function rosterAdminProtect(req: Request, res: Response, next: NextFunction) {
   try {
-    const token = req.cookies.jwt_admin;
+    const token = req.headers.authorization?.startsWith('Bearer ')
+      ? req.headers.authorization.slice(7)
+      : req.cookies.jwt_admin;
     if (!token) {
       res.status(401).json({ error: 'Not Authorized' });
       return;

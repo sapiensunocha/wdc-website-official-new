@@ -352,6 +352,31 @@ export async function sendDeploymentRequestConfirmation(
   });
 }
 
+// ─── Member: Password Reset ────────────────────────────────────────────────────
+export async function sendPasswordResetEmail(email: string, firstName: string, resetUrl: string) {
+  const body = `
+    <h2 style="margin:0 0 12px;font-size:22px;font-weight:800;color:${WDC_DARK};">Reset your password</h2>
+    <p style="color:#475569;font-size:15px;line-height:1.7;margin:0 0 20px;">
+      Hi ${firstName}, we received a request to reset your WDC Roster password. Click the button below to choose a new one.
+    </p>
+    <div style="background:#fff8e1;border:1px solid #fde68a;border-radius:10px;padding:14px 18px;margin:0 0 24px;">
+      <p style="margin:0;font-size:13px;color:#92400e;">
+        ⚠️ This link expires in <strong>1 hour</strong>. If you didn't request this, you can safely ignore this email.
+      </p>
+    </div>
+    ${btn("Reset My Password", resetUrl)}
+    <p style="color:#94a3b8;font-size:13px;text-align:center;margin:16px 0 0;">
+      Having trouble? Contact <a href="mailto:office@worlddisastercenter.org" style="color:${WDC_BLUE};">office@worlddisastercenter.org</a>
+    </p>`;
+
+  return resend.emails.send({
+    from: FROM,
+    to: email,
+    subject: 'Reset your WDC Roster password',
+    html: wrap(body),
+  });
+}
+
 // ─── Admin: New Deployment Request Alert ─────────────────────────────────────
 export async function sendDeploymentRequestAlert(
   partnerName: string,

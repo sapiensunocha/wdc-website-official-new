@@ -3,7 +3,10 @@ import client from "./rosterClient";
 // ─── Member Auth ───────────────────────────────────────────────────────────────
 export const registerRosterMember = (data) => client.post("/api/roster/member/register", data);
 export const loginRosterMember = (data) => client.post("/api/roster/member/login", data);
-export const logoutRosterMember = () => client.post("/api/roster/member/logout");
+export const logoutRosterMember = () => {
+  localStorage.removeItem("roster_jwt");
+  return client.post("/api/roster/member/logout");
+};
 
 // ─── Member Profile ────────────────────────────────────────────────────────────
 export const getMyRosterProfile = () => client.get("/api/roster/member/me");

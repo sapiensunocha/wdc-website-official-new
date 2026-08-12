@@ -1,10 +1,11 @@
+import crypto from 'crypto';
 import { Request, RequestHandler, Response } from 'express';
 import type { WhereFilterOp } from 'firebase-admin/firestore';
-import { RosterMemberFS, comparePassword, setMemberJwtCookie, COLLECTION as MEMBER_COL } from '../models/rosterMemberModel';
+import { RosterMemberFS, comparePassword, hashPassword, setMemberJwtCookie, COLLECTION as MEMBER_COL } from '../models/rosterMemberModel';
 import { OpportunityFS, COLLECTION as OPP_COL } from '../models/opportunityModel';
 import { RosterEventFS } from '../models/rosterEventModel';
 import { db, arrayUnion } from '../utils/firestore';
-import { sendWelcomeMemberEmail, sendNewApplicationAlert } from '../utils/resend';
+import { sendWelcomeMemberEmail, sendNewApplicationAlert, sendPasswordResetEmail } from '../utils/resend';
 
 type FSFilter = [string, WhereFilterOp, unknown];
 
@@ -91,13 +92,13 @@ export const registerRosterMember: RequestHandler = async (req: Request, res: Re
       availabilityStatus: 'available',
       motivationStatement: '',
     });
-    setMemberJwtCookie(member.id, res);
+    const token = setMemberJwtCookie(member.id, res);
     const memberObj = { ...member } as any;
     delete memberObj.password;
     // Fire-and-forget emails — never block the response
     sendWelcomeMemberEmail(email.toLowerCase(), firstName).catch(() => {});
     sendNewApplicationAlert(`${firstName} ${lastName}`, email.toLowerCase(), [], '').catch(() => {});
-    res.status(201).json({ message: 'Application submitted successfully', member: memberObj });
+    res.status(201).json({ message: 'Application submitted successfully', member: memberObj, token });
   } catch (error) {
     res.status(500).json({ message: 'Something went wrong', error });
   }
@@ -121,10 +122,10 @@ export const loginRosterMember: RequestHandler = async (req: Request, res: Respo
       return;
     }
     await RosterMemberFS.update(member.id, { lastActive: new Date().toISOString() });
-    setMemberJwtCookie(member.id, res);
+    const token = setMemberJwtCookie(member.id, res);
     const memberObj = { ...member } as any;
     delete memberObj.password;
-    res.status(200).json({ message: 'Logged in successfully', member: memberObj });
+    res.status(200).json({ message: 'Logged in successfully', member: memberObj, token });
   } catch (error) {
     res.status(500).json({ message: 'Something went wrong', error });
   }
@@ -239,6 +240,62 @@ export const getMyEvents: RequestHandler = async (req: Request, res: Response): 
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
       .slice(0, 10);
     res.status(200).json({ events });
+  } catch (error) {
+    res.status(500).json({ message: 'Something went wrong', error });
+  }
+};
+
+export const forgotPassword: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { email } = req.body;
+    if (!email) { res.status(400).json({ message: 'Email is required' }); return; }
+    const member = await RosterMemberFS.findByEmail(email.toLowerCase());
+    if (!member) {
+      // Don't reveal whether the email exists
+      res.status(200).json({ message: 'If that email is registered, a reset link has been sent.' });
+      return;
+    }
+    const token = crypto.randomBytes(32).toString('hex');
+    const expiry = new Date(Date.now() + 60 * 60 * 1000).toISOString(); // 1 hour
+    await RosterMemberFS.update(member.id, {
+      resetPasswordToken: token,
+      resetPasswordExpiry: expiry,
+    } as any);
+    const frontendUrl = process.env.FRONTEND_URL || 'https://worlddisastercenter.org';
+    const resetUrl = `${frontendUrl}/roster/reset-password?token=${token}`;
+    await sendPasswordResetEmail(member.email, member.firstName, resetUrl);
+    res.status(200).json({ message: 'If that email is registered, a reset link has been sent.' });
+  } catch (error) {
+    res.status(500).json({ message: 'Something went wrong', error });
+  }
+};
+
+export const resetPassword: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { token, password } = req.body;
+    if (!token || !password) {
+      res.status(400).json({ message: 'Token and new password are required' }); return;
+    }
+    const snap = await db.collection(MEMBER_COL).where('resetPasswordToken', '==', token).limit(1).get();
+    if (snap.empty) {
+      res.status(400).json({ message: 'Invalid or expired reset link. Please request a new one.' }); return;
+    }
+    const doc = snap.docs[0];
+    const member = { id: doc.id, ...doc.data() } as any;
+    if (!member.resetPasswordExpiry || new Date(member.resetPasswordExpiry) < new Date()) {
+      res.status(400).json({ message: 'This reset link has expired. Please request a new one.' }); return;
+    }
+    const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+    if (!passwordRegex.test(password)) {
+      res.status(400).json({ message: 'Password must be 8+ characters with uppercase, lowercase, number and special character' }); return;
+    }
+    const hashed = await hashPassword(password);
+    await RosterMemberFS.update(member.id, {
+      password: hashed,
+      resetPasswordToken: null,
+      resetPasswordExpiry: null,
+    } as any);
+    res.status(200).json({ message: 'Password updated successfully. You can now sign in.' });
   } catch (error) {
     res.status(500).json({ message: 'Something went wrong', error });
   }

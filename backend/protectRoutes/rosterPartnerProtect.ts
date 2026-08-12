@@ -4,7 +4,9 @@ import { Request, Response, NextFunction } from 'express';
 
 async function rosterPartnerProtect(req: Request, res: Response, next: NextFunction) {
   try {
-    const token = req.cookies.jwt_partner;
+    const token = req.headers.authorization?.startsWith('Bearer ')
+      ? req.headers.authorization.slice(7)
+      : req.cookies.jwt_partner;
     if (!token) {
       res.status(401).json({ error: 'Not Authorized' });
       return;
