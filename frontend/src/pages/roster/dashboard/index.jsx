@@ -262,17 +262,34 @@ export default function RosterDashboard() {
 
   useEffect(() => {
     async function load() {
+      // Use bootstrap data from login response for instant render
+      // (avoids redirect when cross-origin cookies are blocked by browser)
+      let hasBootstrap = false;
+      try {
+        const raw = sessionStorage.getItem("roster_bootstrap");
+        if (raw) {
+          setProfile(JSON.parse(raw));
+          hasBootstrap = true;
+          sessionStorage.removeItem("roster_bootstrap");
+        }
+      } catch {}
+
       try {
         const [pRes, oRes, dRes, eRes] = await Promise.allSettled([
           getMyRosterProfile(), getOpportunities(), getMyDeployments(), getMyEvents(),
         ]);
-        if (pRes.status === "fulfilled") setProfile(pRes.value.data);
-        else { navigate("/roster/login"); return; }
+        if (pRes.status === "fulfilled") {
+          setProfile(pRes.value.data);
+        } else if (!hasBootstrap) {
+          navigate("/roster/login");
+          return;
+        }
         if (oRes.status === "fulfilled") setOpportunities(oRes.value.data.opportunities || []);
         if (dRes.status === "fulfilled") setDeployments(dRes.value.data.deployments || []);
         if (eRes.status === "fulfilled") setEvents(eRes.value.data.events || []);
-      } catch { navigate("/roster/login"); }
-      finally { setLoading(false); }
+      } catch {
+        if (!hasBootstrap) navigate("/roster/login");
+      } finally { setLoading(false); }
     }
     load();
   }, []);

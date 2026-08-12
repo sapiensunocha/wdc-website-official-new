@@ -22,7 +22,12 @@ export default function RosterLoginPage() {
     if (!email || !password) { setError("Please enter your email and password"); return; }
     setLoading(true);
     try {
-      await loginRosterMember({ email, password });
+      const { data } = await loginRosterMember({ email, password });
+      // Bootstrap: store member data so dashboard can render immediately
+      // even when cross-origin cookies are blocked by the browser
+      if (data?.member) {
+        sessionStorage.setItem("roster_bootstrap", JSON.stringify(data.member));
+      }
       toast.success("Welcome back!");
       navigate("/roster/dashboard");
     } catch (err) {
