@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef, useCallback } from "react";
-import { ChevronLeft, ChevronRight, Building2, User } from "lucide-react";
+import { useRef, useState, useEffect, useCallback } from "react";
+import { ChevronLeft, ChevronRight, Building2, ExternalLink } from "lucide-react";
 
 const REVIEWS = [
   {
@@ -30,7 +30,7 @@ const REVIEWS = [
     type: "org",
     initials: "DA",
     color: "#22c55e",
-    comment: "Wow this is really cool! At Development Alert, we need you a lot. Your tools for disaster response are exactly what communities in East Africa need. We really need your support with fundraising and mentorship.",
+    comment: "Wow this is really cool! At Development Alert, we need you a lot. Your tools for disaster response are exactly what communities in East Africa need.",
     stars: 5,
     context: "Nigeria / Haiti — Michael & Nova7 Deployment",
     link: "https://www.linkedin.com/posts/sapiens-ndatabaye-227425165_nigeria-haiti-michael-activity-7330918097849106433-Tj7r",
@@ -48,11 +48,11 @@ const REVIEWS = [
   },
   {
     name: "Moustapha Fall",
-    title: "UN OCHA Context",
+    title: "UN OCHA",
     type: "person",
     initials: "MF",
     color: "#0072BC",
-    comment: "Intéressant. (Interesting.) The approach WDC is taking for real-time monitoring and AI-driven alerts is exactly what the humanitarian sector needs to move faster.",
+    comment: "Intéressant. The approach WDC is taking for real-time monitoring and AI-driven alerts is exactly what the humanitarian sector needs to move faster.",
     stars: 4,
     context: "DRC Real-Time Monitoring",
     link: "https://www.linkedin.com/company/worlddisastercenter",
@@ -80,19 +80,8 @@ const REVIEWS = [
     link: "https://www.linkedin.com/company/worlddisastercenter",
   },
   {
-    name: "GeoAI Applicant",
-    title: "Technology Professional",
-    type: "person",
-    initials: "GC",
-    color: "#f97316",
-    comment: "This opportunity sounds fantastic! I'm genuinely excited about the GeoAI Consultant role and the chance to contribute to the meaningful work at the World Disaster Center.",
-    stars: 5,
-    context: "WDC GeoAI Consultant Role",
-    link: "https://www.linkedin.com/posts/sapiens-ndatabaye-227425165_hiring-gisconsultant-disastermanagement-activity-7299811600692092931-4J64",
-  },
-  {
     name: "Joyce Msuya",
-    title: "Humanitarian Leader, UN",
+    title: "Humanitarian Leader · UN",
     type: "person",
     initials: "JM",
     color: "#1C2B39",
@@ -107,12 +96,8 @@ function StarRating({ count }) {
   return (
     <div className="flex items-center gap-0.5">
       {[1, 2, 3, 4, 5].map((i) => (
-        <svg
-          key={i}
-          className={`w-4 h-4 ${i <= count ? "text-amber-400" : "text-gray-200"}`}
-          fill="currentColor"
-          viewBox="0 0 20 20"
-        >
+        <svg key={i} className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${i <= count ? "text-amber-400" : "text-gray-200"}`}
+          fill="currentColor" viewBox="0 0 20 20">
           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
         </svg>
       ))}
@@ -122,138 +107,164 @@ function StarRating({ count }) {
 
 function Avatar({ initials, color, type }) {
   return (
-    <div
-      className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 text-white font-bold text-sm shadow-sm"
-      style={{ backgroundColor: color }}
-    >
+    <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shrink-0 text-white font-bold text-sm shadow-sm"
+      style={{ backgroundColor: color }}>
       {type === "org"
-        ? <Building2 size={20} className="text-white/90" />
-        : <span>{initials}</span>
+        ? <Building2 size={18} className="text-white/90" />
+        : <span className="text-sm font-bold">{initials}</span>
       }
     </div>
   );
 }
 
-const VISIBLE = 3; // cards visible at once on desktop
-
 export default function Testimonials() {
-  const [index, setIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const timerRef = useRef(null);
+  const trackRef  = useRef(null);
+  const [active, setActive] = useState(0);
   const total = REVIEWS.length;
-  const maxIndex = total - VISIBLE;
 
-  const next = useCallback(() => {
-    setIndex((i) => (i >= maxIndex ? 0 : i + 1));
-  }, [maxIndex]);
-
-  const prev = useCallback(() => {
-    setIndex((i) => (i <= 0 ? maxIndex : i - 1));
-  }, [maxIndex]);
+  // Detect how many cards are visible at current breakpoint
+  function getVisible() {
+    const w = window.innerWidth;
+    if (w >= 1024) return 3;
+    if (w >= 640)  return 2;
+    return 1;
+  }
+  const [visible, setVisible] = useState(1);
 
   useEffect(() => {
-    if (paused) return;
-    timerRef.current = setInterval(next, 5000);
-    return () => clearInterval(timerRef.current);
-  }, [paused, next]);
+    const update = () => setVisible(getVisible());
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  const maxActive = Math.max(0, total - visible);
+
+  const scrollTo = useCallback((idx) => {
+    const clamped = Math.min(Math.max(0, idx), maxActive);
+    setActive(clamped);
+    const track = trackRef.current;
+    if (!track) return;
+    const card = track.children[clamped];
+    if (card) card.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
+  }, [maxActive]);
+
+  // Sync active dot when user swipes
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const onScroll = () => {
+      const cardW = track.children[0]?.offsetWidth || 1;
+      const idx = Math.round(track.scrollLeft / (cardW + 20));
+      setActive(Math.min(idx, maxActive));
+    };
+    track.addEventListener("scroll", onScroll, { passive: true });
+    return () => track.removeEventListener("scroll", onScroll);
+  }, [maxActive]);
+
+  // Auto-advance every 5s
+  useEffect(() => {
+    const t = setInterval(() => scrollTo(active >= maxActive ? 0 : active + 1), 5000);
+    return () => clearInterval(t);
+  }, [active, maxActive, scrollTo]);
 
   return (
-    <section className="bg-surface-subtle py-20">
+    <section className="bg-surface-subtle py-14 sm:py-20">
       <div className="container">
+
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-12 gap-4">
           <div>
             <p className="tagline text-primary mb-2">Community Voice</p>
             <h2 className="h2 text-content-primary">What People Say About WDC</h2>
-            <p className="text-content-secondary mt-3 max-w-xl">
-              Humanitarian organizations, UN partners, and innovators on the impact of
-              World Disaster Center&apos;s tools and missions.
+            <p className="text-content-secondary mt-2 text-sm sm:text-base max-w-xl">
+              Humanitarian organizations, UN partners, and innovators on the impact of WDC's tools and missions.
             </p>
           </div>
-          {/* Prev / Next controls */}
-          <div className="flex items-center gap-2 shrink-0">
-            <button
-              onClick={prev}
-              className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-500 hover:border-primary hover:text-primary transition-colors"
-              aria-label="Previous"
-            >
+          {/* Prev / Next — desktop only */}
+          <div className="hidden sm:flex items-center gap-2 shrink-0">
+            <button onClick={() => scrollTo(active - 1)} disabled={active === 0}
+              className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-500 hover:border-primary hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+              aria-label="Previous">
               <ChevronLeft size={18} />
             </button>
-            <button
-              onClick={next}
-              className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-500 hover:border-primary hover:text-primary transition-colors"
-              aria-label="Next"
-            >
+            <button onClick={() => scrollTo(active + 1)} disabled={active >= maxActive}
+              className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-500 hover:border-primary hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+              aria-label="Next">
               <ChevronRight size={18} />
             </button>
           </div>
         </div>
 
-        {/* Carousel track */}
+        {/* Scroll track — snaps natively on mobile */}
         <div
-          className="overflow-hidden"
-          onMouseEnter={() => setPaused(true)}
-          onMouseLeave={() => setPaused(false)}
+          ref={trackRef}
+          className="flex gap-4 sm:gap-5 overflow-x-auto pb-4"
+          style={{
+            scrollSnapType: "x mandatory",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            WebkitOverflowScrolling: "touch",
+          }}
         >
-          <div
-            className="flex gap-5 transition-transform duration-500 ease-in-out"
-            style={{ transform: `translateX(calc(-${index} * (100% / ${VISIBLE} + 1.25rem)))` }}
-          >
-            {REVIEWS.map((r, i) => (
-              <div
-                key={i}
-                className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm flex flex-col gap-4 shrink-0"
-                style={{ width: `calc(${100 / VISIBLE}% - ${(VISIBLE - 1) * 20 / VISIBLE}px)` }}
-              >
-                {/* Top: avatar + name + stars */}
-                <div className="flex items-start gap-3">
-                  <Avatar initials={r.initials} color={r.color} type={r.type} />
-                  <div className="min-w-0 flex-1">
-                    <p className="font-bold text-content-primary text-sm leading-snug truncate">{r.name}</p>
-                    <p className="text-xs text-content-tertiary truncate">{r.title}</p>
-                    <div className="mt-1.5">
-                      <StarRating count={r.stars} />
-                    </div>
-                  </div>
-                </div>
+          <style>{`.testimonials-track::-webkit-scrollbar { display: none; }`}</style>
 
-                {/* Quote */}
-                <blockquote className="text-sm text-content-secondary leading-relaxed flex-1 italic border-l-2 border-primary pl-3">
-                  &ldquo;{r.comment}&rdquo;
-                </blockquote>
+          {REVIEWS.map((r, i) => (
+            <div key={i}
+              style={{
+                scrollSnapAlign: "start",
+                flex: `0 0 calc(${100 / visible}% - ${(visible - 1) * 20 / visible}px)`,
+                minWidth: 0,
+              }}
+              className="bg-white rounded-xl border border-gray-200 p-5 sm:p-6 shadow-sm flex flex-col gap-4">
 
-                {/* Context tag + link */}
-                <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-                  <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-1 bg-primary-muted text-primary rounded">
-                    {r.context}
-                  </span>
-                  <a
-                    href={r.link}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-[10px] font-semibold text-content-tertiary hover:text-primary transition-colors uppercase tracking-wider"
-                  >
-                    LinkedIn →
-                  </a>
+              {/* Top: avatar + name + stars */}
+              <div className="flex items-start gap-3">
+                <Avatar initials={r.initials} color={r.color} type={r.type} />
+                <div className="min-w-0 flex-1">
+                  <p className="font-bold text-content-primary text-sm leading-snug"
+                    style={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+                    {r.name}
+                  </p>
+                  <p className="text-xs text-content-tertiary mt-0.5 truncate">{r.title}</p>
+                  <div className="mt-1.5"><StarRating count={r.stars} /></div>
                 </div>
               </div>
-            ))}
-          </div>
+
+              {/* Quote */}
+              <blockquote className="text-sm text-content-secondary leading-relaxed flex-1 italic border-l-2 border-primary pl-3">
+                &ldquo;{r.comment}&rdquo;
+              </blockquote>
+
+              {/* Context tag + link */}
+              <div className="flex items-center justify-between pt-3 border-t border-gray-100 gap-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-1 bg-primary-muted text-primary rounded truncate max-w-[70%]">
+                  {r.context}
+                </span>
+                <a href={r.link} target="_blank" rel="noreferrer"
+                  className="flex items-center gap-1 text-[10px] font-semibold text-content-tertiary hover:text-primary transition-colors uppercase tracking-wider shrink-0">
+                  <ExternalLink size={10} /> LinkedIn
+                </a>
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Dot indicators */}
-        <div className="flex justify-center gap-2 mt-8">
-          {Array.from({ length: maxIndex + 1 }).map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setIndex(i)}
+        <div className="flex justify-center gap-2 mt-6">
+          {Array.from({ length: maxActive + 1 }).map((_, i) => (
+            <button key={i} onClick={() => scrollTo(i)} aria-label={`Go to slide ${i + 1}`}
               className={`rounded-full transition-all duration-300 ${
-                i === index ? "bg-primary w-6 h-2" : "bg-gray-300 w-2 h-2"
+                i === active ? "bg-primary w-6 h-2" : "bg-gray-300 w-2 h-2 hover:bg-gray-400"
               }`}
-              aria-label={`Go to slide ${i + 1}`}
             />
           ))}
         </div>
+
+        {/* Mobile swipe hint — only on first render on small screens */}
+        <p className="text-center text-xs text-content-tertiary mt-3 sm:hidden">
+          Swipe to see more →
+        </p>
       </div>
     </section>
   );
