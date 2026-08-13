@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { supabase } from "../../../lib/supabase";
+import { loginDisasterHero, forgotHeroPassword } from "../../../api/disasterHeroes";
 import { Shield, Mail, Lock, Eye, EyeOff, AlertCircle, ArrowRight } from "lucide-react";
 
 const T = {
@@ -36,30 +36,11 @@ export default function DisasterHeroesLogin() {
     setError("");
     setLoading(true);
     try {
-      const { data, error: err } = await supabase.auth.signInWithPassword({ email, password });
-      if (err) throw err;
-
-      // Check if the user's hero profile is approved
-      const { data: hero } = await supabase
-        .from("disaster_heroes")
-        .select("status")
-        .eq("email", email)
-        .single();
-
-      if (hero?.status === "pending") {
-        setError("Your application is still under review. We'll email you once it's approved.");
-        await supabase.auth.signOut();
-        return;
-      }
-      if (hero?.status === "rejected") {
-        setError("Your application was not accepted. Contact office@worlddisastercenter.org for details.");
-        await supabase.auth.signOut();
-        return;
-      }
-
+      await loginDisasterHero(email, password);
       navigate("/disaster-heroes/dashboard");
     } catch (err) {
-      setError(err.message || "Login failed. Check your email and password.");
+      const msg = err.response?.data?.message || err.message || "Login failed. Check your email and password.";
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -70,13 +51,10 @@ export default function DisasterHeroesLogin() {
     setError("");
     setLoading(true);
     try {
-      const { error: err } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/disaster-heroes/login`,
-      });
-      if (err) throw err;
+      await forgotHeroPassword(email);
       setResetSent(true);
     } catch (err) {
-      setError(err.message || "Could not send reset email.");
+      setError(err.response?.data?.message || "Could not send reset email.");
     } finally {
       setLoading(false);
     }

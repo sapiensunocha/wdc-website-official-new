@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { supabase } from "../../../lib/supabase";
+import { applyDisasterHero } from "../../../api/disasterHeroes";
 import {
   Shield, Upload, CheckCircle2, ArrowRight, ArrowLeft,
   MapPin, Clock, User, Mail, Briefcase, Globe, Camera,
@@ -163,59 +163,33 @@ export default function DisasterHeroesApply() {
     setAlreadyExists(false);
     setSubmitting(true);
     try {
-      // Create Supabase Auth account first
-      const { data: authData, error: authErr } = await supabase.auth.signUp({
-        email: form.email,
-        password: form.password,
-        options: { data: { full_name: form.full_name } },
-      });
-      if (authErr) {
-        if (authErr.message?.toLowerCase().includes("already registered") || authErr.message?.toLowerCase().includes("already exists")) {
-          setAlreadyExists(true);
-          setError("This email already has an account. Please log in instead.");
-        } else {
-          throw new Error(authErr.message);
-        }
-        return;
-      }
+      const fd = new FormData();
+      fd.append("fullName",    form.full_name);
+      fd.append("email",       form.email);
+      fd.append("password",    form.password);
+      fd.append("organization",form.organization);
+      fd.append("heroRole",    form.hero_role);
+      fd.append("linkedinUrl", form.linkedin_url);
+      fd.append("sectors",     JSON.stringify(form.sectors));
+      fd.append("skills",      JSON.stringify(form.skills));
+      fd.append("languages",   JSON.stringify(form.languages));
+      fd.append("availability",form.availability);
+      fd.append("country",     form.country);
+      fd.append("city",        form.city);
+      fd.append("motivation",  form.motivation);
+      fd.append("experience",  form.experience);
+      if (photoFile) fd.append("photo", photoFile);
 
-      let photo_url = null;
-
-      // Upload photo to Supabase Storage
-      if (photoFile) {
-        const ext  = photoFile.name.split(".").pop();
-        const path = `heroes/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-        const { error: uploadErr } = await supabase.storage
-          .from("hero-photos")
-          .upload(path, photoFile, { upsert: false });
-        if (uploadErr) throw new Error("Photo upload failed: " + uploadErr.message);
-        const { data: { publicUrl } } = supabase.storage.from("hero-photos").getPublicUrl(path);
-        photo_url = publicUrl;
-      }
-
-      // Insert application
-      const { error: insertErr } = await supabase.from("disaster_heroes").insert([{
-        full_name:    form.full_name,
-        email:        form.email,
-        organization: form.organization,
-        hero_role: form.hero_role,
-        linkedin_url: form.linkedin_url,
-        sectors:      form.sectors,
-        skills:       form.skills,
-        languages:    form.languages,
-        availability: form.availability,
-        country:      form.country,
-        city:         form.city,
-        motivation:   form.motivation,
-        experience:   form.experience,
-        photo_url,
-        status:       "pending",
-      }]);
-
-      if (insertErr) throw new Error(insertErr.message);
+      await applyDisasterHero(fd);
       setSubmitted(true);
     } catch (e) {
-      setError(e.message || "Something went wrong. Please try again.");
+      const msg = e.response?.data?.message || e.message || "Something went wrong. Please try again.";
+      if (msg.toLowerCase().includes("already exists")) {
+        setAlreadyExists(true);
+        setError("This email already has an account. Please log in instead.");
+      } else {
+        setError(msg);
+      }
     } finally {
       setSubmitting(false);
     }

@@ -13,6 +13,7 @@ import rosterMemberRoutes from "./routes/rosterMemberRoutes"
 import rosterAdminRoutes from "./routes/rosterAdminRoutes"
 import rosterPartnerRoutes from "./routes/rosterPartnerRoutes"
 import chatRoutes from "./routes/chatRoutes"
+import disasterHeroRoutes from "./routes/disasterHeroRoutes"
 
 const app = express(); //Initialize Express Server
 dotenv.config(); //Initialize dotenv
@@ -59,6 +60,7 @@ app.use("/api/roster/member", rosterMemberRoutes);
 app.use("/api/roster/admin", rosterAdminRoutes);
 app.use("/api/roster/partner", rosterPartnerRoutes);
 app.use("/api/chat", chatRoutes);
+app.use("/api/disaster-heroes", disasterHeroRoutes);
 //Default Route
 app.get("/", (req, res) => {
   res.send("API is running....");

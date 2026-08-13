@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import { supabase } from "../../../lib/supabase";
+import { adminLoginForHeroes, adminGetHeroes, adminUpdateHeroStatus } from "../../../api/disasterHeroes";
 import {
   Shield, CheckCircle2, X, Clock, Users, Globe, Search,
   ChevronDown, Mail, MapPin, Briefcase, Eye, RefreshCw,
@@ -43,29 +43,23 @@ export default function DisasterHeroesAdmin() {
     e.preventDefault();
     setLoginErr("");
     setLoggingIn(true);
-    const { error } = await supabase.auth.signInWithPassword({ email: adminEmail, password: adminPw });
-    if (error) { setLoginErr("Invalid credentials"); setLoggingIn(false); return; }
-
-    // Verify admin role
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user?.user_metadata?.role && !adminEmail.includes("worlddisastercenter.org")) {
-      setLoginErr("Not authorised. Admin access only.");
-      await supabase.auth.signOut();
+    try {
+      await adminLoginForHeroes(adminEmail, adminPw);
+      setAuthed(true);
+    } catch (err) {
+      setLoginErr(err.response?.data?.message || "Invalid credentials");
+    } finally {
       setLoggingIn(false);
-      return;
     }
-    setAuthed(true);
-    setLoggingIn(false);
   }
 
   async function fetchHeroes() {
     setLoading(true);
-    const { data } = await supabase
-      .from("disaster_heroes")
-      .select("*")
-      .order("created_at", { ascending: false });
-    setHeroes(data || []);
-    setLoading(false);
+    try {
+      const res = await adminGetHeroes({ status: "all", limit: 200 });
+      setHeroes(res.data.heroes || []);
+    } catch { setHeroes([]); }
+    finally { setLoading(false); }
   }
 
   useEffect(() => { if (authed) fetchHeroes(); }, [authed]);
@@ -73,29 +67,21 @@ export default function DisasterHeroesAdmin() {
   async function updateStatus(id, status) {
     setActing(true);
     setActionErr("");
-    const { error } = await supabase
-      .from("disaster_heroes")
-      .update({ status, approved_at: status === "approved" ? new Date().toISOString() : null })
-      .eq("id", id);
-    if (error) { setActionErr(error.message); setActing(false); return; }
-
-    // If approving, send invite so they can create a password and log in
-    if (status === "approved") {
-      const hero = heroes.find(h => h.id === id);
-      if (hero?.email) {
-        await supabase.auth.admin?.inviteUserByEmail?.(hero.email).catch(() => {});
-      }
+    try {
+      await adminUpdateHeroStatus(id, status);
+      await fetchHeroes();
+      setSelected(s => s ? { ...s, status } : null);
+    } catch (err) {
+      setActionErr(err.response?.data?.message || "Action failed");
+    } finally {
+      setActing(false);
     }
-
-    await fetchHeroes();
-    setSelected(s => s ? { ...s, status } : null);
-    setActing(false);
   }
 
   const filtered = heroes.filter(h =>
     (filter === "all" || h.status === filter) &&
     (search === "" ||
-      h.full_name?.toLowerCase().includes(search.toLowerCase()) ||
+      h.fullName?.toLowerCase().includes(search.toLowerCase()) ||
       h.email?.toLowerCase().includes(search.toLowerCase()) ||
       h.country?.toLowerCase().includes(search.toLowerCase()))
   );
@@ -208,19 +194,19 @@ export default function DisasterHeroesAdmin() {
                 {/* Header */}
                 <div style={{ display: "flex", alignItems: "flex-start", gap: 16, marginBottom: 20,
                               paddingBottom: 20, borderBottom: `1px solid ${T.border}` }}>
-                  {selected.photo_url
-                    ? <img src={selected.photo_url} alt={selected.full_name}
+                  {selected.photoUrl
+                    ? <img src={selected.photoUrl} alt={selected.fullName}
                         style={{ width: 72, height: 72, borderRadius: "50%", objectFit: "cover",
                                  border: `2px solid ${T.blue}`, flexShrink: 0 }} />
                     : <div style={{ width: 72, height: 72, borderRadius: "50%", background: `rgba(0,158,219,.12)`,
                                     display: "flex", alignItems: "center", justifyContent: "center",
                                     fontSize: 24, fontWeight: 700, color: T.blue, flexShrink: 0 }}>
-                        {selected.full_name?.[0]}
+                        {selected.fullName?.[0]}
                       </div>
                   }
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: 18, fontWeight: 700, color: T.fg }}>{selected.full_name}</div>
-                    <div style={{ fontSize: 13, color: T.muted }}>{selected.hero_role} · {selected.organization}</div>
+                    <div style={{ fontSize: 18, fontWeight: 700, color: T.fg }}>{selected.fullName}</div>
+                    <div style={{ fontSize: 13, color: T.muted }}>{selected.heroRole} · {selected.organization}</div>
                     <div style={{ fontSize: 13, color: T.muted }}>{selected.email}</div>
                     <span style={{ display: "inline-block", marginTop: 6, fontSize: 11, fontWeight: 700,
                                    padding: "3px 10px", borderRadius: 100,
@@ -237,8 +223,8 @@ export default function DisasterHeroesAdmin() {
                     { label: "Location", value: `${selected.city}, ${selected.country}` },
                     { label: "Availability", value: selected.availability },
                     { label: "Experience", value: selected.experience || "—" },
-                    { label: "LinkedIn", value: selected.linkedin_url || "—" },
-                    { label: "Applied", value: new Date(selected.created_at).toLocaleDateString() },
+                    { label: "LinkedIn", value: selected.linkedinUrl || "—" },
+                    { label: "Applied", value: new Date(selected.createdAt).toLocaleDateString() },
                     { label: "Languages", value: selected.languages?.join(", ") || "—" },
                   ].map(({ label, value }) => (
                     <div key={label} style={{ padding: "10px 14px", borderRadius: 10,
@@ -365,18 +351,18 @@ export default function DisasterHeroesAdmin() {
                                alignItems: "center", gap: 14, transition: "box-shadow .15s" }}
                       onMouseEnter={e => e.currentTarget.style.boxShadow = T.shadowMd}
                       onMouseLeave={e => e.currentTarget.style.boxShadow = T.shadow}>
-                      {h.photo_url
-                        ? <img src={h.photo_url} alt={h.full_name}
+                      {h.photoUrl
+                        ? <img src={h.photoUrl} alt={h.fullName}
                             style={{ width: 44, height: 44, borderRadius: "50%", objectFit: "cover", flexShrink: 0 }} />
                         : <div style={{ width: 44, height: 44, borderRadius: "50%",
                                         background: `rgba(0,158,219,.10)`, display: "flex",
                                         alignItems: "center", justifyContent: "center",
                                         fontSize: 16, fontWeight: 700, color: T.blue, flexShrink: 0 }}>
-                            {h.full_name?.[0]}
+                            {h.fullName?.[0]}
                           </div>
                       }
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontSize: 14, fontWeight: 700, color: T.fg }}>{h.full_name}</div>
+                        <div style={{ fontSize: 14, fontWeight: 700, color: T.fg }}>{h.fullName}</div>
                         <div style={{ fontSize: 12, color: T.muted, display: "flex", gap: 12, marginTop: 2, flexWrap: "wrap" }}>
                           <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
                             <Mail size={10} />{h.email}
@@ -406,7 +392,7 @@ export default function DisasterHeroesAdmin() {
                           {h.status}
                         </span>
                         <div style={{ fontSize: 11, color: T.muted, marginTop: 4 }}>
-                          {new Date(h.created_at).toLocaleDateString()}
+                          {new Date(h.createdAt).toLocaleDateString()}
                         </div>
                       </div>
                     </div>

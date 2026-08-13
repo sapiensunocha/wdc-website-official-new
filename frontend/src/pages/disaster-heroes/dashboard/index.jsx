@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { supabase } from "../../../lib/supabase";
+import { getMyHeroProfile, logoutDisasterHero } from "../../../api/disasterHeroes";
 import {
   Shield, LogOut, User, BookOpen, Award, Users, Star, Globe,
   ExternalLink, ChevronRight, Bell, Laptop, GraduationCap,
@@ -122,32 +122,17 @@ const BENEFITS = [
 export default function DisasterHeroesDashboard() {
   const navigate = useNavigate();
   const [hero, setHero] = useState(null);
-  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState("overview");
 
   useEffect(() => {
-    async function load() {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) { navigate("/disaster-heroes/login"); return; }
-      setUser(session.user);
-
-      const { data } = await supabase
-        .from("disaster_heroes")
-        .select("*")
-        .eq("email", session.user.email)
-        .single();
-
-      if (!data) { navigate("/disaster-heroes/login"); return; }
-      if (data.status !== "approved") { navigate("/disaster-heroes/login"); return; }
-      setHero(data);
-      setLoading(false);
-    }
-    load();
+    getMyHeroProfile()
+      .then(res => { setHero(res.data.hero); setLoading(false); })
+      .catch(() => navigate("/disaster-heroes/login"));
   }, [navigate]);
 
   async function handleSignOut() {
-    await supabase.auth.signOut();
+    await logoutDisasterHero().catch(() => {});
     navigate("/disaster-heroes/login");
   }
 
@@ -199,8 +184,8 @@ export default function DisasterHeroesDashboard() {
           <div style={{ maxWidth: 1100, margin: "0 auto" }}>
             <div className="hero-banner" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-                {hero?.photo_url ? (
-                  <img src={hero.photo_url} alt={hero.full_name}
+                {hero?.photoUrl ? (
+                  <img src={hero.photoUrl} alt={hero.fullName}
                     style={{ width: 64, height: 64, borderRadius: "50%", objectFit: "cover",
                              border: "2.5px solid rgba(255,255,255,.25)" }} />
                 ) : (
@@ -218,11 +203,11 @@ export default function DisasterHeroesDashboard() {
                     </span>
                   </div>
                   <h1 style={{ fontSize: 22, fontWeight: 800, margin: 0, letterSpacing: "-0.02em", color: "#fff" }}>
-                    Welcome back, {hero?.full_name?.split(" ")[0]}
+                    Welcome back, {hero?.fullName?.split(" ")[0]}
                   </h1>
                   <p style={{ fontSize: 13, color: "rgba(255,255,255,.60)", marginTop: 4 }}>
                     {hero?.city && hero?.country ? `${hero.city}, ${hero.country}` : hero?.country || ""}
-                    {hero?.hero_role ? ` · ${hero.hero_role}` : ""}
+                    {hero?.heroRole ? ` · ${hero.heroRole}` : ""}
                   </p>
                 </div>
               </div>
@@ -242,7 +227,7 @@ export default function DisasterHeroesDashboard() {
                 { label: "Status", value: "Approved Hero", color: "#22c55e" },
                 { label: "Availability", value: hero?.availability || "—" },
                 { label: "Focus", value: hero?.sectors?.slice(0,2).join(", ") || "—" },
-                { label: "Member since", value: hero?.created_at ? new Date(hero.created_at).toLocaleDateString("en", { month: "short", year: "numeric" }) : "—" },
+                { label: "Member since", value: hero?.createdAt ? new Date(hero.createdAt).toLocaleDateString("en", { month: "short", year: "numeric" }) : "—" },
               ].map((s) => (
                 <div key={s.label} style={{ padding: "6px 14px", borderRadius: 100,
                                             background: "rgba(255,255,255,.08)", border: "1px solid rgba(255,255,255,.14)" }}>
@@ -514,8 +499,8 @@ export default function DisasterHeroesDashboard() {
                 {/* Photo + name header */}
                 <div style={{ background: `linear-gradient(135deg, ${T.navy} 0%, #002a5c 100%)`, padding: "28px 24px",
                               display: "flex", alignItems: "center", gap: 18 }}>
-                  {hero?.photo_url ? (
-                    <img src={hero.photo_url} alt={hero.full_name}
+                  {hero?.photoUrl ? (
+                    <img src={hero.photoUrl} alt={hero.fullName}
                       style={{ width: 80, height: 80, borderRadius: "50%", objectFit: "cover",
                                border: "3px solid rgba(255,255,255,.25)" }} />
                   ) : (
@@ -526,10 +511,10 @@ export default function DisasterHeroesDashboard() {
                   )}
                   <div>
                     <p style={{ fontSize: 20, fontWeight: 800, color: "#fff", margin: "0 0 4px", letterSpacing: "-0.02em" }}>
-                      {hero?.full_name}
+                      {hero?.fullName}
                     </p>
                     <p style={{ fontSize: 13, color: "rgba(255,255,255,.60)", margin: 0 }}>
-                      {hero?.hero_role || "Disaster Hero"}
+                      {hero?.heroRole || "Disaster Hero"}
                       {hero?.organization ? ` · ${hero.organization}` : ""}
                     </p>
                   </div>
@@ -544,7 +529,7 @@ export default function DisasterHeroesDashboard() {
                     { label: "Organization", value: hero?.organization },
                     { label: "Experience", value: hero?.experience },
                     { label: "Languages", value: hero?.languages?.join(", ") },
-                    { label: "LinkedIn", value: hero?.linkedin_url },
+                    { label: "LinkedIn", value: hero?.linkedinUrl },
                   ].filter(f => f.value).map((f, i, arr) => (
                     <div key={f.label} style={{ display: "flex", gap: 14, padding: "14px 0",
                                                borderBottom: i < arr.length - 1 ? `1px solid ${T.border}` : "none" }}>
