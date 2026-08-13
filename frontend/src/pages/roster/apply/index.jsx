@@ -67,7 +67,7 @@ const PW_RULES = [
   { id: "upper", label: "One uppercase letter (A–Z)",         test: (p) => /[A-Z]/.test(p) },
   { id: "lower", label: "One lowercase letter (a–z)",         test: (p) => /[a-z]/.test(p) },
   { id: "num",   label: "One number (0–9)",                   test: (p) => /[0-9]/.test(p) },
-  { id: "spec",  label: "One special character (!@#$%^&*…)",  test: (p) => /[^A-Za-z0-9]/.test(p) },
+  { id: "spec",  label: "One special character (!@#$%^&*_…)", test: (p) => /[^A-Za-z0-9]/.test(p) },
 ];
 
 const STEPS = [

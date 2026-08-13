@@ -36,7 +36,7 @@ export const registerRosterMember: RequestHandler = async (req: Request, res: Re
       res.status(400).json({ message: 'Invalid email address' });
       return;
     }
-    const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+    const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^A-Za-z0-9]).{8,}$/;
     if (!passwordRegex.test(password)) {
       res.status(400).json({ message: 'Password must be 8+ chars with uppercase, lowercase, number and special character' });
       return;
@@ -285,7 +285,7 @@ export const resetPassword: RequestHandler = async (req: Request, res: Response)
     if (!member.resetPasswordExpiry || new Date(member.resetPasswordExpiry) < new Date()) {
       res.status(400).json({ message: 'This reset link has expired. Please request a new one.' }); return;
     }
-    const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+    const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^A-Za-z0-9]).{8,}$/;
     if (!passwordRegex.test(password)) {
       res.status(400).json({ message: 'Password must be 8+ characters with uppercase, lowercase, number and special character' }); return;
     }
