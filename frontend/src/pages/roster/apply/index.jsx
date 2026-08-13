@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { registerRosterMember, updateMyRosterProfile } from "../../../api/roster";
 import SearchableSelect from "../../../components/SearchableSelect";
+import AutocompleteInput from "../../../components/AutocompleteInput";
 
 const SECTORS = ["Early Warning", "Emergency Response", "Health & Medical", "WASH", "Shelter & NFI", "GIS & Remote Sensing", "Data & AI", "Training & Capacity Building", "Protection & Human Rights", "M&E", "Coordination & IM", "Policy & Strategy", "Logistics", "Communications", "Finance", "Legal & Compliance", "Psychosocial Support"];
 const REGIONS = ["Africa — East", "Africa — West", "Africa — Central", "Africa — Southern", "Africa — North", "Asia — South", "Asia — Southeast", "Asia — Central", "Middle East", "Europe", "Latin America", "Pacific", "Global / Remote"];
@@ -47,6 +48,18 @@ const LANG_LIST = [
   "Filipino","Burmese","Khmer","Chinese (Mandarin)","Chinese (Cantonese)",
   "Japanese","Korean","Turkish","Persian/Farsi","Kurdish",
   "German","Italian","Dutch","Polish","Ukrainian","Haitian Creole","Other",
+];
+
+const SKILL_SUGGESTIONS = [
+  "ArcGIS","QGIS","Kobo Toolbox","ODK","Power BI","Tableau","Python","R","SQL",
+  "Excel / Data Analysis","HEAT Training","FirstAid / CICO","Project Management","PMP",
+  "Proposal Writing","Report Writing","Needs Assessment","Situation Analysis",
+  "Cluster Coordination","OCHA Tools","MISP","ActivityInfo","DHIS2","CommCare",
+  "Surge Capacity","Cash & Voucher Assistance","PSEA","Child Safeguarding",
+  "Logistics / Supply Chain","Procurement","Financial Management","WASH Engineering",
+  "Shelter Design","Protection Monitoring","Psychosocial Support","Training Facilitation",
+  "Community Engagement","Media & Communications","Photography","Video Production",
+  "Drone / UAV Operation","Remote Sensing","Machine Learning","GIS Mapping",
 ];
 
 const PW_RULES = [
@@ -391,12 +404,13 @@ export default function RosterApplyPage() {
                 <div>
                   <p className="text-sm font-semibold text-content-secondary mb-3">Skills</p>
                   <div className="flex flex-col gap-2 mb-4">
-                    <input
+                    <AutocompleteInput
                       value={newSkill.name}
-                      onChange={e => setNewSkill(v => ({ ...v, name: e.target.value }))}
-                      onKeyDown={e => { if (e.key === "Enter" && newSkill.name.trim()) { addToArray("skills", { ...newSkill }); setNewSkill({ name: "", level: "intermediate" }); }}}
+                      onChange={v => setNewSkill(prev => ({ ...prev, name: v }))}
+                      suggestions={SKILL_SUGGESTIONS}
+                      placeholder="Type a skill (e.g. ArcGIS, Python, HEAT)"
                       className={inputCls}
-                      placeholder="Skill name (e.g. ArcGIS, Python, HEAT)"
+                      onEnter={() => { if (newSkill.name.trim()) { addToArray("skills", { ...newSkill }); setNewSkill({ name: "", level: "intermediate" }); }}}
                     />
                     <div className="flex gap-2">
                       <select value={newSkill.level} onChange={e => setNewSkill(v => ({ ...v, level: e.target.value }))} className={`${inputCls} flex-1`}>
@@ -427,12 +441,13 @@ export default function RosterApplyPage() {
                 <div>
                   <p className="text-sm font-semibold text-content-secondary mb-3">Languages</p>
                   <div className="flex flex-col gap-2 mb-4">
-                    <SearchableSelect
-                      options={LANG_LIST}
+                    <AutocompleteInput
                       value={newLang.language}
                       onChange={v => setNewLang(prev => ({ ...prev, language: v }))}
-                      placeholder="Select a language…"
-                      style={selectStyle}
+                      suggestions={LANG_LIST}
+                      placeholder="Type a language (e.g. French, Swahili)"
+                      className={inputCls}
+                      onEnter={() => { if (newLang.language.trim()) { addToArray("languages", { ...newLang }); setNewLang({ language: "", proficiency: "professional" }); }}}
                     />
                     <div className="flex gap-2">
                       <select value={newLang.proficiency} onChange={e => setNewLang(v => ({ ...v, proficiency: e.target.value }))} className={`${inputCls} flex-1`}>

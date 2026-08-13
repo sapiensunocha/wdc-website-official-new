@@ -13,11 +13,33 @@ import {
   getMyDeployments, getMyEvents, logoutRosterMember,
   applyToOpportunity,
 } from "../../../api/roster";
+import AutocompleteInput from "../../../components/AutocompleteInput";
 
 const SECTORS = ["Early Warning", "Emergency Response", "Health & Medical", "WASH", "Shelter & NFI", "GIS & Remote Sensing", "Data & AI", "Training & Capacity Building", "Protection & Human Rights", "M&E", "Coordination & IM", "Policy & Strategy", "Logistics", "Communications"];
 const REGIONS = ["Africa — East", "Africa — West", "Africa — Central", "Africa — Southern", "Africa — North", "Asia — South", "Asia — Southeast", "Middle East", "Europe", "Latin America", "Pacific", "Global / Remote"];
 const SKILL_LEVELS = ["beginner", "intermediate", "advanced", "expert"];
 const LANG_LEVELS = ["basic", "conversational", "professional", "native"];
+const LANG_LIST = [
+  "English","French","Arabic","Spanish","Portuguese","Russian",
+  "Swahili","Hausa","Amharic","Somali","Tigrinya","Oromo","Lingala",
+  "Kinyarwanda","Kirundi","Luganda","Shona","Zulu","Wolof","Bambara",
+  "Dioula","Twi","Yoruba","Igbo","Kiswahili",
+  "Hindi","Urdu","Pashto","Dari","Bengali","Indonesian","Malay",
+  "Filipino","Burmese","Khmer","Chinese (Mandarin)","Chinese (Cantonese)",
+  "Japanese","Korean","Turkish","Persian/Farsi","Kurdish",
+  "German","Italian","Dutch","Polish","Ukrainian","Haitian Creole","Other",
+];
+const SKILL_SUGGESTIONS = [
+  "ArcGIS","QGIS","Kobo Toolbox","ODK","Power BI","Tableau","Python","R","SQL",
+  "Excel / Data Analysis","HEAT Training","FirstAid / CICO","Project Management","PMP",
+  "Proposal Writing","Report Writing","Needs Assessment","Situation Analysis",
+  "Cluster Coordination","OCHA Tools","MISP","ActivityInfo","DHIS2","CommCare",
+  "Surge Capacity","Cash & Voucher Assistance","PSEA","Child Safeguarding",
+  "Logistics / Supply Chain","Procurement","Financial Management","WASH Engineering",
+  "Shelter Design","Protection Monitoring","Psychosocial Support","Training Facilitation",
+  "Community Engagement","Media & Communications","Photography","Video Production",
+  "Drone / UAV Operation","Remote Sensing","Machine Learning","GIS Mapping",
+];
 
 const STATUS_COLORS = {
   applied: { bg: "#E8F5FC", text: "#009EDB", label: "Application Submitted" },
@@ -201,16 +223,26 @@ function ProfileEditor({ profile, onSaved, onCancel }) {
       {/* Skills */}
       <div className="bg-white rounded-2xl border border-border p-6 space-y-3">
         <p className="text-xs font-bold text-content-secondary uppercase tracking-wider">Skills</p>
-        <div className="flex gap-2">
-          <input value={newSkill.name} onChange={e => setNewSkill(v => ({ ...v, name: e.target.value }))} className={`${inputCls} flex-1`} placeholder="Skill name (e.g. ArcGIS, Python)" />
-          <select value={newSkill.level} onChange={e => setNewSkill(v => ({ ...v, level: e.target.value }))} className={`${inputCls} w-36`}>
+        <div className="flex flex-col sm:flex-row gap-2">
+          <AutocompleteInput
+            value={newSkill.name}
+            onChange={v => setNewSkill(prev => ({ ...prev, name: v }))}
+            suggestions={SKILL_SUGGESTIONS}
+            placeholder="Type a skill (e.g. ArcGIS, Python)"
+            className={`${inputCls} flex-1`}
+            onEnter={() => { if (newSkill.name.trim()) { set("skills", [...form.skills, { ...newSkill }]); setNewSkill({ name: "", level: "intermediate" }); } }}
+          />
+          <select value={newSkill.level} onChange={e => setNewSkill(v => ({ ...v, level: e.target.value }))} className={`${inputCls} sm:w-36`}>
             {SKILL_LEVELS.map(l => <option key={l}>{l}</option>)}
           </select>
           <button type="button"
             onClick={() => { if (newSkill.name.trim()) { set("skills", [...form.skills, { ...newSkill }]); setNewSkill({ name: "", level: "intermediate" }); } }}
-            className="px-3 py-2 rounded-xl text-white" style={{ background: "#009EDB" }}><Plus size={16} /></button>
+            className="flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-white font-semibold shrink-0" style={{ background: "#009EDB" }}>
+            <Plus size={16} /> Add
+          </button>
         </div>
         <div className="flex flex-wrap gap-2">
+          {form.skills.length === 0 && <p className="text-xs text-content-tertiary italic">No skills added yet.</p>}
           {form.skills.map((s, i) => (
             <span key={i} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold" style={{ background: "rgba(0,158,219,0.1)", color: "#009EDB" }}>
               {s.name} <span className="opacity-60">({s.level})</span>
@@ -223,16 +255,26 @@ function ProfileEditor({ profile, onSaved, onCancel }) {
       {/* Languages */}
       <div className="bg-white rounded-2xl border border-border p-6 space-y-3">
         <p className="text-xs font-bold text-content-secondary uppercase tracking-wider">Languages</p>
-        <div className="flex gap-2">
-          <input value={newLang.language} onChange={e => setNewLang(v => ({ ...v, language: e.target.value }))} className={`${inputCls} flex-1`} placeholder="Language (e.g. French, Swahili)" />
-          <select value={newLang.proficiency} onChange={e => setNewLang(v => ({ ...v, proficiency: e.target.value }))} className={`${inputCls} w-36`}>
+        <div className="flex flex-col sm:flex-row gap-2">
+          <AutocompleteInput
+            value={newLang.language}
+            onChange={v => setNewLang(prev => ({ ...prev, language: v }))}
+            suggestions={LANG_LIST}
+            placeholder="Type a language (e.g. French, Swahili)"
+            className={`${inputCls} flex-1`}
+            onEnter={() => { if (newLang.language.trim()) { set("languages", [...form.languages, { ...newLang }]); setNewLang({ language: "", proficiency: "professional" }); } }}
+          />
+          <select value={newLang.proficiency} onChange={e => setNewLang(v => ({ ...v, proficiency: e.target.value }))} className={`${inputCls} sm:w-36`}>
             {LANG_LEVELS.map(l => <option key={l}>{l}</option>)}
           </select>
           <button type="button"
             onClick={() => { if (newLang.language.trim()) { set("languages", [...form.languages, { ...newLang }]); setNewLang({ language: "", proficiency: "professional" }); } }}
-            className="px-3 py-2 rounded-xl text-white" style={{ background: "#009EDB" }}><Plus size={16} /></button>
+            className="flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-white font-semibold shrink-0" style={{ background: "#009EDB" }}>
+            <Plus size={16} /> Add
+          </button>
         </div>
         <div className="flex flex-wrap gap-2">
+          {form.languages.length === 0 && <p className="text-xs text-content-tertiary italic">No languages added yet.</p>}
           {form.languages.map((l, i) => (
             <span key={i} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-surface-subtle border border-border text-content-secondary">
               {l.language} <span className="opacity-70">({l.proficiency})</span>
