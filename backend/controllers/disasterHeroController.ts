@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import { Request, RequestHandler, Response } from 'express';
 import { DisasterHeroFS, comparePassword, hashPassword, setHeroJwtCookie } from '../models/disasterHeroModel';
-import cloudinary from '../utils/cloudinary';
+import { uploadToGCS } from '../utils/gcs';
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -10,19 +10,6 @@ const ADMIN_EMAIL = 'office@worlddisastercenter.org';
 const FRONTEND_URL = process.env.ALLOWED_ORIGIN?.split(',')[0]?.trim() || 'https://www.worlddisastercenter.org';
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
-
-async function uploadToCloudinary(buffer: Buffer, mimetype: string): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const stream = cloudinary.uploader.upload_stream(
-      { folder: 'disaster-heroes', resource_type: 'image', transformation: [{ width: 400, height: 400, crop: 'fill' }] },
-      (err, result) => {
-        if (err || !result) return reject(err || new Error('Upload failed'));
-        resolve(result.secure_url);
-      }
-    );
-    stream.end(buffer);
-  });
-}
 
 async function sendApplicationConfirmation(name: string, email: string) {
   if (!process.env.RESEND_API_KEY) return;
@@ -104,7 +91,7 @@ export const register: RequestHandler = async (req: Request, res: Response): Pro
 
     let photoUrl = '';
     if (req.file) {
-      try { photoUrl = await uploadToCloudinary(req.file.buffer, req.file.mimetype); }
+      try { photoUrl = await uploadToGCS(req.file.buffer, req.file.mimetype, 'disaster-heroes'); }
       catch { /* photo optional */ }
     }
 
