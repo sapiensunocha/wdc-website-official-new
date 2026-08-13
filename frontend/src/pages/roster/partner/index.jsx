@@ -132,7 +132,7 @@ function TalentCard({ member, accessLevel, onRequestDeploy }) {
         {member.skills?.length > 0 && (
           <div className="mt-3 flex flex-wrap gap-1.5">
             {member.skills.slice(0, 4).map((s, i) => (
-              <span key={i} className="text-xs px-2.5 py-1 rounded-full bg-surface-subtle text-content-secondary font-medium">{s}</span>
+              <span key={i} className="text-xs px-2.5 py-1 rounded-full bg-surface-subtle text-content-secondary font-medium">{s.name || s}</span>
             ))}
             {member.skills.length > 4 && (
               <span className="text-xs px-2.5 py-1 rounded-full bg-surface-subtle text-content-tertiary">+{member.skills.length - 4}</span>

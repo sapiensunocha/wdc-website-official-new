@@ -15,6 +15,7 @@ export default function AutocompleteInput({
   className = "",
   onEnter,
   autoComplete = "off",
+  dir = "ltr",
 }) {
   const [open, setOpen] = useState(false);
   const [activeIdx, setActiveIdx] = useState(-1);
@@ -82,6 +83,10 @@ export default function AutocompleteInput({
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
         autoComplete={autoComplete}
+        autoCorrect="off"
+        autoCapitalize="off"
+        spellCheck={false}
+        dir={dir}
         className={className}
       />
       {showDropdown && (
