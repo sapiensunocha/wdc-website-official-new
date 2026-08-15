@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import { adminLoginForHeroes, adminGetHeroes, adminUpdateHeroStatus } from "../../../api/disasterHeroes";
+import { adminLoginForHeroes, adminGetHeroes, adminUpdateHeroStatus, logoutDisasterHero } from "../../../api/disasterHeroes";
 import {
   Shield, CheckCircle2, X, Clock, Users, Globe, Search,
   ChevronDown, Mail, MapPin, Briefcase, Eye, RefreshCw,
@@ -171,7 +171,7 @@ export default function DisasterHeroesAdmin() {
             ))}
           </nav>
           <div style={{ padding: "12px 16px", borderTop: `1px solid ${T.border}` }}>
-            <button onClick={async () => { await supabase.auth.signOut(); setAuthed(false); }}
+            <button onClick={async () => { try { await logoutDisasterHero(); } catch {} setAuthed(false); }}
               style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: T.muted,
                        background: "none", border: "none", cursor: "pointer" }}>
               <LogOut size={13} /> Sign out
