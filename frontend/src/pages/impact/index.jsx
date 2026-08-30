@@ -24,11 +24,12 @@ const STATUS_CFG = {
   Response:  { dot: "#009EDB", bg: "bg-sky-100",    text: "text-sky-800"    },
   Upcoming:  { dot: "#f97316", bg: "bg-orange-100", text: "text-orange-800" },
   HQ:        { dot: "#1C2B39", bg: "bg-slate-100",  text: "text-slate-800"  },
+  Network:   { dot: "#9ca3af", bg: "bg-gray-100",   text: "text-gray-600"   },
 };
 
 const STATS = [
-  { n: "16+",  label: "Countries"      },
-  { n: "4",    label: "Continents"     },
+  { n: "25+",  label: "Countries"      },
+  { n: "5",    label: "Continents"     },
   { n: "5+",   label: "Active Missions"},
   { n: "1M+",  label: "People Reached" },
 ];
@@ -276,7 +277,7 @@ function CountryPanel({ country, index, total, onPrev, onNext, onClose }) {
 }
 
 function CountryList({ onSelect }) {
-  const groups = ["Completed", "Active", "Response", "Upcoming", "HQ"];
+  const groups = ["Completed", "Active", "Response", "Upcoming", "HQ", "Network"];
   return (
     <div className="p-5 overflow-y-auto h-full">
       <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">
@@ -294,7 +295,7 @@ function CountryList({ onSelect }) {
                 : <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: cfg.dot }} />
               }
               <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">
-                {status === "HQ" ? "Offices / HQ" : status}
+                {status === "HQ" ? "Offices / HQ" : status === "Network" ? "Board Network" : status}
               </span>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -381,7 +382,7 @@ function ImpactPage() {
                     ? <Building2 size={12} className="shrink-0" style={{ color: cfg.dot }} />
                     : <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: cfg.dot }} />
                   }
-                  <span className="text-gray-700">{status === "HQ" ? "Office / HQ" : status}</span>
+                  <span className="text-gray-700">{status === "HQ" ? "Office / HQ" : status === "Network" ? "Board Network" : status}</span>
                 </div>
               ))}
             </div>
@@ -414,19 +415,22 @@ function ImpactPage() {
 
       {/* ── Country status summary cards ── */}
       <div className="container pb-10">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
           {Object.entries(STATUS_CFG).map(([status, cfg]) => {
             const countries = impactCountries.filter((c) => c.status === status);
+            if (!countries.length) return null;
             const isHQ = status === "HQ";
+            const isNetwork = status === "Network";
+            const label = isHQ ? "Offices / HQ" : isNetwork ? "Board Network" : status;
             return (
-              <div key={status} className={`border rounded-xl p-5 shadow-sm ${isHQ ? "bg-[#1C2B39] border-slate-700" : "bg-white border-gray-200"}`}>
+              <div key={status} className={`border rounded-xl p-5 shadow-sm ${isHQ ? "bg-[#1C2B39] border-slate-700" : isNetwork ? "bg-gray-50 border-gray-200" : "bg-white border-gray-200"}`}>
                 <div className="flex items-center gap-2 mb-3">
                   {isHQ
                     ? <Building2 size={13} style={{ color: cfg.dot }} />
                     : <span className="w-3 h-3 rounded-full" style={{ backgroundColor: cfg.dot }} />
                   }
                   <span className={`text-xs font-bold uppercase tracking-wider ${isHQ ? "text-slate-400" : "text-gray-500"}`}>
-                    {isHQ ? "Offices / HQ" : status}
+                    {label}
                   </span>
                 </div>
                 <div className={`text-3xl font-black mb-1 ${isHQ ? "text-white" : "text-gray-900"}`}>{countries.length}</div>
@@ -437,7 +441,7 @@ function ImpactPage() {
                       onClick={() => handleCountrySelect(c.code)}
                       className={`block text-xs transition-colors ${isHQ ? "text-slate-300 hover:text-[#009EDB]" : "text-gray-500 hover:text-[#009EDB]"}`}
                     >
-                      {c.flag} {isHQ && c.city ? `${c.city}, ${c.country}` : c.country}
+                      {c.flag} {(isHQ || isNetwork) && c.city ? `${c.city}, ${c.country}` : c.country}
                     </button>
                   ))}
                 </div>

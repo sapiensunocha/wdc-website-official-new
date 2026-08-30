@@ -4,8 +4,8 @@ import "jsvectormap/dist/maps/world.js";
 import { mapCountryCodes } from "../assets/data/impact";
 
 // jsvectormap scale array — exact discrete mapping:
-// scale.length - 1 === max - min  →  4 === 4  →  each integer hits one color exactly
-const SCALE = ["#22c55e", "#f59e0b", "#009EDB", "#f97316", "#1C2B39"];
+// scale.length - 1 === max - min  →  5 === 5  →  each integer hits one color exactly
+const SCALE = ["#22c55e", "#f59e0b", "#009EDB", "#f97316", "#1C2B39", "#9ca3af"];
 
 const VectorMapComponent = ({ onCountrySelect, selectedCode }) => {
   const mapRef      = useRef(null);

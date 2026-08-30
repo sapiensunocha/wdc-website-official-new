@@ -9,24 +9,40 @@ import burundi from "../../assets/images/burundi.png";
 //  3 = Response    → OCHA blue
 //  4 = Upcoming    → orange
 //  5 = HQ/Office   → deep navy (#1C2B39)
+//  6 = Network     → slate-gray (#9ca3af)
 
 export const mapCountryCodes = {
-  CD: 1,  // DRC          – Completed
-  BI: 2,  // Burundi      – Active
-  HT: 3,  // Haiti        – Response
-  JM: 3,  // Jamaica      – Response
-  CU: 3,  // Cuba         – Response
-  BS: 3,  // Bahamas      – Response
+  // ── Completed missions ────────────────────────────────────────────────────
+  CD: 1,  // DRC              – Completed
+  // ── Active operations ────────────────────────────────────────────────────
+  BI: 2,  // Burundi          – Active
+  NG: 2,  // Nigeria          – Active (NEMA partnership)
+  // ── Disaster response ────────────────────────────────────────────────────
+  HT: 3,  // Haiti            – Response
+  JM: 3,  // Jamaica          – Response
+  CU: 3,  // Cuba             – Response
+  BS: 3,  // Bahamas          – Response
   DO: 3,  // Dominican Republic – Response
-  AF: 3,  // Afghanistan  – Response
-  SD: 3,  // Sudan        – Response
-  KE: 4,  // Kenya        – Upcoming
-  RW: 4,  // Rwanda       – Upcoming
-  NG: 4,  // Nigeria      – Upcoming
-  MG: 4,  // Madagascar   – Upcoming
-  CA: 5,  // Canada       – HQ (Ottawa)
-  US: 5,  // United States – HQ (New York)
-  AT: 5,  // Austria      – HQ (Vienna)
+  AF: 3,  // Afghanistan      – Response
+  SD: 3,  // Sudan            – Response
+  // ── Upcoming missions ────────────────────────────────────────────────────
+  RW: 4,  // Rwanda           – Upcoming
+  MG: 4,  // Madagascar       – Upcoming
+  // ── HQ & Regional Offices ────────────────────────────────────────────────
+  CA: 5,  // Canada           – HQ (Ottawa)
+  US: 5,  // United States    – HQ (New York)
+  AT: 5,  // Austria          – HQ (Salzburg)
+  KE: 5,  // Kenya            – Regional Office (Nairobi, East Africa)
+  TH: 5,  // Thailand         – Regional Office (Bangkok, SE Asia)
+  CL: 5,  // Chile            – Regional Office (Santiago, South America)
+  TR: 5,  // Turkey           – Regional Office (Istanbul, Europe/Middle East)
+  IN: 5,  // India            – Regional Office (Mumbai, South Asia)
+  // ── Board network presence ───────────────────────────────────────────────
+  CM: 6,  // Cameroon         – Board (Jonathan Itegwa)
+  DE: 6,  // Germany          – Board (Maria Horvat Kohutova)
+  MW: 6,  // Malawi           – Board (Dr. Ndifanji Namacha)
+  ZA: 6,  // South Africa     – Board (Clint Leander, Johannesburg)
+  ML: 6,  // Mali             – Board (Stephen Aksanti, Bamako)
 };
 
 // Full country detail records — used in the side panel
@@ -205,19 +221,20 @@ export const impactCountries = [
     code: "KE",
     country: "Kenya",
     continent: "Africa",
-    status: "Upcoming",
+    status: "HQ",
     flag: "🇰🇪",
     banner: null,
+    city: "Nairobi",
     summary:
-      "Listed as a served geography for disaster and emergency management. Part of East Africa regional efforts on climate impacts, resilience building, and humanitarian information management. Deployment of Michael and Nova7 planned.",
-    ProjectTitle: "East Africa Resilience Program",
-    CoveragePeriod: "Planned 2025–2026",
+      "WDC Regional Office for East Africa, based in Nairobi. Focus areas: climate-related disasters, drought, floods, and community resilience. Key partners: African Union, local governments, and regional NGOs. Serves as the coordination hub for all WDC programs across Eastern Africa.",
+    ProjectTitle: "WDC East Africa Regional Office",
+    CoveragePeriod: "2025–Ongoing",
     ProjectLeaderOrganization: "World Disaster Center (WDC)",
     LocalImplementationOrganization: null,
     tools: ["Michael", "Nova7"],
-    link: "https://catalystnow.net/organisations/world-disaster-center/",
+    link: "https://www.linkedin.com/company/worlddisastercenter",
     images: [WDCLogo],
-    ContactPerson: [{ name: "WDC Operations", email: "office@worlddisastercenter.org" }],
+    ContactPerson: [{ name: "WDC East Africa", email: "office@worlddisastercenter.org" }],
   },
   {
     code: "RW",
@@ -241,16 +258,16 @@ export const impactCountries = [
     code: "NG",
     country: "Nigeria",
     continent: "Africa",
-    status: "Upcoming",
+    status: "Active",
     flag: "🇳🇬",
     banner: null,
     summary:
-      "Planned deployment of Michael and Nova7 tools plus preparedness training for disaster management. Nigeria represents a major expansion target in West Africa for WDC's community resilience and early-warning programs.",
-    ProjectTitle: "Nigeria Disaster Preparedness Program",
-    CoveragePeriod: "Planned 2025–2026",
+      "Active strategic partnership with NEMA (National Emergency Management Agency). Deploying the MaiLafiya app with predictive alerts in Hausa, Yoruba, Igbo, and English. Training 50,000 local first responders, establishing 200 Resilience Hubs nationwide with solar energy and digital tools. Target: disaster response in under 24 hours and 5 million active users within 12 months.",
+    ProjectTitle: "NEMA–WDC Strategic Partnership: Nigeria Resilient 2025",
+    CoveragePeriod: "2025–2026",
     ProjectLeaderOrganization: "World Disaster Center (WDC)",
-    LocalImplementationOrganization: null,
-    tools: ["Michael", "Nova7"],
+    LocalImplementationOrganization: "National Emergency Management Agency (NEMA), Nigeria",
+    tools: ["MaiLafiya", "Michael", "Nova7"],
     link: "https://www.linkedin.com/company/worlddisastercenter",
     images: [WDCLogo],
     ContactPerson: [{ name: "WDC Operations", email: "office@worlddisastercenter.org" }],
@@ -272,6 +289,176 @@ export const impactCountries = [
     link: "https://www.linkedin.com/company/worlddisastercenter",
     images: [WDCLogo],
     ContactPerson: [{ name: "WDC Operations", email: "office@worlddisastercenter.org" }],
+  },
+  // ── Regional Offices ──────────────────────────────────────────────────────
+  {
+    code: "TH",
+    country: "Thailand",
+    continent: "Asia",
+    status: "HQ",
+    flag: "🇹🇭",
+    banner: null,
+    city: "Bangkok",
+    summary:
+      "WDC Regional Office for Southeast Asia, based in Bangkok. Focus areas: floods, tsunamis, and urban disaster resilience. Key partners: ASEAN, UNESCAP, and local disaster risk reduction agencies. Coordinates WDC programs across the broader Southeast Asia region.",
+    ProjectTitle: "WDC Southeast Asia Regional Office",
+    CoveragePeriod: "2025–Ongoing",
+    ProjectLeaderOrganization: "World Disaster Center (WDC)",
+    LocalImplementationOrganization: null,
+    tools: ["Michael", "Nova7"],
+    link: "https://www.linkedin.com/company/worlddisastercenter",
+    images: [WDCLogo],
+    ContactPerson: [{ name: "WDC Southeast Asia", email: "office@worlddisastercenter.org" }],
+  },
+  {
+    code: "CL",
+    country: "Chile",
+    continent: "Americas",
+    status: "HQ",
+    flag: "🇨🇱",
+    banner: null,
+    city: "Santiago",
+    summary:
+      "WDC Regional Office for South America, based in Santiago. Focus areas: earthquakes, volcanic eruptions, and wildfire management. Key partners: regional governments and research institutions. Serves as the coordination hub for WDC programs across South America.",
+    ProjectTitle: "WDC South America Regional Office",
+    CoveragePeriod: "2025–Ongoing",
+    ProjectLeaderOrganization: "World Disaster Center (WDC)",
+    LocalImplementationOrganization: null,
+    tools: ["Michael", "EAGLE"],
+    link: "https://www.linkedin.com/company/worlddisastercenter",
+    images: [WDCLogo],
+    ContactPerson: [{ name: "WDC South America", email: "office@worlddisastercenter.org" }],
+  },
+  {
+    code: "TR",
+    country: "Turkey",
+    continent: "Europe",
+    status: "HQ",
+    flag: "🇹🇷",
+    banner: null,
+    city: "Istanbul",
+    summary:
+      "WDC Regional Office covering Europe and the Middle East, based in Istanbul. Focus areas: earthquakes, refugee crises, and transboundary disaster risks. Key partners: EU Civil Protection, local agencies, and NGOs. Bridges WDC's European and Middle Eastern operations.",
+    ProjectTitle: "WDC Europe & Middle East Regional Office",
+    CoveragePeriod: "2025–Ongoing",
+    ProjectLeaderOrganization: "World Disaster Center (WDC)",
+    LocalImplementationOrganization: null,
+    tools: ["Michael", "Nova7"],
+    link: "https://www.linkedin.com/company/worlddisastercenter",
+    images: [WDCLogo],
+    ContactPerson: [{ name: "WDC Europe/MENA", email: "office@worlddisastercenter.org" }],
+  },
+  {
+    code: "IN",
+    country: "India",
+    continent: "Asia",
+    status: "HQ",
+    flag: "🇮🇳",
+    banner: null,
+    city: "Mumbai",
+    summary:
+      "WDC Regional Office for South Asia, based in Mumbai. Focus areas: cyclones, floods, and urban resilience. Key partners: SAARC, local governments, and private sector stakeholders. Coordinates WDC programs across the Indian subcontinent and South Asia.",
+    ProjectTitle: "WDC South Asia Regional Office",
+    CoveragePeriod: "2025–Ongoing",
+    ProjectLeaderOrganization: "World Disaster Center (WDC)",
+    LocalImplementationOrganization: null,
+    tools: ["Michael", "Nova7", "EAGLE"],
+    link: "https://www.linkedin.com/company/worlddisastercenter",
+    images: [WDCLogo],
+    ContactPerson: [{ name: "WDC South Asia", email: "office@worlddisastercenter.org" }],
+  },
+  // ── Board network presence ─────────────────────────────────────────────────
+  {
+    code: "CM",
+    country: "Cameroon",
+    continent: "Africa",
+    status: "Network",
+    flag: "🇨🇲",
+    banner: null,
+    summary:
+      "WDC Board Director Jonathan Itegwa is based in Cameroon, where he serves as Head of Mission at Premiere Urgence Internationale. A seasoned humanitarian leader with extensive experience in strategy development and program implementation across Africa.",
+    ProjectTitle: "WDC Board Network",
+    CoveragePeriod: "Ongoing",
+    ProjectLeaderOrganization: "World Disaster Center (WDC)",
+    LocalImplementationOrganization: null,
+    tools: ["Michael"],
+    link: "https://www.linkedin.com/in/jonathan-itegwa-965466108/",
+    images: [WDCLogo],
+    ContactPerson: [{ name: "Jonathan Itegwa", email: "jitegwa@worlddisastercenter.org" }],
+  },
+  {
+    code: "DE",
+    country: "Germany",
+    continent: "Europe",
+    status: "Network",
+    flag: "🇩🇪",
+    banner: null,
+    summary:
+      "WDC Board Director Maria Horvat Kohutova is based in Germany. A research consultant specializing in migration, human rights, and project management with over a decade of experience working with international organizations including the Open Society Foundations.",
+    ProjectTitle: "WDC Board Network",
+    CoveragePeriod: "Ongoing",
+    ProjectLeaderOrganization: "World Disaster Center (WDC)",
+    LocalImplementationOrganization: null,
+    tools: ["Michael"],
+    link: "https://www.linkedin.com/in/maria-horvat-kohutova/",
+    images: [WDCLogo],
+    ContactPerson: [{ name: "Maria Horvat Kohutova", email: "mkohutova@worlddisastercenter.org" }],
+  },
+  {
+    code: "MW",
+    country: "Malawi",
+    continent: "Africa",
+    status: "Network",
+    flag: "🇲🇼",
+    banner: null,
+    summary:
+      "WDC Board Director Dr. Ndifanji Melia Namacha is based in Malawi. A physician and global health researcher with expertise in digital health, policy development, and donor engagement. Represents WDC's health and humanitarian networks across Southern Africa.",
+    ProjectTitle: "WDC Board Network",
+    CoveragePeriod: "Ongoing",
+    ProjectLeaderOrganization: "World Disaster Center (WDC)",
+    LocalImplementationOrganization: null,
+    tools: ["Michael"],
+    link: "https://www.linkedin.com/in/ndifanji-melia-namacha-mbbs-mba-001a62123/",
+    images: [WDCLogo],
+    ContactPerson: [{ name: "Dr. Ndifanji Namacha", email: "nnamacha@worlddisastercenter.org" }],
+  },
+  {
+    code: "ZA",
+    country: "South Africa",
+    continent: "Africa",
+    status: "Network",
+    flag: "🇿🇦",
+    banner: null,
+    city: "Johannesburg",
+    summary:
+      "WDC Board Director Clint Leander is based in Johannesburg, South Africa. WDC maintains a network presence in Southern Africa through board leadership, supporting regional disaster management collaboration.",
+    ProjectTitle: "WDC Board Network",
+    CoveragePeriod: "Ongoing",
+    ProjectLeaderOrganization: "World Disaster Center (WDC)",
+    LocalImplementationOrganization: null,
+    tools: ["Michael"],
+    link: "https://www.linkedin.com/in/clint-leander/",
+    images: [WDCLogo],
+    ContactPerson: [{ name: "Clint Leander", email: "clint.leander@here.com" }],
+  },
+  {
+    code: "ML",
+    country: "Mali",
+    continent: "Africa",
+    status: "Network",
+    flag: "🇲🇱",
+    banner: null,
+    city: "Bamako",
+    summary:
+      "WDC Board Director Stephen Divin Aksanti Marhegeko is based in Bamako, Mali. WDC maintains a West Africa network presence through board leadership, contributing to regional disaster risk reduction efforts across the Sahel region.",
+    ProjectTitle: "WDC Board Network",
+    CoveragePeriod: "Ongoing",
+    ProjectLeaderOrganization: "World Disaster Center (WDC)",
+    LocalImplementationOrganization: null,
+    tools: ["Michael"],
+    link: "https://www.linkedin.com/in/stephen-divin-aksanti-marhegeko-78839712b/",
+    images: [WDCLogo],
+    ContactPerson: [{ name: "Stephen Aksanti", email: "divinstephen.aksanti@gmail.com" }],
   },
   // ── HQ / Office locations ──────────────────────────────────────────────
   {
