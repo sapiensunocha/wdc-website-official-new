@@ -28,9 +28,9 @@ const STATUS_CFG = {
 };
 
 const STATS = [
-  { n: "25+",  label: "Countries"      },
-  { n: "5",    label: "Continents"     },
-  { n: "5+",   label: "Active Missions"},
+  { n: "30+",  label: "Countries"      },
+  { n: "6",    label: "Continents"     },
+  { n: "8+",   label: "Active Missions"},
   { n: "1M+",  label: "People Reached" },
 ];
 
@@ -277,7 +277,7 @@ function CountryPanel({ country, index, total, onPrev, onNext, onClose }) {
 }
 
 function CountryList({ onSelect }) {
-  const groups = ["Completed", "Active", "Response", "Upcoming", "HQ", "Network"];
+  const groups = ["Active", "Response", "Upcoming", "HQ", "Network"];
   return (
     <div className="p-5 overflow-y-auto h-full">
       <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">
@@ -477,11 +477,11 @@ function ImpactPage() {
                 icon: <Zap size={20} className="text-[#009EDB]" />,
                 tag: "TECHNOLOGY · ACTIVE",
                 tagColor: "text-purple-600 bg-purple-50",
-                title: "Michael App — AI Disaster Response Platform",
-                desc: "Flagship mobile and web application integrating predictive alerts, geolocation tools, early warning systems, and community communication. Deployed in Haiti and piloted across Africa. Enables real-time monitoring and autonomous local response without external assistance.",
+                title: "Michael — AI Disaster Intelligence Platform",
+                desc: "Flagship AI platform with active dashboards across 10+ countries. 2026 deployments: Ghana West Africa Floods (593mm record rainfall), Nepal GLOF Flash Flood Response (26 Aug 2026), Venezuela M7.5 Earthquake (24 Jun 2026), DRC–Uganda Ebola PHEIC response. Real-time USGS seismic feeds, GloFAS hydrological signals, SEIR epidemic models.",
                 stats: [
-                  { n: "AI-Driven", l: "Predictions" },
-                  { n: "Multi-Language", l: "Interface" },
+                  { n: "10+", l: "Active Deployments" },
+                  { n: "Multi-Hazard", l: "Intelligence" },
                 ],
               },
               {
@@ -519,13 +519,13 @@ function ImpactPage() {
               },
               {
                 icon: <MapPin size={20} className="text-[#009EDB]" />,
-                tag: "EXPANSION · PLANNED",
+                tag: "EXPANSION · ACTIVE",
                 tagColor: "text-indigo-600 bg-indigo-50",
-                title: "Global Regional Offices — 5 Locations",
-                desc: "WDC is establishing five regional offices: Nairobi (East Africa — floods, drought), Bangkok (Southeast Asia — tsunamis), Santiago (South America — earthquakes), Istanbul (Europe/Middle East), and Mumbai (South Asia — cyclones). Each will serve as a Center of Excellence for DRR.",
+                title: "Global Regional Offices — 8 Locations",
+                desc: "WDC operates eight offices across 6 continents: Ottawa & New York (HQ), Nairobi (East Africa), Bangkok (SE Asia), Santiago (South America), Istanbul (Europe/MENA), Mumbai (South Asia), Salzburg (European HQ). Each serves as a Center of Excellence for disaster risk reduction in its region.",
                 stats: [
-                  { n: "5", l: "Planned Offices" },
-                  { n: "4", l: "Continents" },
+                  { n: "8", l: "Global Offices" },
+                  { n: "6", l: "Continents" },
                 ],
               },
             ].map((item, i) => (

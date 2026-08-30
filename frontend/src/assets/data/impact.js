@@ -12,11 +12,11 @@ import burundi from "../../assets/images/burundi.png";
 //  6 = Network     → slate-gray (#9ca3af)
 
 export const mapCountryCodes = {
-  // ── Completed missions ────────────────────────────────────────────────────
-  CD: 1,  // DRC              – Completed
-  // ── Active operations ────────────────────────────────────────────────────
+  // ── Active operations ─────────────────────────────────────────────────────
+  CD: 2,  // DRC              – Active (30-day mission complete + 2026 Ebola PHEIC response)
   BI: 2,  // Burundi          – Active
   NG: 2,  // Nigeria          – Active (NEMA partnership)
+  GH: 2,  // Ghana            – Active (West Africa Floods 2026 — Michael dashboard)
   // ── Disaster response ────────────────────────────────────────────────────
   HT: 3,  // Haiti            – Response
   JM: 3,  // Jamaica          – Response
@@ -25,6 +25,10 @@ export const mapCountryCodes = {
   DO: 3,  // Dominican Republic – Response
   AF: 3,  // Afghanistan      – Response
   SD: 3,  // Sudan            – Response
+  NP: 3,  // Nepal            – Response (Flash Flood / GLOF 2026 — Michael dashboard)
+  VE: 3,  // Venezuela        – Response (M7.5 Earthquake 2026 — Michael dashboard)
+  CI: 3,  // Côte d'Ivoire    – Response (West Africa Floods 2026)
+  UG: 3,  // Uganda           – Response (Ebola cross-border spread from DRC, 2026)
   // ── Upcoming missions ────────────────────────────────────────────────────
   RW: 4,  // Rwanda           – Upcoming
   MG: 4,  // Madagascar       – Upcoming
@@ -51,14 +55,14 @@ export const impactCountries = [
     code: "CD",
     country: "Democratic Republic of Congo",
     continent: "Africa",
-    status: "Completed",
+    status: "Active",
     flag: "🇨🇩",
     banner: banner,
     summary:
-      "Conducted a comprehensive 30-day on-ground mission in Kinshasa and Goma. Real-time crisis monitoring, fighting misinformation, and introducing AI tool Michael for predictive analytics and early warnings. Collaborated with MSF, UNICEF, Prime Minister's Office; field visits and community engagement for urban resilience.",
+      "30-day on-ground mission (Dec 2024 – Jan 2025) in Kinshasa and Goma: real-time crisis monitoring, misinformation response, and Michael deployment for predictive analytics and early warnings. Collaborated with MSF, UNICEF, and the Prime Minister's Office. In 2026, WDC is now responding to the 17th Ebola outbreak in DRC — the Bundibugyo ebolavirus PHEIC declared by WHO on 16 May 2026 in Ituri Province, with 1,406+ cases and cross-border spread to Uganda.",
     ProjectTitle:
-      "Michael: Global Disaster Monitoring and Alert System Implementation",
-    CoveragePeriod: "19 December 2024 – 19 January 2025",
+      "Michael: DRC Ground Mission + 2026 Ebola PHEIC Response",
+    CoveragePeriod: "December 2024 – Ongoing",
     ProjectLeaderOrganization: "World Disaster Center (WDC)",
     LocalImplementationOrganization: "Global Hub of Technology in Congo (GHTC)",
     tools: ["Michael"],
@@ -212,6 +216,96 @@ export const impactCountries = [
     CoveragePeriod: "2025",
     ProjectLeaderOrganization: "World Disaster Center (WDC)",
     LocalImplementationOrganization: null,
+    tools: ["Michael"],
+    link: "https://www.linkedin.com/company/worlddisastercenter",
+    images: [WDCLogo],
+    ContactPerson: [{ name: "WDC Operations", email: "office@worlddisastercenter.org" }],
+  },
+  {
+    code: "GH",
+    country: "Ghana",
+    continent: "Africa",
+    status: "Active",
+    flag: "🇬🇭",
+    banner: null,
+    summary:
+      "West Africa Floods 2026: Historic flooding struck Greater Accra on 29 June 2026 — 593.2mm of rainfall in June (highest monthly total in Ghana's recorded history). 25 communities flooded across 18 districts, 38,802 people displaced, nationwide power outage. WDC deployed Michael flood intelligence dashboard monitoring Accra, Côte d'Ivoire, and the broader West Africa flood corridor.",
+    ProjectTitle: "West Africa Floods 2026 — Michael Flood Intelligence Dashboard",
+    CoveragePeriod: "June 2026 – Ongoing",
+    ProjectLeaderOrganization: "World Disaster Center (WDC)",
+    LocalImplementationOrganization: "NADMO (Ghana National Disaster Management Organisation)",
+    tools: ["Michael"],
+    link: "https://www.linkedin.com/company/worlddisastercenter",
+    images: [WDCLogo],
+    ContactPerson: [{ name: "WDC Operations", email: "office@worlddisastercenter.org" }],
+  },
+  {
+    code: "CI",
+    country: "Côte d'Ivoire",
+    continent: "Africa",
+    status: "Response",
+    flag: "🇨🇮",
+    banner: null,
+    summary:
+      "Affected by the same West Africa flood weather system as Ghana (June 2026). WDC's Michael dashboard monitors both countries simultaneously, tracking displacement, infrastructure damage, and humanitarian needs across the region.",
+    ProjectTitle: "West Africa Floods 2026 — Côte d'Ivoire Response",
+    CoveragePeriod: "June 2026 – Ongoing",
+    ProjectLeaderOrganization: "World Disaster Center (WDC)",
+    LocalImplementationOrganization: null,
+    tools: ["Michael"],
+    link: "https://www.linkedin.com/company/worlddisastercenter",
+    images: [WDCLogo],
+    ContactPerson: [{ name: "WDC Operations", email: "office@worlddisastercenter.org" }],
+  },
+  {
+    code: "UG",
+    country: "Uganda",
+    continent: "Africa",
+    status: "Response",
+    flag: "🇺🇬",
+    banner: null,
+    summary:
+      "Ebola cross-border spread from DRC confirmed in 2026. The Bundibugyo ebolavirus outbreak (PHEIC declared May 2026) spread from Ituri Province, DRC to Uganda's border zone. WDC's Ebola intelligence dashboard monitors both DRC and Uganda, tracking confirmed cases, cross-border movement, and ETU capacity.",
+    ProjectTitle: "2026 Ebola PHEIC — DRC & Uganda Cross-Border Response",
+    CoveragePeriod: "May 2026 – Ongoing",
+    ProjectLeaderOrganization: "World Disaster Center (WDC)",
+    LocalImplementationOrganization: null,
+    tools: ["Michael"],
+    link: "https://www.linkedin.com/company/worlddisastercenter",
+    images: [WDCLogo],
+    ContactPerson: [{ name: "WDC Operations", email: "office@worlddisastercenter.org" }],
+  },
+  {
+    code: "NP",
+    country: "Nepal",
+    continent: "Asia",
+    status: "Response",
+    flag: "🇳🇵",
+    banner: null,
+    summary:
+      "Flash flood and glacial lake outburst flood (GLOF) emergency on 26 August 2026 — Bhote Koshi and Trishuli River systems. Nepal Army and police deployed 30,000+ personnel. WDC's Michael flash flood / GLOF dashboard monitors 21 classified dangerous glacial lakes across 3,624 glacial lakes in Nepal, providing real-time alerts and situation intelligence in coordination with IOM Nepal, OCHA, and the Nepal NDRRMA.",
+    ProjectTitle: "Nepal Flash Flood / GLOF 2026 — Michael Emergency Dashboard",
+    CoveragePeriod: "August 2026 – Ongoing",
+    ProjectLeaderOrganization: "World Disaster Center (WDC)",
+    LocalImplementationOrganization: "IOM Nepal / NDRRMA",
+    tools: ["Michael"],
+    link: "https://www.linkedin.com/company/worlddisastercenter",
+    images: [WDCLogo],
+    ContactPerson: [{ name: "WDC Operations", email: "office@worlddisastercenter.org" }],
+  },
+  {
+    code: "VE",
+    country: "Venezuela",
+    continent: "Americas",
+    status: "Response",
+    flag: "🇻🇪",
+    banner: null,
+    summary:
+      "Two powerful earthquakes struck northern Venezuela on 24 June 2026 — M7.2 foreshock followed 39 seconds later by M7.5 mainshock near San Felipe, Yaracuy State. Most destructive seismic event in Venezuela's recorded history. 172+ trapped, 50,000+ missing (unverified), 4 collapsed high-rises in Caracas. WDC deployed Michael earthquake aftershock dashboard with live USGS seismic monitoring, needs assessment, and humanitarian coordination intelligence.",
+    ProjectTitle: "Venezuela M7.5 Earthquake 2026 — Michael Response Dashboard",
+    CoveragePeriod: "June 2026 – Ongoing",
+    ProjectLeaderOrganization: "World Disaster Center (WDC)",
+    LocalImplementationOrganization: "Venezuelan Red Cross / OCHA Venezuela",
     tools: ["Michael"],
     link: "https://www.linkedin.com/company/worlddisastercenter",
     images: [WDCLogo],
@@ -522,8 +616,9 @@ export const impactCountries = [
 
 // Legacy grouped export (used by old impact page)
 export const impact = {
-  Completed: impactCountries.filter((c) => c.status === "Completed"),
-  "In Progress": impactCountries.filter((c) => c.status === "Active"),
+  Active: impactCountries.filter((c) => c.status === "Active"),
   Response: impactCountries.filter((c) => c.status === "Response"),
   Upcoming: impactCountries.filter((c) => c.status === "Upcoming"),
+  HQ: impactCountries.filter((c) => c.status === "HQ"),
+  Network: impactCountries.filter((c) => c.status === "Network"),
 };

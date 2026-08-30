@@ -51,10 +51,34 @@ const countries = [
     detail:
       "Rwanda hosts WDC's regional coordination activities. WDC received the People Matters Rwanda Award here and continues to engage Rwanda's National Disaster Management Authority as a model for proactive disaster governance.",
   },
+  {
+    name: "Ghana",
+    flag: "🇬🇭",
+    status: "Active",
+    focus: "Flood monitoring, historic rainfall response, West Africa disaster intelligence",
+    detail:
+      "West Africa Floods 2026: On 29 June 2026, historic flooding struck Greater Accra — 593.2mm of rainfall in June, the highest monthly total in Ghana's recorded history. 25 communities flooded, 38,802 displaced, nationwide power outage. WDC's Michael flood intelligence dashboard deployed for real-time monitoring of the Odaw River corridor and all affected districts.",
+  },
+  {
+    name: "Côte d'Ivoire",
+    flag: "🇨🇮",
+    status: "Response",
+    focus: "West Africa flood response, cross-border disaster intelligence",
+    detail:
+      "Simultaneously affected by the same West Africa flood weather system as Ghana (June 2026). WDC's Michael dashboard monitors both countries as part of integrated West Africa flood coverage, tracking displacement, infrastructure damage, and humanitarian needs across the region.",
+  },
+  {
+    name: "Uganda",
+    flag: "🇺🇬",
+    status: "Response",
+    focus: "Ebola cross-border response, disease outbreak intelligence",
+    detail:
+      "2026 Ebola PHEIC cross-border response: The Bundibugyo ebolavirus outbreak that began in Ituri Province, DRC (WHO PHEIC declared 16 May 2026) spread to Uganda's border zone. WDC's Ebola intelligence dashboard monitors confirmed cases, contact tracing capacity, and cross-border movement across all DRC-Uganda border crossings.",
+  },
 ];
 
 const stats = [
-  { value: "4+", label: "Active African Countries" },
+  { value: "9+", label: "Active African Countries" },
   { value: "12+", label: "Languages Including Swahili & Amharic" },
   { value: "72h", label: "Advance Warning for Communities" },
   { value: "200+", label: "Historical Events Validated" },

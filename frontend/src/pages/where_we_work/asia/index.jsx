@@ -29,10 +29,18 @@ const countries = [
     detail:
       "WDC Regional Office for Southeast Asia based in Bangkok. Focus areas: floods, tsunamis, and urban disaster resilience across the Mekong basin and coastal Southeast Asia. Key partners include ASEAN, UNESCAP, and local disaster risk reduction agencies. The Bangkok office is the coordination hub for WDC programs from Myanmar to Indonesia.",
   },
+  {
+    name: "Nepal",
+    flag: "🇳🇵",
+    status: "Response",
+    focus: "Flash flood & glacial lake outburst (GLOF) response, glacial lake monitoring",
+    detail:
+      "Active flash flood and GLOF emergency response from 26 August 2026 — Bhote Koshi and Trishuli River systems. Nepal Army and police deployed 30,000+ personnel for search & rescue. WDC's Michael GLOF dashboard monitors 21 classified dangerous glacial lakes across Nepal's 3,624 total glacial lakes (52.5 km²), coordinating with IOM Nepal, OCHA, Nepal NDRRMA, and the Nepal Red Cross for real-time alerts and situation intelligence.",
+  },
 ];
 
 const stats = [
-  { value: "1", label: "Emergency Response" },
+  { value: "2", label: "Emergency Responses" },
   { value: "2", label: "Regional Offices" },
   { value: "4.5B+", label: "People in Coverage Zone" },
   { value: "Multi-Hazard", label: "Monitoring Active" },

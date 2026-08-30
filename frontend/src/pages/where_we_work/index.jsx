@@ -8,30 +8,30 @@ const regions = [
   {
     name: "Africa",
     route: "/where-we-work/africa",
-    subtitle: "11 Countries · HQ: Nairobi",
+    subtitle: "14 Countries · HQ: Nairobi",
     description:
       "Floods, conflict, disease outbreaks, drought. Africa faces the most disasters with the fewest resources. WDC's largest field presence.",
-    flags: "🇨🇩🇧🇮🇸🇩🇳🇬🇰🇪🇷🇼🇲🇬🇲🇼🇿🇦🇲🇱🇨🇲",
+    flags: "🇨🇩🇧🇮🇸🇩🇳🇬🇰🇪🇷🇼🇲🇬🇲🇼🇿🇦🇲🇱🇨🇲🇬🇭🇨🇮🇺🇬",
     color: "from-emerald-500/10 to-teal-500/5",
     accent: "border-emerald-500",
   },
   {
     name: "Americas",
     route: "/where-we-work/americas",
-    subtitle: "8 Countries · Offices: Ottawa, New York, Santiago",
+    subtitle: "9 Countries · Offices: Ottawa, New York, Santiago",
     description:
-      "Caribbean hurricane response, earthquake preparedness, and WDC's flagship HQ operations.",
-    flags: "🇭🇹🇯🇲🇨🇺🇧🇸🇩🇴🇨🇦🇺🇸🇨🇱",
+      "Caribbean hurricane response, Venezuela earthquake intelligence, and WDC's flagship HQ operations.",
+    flags: "🇭🇹🇯🇲🇨🇺🇧🇸🇩🇴🇨🇦🇺🇸🇨🇱🇻🇪",
     color: "from-blue-500/10 to-sky-500/5",
     accent: "border-blue-500",
   },
   {
     name: "Asia",
     route: "/where-we-work/asia",
-    subtitle: "3 Countries · Offices: Bangkok, Mumbai",
+    subtitle: "4 Countries · Offices: Bangkok, Mumbai",
     description:
-      "Earthquake emergency response in Afghanistan, cyclone monitoring in South Asia, flood systems in Southeast Asia.",
-    flags: "🇦🇫🇮🇳🇹🇭",
+      "Earthquake emergency response in Afghanistan, GLOF flood monitoring in Nepal, cyclone monitoring in South Asia, flood systems in Southeast Asia.",
+    flags: "🇦🇫🇮🇳🇹🇭🇳🇵",
     color: "from-amber-500/10 to-orange-500/5",
     accent: "border-amber-500",
   },
@@ -48,10 +48,10 @@ const regions = [
 ];
 
 const stats = [
-  { value: "25+", label: "Countries" },
-  { value: "5", label: "Continents" },
+  { value: "30+", label: "Countries" },
+  { value: "6", label: "Continents" },
   { value: "8", label: "Regional & HQ Offices" },
-  { value: "5+", label: "Active Missions" },
+  { value: "8+", label: "Active Missions" },
 ];
 
 export default function WhereWeWork() {

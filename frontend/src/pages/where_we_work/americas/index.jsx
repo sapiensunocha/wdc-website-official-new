@@ -69,13 +69,21 @@ const countries = [
     detail:
       "WDC Regional Office for South America based in Santiago. Focus: earthquakes, volcanic eruptions, and wildfire management. Partners with regional governments and research institutions to deploy Michael across South America's high-risk disaster zones.",
   },
+  {
+    name: "Venezuela",
+    flag: "🇻🇪",
+    status: "Response",
+    focus: "M7.5 earthquake response, urban search & rescue intelligence, aftershock monitoring",
+    detail:
+      "Two powerful earthquakes struck northern Venezuela on 24 June 2026 — a M7.2 foreshock followed 39 seconds later by a M7.5 mainshock near San Felipe, Yaracuy State — the most destructive seismic event in Venezuela's recorded history. WDC deployed Michael's earthquake intelligence dashboard with live USGS seismic monitoring, structural collapse mapping across Caracas, and humanitarian needs assessment coordinating with OCHA Venezuela, UNICEF, and the Venezuelan Red Cross.",
+  },
 ];
 
 const stats = [
-  { value: "5", label: "Response Countries" },
+  { value: "6", label: "Response Countries" },
   { value: "3", label: "Offices & HQ" },
-  { value: "Caribbean", label: "Coverage" },
-  { value: "2025", label: "Hurricane Melissa Response" },
+  { value: "Americas", label: "Full Coverage" },
+  { value: "2026", label: "Venezuela M7.5 Response" },
 ];
 
 const techFeatures = [
