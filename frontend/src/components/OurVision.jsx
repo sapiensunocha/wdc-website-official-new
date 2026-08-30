@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import AnimateIn from "./AnimateIn";
 
 const OurVision = () => {
   return (
@@ -9,31 +11,36 @@ const OurVision = () => {
           <div className="relative z-10 overflow-hidden rounded bg-primary py-12 px-8 md:p-[70px]">
             <div className="flex flex-wrap items-center -mx-4">
               <div className="w-full px-4 lg:w-1/2">
-                <span className="block mb-4 text-2xl font-medium text-white">
-                  Our Vision
-                </span>
-                <p className="text-white">
-                  Our vision at the World Disaster Center is to cultivate a
-                  world where communities are not only resilient to disasters
-                  but can also perceive and utilize these events as
-                  opportunities for growth and innovation. We envision a future
-                  where every community, regardless of location or socioeconomic
-                  status, is equipped with the knowledge, tools, and
-                  capabilities to effectively manage and transform the
-                  challenges posed by natural and anthropogenic disasters into
-                  catalysts for development and improvement.
-                </p>
+                <AnimateIn variant="fadeLeft">
+                  <span className="block mb-4 text-2xl font-medium text-white">
+                    Our Vision
+                  </span>
+                  <p className="text-white">
+                    Our vision at the World Disaster Center is to cultivate a
+                    world where communities are not only resilient to disasters
+                    but can also perceive and utilize these events as
+                    opportunities for growth and innovation. We envision a future
+                    where every community, regardless of location or socioeconomic
+                    status, is equipped with the knowledge, tools, and
+                    capabilities to effectively manage and transform the
+                    challenges posed by natural and anthropogenic disasters into
+                    catalysts for development and improvement.
+                  </p>
+                </AnimateIn>
               </div>
               <div className="w-full px-4 lg:w-1/2">
-                <div className="flex flex-wrap lg:justify-end">
-                  <Link
-                    to="/contact"
-                    className="inline-flex py-3 my-1 mr-4 text-base font-medium transition bg-color-1 rounded-md hover:bg-shadow-1 text-white px-7"
-                  >
-                    Stay In Touch
-                  </Link>
-                  
-                </div>
+                <AnimateIn variant="fadeRight" delay={0.2}>
+                  <div className="flex flex-wrap lg:justify-end">
+                    <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+                      <Link
+                        to="/contact"
+                        className="inline-flex py-3 my-1 mr-4 text-base font-medium transition bg-color-1 rounded-md hover:bg-shadow-1 text-white px-7"
+                      >
+                        Stay In Touch
+                      </Link>
+                    </motion.div>
+                  </div>
+                </AnimateIn>
               </div>
             </div>
 

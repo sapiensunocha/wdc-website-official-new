@@ -144,22 +144,28 @@ function FollowSection() {
   return (
     <section className="bg-[#009EDB] py-8 sm:py-10">
       <div className="container flex flex-col sm:flex-row items-center justify-between gap-6">
-        <div className="text-center sm:text-left">
+        <AnimateIn variant="fadeLeft">
           <p className="text-white font-bold text-xl">Follow World Disaster Center</p>
           <p className="text-white/80 text-sm mt-1">Stay updated on missions, tools, and disaster intelligence worldwide.</p>
-        </div>
+        </AnimateIn>
         <div className="flex flex-wrap items-center gap-3">
-          {SOCIAL_LINKS.map(({ href, label, icon }) => (
-            <a
+          {SOCIAL_LINKS.map(({ href, label, icon }, i) => (
+            <motion.a
               key={label}
               href={href}
               target="_blank"
               rel="noreferrer"
               className="flex items-center gap-2 bg-white/15 hover:bg-white/25 text-white text-xs font-bold px-4 py-2 rounded transition-colors uppercase tracking-wider"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ scale: 1.08, backgroundColor: "rgba(255,255,255,0.3)" }}
+              whileTap={{ scale: 0.95 }}
             >
               {icon}
               {label}
-            </a>
+            </motion.a>
           ))}
         </div>
       </div>

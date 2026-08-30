@@ -7,6 +7,8 @@ import {
   Radio, Heart, Droplets, Home, Activity, Cpu, ChevronRight,
   Play, Building2, GraduationCap, FileText, UserCheck, Send,
 } from "lucide-react";
+import { motion } from "framer-motion";
+import AnimateIn from "../../components/AnimateIn";
 
 // ─── Animated counter ────────────────────────────────────────────────────────
 function Counter({ end, suffix = "", duration = 2000 }) {
@@ -142,35 +144,59 @@ export default function RosterPage() {
 
         <div className="container relative pt-24 pb-20 lg:pt-32 lg:pb-28">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary-light/30 bg-primary/10 mb-6">
+            <motion.div
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary-light/30 bg-primary/10 mb-6"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            >
               <span className="w-2 h-2 rounded-full bg-primary-light animate-pulse" />
               <span className="tagline text-primary-light">WDC Global Roster — Talent Pool</span>
-            </div>
+            </motion.div>
 
-            <h1 className="h1 text-n-1 mb-6 leading-tight !text-[1.75rem] sm:!text-[2.5rem] md:!text-[2.75rem] lg:!text-[3.25rem] xl:!text-[3.75rem]">
+            <motion.h1
+              className="h1 text-n-1 mb-6 leading-tight !text-[1.75rem] sm:!text-[2.5rem] md:!text-[2.75rem] lg:!text-[3.25rem] xl:!text-[3.75rem]"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            >
               Deploy World-Class<br />
               <span style={{ background: "linear-gradient(90deg, #009EDB, #4DC0E8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                 Disaster Experts
               </span>
               <br />in Hours, Not Weeks
-            </h1>
+            </motion.h1>
 
-            <p className="body-1 text-n-3 mb-10 max-w-2xl mx-auto">
+            <motion.p
+              className="body-1 text-n-3 mb-10 max-w-2xl mx-auto"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            >
               The world's most rigorous humanitarian talent platform. Every expert is certified, vetted, interviewed, and contract-protected by WDC before deployment. Partners get the right specialist — guaranteed.
-            </p>
+            </motion.p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-              <Link to="/roster/apply"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-white transition-all hover:scale-105 active:scale-95"
-                style={{ background: "linear-gradient(135deg, #009EDB, #0072BC)", boxShadow: "0 8px 32px rgba(0,158,219,0.4)" }}>
-                Apply as Expert <ArrowRight size={18} />
-              </Link>
-              <Link to="/roster/partner"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold border transition-all hover:bg-white/10"
-                style={{ borderColor: "rgba(255,255,255,0.2)", color: "#E6F7FF" }}>
-                Find Talent for Your Org <ChevronRight size={18} />
-              </Link>
-            </div>
+            <motion.div
+              className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+                <Link to="/roster/apply"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-white transition-all"
+                  style={{ background: "linear-gradient(135deg, #009EDB, #0072BC)", boxShadow: "0 8px 32px rgba(0,158,219,0.4)" }}>
+                  Apply as Expert <ArrowRight size={18} />
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+                <Link to="/roster/partner"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold border transition-all hover:bg-white/10"
+                  style={{ borderColor: "rgba(255,255,255,0.2)", color: "#E6F7FF" }}>
+                  Find Talent for Your Org <ChevronRight size={18} />
+                </Link>
+              </motion.div>
+            </motion.div>
 
             {/* Stats */}
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
@@ -215,11 +241,13 @@ export default function RosterPage() {
       {/* ── How it works ──────────────────────────────────────────────────── */}
       <section className="py-20 bg-surface-subtle">
         <div className="container">
-          <p className="tagline text-primary text-center mb-3">The Process</p>
-          <h2 className="h2 text-center text-content-primary mb-3">How the WDC Roster Works</h2>
-          <p className="body-3 text-content-secondary text-center max-w-xl mx-auto mb-10">
-            The most thorough talent pipeline in humanitarian response. No shortcuts — every expert earns their place.
-          </p>
+          <AnimateIn variant="fadeUp">
+            <p className="tagline text-primary text-center mb-3">The Process</p>
+            <h2 className="h2 text-center text-content-primary mb-3">How the WDC Roster Works</h2>
+            <p className="body-3 text-content-secondary text-center max-w-xl mx-auto mb-10">
+              The most thorough talent pipeline in humanitarian response. No shortcuts — every expert earns their place.
+            </p>
+          </AnimateIn>
 
           {/* Tab toggle */}
           <div className="flex justify-center mb-12">
@@ -235,15 +263,23 @@ export default function RosterPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {(activeTab === "talent" ? STEPS_TALENT : STEPS_PARTNER).map(({ icon: Icon, step, title, desc }) => (
-              <div key={step} className="relative p-6 rounded-2xl bg-white border border-border text-center group hover:-translate-y-1 transition-transform duration-300">
+            {(activeTab === "talent" ? STEPS_TALENT : STEPS_PARTNER).map(({ icon: Icon, step, title, desc }, i) => (
+              <motion.div
+                key={step}
+                className="relative p-6 rounded-2xl bg-white border border-border text-center"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ y: -6, boxShadow: "0 16px 36px rgba(0,0,0,0.1)" }}
+              >
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs font-bold px-3 py-1 rounded-full text-white" style={{ background: "#009EDB" }}>{step}</div>
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4 mt-2" style={{ background: "rgba(0,158,219,0.08)" }}>
                   <Icon size={22} style={{ color: "#009EDB" }} />
                 </div>
                 <h3 className="font-bold text-content-primary mb-2 text-sm leading-tight">{title}</h3>
                 <p className="text-xs text-content-secondary leading-relaxed">{desc}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
 
@@ -264,17 +300,27 @@ export default function RosterPage() {
       {/* ── Expertise sectors ─────────────────────────────────────────────── */}
       <section className="py-20 bg-white">
         <div className="container">
-          <p className="tagline text-primary text-center mb-3">Areas of Expertise</p>
-          <h2 className="h2 text-center text-content-primary mb-10">12 Critical Domains Covered</h2>
+          <AnimateIn variant="fadeUp">
+            <p className="tagline text-primary text-center mb-3">Areas of Expertise</p>
+            <h2 className="h2 text-center text-content-primary mb-10">12 Critical Domains Covered</h2>
+          </AnimateIn>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {SECTORS.map(({ icon: Icon, label, count }) => (
-              <div key={label} className="p-4 rounded-2xl border border-border text-center hover:border-primary/40 hover:-translate-y-1 transition-all duration-200 group cursor-pointer">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-3 transition-colors" style={{ background: "rgba(0,158,219,0.08)" }}>
+            {SECTORS.map(({ icon: Icon, label, count }, i) => (
+              <motion.div
+                key={label}
+                className="p-4 rounded-2xl border border-border text-center cursor-pointer"
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.4, delay: Math.min(i % 6, 5) * 0.07, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ y: -4, borderColor: "rgba(0,158,219,0.4)", boxShadow: "0 12px 28px rgba(0,0,0,0.08)" }}
+              >
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-3" style={{ background: "rgba(0,158,219,0.08)" }}>
                   <Icon size={18} style={{ color: "#009EDB" }} />
                 </div>
                 <p className="text-xs font-semibold text-content-primary mb-1 leading-tight">{label}</p>
                 <p className="text-[11px] font-bold" style={{ color: "#009EDB" }}>{count} experts</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -285,7 +331,14 @@ export default function RosterPage() {
         <div className="container">
           <div className="grid lg:grid-cols-2 gap-8">
             {/* Talent benefits */}
-            <div className="p-8 rounded-3xl" style={{ background: "linear-gradient(135deg, #001129, #002050)", border: "1px solid rgba(0,158,219,0.15)" }}>
+            <motion.div
+              className="p-8 rounded-3xl"
+              style={{ background: "linear-gradient(135deg, #001129, #002050)", border: "1px solid rgba(0,158,219,0.15)" }}
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            >
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-5 text-xs font-bold" style={{ background: "rgba(0,158,219,0.15)", color: "#4DC0E8" }}>
                 <Users size={12} /> For Disaster Professionals
               </div>
@@ -301,10 +354,17 @@ export default function RosterPage() {
               <Link to="/roster/apply" className="inline-flex items-center gap-2 mt-8 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all hover:opacity-90" style={{ background: "linear-gradient(135deg, #009EDB, #0072BC)" }}>
                 Apply Now <ArrowRight size={14} />
               </Link>
-            </div>
+            </motion.div>
 
             {/* Partner benefits */}
-            <div className="p-8 rounded-3xl bg-white" style={{ border: "2px solid #009EDB", boxShadow: "0 0 40px rgba(0,158,219,0.08)" }}>
+            <motion.div
+              className="p-8 rounded-3xl bg-white"
+              style={{ border: "2px solid #009EDB", boxShadow: "0 0 40px rgba(0,158,219,0.08)" }}
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            >
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-5 text-xs font-bold" style={{ background: "rgba(0,158,219,0.08)", color: "#009EDB" }}>
                 <Building2 size={12} /> For NGOs, UN Agencies & Governments
               </div>
@@ -321,7 +381,7 @@ export default function RosterPage() {
               <Link to="/roster/partner" className="inline-flex items-center gap-2 mt-8 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all hover:opacity-90" style={{ background: "linear-gradient(135deg, #009EDB, #0072BC)" }}>
                 Get Started Free <ArrowRight size={14} />
               </Link>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -329,14 +389,24 @@ export default function RosterPage() {
       {/* ── Why Join — Advantages ─────────────────────────────────────────── */}
       <section className="py-20 bg-white">
         <div className="container">
-          <p className="tagline text-primary text-center mb-3">Why It Matters</p>
-          <h2 className="h2 text-center text-content-primary mb-3">The WDC Roster Advantage</h2>
-          <p className="body-3 text-content-secondary text-center max-w-xl mx-auto mb-12">
-            This isn't a job board. It's a career-defining platform for humanitarian professionals who want guaranteed deployments, international recognition, and full institutional protection.
-          </p>
+          <AnimateIn variant="fadeUp">
+            <p className="tagline text-primary text-center mb-3">Why It Matters</p>
+            <h2 className="h2 text-center text-content-primary mb-3">The WDC Roster Advantage</h2>
+            <p className="body-3 text-content-secondary text-center max-w-xl mx-auto mb-12">
+              This isn't a job board. It's a career-defining platform for humanitarian professionals who want guaranteed deployments, international recognition, and full institutional protection.
+            </p>
+          </AnimateIn>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {ADVANTAGES.map(({ icon: Icon, title, desc, highlight }) => (
-              <div key={title} className="p-6 rounded-2xl border border-border hover:border-primary/30 hover:shadow-md transition-all duration-200 group">
+            {ADVANTAGES.map(({ icon: Icon, title, desc, highlight }, i) => (
+              <motion.div
+                key={title}
+                className="p-6 rounded-2xl border border-border"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, delay: Math.min(i % 3, 2) * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ y: -6, borderColor: "rgba(0,158,219,0.3)", boxShadow: "0 16px 36px rgba(0,0,0,0.1)" }}
+              >
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: "rgba(0,158,219,0.08)" }}>
                     <Icon size={20} style={{ color: "#009EDB" }} />
@@ -347,7 +417,7 @@ export default function RosterPage() {
                     <p className="text-xs text-content-secondary leading-relaxed">{desc}</p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
           <div className="text-center mt-10">
@@ -378,7 +448,15 @@ export default function RosterPage() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {SAMPLE_OPPS.map((opp, i) => (
-              <div key={i} className="p-5 rounded-2xl bg-white border border-border hover:border-primary/40 hover:shadow-md transition-all duration-200 group">
+              <motion.div
+                key={i}
+                className="p-5 rounded-2xl bg-white border border-border"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, delay: Math.min(i % 3, 2) * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ y: -4, borderColor: "rgba(0,158,219,0.4)", boxShadow: "0 12px 28px rgba(0,0,0,0.1)" }}
+              >
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-[11px] font-bold px-2.5 py-1 rounded-full" style={{ background: "rgba(0,158,219,0.1)", color: "#009EDB" }}>{opp.type}</span>
                   <span className="text-[11px] font-bold px-2.5 py-1 rounded-full uppercase" style={{ background: `${URGENCY_COLOR[opp.urgency]}18`, color: URGENCY_COLOR[opp.urgency] }}>
@@ -399,7 +477,7 @@ export default function RosterPage() {
                 <Link to="/roster/apply" className="flex items-center gap-1 text-xs font-bold transition-colors" style={{ color: "#009EDB" }}>
                   Apply for this role <ChevronRight size={13} />
                 </Link>
-              </div>
+              </motion.div>
             ))}
           </div>
           <p className="text-center text-sm text-content-secondary mt-8">

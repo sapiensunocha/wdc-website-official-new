@@ -4,6 +4,8 @@ import WDCLogo from "../../components/WDCLogo";
 import { COURSES } from "./trainingData";
 import Section from "../../components/Section";
 import Heading from "../../components/Heading";
+import { motion } from "framer-motion";
+import AnimateIn from "../../components/AnimateIn";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -587,9 +589,14 @@ function Catalog({ progress, onSelectCourse }) {
           const complete = isCourseComplete(course.id, progress);
           const topColor = COLOR_MAP[course.color] || "#009EDB";
           return (
-            <button key={course.id} onClick={() => onSelectCourse(course)}
-              className="group text-left bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-all animate-fade-in"
-              style={{ borderTop: `4px solid ${topColor}`, animationDelay: `${idx * 60}ms` }}
+            <motion.button key={course.id} onClick={() => onSelectCourse(course)}
+              className="group text-left bg-white rounded-lg border border-gray-200 overflow-hidden"
+              style={{ borderTop: `4px solid ${topColor}` }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5, delay: Math.min(idx % 3, 2) * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" }}
             >
               <div className={`${course.color} px-5 py-4 text-white`}>
                 <span className="text-2xl">{course.icon}</span>
@@ -610,7 +617,7 @@ function Catalog({ progress, onSelectCourse }) {
                 </div>
                 <p className="text-[10px] text-content-tertiary">{pct === 0 ? "Not started" : pct === 100 ? "Completed ✓" : `${pct}% complete`}</p>
               </div>
-            </button>
+            </motion.button>
           );
         })}
       </div>
@@ -768,13 +775,13 @@ worlddisastercenter.org`;
       <div className="container">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
-          <div className="mb-10">
+          <AnimateIn variant="fadeUp" className="mb-10">
             <span className="text-xs font-black uppercase tracking-widest text-[#418FDE] mb-2 block">WDC Academy</span>
             <h2 className="text-3xl font-bold text-gray-900 mb-3">Request Custom Training</h2>
             <p className="text-gray-600 max-w-2xl">
               Need training tailored to your organisation, team, or community? Select your requirements to get an instant estimate, then send a request — our team responds within 48 hours.
             </p>
-          </div>
+          </AnimateIn>
 
           {/* Step 1: Topics */}
           <div className="bg-white border border-gray-200 rounded-lg p-6 mb-5">
@@ -1023,15 +1030,20 @@ export default function TrainingPage() {
       <div className="bg-primary py-12 px-4">
         <div className="container">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div>
+            <AnimateIn variant="fadeLeft">
               <span className="text-xs font-black uppercase tracking-widest text-white/70 mb-2 block">WDC Academy</span>
               <h1 className="text-3xl font-bold text-white mb-1">Training & Certification</h1>
               <p className="text-white/80 text-sm max-w-xl">
                 Professional disaster management training designed for humanitarian workers, community leaders, government officials, and concerned citizens worldwide.
               </p>
-            </div>
+            </AnimateIn>
             {userName && (
-              <div className="bg-white/15 border border-white/30 rounded-lg px-6 py-4 text-center shrink-0">
+              <motion.div
+                className="bg-white/15 border border-white/30 rounded-lg px-6 py-4 text-center shrink-0"
+                initial={{ opacity: 0, x: 40 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              >
                 <p className="text-white/70 text-xs uppercase tracking-wider mb-1">Learning as</p>
                 <p className="text-white font-bold">{userName}</p>
                 <p className="text-white/60 text-xs mt-1">
@@ -1041,7 +1053,7 @@ export default function TrainingPage() {
                   className="text-white/50 text-[10px] hover:text-white mt-2 block mx-auto transition-colors">
                   Change name
                 </button>
-              </div>
+              </motion.div>
             )}
           </div>
         </div>

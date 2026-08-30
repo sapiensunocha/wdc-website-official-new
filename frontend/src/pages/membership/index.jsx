@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { motion } from "framer-motion";
 import {
   Users, Calendar, Globe, MessageSquare, Mail, ArrowRight,
   CheckCircle2, Clock, Award, ExternalLink, Download, Send,
@@ -398,7 +399,12 @@ export default function DisasterHeroesPage() {
         `}</style>
 
         {/* ── page header ─────────────────────────────────────────────────── */}
-        <div style={{ padding: "24px 24px 0" }}>
+        <motion.div
+          style={{ padding: "24px 24px 0" }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
           <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 20 }}>
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
@@ -408,12 +414,14 @@ export default function DisasterHeroesPage() {
               <h1 style={{ fontSize: 24, fontWeight: 800, letterSpacing: "-0.02em", color: T.fg, margin: 0 }}>Disaster Heroes</h1>
               <p style={{ fontSize: 13, color: T.muted, marginTop: 4 }}>1,840 Heroes · 135 countries · 3 focus areas</p>
             </div>
-            <Link to="/disaster-heroes/apply"
-              style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 20px", borderRadius: 10,
-                       background: T.blue, color: "#fff", fontWeight: 700, fontSize: 13, textDecoration: "none",
-                       boxShadow: `0 4px 12px rgba(0,158,219,.3)` }}>
-              Apply to Join <ArrowRight size={14} />
-            </Link>
+            <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+              <Link to="/disaster-heroes/apply"
+                style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 20px", borderRadius: 10,
+                         background: T.blue, color: "#fff", fontWeight: 700, fontSize: 13, textDecoration: "none",
+                         boxShadow: `0 4px 12px rgba(0,158,219,.3)` }}>
+                Apply to Join <ArrowRight size={14} />
+              </Link>
+            </motion.div>
           </div>
 
           {/* stat chips */}
@@ -423,9 +431,16 @@ export default function DisasterHeroesPage() {
               { label: "Countries",    value: "135",   icon: <Globe size={15} />,      color: T.darkBlue },
               { label: "Focus Areas",  value: "3",     icon: <Layers size={15} />,     color: "#7C3AED" },
               { label: "Applications", value: "112",   icon: <CheckCircle2 size={15}/>,color: "#DC6B19" },
-            ].map(s => (
-              <div key={s.label} style={{ borderRadius: 12, padding: "14px 16px", display: "flex", alignItems: "center", gap: 12,
-                                          background: T.surface, boxShadow: T.shadow }}>
+            ].map((s, i) => (
+              <motion.div
+                key={s.label}
+                style={{ borderRadius: 12, padding: "14px 16px", display: "flex", alignItems: "center", gap: 12,
+                                          background: T.surface, boxShadow: T.shadow }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.15 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ y: -2, boxShadow: "0 8px 24px rgba(0,0,0,0.12)" }}
+              >
                 <div style={{ width: 36, height: 36, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center",
                               background: s.color + "15", color: s.color, flexShrink: 0 }}>
                   {s.icon}
@@ -434,10 +449,10 @@ export default function DisasterHeroesPage() {
                   <div style={{ fontSize: 20, fontWeight: 800, color: T.fg, lineHeight: 1 }}>{s.value}</div>
                   <div style={{ fontSize: 11, color: T.muted, marginTop: 3 }}>{s.label}</div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* ── tab bar ─────────────────────────────────────────────────────── */}
         <div className="sticky top-[6.5rem] lg:top-[7rem]"
