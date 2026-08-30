@@ -1,10 +1,22 @@
 import { useState, useCallback, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import AnimateIn from "../../components/AnimateIn";
-import { ChevronLeft, ChevronRight, ExternalLink, X, Building2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, ExternalLink, X, Building2, FileText, Play, Award, Star } from "lucide-react";
 import Map from "../../components/Map";
 import NewsLetter from "../../components/newsletter";
 import { impactCountries } from "../../assets/data/impact";
+import { Link } from "react-router-dom";
+
+// ── Media assets ──────────────────────────────────────────────────────────────
+import awardGroup    from "../../assets/media/award_group.jpg";
+import awardCloseup  from "../../assets/media/award_closeup.jpg";
+import awardStage    from "../../assets/media/award_stage.jpg";
+import awardHandshake from "../../assets/media/award_handshake.jpg";
+import unescoEvent1  from "../../assets/media/unesco_event1.jpg";
+import unescoEvent2  from "../../assets/media/unesco_event2.jpg";
+import unescoEvent3  from "../../assets/media/unesco_event3.jpg";
+import prrsFramework from "../../assets/media/prrs_framework.jpg";
+import lstSenegal    from "../../assets/media/lst_senegal.png";
 
 const STATUS_CFG = {
   Completed: { dot: "#22c55e", bg: "bg-green-100",  text: "text-green-800"  },
@@ -432,6 +444,246 @@ function ImpactPage() {
               </div>
             );
           })}
+        </div>
+      </div>
+
+      {/* ── Awards & Recognition ── */}
+      <div className="bg-[#1C2B39] py-16">
+        <div className="container">
+          <AnimateIn variant="fadeUp">
+            <div className="h-1 w-12 bg-[#009EDB] mb-4" />
+            <p className="text-[#009EDB] text-xs font-black uppercase tracking-widest mb-2">Coverage & Recognition</p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-10">
+              WDC in the Spotlight
+            </h2>
+          </AnimateIn>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                icon: <Star size={22} className="text-[#009EDB]" />,
+                org: "Geospatial World",
+                date: "February 2025",
+                title: "50 Rising Stars 2025",
+                desc: "Sapiens Ndatabaye, Founder & CEO of World Disaster Center, selected as one of the Geospatial World 50 Rising Stars 2025. Certificate ceremony held at Geospatial World Forum, Madrid, Spain (April 22–25, 2025).",
+                tag: "GLOBAL RECOGNITION",
+              },
+              {
+                icon: <Award size={22} className="text-[#009EDB]" />,
+                org: "The Corporate Magazine",
+                date: "March 2025",
+                title: "Top 20 Dynamic Canadian Business Leaders 2025",
+                desc: "Sapiens Ndatabaye recognized as one of the Top 20 Dynamic Canadian Business Leaders 2025 by The Corporate Magazine — a testament to exceptional leadership in the Canadian business landscape.",
+                tag: "BUSINESS LEADERSHIP",
+              },
+              {
+                icon: <Award size={22} className="text-[#009EDB]" />,
+                org: "KalendMind / PDA",
+                date: "December 20, 2024",
+                title: "Innovation Award — Career Coaching & PDA",
+                desc: "World Disaster Center received the KalendMind Innovation Award for Career Coaching & Personal Development Analysis (PDA): Online Journey and Wellbeing Assessment at a gala ceremony.",
+                tag: "INNOVATION AWARD",
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.55, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                className="bg-white/5 border border-white/10 rounded-xl p-6 flex flex-col gap-4 hover:border-[#009EDB]/40 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-[#009EDB]/10 flex items-center justify-center shrink-0">
+                    {item.icon}
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-[#009EDB]">{item.tag}</p>
+                    <p className="text-xs text-white/50">{item.org} · {item.date}</p>
+                  </div>
+                </div>
+                <h3 className="text-base font-bold text-white leading-snug">{item.title}</h3>
+                <p className="text-sm text-white/60 leading-relaxed flex-1">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── WDC Products ── */}
+      <div className="bg-white py-16 border-b border-gray-100">
+        <div className="container">
+          <AnimateIn variant="fadeUp">
+            <div className="h-1 w-12 bg-[#009EDB] mb-4" />
+            <p className="text-[#009EDB] text-xs font-black uppercase tracking-widest mb-2">Flagship Products</p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#1C2B39] mb-3">WDC Intelligence Products</h2>
+            <p className="text-gray-500 text-sm max-w-2xl mb-10">Eight named flagship products — from real-time dashboards to annual reports — delivering disaster intelligence to governments, NGOs, and communities worldwide.</p>
+          </AnimateIn>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {[
+              { name: "Nostradamus' Insight", sub: "Predictive Disaster Risk Dashboard", freq: "Quarterly", color: "bg-blue-50 border-blue-200 text-blue-800", dot: "#009EDB" },
+              { name: "Da Vinci's Plan", sub: "Disaster Preparedness & Infrastructure Report", freq: "Bi-Annual", color: "bg-purple-50 border-purple-200 text-purple-800", dot: "#7C3AED" },
+              { name: "Atlas of Crisis", sub: "Global Disaster Trends Report", freq: "Annual", color: "bg-red-50 border-red-200 text-red-800", dot: "#EF4444" },
+              { name: "Apollo's Shield", sub: "Preparedness & Prediction Animated Briefing", freq: "Quarterly", color: "bg-orange-50 border-orange-200 text-orange-800", dot: "#F97316" },
+              { name: "Titan's Watch", sub: "Global Disaster Dashboard", freq: "Monthly", color: "bg-teal-50 border-teal-200 text-teal-800", dot: "#14B8A6" },
+              { name: "Galileo's Lens", sub: "Real-Time Global Disaster Response Dashboard", freq: "Real-Time", color: "bg-green-50 border-green-200 text-green-800", dot: "#22C55E" },
+              { name: "Einstein's Map", sub: "Climate Change & Disaster Risk Animation", freq: "Annual", color: "bg-yellow-50 border-yellow-200 text-yellow-800", dot: "#EAB308" },
+              { name: "Cassandra's Voice", sub: "Humanitarian Aid Impact Report", freq: "Annual", color: "bg-pink-50 border-pink-200 text-pink-800", dot: "#EC4899" },
+            ].map((p, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ y: -4, boxShadow: "0 12px 28px rgba(0,0,0,0.09)" }}
+                className="border rounded-xl p-5 bg-white flex flex-col gap-2"
+              >
+                <div className="w-2 h-2 rounded-full mb-1" style={{ backgroundColor: p.dot }} />
+                <p className="text-sm font-black text-[#1C2B39] leading-tight">{p.name}</p>
+                <p className="text-xs text-gray-500 leading-snug flex-1">{p.sub}</p>
+                <span className={`self-start text-[10px] font-bold px-2 py-0.5 rounded-full border ${p.color}`}>{p.freq}</span>
+              </motion.div>
+            ))}
+          </div>
+          <AnimateIn variant="fadeUp" delay={0.2} className="mt-8 flex gap-4">
+            <Link to="/reports" className="inline-flex items-center gap-2 bg-[#009EDB] hover:bg-[#0072BC] text-white font-bold px-6 py-3 rounded text-sm transition-colors">
+              <FileText size={16} /> View All Reports &amp; Documents
+            </Link>
+            <Link to="/global-products" className="inline-flex items-center gap-2 border border-gray-200 hover:border-[#009EDB] text-gray-700 hover:text-[#009EDB] font-bold px-6 py-3 rounded text-sm transition-colors">
+              Our Products
+            </Link>
+          </AnimateIn>
+        </div>
+      </div>
+
+      {/* ── Photo Gallery ── */}
+      <div className="bg-gray-50 py-16">
+        <div className="container">
+          <AnimateIn variant="fadeUp">
+            <div className="h-1 w-12 bg-[#009EDB] mb-4" />
+            <p className="text-[#009EDB] text-xs font-black uppercase tracking-widest mb-2">Media</p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#1C2B39] mb-3">Photos &amp; Coverage</h2>
+            <p className="text-gray-500 text-sm max-w-2xl mb-10">WDC events, award ceremonies, UN partnerships, and satellite data in action.</p>
+          </AnimateIn>
+
+          {/* Award ceremony */}
+          <AnimateIn variant="fadeUp" delay={0.05}>
+            <p className="text-xs font-black uppercase tracking-widest text-gray-400 mb-4">KalendMind Innovation Award Ceremony — December 2024</p>
+          </AnimateIn>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
+            {[
+              { src: awardGroup,     alt: "WDC award ceremony group photo" },
+              { src: awardCloseup,   alt: "WDC award presentation close-up" },
+              { src: awardHandshake, alt: "WDC award handshake" },
+              { src: awardStage,     alt: "Award stage group photo" },
+            ].map((img, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ scale: 1.02 }}
+                className="overflow-hidden rounded-xl aspect-square bg-gray-200 cursor-pointer"
+              >
+                <img src={img.src} alt={img.alt} className="w-full h-full object-cover" loading="lazy" />
+              </motion.div>
+            ))}
+          </div>
+
+          {/* UNESCO event */}
+          <AnimateIn variant="fadeUp" delay={0.05}>
+            <p className="text-xs font-black uppercase tracking-widest text-gray-400 mb-4">UNESCO Partnership Event</p>
+          </AnimateIn>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-10">
+            {[
+              { src: unescoEvent1, alt: "WDC team at UNESCO event" },
+              { src: unescoEvent2, alt: "WDC representatives at UNESCO" },
+              { src: unescoEvent3, alt: "UNESCO meeting with WDC" },
+            ].map((img, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ scale: 1.02 }}
+                className="overflow-hidden rounded-xl bg-gray-200 cursor-pointer"
+              >
+                <img src={img.src} alt={img.alt} className="w-full h-56 object-cover" loading="lazy" />
+              </motion.div>
+            ))}
+          </div>
+
+          {/* WDC technical */}
+          <AnimateIn variant="fadeUp" delay={0.05}>
+            <p className="text-xs font-black uppercase tracking-widest text-gray-400 mb-4">WDC Framework &amp; Satellite Intelligence</p>
+          </AnimateIn>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+              className="overflow-hidden rounded-xl bg-black"
+            >
+              <img src={prrsFramework} alt="WDC PRRS Framework — Preparedness, Response, Recovery, Solutions" className="w-full h-64 object-cover opacity-90" loading="lazy" />
+              <div className="p-4">
+                <p className="text-sm font-bold text-white">PRRS Framework</p>
+                <p className="text-xs text-gray-400 mt-1">WDC's four-pillar approach: Preparedness · Response · Recovery · Solutions</p>
+              </div>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+              className="overflow-hidden rounded-xl bg-[#1C2B39]"
+            >
+              <img src={lstSenegal} alt="Land Surface Temperature Senegal 2022 — WDC satellite analysis" className="w-full h-64 object-contain p-4" loading="lazy" />
+              <div className="p-4">
+                <p className="text-sm font-bold text-white">Satellite Intelligence — Senegal 2022</p>
+                <p className="text-xs text-gray-400 mt-1">Land Surface Temperature (LST) analysis produced by WDC's geospatial team using remote sensing data</p>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* YouTube CTA */}
+          <AnimateIn variant="fadeUp" delay={0.1} className="mt-10 bg-[#1C2B39] rounded-xl p-8 flex flex-col sm:flex-row items-center gap-6">
+            <div className="w-14 h-14 rounded-full bg-[#FF0000] flex items-center justify-center shrink-0">
+              <Play size={24} className="text-white ml-1" />
+            </div>
+            <div className="flex-1 text-center sm:text-left">
+              <p className="text-white font-bold text-lg">Watch WDC on YouTube</p>
+              <p className="text-white/60 text-sm mt-1">Videos, animated briefings, disaster analyses, and field reports from the World Disaster Center.</p>
+            </div>
+            <a
+              href="https://www.youtube.com/@WorldDisasterCenterOffice"
+              target="_blank"
+              rel="noreferrer"
+              className="shrink-0 inline-flex items-center gap-2 bg-[#FF0000] hover:bg-red-700 text-white font-bold px-6 py-3 rounded text-sm transition-colors"
+            >
+              <Play size={15} /> Visit Our Channel
+            </a>
+          </AnimateIn>
+        </div>
+      </div>
+
+      {/* ── Reports CTA ── */}
+      <div className="bg-[#009EDB] py-12">
+        <div className="container flex flex-col sm:flex-row items-center justify-between gap-6">
+          <AnimateIn variant="fadeLeft">
+            <p className="text-white font-bold text-xl">50+ Official WDC Reports &amp; Documents</p>
+            <p className="text-white/80 text-sm mt-1">Annual reports, field missions, country analyses, technology documentation — all free to read.</p>
+          </AnimateIn>
+          <AnimateIn variant="fadeRight">
+            <Link
+              to="/reports"
+              className="shrink-0 inline-flex items-center gap-2 bg-white hover:bg-gray-100 text-[#009EDB] font-bold px-8 py-3 rounded text-sm transition-colors"
+            >
+              <FileText size={16} /> Browse All Reports
+            </Link>
+          </AnimateIn>
         </div>
       </div>
 
