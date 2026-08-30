@@ -38,6 +38,11 @@ import News from "./pages/news";
 import Events from "./pages/events";
 import Story from "./pages/story";
 import Africa from "./pages/where_we_work/africa";
+import WhereWeWork from "./pages/where_we_work";
+import Americas from "./pages/where_we_work/americas";
+import Asia from "./pages/where_we_work/asia";
+import Europe from "./pages/where_we_work/europe";
+import MediaPage from "./pages/media";
 import PartnerWithUs from "./pages/partnerWithUs";
 import TrainingPage from "./pages/training";
 import ServicesPage from "./pages/services";
@@ -129,7 +134,12 @@ const App = () => {
 
           {/* Impact & Reach */}
           <Route path="/impact" element={<ImpactPage />} />
+          <Route path="/where-we-work" element={<WhereWeWork />} />
           <Route path="/where-we-work/africa" element={<Africa />} />
+          <Route path="/where-we-work/americas" element={<Americas />} />
+          <Route path="/where-we-work/asia" element={<Asia />} />
+          <Route path="/where-we-work/europe" element={<Europe />} />
+          <Route path="/media" element={<MediaPage />} />
 
           {/* News & Events */}
           <Route path="/news" element={<News />} />

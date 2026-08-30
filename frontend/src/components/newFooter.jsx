@@ -28,6 +28,7 @@ const footerColumns = [
   {
     heading: "News & Media",
     links: [
+      { label: "Newsroom & Media", to: "/media" },
       { label: "Latest News", to: "/news" },
       { label: "Events", to: "/events" },
       { label: "Newsletter", to: "/newsletter" },

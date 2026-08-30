@@ -32,13 +32,18 @@ const navItems = [
   {
     title: "Where We Work",
     items: [
+      { label: "All Regions", to: "/where-we-work" },
       { label: "Impact & Coverage", to: "/impact" },
       { label: "Africa", to: "/where-we-work/africa" },
+      { label: "Americas", to: "/where-we-work/americas" },
+      { label: "Asia", to: "/where-we-work/asia" },
+      { label: "Europe", to: "/where-we-work/europe" },
     ],
   },
   {
     title: "News & Media",
     items: [
+      { label: "Newsroom & Media", to: "/media" },
       { label: "Latest News", to: "/news" },
       { label: "Events", to: "/events" },
       { label: "Newsletter", to: "/newsletter" },
