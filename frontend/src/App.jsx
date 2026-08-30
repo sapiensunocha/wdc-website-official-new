@@ -16,6 +16,7 @@ import NotfoundPage from "./pages/notfound";
 import SignIn from "./pages/signin";
 import SignUp from "./pages/signup";
 import AboutPage from "./pages/about";
+import TeamAndOrgPage from "./pages/about/team";
 import ContactPage from "./pages/contact";
 import DonorsPage from "./pages/donors";
 import VisionPage from "./pages/vision";
@@ -118,6 +119,7 @@ const App = () => {
           <Route path="/about/what-we-offer" element={<WhatWeOfferPage />} />
           <Route path="/about/partners" element={<PartnersPage />} />
           <Route path="/about/partner-with-us" element={<PartnerWithUs />} />
+          <Route path="/about/team" element={<TeamAndOrgPage />} />
 
           {/* What We Do */}
           <Route path="/solution" element={<WhatWeDo />} />
