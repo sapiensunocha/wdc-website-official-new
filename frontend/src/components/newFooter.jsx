@@ -7,6 +7,7 @@ const footerColumns = [
     heading: "About Us",
     links: [
       { label: "About WDC", to: "/about" },
+      { label: "Our Team", to: "/about/team" },
       { label: "Our Mission", to: "/about/mission" },
       { label: "Our Values", to: "/about/values" },
       { label: "Our Partners", to: "/about/partners" },
