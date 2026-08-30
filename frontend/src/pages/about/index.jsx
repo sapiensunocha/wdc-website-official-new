@@ -4,6 +4,7 @@ import WhoWeAre from "../../components/WhoWeAre";
 import OurValues from "../../components/ourValues";
 import FounderPhoto from "../../assets/images/Photoroom_20251006_010721.JPG";
 import { Link } from "react-router-dom";
+import AnimateIn from "../../components/AnimateIn";
 
 const SOCIAL_LINKS = [
   {
@@ -194,14 +195,16 @@ function AboutPage() {
       {/* ── Mission statement ── */}
       <div className="border-b border-gray-100">
         <div className="container py-14">
-          <div className="max-w-4xl">
-            <p className="tagline text-primary mb-3">Our Mission</p>
-            <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-content-primary leading-tight">
-              &ldquo;We are on a mission to{" "}
-              <span className="text-primary">end disaster impacts</span>{" "}
-              everywhere.&rdquo;
-            </p>
-          </div>
+          <AnimateIn variant="fadeUp">
+            <div className="max-w-4xl">
+              <p className="tagline text-primary mb-3">Our Mission</p>
+              <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-content-primary leading-tight">
+                &ldquo;We are on a mission to{" "}
+                <span className="text-primary">end disaster impacts</span>{" "}
+                everywhere.&rdquo;
+              </p>
+            </div>
+          </AnimateIn>
         </div>
       </div>
 
@@ -213,13 +216,15 @@ function AboutPage() {
       {/* ── Vision divider ── */}
       <div className="bg-surface-subtle">
         <div className="container py-14">
-          <div className="max-w-4xl">
-            <p className="tagline text-primary mb-3">Our Vision</p>
-            <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-content-primary leading-tight">
-              &ldquo;We envision a world where disasters no longer disrupt{" "}
-              <span className="text-primary">determination, dreams, or aspiration.</span>&rdquo;
-            </p>
-          </div>
+          <AnimateIn variant="fadeLeft">
+            <div className="max-w-4xl">
+              <p className="tagline text-primary mb-3">Our Vision</p>
+              <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-content-primary leading-tight">
+                &ldquo;We envision a world where disasters no longer disrupt{" "}
+                <span className="text-primary">determination, dreams, or aspiration.</span>&rdquo;
+              </p>
+            </div>
+          </AnimateIn>
         </div>
       </div>
 
@@ -244,13 +249,15 @@ function AboutPage() {
       {/* ── Dedication quote ── */}
       <div className="bg-white">
         <div className="container py-14">
-          <div className="max-w-4xl">
-            <p className="tagline text-primary mb-3">Our Commitment</p>
-            <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-content-primary leading-tight">
-              &ldquo;We are dedicated to transforming{" "}
-              <span className="text-primary">challenges into opportunities.</span>&rdquo;
-            </p>
-          </div>
+          <AnimateIn variant="fadeRight">
+            <div className="max-w-4xl">
+              <p className="tagline text-primary mb-3">Our Commitment</p>
+              <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-content-primary leading-tight">
+                &ldquo;We are dedicated to transforming{" "}
+                <span className="text-primary">challenges into opportunities.</span>&rdquo;
+              </p>
+            </div>
+          </AnimateIn>
         </div>
       </div>
 

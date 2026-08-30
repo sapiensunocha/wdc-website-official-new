@@ -1,5 +1,6 @@
 import React from "react";
 import Heading from "./Heading";
+import AnimateIn from "./AnimateIn";
 
 const WhoWeAre = () => {
   return (
@@ -7,7 +8,7 @@ const WhoWeAre = () => {
       <section className="overflow-hidden pb-12 lg:pt-[50px] lg:pb-[90px] bg-white">
         <div className="container mx-auto">
           <div className="flex flex-wrap items-center justify-between -mx-4">
-            <div className="w-full px-4 lg:w-6/12">
+            <AnimateIn variant="fadeLeft" className="w-full px-4 lg:w-6/12">
               <div className="flex items-center -mx-3 sm:-mx-4">
                 <div className="w-full px-3 sm:px-4 xl:w-1/2">
                   <div className="py-3 sm:py-4">
@@ -605,9 +606,8 @@ const WhoWeAre = () => {
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div className="w-full px-4 lg:w-1/2 xl:w-5/12">
+            </AnimateIn>
+            <AnimateIn variant="fadeRight" delay={0.15} className="w-full px-4 lg:w-1/2 xl:w-5/12">
               <div className="mt-10 lg:mt-0">
                 <span className="block mb-4 text-lg font-semibold text-primary">
                   Who We Are
@@ -637,7 +637,7 @@ At WDC, we harness advanced technologies to connect initiatives, support individ
                   during times of critical need.
                 </p> */}
               </div>
-            </div>
+            </AnimateIn>
           </div>
         </div>
         {/* <div>

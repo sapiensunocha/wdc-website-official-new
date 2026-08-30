@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import TeamPage from "../../../components/team";
+import AnimateIn from "../../../components/AnimateIn";
 
 // ─── Org Chart Data ───────────────────────────────────────────────────────────
 
@@ -130,9 +132,14 @@ function OrgChart() {
       <div className="min-w-[900px] flex flex-col items-center gap-0 text-sm">
 
         {/* Board of Director */}
-        <div className="px-6 py-2 rounded bg-[#1C2B39] text-white text-sm font-bold border border-[#009EDB] text-center min-w-[200px]">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="px-6 py-2 rounded bg-[#1C2B39] text-white text-sm font-bold border border-[#009EDB] text-center min-w-[200px]"
+        >
           Board of Director
-        </div>
+        </motion.div>
         <ConnectorV />
 
         {/* Advisory boards */}

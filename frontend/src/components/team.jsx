@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import billy from "../assets/team/billy.png";
 import jietong from "../assets/team/jietong.png";
 import jane from "../assets/team/Jane.png";
@@ -13,11 +14,9 @@ import doddy from "../assets/team/DoddyMatabaro.png";
 import josephb from "../assets/team/joseph.png";
 import kibwe from "../assets/team/kibwe.png";
 import maria from "../assets/team/maria.png";
-import Rolande from "../assets/team/RolandeNamegabe.png";
 import Ruth from "../assets/team/Ruth.png";
-import zainab from "../assets/team/Zainab.png";
 import sapiens from "../assets/team/sapiens.png";
-// import WDCLogo from "../assets/images/wdclogobg.png";
+import WDCLogo from "../assets/images/wdclogobg.png";
 import lilla from "../assets/team/lilla.png";
 import manho from "../assets/team/man-ho.png";
 import francine from "../assets/team/francine.png";
@@ -39,41 +38,14 @@ import { FaMapMarkerAlt, FaEnvelope, FaLinkedin } from "react-icons/fa"; // Impo
 
 function TeamPage() {
   const board = [
-    // {
-    //   location: "",
-    //   title: "Business Development Manager @ Econet Wireless Zimbabwe",
-    //   bio: "",
-    //   email: "",
-    //   socials: [],
-    //   name: "Albert Mawungwe",
-    //   image: WDCLogo,
-    // },
-    // {
-    //   location: "",
-    //   title: "Global Data Supply Strategy and Operations Manager @ HERE Technologies",
-    //   bio: "",
-    //   email: "",
-    //   socials: [],
-    //   name: "Clint Leander",
-    //   image: WDCLogo,
-    // },
     {
       location: "USA",
-      title: "USCIS OFFICER @ U.S. Department of Homeland Security",
-      bio: "David Kangamina is a distinguished expert specializing in armed conflict analysis, gender-based violence (GBV), child protection, and international human rights and humanitarian law. With extensive experience as a Legal Advisor, Attorney, and Program Manager, he has a demonstrated history of driving impactful results in civic and social organizations. David is highly skilled in public speaking, human resource management, conference interpreting, policy analysis, and legal research. He holds a Master of Laws (LL.M.) in Public International Law from the University of Lubumbashi and a Master’s in International Human Rights and Humanitarian Law from American University, Washington, DC.",
-      email: "dkangamina@worlddisastercenter.org",
-      socials: "https://www.linkedin.com/in/david-c-kangamina-3a0949101/",
-      name: "David C. Kangamina",
-      image: davidboard,
-    },
-    {
-      location: "Canada",
-      title: "Complaints Officer @ Elections Canada",
+      title: "Board Member, World Disaster Center",
       bio: "",
-      email: "kdoux@worlddisastercenter.org",
-      socials: "https://www.linkedin.com/in/doux-kelvin-4107811bb/",
-      name: "Doux Kelvin",
-      image: doux,
+      email: "",
+      socials: "",
+      name: "Steve Morgan",
+      image: WDCLogo,
     },
     // {
     //   location: "USA",
@@ -151,30 +123,12 @@ function TeamPage() {
   const ClevelExecutives = [
     {
       location: "Paris",
-      title: "Co-Founder & Chief Executive Officer",
+      title: "Founder & Chief Executive Officer",
       bio: "A multidisciplinary humanitarian and technology specialist with expertise spanning Earth Sciences, Information Technologies, and Digital Analytics, with over a decade of professional experience. I have extensive knowledge in satellite imagery analysis, Big Data integration, and cutting-edge technologies such as AI, Blockchain, IoT, and Machine Learning, applied to disaster resilience, response, and sustainable development. My work has empowered global communities across 15+ countries, collaborating with international organizations, governments, and NGOs to implement tailored disaster management strategies and inclusive digital solutions.",
       email: "sndatabaye@worlddisastercenter.org",
       socials: "https://www.linkedin.com/in/sapiens-ndatabaye-227425165/",
       name: "Sapiens Ndatabaye",
       image: sapiens,
-    },
-    {
-      location: "Qatar",
-      title: "Co-Founder & Chief Scientific Officer",
-      bio: "Zainab Akhtar’s expertise lies in GIS, AI, Remote Sensing, Data Science and System Development. Zainab has a Bachelor's in Information Systems from Carnegie Mellon University and is currently pursuing her Masters in Computer Science from Georgia Institute of Technology. She led the Belmont Forum project “Re-Energize DR3” at Qatar Computing Research Institute, developing the patented Flood Insights system, which was shortlisted for the World Summit Awards 2023 and commended by UNDP for its role during the Pakistan Floods 2022. She is the lead author of several prestigious publications and conferences, including WWW'23 and AAAI'24 (Deployed Application Award). Moreover, she has collaborated with various UN agencies (UNDP, UNDPPA) and has been featured in ISPRS SC’s newsletter, Réseau Consulting’s Associates, and earned recognition as a Geospatial World Rising Star 2024.",
-      email: "zainabakhtar@worlddisastercenter.org",
-      socials: "https://www.linkedin.com/in/zainabakhtar/",
-      name: "Zainab Akhtar",
-      image: zainab,
-    },
-    {
-      location: "USA",
-      title: "Co-Founder & Chief Communications Officer",
-      bio: "Rolande Namegabe, is a dedicated architect and social innovator committed to leveraging design for positive community impact. With a strong foundation in architecture and a passion for social good, Rolande has contributed to projects that bridge the gap between aesthetic design and social responsibility. For Rolande, disaster is not just a concept—it’s personal. Growing up in her hometown, she experienced the devastating impact of a natural disaster that forced her family to flee, leaving behind everything they had built. The experience of loss, displacement, and uncertainty left a lasting mark on her. Rather than let her past define her, Rolande transformed her pain into purpose. She joined WDC with a mission to ensure that no one else would have to endure what she did—that communities could be empowered to stay safe, rebuild stronger, and thrive in the face of adversity.",
-      email: "rnamegabe@worlddisastercenter.org",
-      socials: "https://www.linkedin.com/in/rolande-namegabe-assoc-aia-0b7240247/",
-      name: "Rolande Namegabe",
-      image: Rolande,
     },
     {
       location: "Democratic Republic of the Congo",
@@ -188,7 +142,7 @@ function TeamPage() {
     {
       location: "Kenya",
       title: "Chief Information Officer",
-      bio: "A self driven Geo-Information management specialist/GIS/IMSMA expert and a practicing GPS Land Surveyor with over 20 years’ professional experience. I have in-depth knowledge in Biometrics Information systems, Information Management Systems for mine Action (IMSMA), Geographic Information System (GIS), Geospatial analysis, Remote sensing and GPS mapping, relational database and related information management systems field with extensive experience with international organizations, NGOs, private and international organizations including the UNICEF, UNOCHA, IMMAP UNSOS, AMISOM, UN-DPKO, UNOPS, UNMAS and other UN agencies. I have implemented state-of-the-art technology transfer, through knowledge of best practices in capacity building and enterprise-wide data and application systems including decision support systems incorporating socio-economic and biophysical information of multiple formats and sources. I have also professional experience of inter-agency/inter-cluster collaboration and management between multiple organizations to develop inter-agency GIS/IM/IMSMA/IT systems.",
+      bio: "A self driven Geo-Information management specialist/GIS/IMSMA expert and a practicing GPS Land Surveyor with over 20 years' professional experience. I have in-depth knowledge in Biometrics Information systems, Information Management Systems for mine Action (IMSMA), Geographic Information System (GIS), Geospatial analysis, Remote sensing and GPS mapping, relational database and related information management systems field with extensive experience with international organizations, NGOs, private and international organizations including the UNICEF, UNOCHA, IMMAP UNSOS, AMISOM, UN-DPKO, UNOPS, UNMAS and other UN agencies. I have implemented state-of-the-art technology transfer, through knowledge of best practices in capacity building and enterprise-wide data and application systems including decision support systems incorporating socio-economic and biophysical information of multiple formats and sources. I have also professional experience of inter-agency/inter-cluster collaboration and management between multiple organizations to develop inter-agency GIS/IM/IMSMA/IT systems.",
       email: "jmbogo@worlddisastercenter.org",
       socials: "https://www.linkedin.com/in/james-mbogo-a3b41739/",
       name: "James Mbogo",
@@ -218,7 +172,7 @@ function TeamPage() {
     {
       location: "Egypt",
       title: "Research Analysis and Digital Innovation",
-      bio: "Leading a multidisciplinary team within WDC to advance global disaster preparedness through research and digital innovation. Overseeing disaster risk reduction and recovery projects, implementing advanced digital tools, aligning research with practical disaster management needs, and contributing to strategic planning and project impact assessment. With a strong background in program management and conservation, experience spans roles such as Program Assistant at SOS Children’s Villages International (2020–2023) and Ideas For Us DRC (2016–2017), Project Manager at Virunga Foundation (2018–2020), and Researcher and Consultant at Wildlife Conservation Society (2017–2018). These roles demonstrate expertise in project management, research, and supporting initiatives focused on social and environmental impact.",
+      bio: "Leading a multidisciplinary team within WDC to advance global disaster preparedness through research and digital innovation. Overseeing disaster risk reduction and recovery projects, implementing advanced digital tools, aligning research with practical disaster management needs, and contributing to strategic planning and project impact assessment. With a strong background in program management and conservation, experience spans roles such as Program Assistant at SOS Children's Villages International (2020–2023) and Ideas For Us DRC (2016–2017), Project Manager at Virunga Foundation (2018–2020), and Researcher and Consultant at Wildlife Conservation Society (2017–2018). These roles demonstrate expertise in project management, research, and supporting initiatives focused on social and environmental impact.",
       email: "davidmulume@worlddisastercenter.org",
       socials: "https://www.linkedin.com/in/david-mulume/",
       name: "David Mulume",
@@ -247,7 +201,7 @@ function TeamPage() {
     {
       location: "Demoractic Republic of the Congo",
       title: "GIS Analyst",
-      bio: "Boaz MULIRI is a researcher at the World Disaster Center, where he works in Research, Analysis and digital Innovation (RADI) team. Boaz is a crop production engineer with a year and a half of experience in the field. After graduating in Agricultural Engineering from the Université Évangélique en Afrique, where he is currently pursuing a Master’s Degree in Environmental Information Systems, he began his career as an evaluator of soil conservation techniques promoted locally by World Vision and Mercy Corps. His role involved conducting a scientific evaluation of the techniques. He subsequently joined a local organization (RAPD asbl) as a technical assistant for the development of a wetland, and the International Organization for Migration as a field officer for humanitarian aid. His skills include scientific research with data collection and analysis. His main research focus is climate change and carbon sequestration. Outside of work and study, Boaz is a farmer and mentor students at various stages of their research. He is passionate about developing innovative strategies and aims to continue pushing the boundaries of progress.",
+      bio: "Boaz MULIRI is a researcher at the World Disaster Center, where he works in Research, Analysis and digital Innovation (RADI) team. Boaz is a crop production engineer with a year and a half of experience in the field. After graduating in Agricultural Engineering from the Université Évangélique en Afrique, where he is currently pursuing a Master's Degree in Environmental Information Systems, he began his career as an evaluator of soil conservation techniques promoted locally by World Vision and Mercy Corps. His role involved conducting a scientific evaluation of the techniques. He subsequently joined a local organization (RAPD asbl) as a technical assistant for the development of a wetland, and the International Organization for Migration as a field officer for humanitarian aid. His skills include scientific research with data collection and analysis. His main research focus is climate change and carbon sequestration. Outside of work and study, Boaz is a farmer and mentor students at various stages of their research. He is passionate about developing innovative strategies and aims to continue pushing the boundaries of progress.",
       email: "bmuliri@worlddisastercenter.org",
       socials: "https://www.linkedin.com/in/boaz-muliri-517543185/",
       name: "Boaz Muliri",
@@ -256,7 +210,7 @@ function TeamPage() {
     {
       location: "USA",
       title: "Dashboard Specialist",
-      bio: "Responsible for creating data-driven reports, disaster preparedness guidebooks, media reports, animated data visualizations, real-time dashboards, and multimedia outputs. With a Master’s in Computer Information Systems from Colorado State University - College of Business, I have a strong foundation in advanced data analytics, visualization, and information management - skills that align with WDC’s mission to use data for disaster resilience and response. Additionally, I bring six years of experience in data analysis, business intelligence, and quality assurance from my work at HP Inc., where I enhanced operational efficiency and customer satisfaction through expertise in operational data analysis, customer retention strategies, and team mentoring - key factors in driving performance and process improvements.",
+      bio: "Responsible for creating data-driven reports, disaster preparedness guidebooks, media reports, animated data visualizations, real-time dashboards, and multimedia outputs. With a Master's in Computer Information Systems from Colorado State University - College of Business, I have a strong foundation in advanced data analytics, visualization, and information management - skills that align with WDC's mission to use data for disaster resilience and response. Additionally, I bring six years of experience in data analysis, business intelligence, and quality assurance from my work at HP Inc., where I enhanced operational efficiency and customer satisfaction through expertise in operational data analysis, customer retention strategies, and team mentoring - key factors in driving performance and process improvements.",
       email: "ckumar@worlddisastercenter.org",
       socials: "https://www.linkedin.com/in/chaitra-venu-kumar-453348b1/",
       name: "Chaitra Venu Kumar",
@@ -283,7 +237,7 @@ function TeamPage() {
     {
       location: "Demoractic Republic of the Congo",
       title: "HR Officer",
-      bio: "I’m Francine NABINTU, Finance and HR officer at WDC Master's degree student in business management, Graduated in social sciences in the department of social communication peace and conflict management, I have my degree diploma in organizational communication and i have some professional trainings certificates in women’s empowerment, gender and of course Human Resources management, administration, logistics and supply chain management as well as accounting. I have some experience in communication as i finished in social science in department of communication where all my internships were based on organizational communication and social communication in general. I now have 4 years of experience as a full-time employee, taking care of some administrative tasks, human resources but also some financial tasks  I am characterized by a sense of organization and of proposing pragmatic solutions, a sense of initiative, capacity for conception ability to write and summarize, good oral communication skills.",
+      bio: "I'm Francine NABINTU, Finance and HR officer at WDC Master's degree student in business management, Graduated in social sciences in the department of social communication peace and conflict management, I have my degree diploma in organizational communication and i have some professional trainings certificates in women's empowerment, gender and of course Human Resources management, administration, logistics and supply chain management as well as accounting. I have some experience in communication as i finished in social science in department of communication where all my internships were based on organizational communication and social communication in general. I now have 4 years of experience as a full-time employee, taking care of some administrative tasks, human resources but also some financial tasks  I am characterized by a sense of organization and of proposing pragmatic solutions, a sense of initiative, capacity for conception ability to write and summarize, good oral communication skills.",
       email: "fnabintu@worlddisastercenter.org",
       socials: "https://www.linkedin.com/in/francine-nabintu-365603206/",
       name: "Francine Nabintu",
@@ -328,7 +282,7 @@ function TeamPage() {
     {
       location: "UK",
       title: "Forecast Developer",
-      bio: "Man Ho is a volunteer developer at the World Disaster Center, where he works in the Forecast team. Man Ho is a career switcher who is currently pursuing a Master’s degree in Computer Science at the Georgia Institute of Technology. Before this, he worked as a neuroscience researcher at various institutions in the US, after completing his doctoral study in neuroscience at the International Max Planck Research School in Germany. He also holds a Bachelor’s degree in biotechnology from the Hong Kong Polytechnic University. Throughout his academic journey, he has cultivated a strong interest in data science and scientific software development. Additionally, he is passionate about global development and human-centered technology, hoping to use his skills to contribute to the betterment of global society.",
+      bio: "Man Ho is a volunteer developer at the World Disaster Center, where he works in the Forecast team. Man Ho is a career switcher who is currently pursuing a Master's degree in Computer Science at the Georgia Institute of Technology. Before this, he worked as a neuroscience researcher at various institutions in the US, after completing his doctoral study in neuroscience at the International Max Planck Research School in Germany. He also holds a Bachelor's degree in biotechnology from the Hong Kong Polytechnic University. Throughout his academic journey, he has cultivated a strong interest in data science and scientific software development. Additionally, he is passionate about global development and human-centered technology, hoping to use his skills to contribute to the betterment of global society.",
       email: "mwong@worlddisastercenter.org",
       socials: "https://www.linkedin.com/in/mh-wong/",
       name: "Man Ho Wong",
@@ -364,7 +318,7 @@ function TeamPage() {
     {
       location: "USA",
       title: "Full Stack Developer",
-      bio: "I’m a driven and highly motivated Computer Science student with a strong foundation in programming, passionate about exploring the evolving fields of Machine Learning (ML), AI, Software Development and Full Stack Web Development. I thrive on solving complex problems and I am eager to deepen my understanding of computer science and its real world impact. I’m always looking for opportunities to learn from experienced professionals and to push the boundaries of what technology can do.",
+      bio: "I'm a driven and highly motivated Computer Science student with a strong foundation in programming, passionate about exploring the evolving fields of Machine Learning (ML), AI, Software Development and Full Stack Web Development. I thrive on solving complex problems and I am eager to deepen my understanding of computer science and its real world impact. I'm always looking for opportunities to learn from experienced professionals and to push the boundaries of what technology can do.",
       email: "sperisetla@worlddisastercenter.org",
       socials: "https://www.linkedin.com/in/srinivasaperisetla/",
       name: "Srinivasa  Perisetla",
@@ -533,7 +487,15 @@ function TeamPage() {
 
         <div className="grid grid-cols-1 gap-15 mt-8 xl:mt-16 md:grid-cols-3 xl:grid-cols-3">
           {team_data[teamkey].map((member, index) => (
-            <div key={index} className="relative w-full group cursor-pointer transition-transform duration-300 hover:scale-105" onClick={() => handleOpen(member)}>
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ scale: 1.04, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" }}
+              className="relative w-full group cursor-pointer rounded-xl"
+              onClick={() => handleOpen(member)}
+            >
               <img
                 className="object-cover w-full h-full rounded-xl border-4 border-white transition-transform duration-300"
                 src={member?.image}
@@ -543,7 +505,7 @@ function TeamPage() {
                 <h1 className="text-lg font-semibold text-gray-900">{member.name}</h1>
                 <p className="text-xs text-gray-600">{member.title}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
