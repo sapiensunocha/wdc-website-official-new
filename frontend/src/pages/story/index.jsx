@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Globe, Zap, Users, Award } from "lucide-react";
+import { motion } from "framer-motion";
 import FounderPhoto from "../../assets/images/Photoroom_20251006_010721.JPG";
+import AnimateIn from "../../components/AnimateIn";
 
 const milestones = [
   {
@@ -71,18 +73,20 @@ const Story = () => {
       {/* Hero */}
       <section className="bg-[#1C2B39] text-white py-24">
         <div className="container sm:px-2">
-          <p className="text-[#009EDB] mb-3 uppercase tracking-widest text-xs font-black">
-            Our Story
-          </p>
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6 max-w-3xl">
-            Built from the Front Lines of Disaster
-          </h1>
-          <p className="text-gray-300 text-lg max-w-2xl leading-relaxed">
-            World Disaster Center was not founded in a boardroom. It was born
-            from years of witnessing how the gap between a disaster happening
-            and help arriving costs thousands of lives — and the conviction that
-            AI could close that gap.
-          </p>
+          <AnimateIn variant="fadeUp">
+            <p className="text-[#009EDB] mb-3 uppercase tracking-widest text-xs font-black">
+              Our Story
+            </p>
+            <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6 max-w-3xl">
+              Built from the Front Lines of Disaster
+            </h1>
+            <p className="text-gray-300 text-lg max-w-2xl leading-relaxed">
+              World Disaster Center was not founded in a boardroom. It was born
+              from years of witnessing how the gap between a disaster happening
+              and help arriving costs thousands of lives — and the conviction that
+              AI could close that gap.
+            </p>
+          </AnimateIn>
         </div>
       </section>
 
@@ -90,7 +94,7 @@ const Story = () => {
       <section className="py-20 bg-gray-50">
         <div className="container sm:px-2">
           <div className="flex flex-col lg:flex-row items-center gap-12">
-            <div className="shrink-0">
+            <AnimateIn variant="zoomIn" className="shrink-0">
               <div className="w-52 h-52 rounded-full overflow-hidden border-4 border-primary shadow-xl">
                 <img
                   src={FounderPhoto}
@@ -98,8 +102,8 @@ const Story = () => {
                   className="w-full h-full object-cover object-top"
                 />
               </div>
-            </div>
-            <div>
+            </AnimateIn>
+            <AnimateIn variant="fadeRight" delay={0.2}>
               <p className="text-primary text-xs font-black uppercase tracking-widest mb-2">
                 The Founder
               </p>
@@ -120,22 +124,26 @@ const Story = () => {
                 the platform he designed to predict disasters before they become catastrophes.
               </p>
               <div className="flex flex-wrap gap-3">
-                <a
+                <motion.a
                   href="https://www.linkedin.com/in/sapiens-ndatabaye-227425165"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-primary text-white text-sm font-bold px-5 py-2.5 rounded-sm hover:opacity-90 transition-opacity"
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.97 }}
                 >
                   Connect on LinkedIn
-                </a>
-                <Link
-                  to="/contact"
-                  className="inline-flex items-center gap-2 border border-gray-300 text-content-primary text-sm font-bold px-5 py-2.5 rounded-sm hover:border-primary hover:text-primary transition-colors"
-                >
-                  Contact WDC
-                </Link>
+                </motion.a>
+                <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+                  <Link
+                    to="/contact"
+                    className="inline-flex items-center gap-2 border border-gray-300 text-content-primary text-sm font-bold px-5 py-2.5 rounded-sm hover:border-primary hover:text-primary transition-colors"
+                  >
+                    Contact WDC
+                  </Link>
+                </motion.div>
               </div>
-            </div>
+            </AnimateIn>
           </div>
         </div>
       </section>
@@ -155,7 +163,14 @@ const Story = () => {
             <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-0.5 bg-gray-200 md:-translate-x-1/2" />
             <div className="space-y-12">
               {milestones.map((m, i) => (
-                <div key={i} className="relative flex gap-8 md:gap-0">
+                <motion.div
+                  key={i}
+                  className="relative flex gap-8 md:gap-0"
+                  initial={{ opacity: 0, x: i % 2 === 0 ? -40 : 40 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ duration: 0.6, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
+                >
                   <div className="absolute left-6 md:left-1/2 w-4 h-4 bg-primary rounded-full border-4 border-white shadow md:-translate-x-1/2 top-1 z-10" />
                   <div className={`pl-14 md:pl-0 md:w-1/2 ${i % 2 === 0 ? "md:pr-12 md:text-right" : "md:ml-auto md:pl-12"}`}>
                     <span className="inline-block bg-primary text-white text-xs font-black px-3 py-1 rounded mb-2 tracking-widest uppercase">
@@ -164,7 +179,7 @@ const Story = () => {
                     <h3 className="text-lg font-bold text-content-primary mb-2">{m.title}</h3>
                     <p className="text-content-secondary text-sm leading-relaxed">{m.description}</p>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -184,13 +199,21 @@ const Story = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {values.map((v, i) => (
-              <div key={i} className="bg-white p-8 rounded border border-gray-100 shadow-sm">
+              <motion.div
+                key={i}
+                className="bg-white p-8 rounded border border-gray-100 shadow-sm"
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.55, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ y: -4, boxShadow: "0 16px 36px rgba(0,0,0,0.1)" }}
+              >
                 <div className="w-10 h-10 bg-blue-50 rounded flex items-center justify-center mb-4">
                   <v.icon size={20} className="text-primary" />
                 </div>
                 <h3 className="text-lg font-bold text-content-primary mb-2">{v.title}</h3>
                 <p className="text-content-secondary text-sm leading-relaxed">{v.desc}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>

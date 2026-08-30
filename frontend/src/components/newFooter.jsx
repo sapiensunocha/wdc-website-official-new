@@ -1,6 +1,8 @@
+import { motion } from "framer-motion";
 import WDCLogo from "../assets/images/wdclogobg.png";
 import { Link } from "react-router-dom";
 import { LinkedIn } from "@mui/icons-material";
+import AnimateIn from "./AnimateIn";
 
 const footerColumns = [
   {
@@ -52,12 +54,14 @@ function NewFooter() {
         <div className="grid grid-cols-1 lg:grid-cols-6 gap-10">
 
           {/* Brand — spans 2 columns */}
-          <div className="lg:col-span-2 flex flex-col gap-5">
+          <AnimateIn variant="fadeUp" className="lg:col-span-2 flex flex-col gap-5">
             <Link to="/" className="flex items-center gap-3">
-              <img
+              <motion.img
                 src={WDCLogo}
                 alt="World Disaster Center"
                 className="h-14 w-auto"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.3 }}
               />
               <div className="leading-tight">
                 <p className="text-[0.6rem] tracking-[0.2em] uppercase text-gray-400">World Disaster</p>
@@ -115,70 +119,78 @@ function NewFooter() {
                   ),
                 },
               ].map(({ href, label, icon }) => (
-                <a
+                <motion.a
                   key={label}
                   href={href}
                   target="_blank"
                   rel="noreferrer"
                   aria-label={label}
                   className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#009EDB] flex items-center justify-center text-white transition-colors duration-200"
+                  whileHover={{ scale: 1.15 }}
+                  whileTap={{ scale: 0.9 }}
                 >
                   {icon}
-                </a>
+                </motion.a>
               ))}
             </div>
 
             <div className="pt-1">
-              <a
+              <motion.a
                 href="https://www.paypal.com/donate/?hosted_button_id=XXS7D6VJDM2YE"
                 target="_blank"
                 rel="noreferrer"
                 className="inline-block bg-[#009EDB] hover:bg-[#0072BC] text-white text-sm font-bold px-6 py-2.5 rounded transition-colors duration-200"
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.97 }}
               >
                 Donate Now
-              </a>
+              </motion.a>
             </div>
-          </div>
+          </AnimateIn>
 
           {/* Link columns */}
-          {footerColumns.map((col) => (
-            <div key={col.heading}>
-              <h5 className="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-gray-400 mb-5 pb-2 border-b border-white/10">
-                {col.heading}
-              </h5>
-              <ul className="space-y-2.5">
-                {col.links.map(({ label, to }) => (
-                  <li key={to}>
-                    <Link
-                      to={to}
-                      className="text-sm text-gray-300 hover:text-white hover:pl-1 transition-all duration-150"
-                    >
-                      {label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          {footerColumns.map((col, colIndex) => (
+            <AnimateIn key={col.heading} variant="fadeUp" delay={0.1 + colIndex * 0.08}>
+              <div>
+                <h5 className="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-gray-400 mb-5 pb-2 border-b border-white/10">
+                  {col.heading}
+                </h5>
+                <ul className="space-y-2.5">
+                  {col.links.map(({ label, to }) => (
+                    <li key={to}>
+                      <Link
+                        to={to}
+                        className="text-sm text-gray-300 hover:text-white hover:pl-1 transition-all duration-150"
+                      >
+                        {label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </AnimateIn>
           ))}
         </div>
 
         {/* Office addresses */}
-        <div className="mt-12 pt-8 border-t border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-6">
-          {[
-            { country: "United States", address: "1660 Madison Ave, New York 10029", reg: "EIN: 33-1869013" },
-            { country: "Austria", address: "Wolf-Dietrich-Straße 32/4/2, 5020 Salzburg", reg: "Steuernummer: 91 323/2005" },
-            { country: "Canada", address: "586 Prince Albert St, Ottawa ON K1K1Y6", reg: "CRA: 721487825 RC 0001" },
-          ].map(({ country, address, reg }) => (
-            <div key={country} className="flex gap-3">
-              <div className="w-0.5 bg-[#009EDB] shrink-0 rounded-full" />
-              <div>
-                <p className="text-xs font-bold text-white uppercase tracking-wider mb-1">{country}</p>
-                <p className="text-xs text-gray-400 leading-relaxed">{address}</p>
-                <p className="text-xs text-gray-500 mt-0.5">{reg}</p>
+        <AnimateIn variant="fadeUp" delay={0.2}>
+          <div className="mt-12 pt-8 border-t border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {[
+              { country: "United States", address: "1660 Madison Ave, New York 10029", reg: "EIN: 33-1869013" },
+              { country: "Austria", address: "Wolf-Dietrich-Straße 32/4/2, 5020 Salzburg", reg: "Steuernummer: 91 323/2005" },
+              { country: "Canada", address: "586 Prince Albert St, Ottawa ON K1K1Y6", reg: "CRA: 721487825 RC 0001" },
+            ].map(({ country, address, reg }) => (
+              <div key={country} className="flex gap-3">
+                <div className="w-0.5 bg-[#009EDB] shrink-0 rounded-full" />
+                <div>
+                  <p className="text-xs font-bold text-white uppercase tracking-wider mb-1">{country}</p>
+                  <p className="text-xs text-gray-400 leading-relaxed">{address}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">{reg}</p>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </AnimateIn>
       </div>
 
       {/* Bottom bar */}

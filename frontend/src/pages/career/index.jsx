@@ -2,16 +2,20 @@ import React from "react";
 import { toast } from "react-toastify";
 import Section from "../../components/Section";
 import Heading from "../../components/Heading";
+import { motion } from "framer-motion";
+import AnimateIn from "../../components/AnimateIn";
 
 function CareerPage() {
   return (
     <Section className="overflow-hidden" id="career">
       <div className="container flex flex-col justify-center items-center">
-        <Heading
-          tag="Consider a career here"
-          title="Career Opportunities"
-          text={`Dream of making a global impact while achieving personal goals? Join WDC, where your work will help shape a safer, better world. We welcome talent from all backgrounds.`}
-        />
+        <AnimateIn variant="fadeUp">
+          <Heading
+            tag="Consider a career here"
+            title="Career Opportunities"
+            text={`Dream of making a global impact while achieving personal goals? Join WDC, where your work will help shape a safer, better world. We welcome talent from all backgrounds.`}
+          />
+        </AnimateIn>
 
         {/* Open Volunteering Positions Section */}
         <div className="w-full mt-12 bg-white border border-gray-300 p-4 sm:p-6 rounded-lg shadow-md max-w-4xl">
@@ -37,17 +41,26 @@ function CareerPage() {
               //   link: "https://www.volunteermatch.org/search/opp3853049.jsp",
               // },
             ].map((item, index) => (
-              <div
+              <motion.div
                 key={index}
                 className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-gray-100 p-4 rounded-lg border border-gray-200 shadow-sm"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ x: 4, boxShadow: "0 8px 24px rgba(0,0,0,0.08)" }}
               >
                 <h3 className="text-gray-800 text-lg font-medium">{item.position}</h3>
                 <a href={item.link} target="_blank" rel="noopener noreferrer">
-                  <button className="px-5 py-2.5 w-full sm:w-auto text-center bg-primary text-white text-sm font-semibold rounded-lg hover:bg-primary-dark transition-all">
+                  <motion.button
+                    className="px-5 py-2.5 w-full sm:w-auto text-center bg-primary text-white text-sm font-semibold rounded-lg hover:bg-primary-dark transition-all"
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.97 }}
+                  >
                     Apply
-                  </button>
+                  </motion.button>
                 </a>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>

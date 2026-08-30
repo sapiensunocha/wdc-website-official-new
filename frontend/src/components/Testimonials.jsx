@@ -1,5 +1,7 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight, Building2, ExternalLink } from "lucide-react";
+import { motion, useInView } from "framer-motion";
+import AnimateIn from "./AnimateIn";
 
 const REVIEWS = [
   {
@@ -173,28 +175,38 @@ export default function Testimonials() {
       <div className="container">
 
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-12 gap-4">
-          <div>
-            <p className="tagline text-primary mb-2">Community Voice</p>
-            <h2 className="h2 text-content-primary">What People Say About WDC</h2>
-            <p className="text-content-secondary mt-2 text-sm sm:text-base max-w-xl">
-              Humanitarian organizations, UN partners, and innovators on the impact of WDC's tools and missions.
-            </p>
+        <AnimateIn variant="fadeUp">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-12 gap-4">
+            <div>
+              <p className="tagline text-primary mb-2">Community Voice</p>
+              <h2 className="h2 text-content-primary">What People Say About WDC</h2>
+              <p className="text-content-secondary mt-2 text-sm sm:text-base max-w-xl">
+                Humanitarian organizations, UN partners, and innovators on the impact of WDC's tools and missions.
+              </p>
+            </div>
+            {/* Prev / Next — desktop only */}
+            <div className="hidden sm:flex items-center gap-2 shrink-0">
+              <motion.button
+                onClick={() => scrollTo(active - 1)} disabled={active === 0}
+                className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-500 hover:border-primary hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                aria-label="Previous"
+                whileHover={{ scale: 1.08 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <ChevronLeft size={18} />
+              </motion.button>
+              <motion.button
+                onClick={() => scrollTo(active + 1)} disabled={active >= maxActive}
+                className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-500 hover:border-primary hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                aria-label="Next"
+                whileHover={{ scale: 1.08 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <ChevronRight size={18} />
+              </motion.button>
+            </div>
           </div>
-          {/* Prev / Next — desktop only */}
-          <div className="hidden sm:flex items-center gap-2 shrink-0">
-            <button onClick={() => scrollTo(active - 1)} disabled={active === 0}
-              className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-500 hover:border-primary hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-              aria-label="Previous">
-              <ChevronLeft size={18} />
-            </button>
-            <button onClick={() => scrollTo(active + 1)} disabled={active >= maxActive}
-              className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-500 hover:border-primary hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-              aria-label="Next">
-              <ChevronRight size={18} />
-            </button>
-          </div>
-        </div>
+        </AnimateIn>
 
         {/* Scroll track — snaps natively on mobile */}
         <div
@@ -210,14 +222,20 @@ export default function Testimonials() {
           <style>{`.testimonials-track::-webkit-scrollbar { display: none; }`}</style>
 
           {REVIEWS.map((r, i) => (
-            <div key={i}
+            <motion.div
+              key={i}
               style={{
                 scrollSnapAlign: "start",
                 flex: `0 0 calc(${100 / visible}% - ${(visible - 1) * 20 / visible}px)`,
                 minWidth: 0,
               }}
-              className="bg-white rounded-xl border border-gray-200 p-5 sm:p-6 shadow-sm flex flex-col gap-4">
-
+              className="bg-white rounded-xl border border-gray-200 p-5 sm:p-6 shadow-sm flex flex-col gap-4"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5, delay: Math.min(i, 2) * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ y: -4, boxShadow: "0 12px 30px rgba(0,0,0,0.1)" }}
+            >
               {/* Top: avatar + name + stars */}
               <div className="flex items-start gap-3">
                 <Avatar initials={r.initials} color={r.color} type={r.type} />
@@ -246,7 +264,7 @@ export default function Testimonials() {
                   <ExternalLink size={10} /> LinkedIn
                 </a>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
@@ -261,7 +279,7 @@ export default function Testimonials() {
           ))}
         </div>
 
-        {/* Mobile swipe hint — only on first render on small screens */}
+        {/* Mobile swipe hint */}
         <p className="text-center text-xs text-content-tertiary mt-3 sm:hidden">
           Swipe to see more →
         </p>

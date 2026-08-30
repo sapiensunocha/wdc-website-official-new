@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import MOBILEGIF from "../assets/gif/mobilephones.gif";
 import MICHAEL from "../assets/gif/Michael_Website.gif";
 import WORLD from "../assets/gif/world_blue.gif";
@@ -41,7 +42,6 @@ const items = [
 const Slideshow = () => {
   const [selectedItem, setSelectedItem] = useState(0);
 
-  // Handle Thumbnail Click
   const handleThumbnailClick = (index) => {
     if (index !== selectedItem) {
       setSelectedItem(index);
@@ -51,7 +51,7 @@ const Slideshow = () => {
   return (
     <div className="relative flex flex-col w-full mb-24 overflow-visible">
       {/* Gradient Light */}
-      <div className="overflow-hidden w-full h-[600px] absolute inset-0 -z-10 ">
+      <div className="overflow-hidden w-full h-[600px] absolute inset-0 -z-10">
         <GradientLight className="w-full h-full" />
       </div>
 
@@ -62,13 +62,18 @@ const Slideshow = () => {
           transform: `translateX(-${selectedItem * 100}%)`,
         }}
       >
-        {items.map((item) => (
+        {items.map((item, idx) => (
           <div
             key={item.id}
             className="w-full h-[600px] flex-shrink-0 flex flex-row items-center"
           >
-            {/* Left Image with Red Background */}
-            <div className="w-full h-full flex items-center justify-center bg-red-600 rounded-t-3xl overflow-hidden">
+            {/* Left Image */}
+            <motion.div
+              className="w-full h-full flex items-center justify-center bg-red-600 rounded-t-3xl overflow-hidden"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={selectedItem === idx ? { opacity: 1, scale: 1 } : { opacity: 0.6, scale: 0.95 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            >
               <img
                 src={item.image}
                 alt={item.title}
@@ -76,18 +81,31 @@ const Slideshow = () => {
                   item.id === 2 ? "w-[80%]" : "w-full"
                 }`}
               />
-            </div>
+            </motion.div>
 
             {/* Right Text Content */}
-            <div className="w-1/2 h-full p-10 flex flex-col justify-center items-start">
-              <h2 className="text-3xl font-bold mb-4">{item.title}</h2>
-              <p className="mb-6 text-sky-300">{item.description}</p>
-              <button className="px-6 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md">
-                <Link to={item.link}>
-                  {item.buttonText}
-                </Link>
-              </button>
-            </div>
+            <AnimatePresence mode="wait">
+              {selectedItem === idx && (
+                <motion.div
+                  key={`text-${idx}`}
+                  className="w-1/2 h-full p-10 flex flex-col justify-center items-start"
+                  initial={{ opacity: 0, x: 40 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -40 }}
+                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <h2 className="text-3xl font-bold mb-4">{item.title}</h2>
+                  <p className="mb-6 text-sky-300">{item.description}</p>
+                  <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+                    <button className="px-6 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md">
+                      <Link to={item.link}>
+                        {item.buttonText}
+                      </Link>
+                    </button>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         ))}
       </div>
@@ -96,7 +114,7 @@ const Slideshow = () => {
       <div className="relative w-full">
         <div className="flex justify-center mt-4 space-x-8 p-6 bg-[#031127] rounded-tr-2xl rounded-tl-2xl absolute overflow-visible left-1/2 -translate-x-1/2 bottom-[-100px]">
           {items.map((item, index) => (
-            <button
+            <motion.button
               key={item.id}
               className={`w-44 h-28 border-4 ${
                 selectedItem === index
@@ -104,13 +122,15 @@ const Slideshow = () => {
                   : "border-transparent"
               } rounded-md hover:border-blue-400 transition-all duration-300`}
               onClick={() => handleThumbnailClick(index)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.97 }}
             >
               <img
                 src={item.image}
                 alt={`Thumbnail ${item.title}`}
                 className="w-full h-full object-cover rounded-md"
               />
-            </button>
+            </motion.button>
           ))}
         </div>
       </div>

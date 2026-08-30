@@ -4,6 +4,7 @@ import WhoWeAre from "../../components/WhoWeAre";
 import OurValues from "../../components/ourValues";
 import FounderPhoto from "../../assets/images/Photoroom_20251006_010721.JPG";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import AnimateIn from "../../components/AnimateIn";
 
 const SOCIAL_LINKS = [
@@ -61,7 +62,7 @@ function FounderSection() {
         <div className="flex flex-col lg:flex-row items-center gap-8 sm:gap-12 lg:gap-20">
 
           {/* Photo */}
-          <div className="shrink-0 flex flex-col items-center gap-4">
+          <AnimateIn variant="zoomIn" className="shrink-0 flex flex-col items-center gap-4">
             <div className="w-40 h-40 sm:w-52 sm:h-52 lg:w-64 lg:h-64 rounded-full overflow-hidden border-4 border-[#009EDB] shadow-2xl">
               <img
                 src={FounderPhoto}
@@ -94,10 +95,10 @@ function FounderSection() {
                 </a>
               ))}
             </div>
-          </div>
+          </AnimateIn>
 
           {/* Quote */}
-          <div className="flex-1">
+          <AnimateIn variant="fadeRight" delay={0.2} className="flex-1">
             <div className="h-1 w-12 bg-[#009EDB] mb-6" />
             <p className="tagline text-[#009EDB] mb-4">A Message from the Founder</p>
             <blockquote className="text-xl sm:text-2xl lg:text-3xl font-light text-white leading-relaxed">
@@ -113,22 +114,26 @@ function FounderSection() {
               lives, strengthen resilience, and redefine how humanity responds to crisis.&rdquo;
             </p>
             <div className="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row flex-wrap gap-3">
-              <a
+              <motion.a
                 href="https://www.linkedin.com/in/sapiens-ndatabaye-227425165"
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 bg-[#009EDB] hover:bg-[#0072BC] text-white text-sm font-bold px-5 py-2.5 rounded transition-colors w-full sm:w-auto"
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.97 }}
               >
                 Connect on LinkedIn ↗
-              </a>
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 border border-white/30 hover:border-white text-white text-sm font-bold px-5 py-2.5 rounded transition-colors w-full sm:w-auto"
-              >
-                Contact WDC
-              </Link>
+              </motion.a>
+              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} className="w-full sm:w-auto">
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center gap-2 border border-white/30 hover:border-white text-white text-sm font-bold px-5 py-2.5 rounded transition-colors w-full sm:w-auto"
+                >
+                  Contact WDC
+                </Link>
+              </motion.div>
             </div>
-          </div>
+          </AnimateIn>
         </div>
       </div>
     </section>
@@ -169,26 +174,32 @@ function AboutPage() {
       {/* ── Page hero ── */}
       <div className="bg-[#1C2B39] text-white">
         <div className="container py-10 sm:py-14 md:py-16">
-          <div className="h-1 w-12 bg-[#009EDB] mb-5" />
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">About World Disaster Center</h1>
-          <p className="text-white/70 text-lg max-w-2xl leading-relaxed">
-            A global organization dedicated to disaster monitoring, early warning systems,
-            and humanitarian intelligence — so no community faces a crisis alone.
-          </p>
-          <div className="flex flex-col sm:flex-row flex-wrap gap-3 mt-6 sm:mt-8">
-            <Link
-              to="/impact"
-              className="inline-flex items-center gap-2 bg-[#009EDB] hover:bg-[#0072BC] text-white font-bold px-6 py-3 rounded text-sm transition-colors uppercase tracking-wider w-full sm:w-auto"
-            >
-              Our Impact
-            </Link>
-            <Link
-              to="/about/partners"
-              className="inline-flex items-center gap-2 border border-white/30 hover:border-white text-white font-bold px-6 py-3 rounded text-sm transition-colors uppercase tracking-wider w-full sm:w-auto"
-            >
-              Our Partners
-            </Link>
-          </div>
+          <AnimateIn variant="fadeUp">
+            <div className="h-1 w-12 bg-[#009EDB] mb-5" />
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">About World Disaster Center</h1>
+            <p className="text-white/70 text-lg max-w-2xl leading-relaxed">
+              A global organization dedicated to disaster monitoring, early warning systems,
+              and humanitarian intelligence — so no community faces a crisis alone.
+            </p>
+            <div className="flex flex-col sm:flex-row flex-wrap gap-3 mt-6 sm:mt-8">
+              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+                <Link
+                  to="/impact"
+                  className="inline-flex items-center gap-2 bg-[#009EDB] hover:bg-[#0072BC] text-white font-bold px-6 py-3 rounded text-sm transition-colors uppercase tracking-wider w-full sm:w-auto"
+                >
+                  Our Impact
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+                <Link
+                  to="/about/partners"
+                  className="inline-flex items-center gap-2 border border-white/30 hover:border-white text-white font-bold px-6 py-3 rounded text-sm transition-colors uppercase tracking-wider w-full sm:w-auto"
+                >
+                  Our Partners
+                </Link>
+              </motion.div>
+            </div>
+          </AnimateIn>
         </div>
       </div>
 

@@ -1,3 +1,7 @@
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import AnimateIn from "./AnimateIn";
+
 const VALUES = [
   {
     image: "https://img.freepik.com/free-photo/global-connections-background-social-media-banner_53876-108500.jpg?t=st=1718806487~exp=1718810087~hmac=43c2a14c69c3bd5820b0f161ad65691361648901c4b98fe978984836b5b8fa94&w=1380",
@@ -27,22 +31,33 @@ const VALUES = [
 ];
 
 const OurValues = () => {
+  const gridRef = useRef(null);
+  const inView = useInView(gridRef, { once: true, margin: "-80px" });
+
   return (
     <section className="bg-white py-16 lg:py-20">
       <div className="container">
-        <p className="tagline text-primary mb-2">What Guides Us</p>
-        <h2 className="text-3xl font-bold text-content-primary mb-10 sm:text-4xl">Our Values</h2>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {VALUES.map((v) => (
-            <div
+        <AnimateIn variant="fadeUp">
+          <p className="tagline text-primary mb-2">What Guides Us</p>
+          <h2 className="text-3xl font-bold text-content-primary mb-10 sm:text-4xl">Our Values</h2>
+        </AnimateIn>
+        <div ref={gridRef} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {VALUES.map((v, index) => (
+            <motion.div
               key={v.title}
-              className="overflow-hidden rounded-xl bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300"
+              className="overflow-hidden rounded-xl bg-white border border-gray-200 shadow-sm"
+              initial={{ opacity: 0, y: 40 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.55, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" }}
             >
               <div className="h-44 overflow-hidden">
-                <img
+                <motion.img
                   src={v.image}
                   alt={v.title}
                   className="w-full h-full object-cover"
+                  whileHover={{ scale: 1.06 }}
+                  transition={{ duration: 0.5 }}
                 />
               </div>
               <div className="p-6">
@@ -53,7 +68,7 @@ const OurValues = () => {
                   {v.description}
                 </p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

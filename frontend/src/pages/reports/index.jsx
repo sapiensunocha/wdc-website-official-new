@@ -1,4 +1,6 @@
 import React, { useState, useMemo } from "react";
+import { motion } from "framer-motion";
+import AnimateIn from "../../components/AnimateIn";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Search, FileText, Download, ArrowRight, BookOpen, Filter, Eye,
@@ -153,6 +155,7 @@ const ReportsPage = () => {
       {/* Hero */}
       <section className="bg-[#1C2B39] text-white py-16">
         <div className="container sm:px-2">
+          <AnimateIn variant="fadeUp">
           <p className="text-[#009EDB] text-xs font-black uppercase tracking-widest mb-3">
             Documentation Hub
           </p>
@@ -173,6 +176,7 @@ const ReportsPage = () => {
               className="w-full pl-11 pr-4 py-3.5 rounded bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-[#009EDB] text-sm"
             />
           </div>
+          </AnimateIn>
         </div>
       </section>
 
@@ -420,7 +424,14 @@ const DocCard = ({ doc }) => {
   };
 
   return (
-    <div className="bg-white border border-gray-200 hover:shadow-lg transition-all duration-200 flex flex-col group overflow-hidden">
+    <motion.div
+      className="bg-white border border-gray-200 flex flex-col group overflow-hidden"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={{ y: -4, boxShadow: "0 16px 36px rgba(0,0,0,0.12)" }}
+    >
       {/* ── PDF Preview thumbnail ── */}
       <div className="relative">
         <DocPreview doc={doc} />
@@ -491,7 +502,7 @@ const DocCard = ({ doc }) => {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

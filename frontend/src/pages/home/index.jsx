@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import AnimateIn from "../../components/AnimateIn";
 import { ArrowRight, Share2, X, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import DOMPurify from "dompurify";
@@ -84,40 +86,42 @@ const HomePage = () => {
       <div className="bg-white">
         <div className="container sm:px-2 py-20">
           {/* Section header */}
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4 mb-8">
-            <div>
-              <p className="tagline text-primary mb-2">Latest Updates</p>
-              <h2 className="h2 text-content-primary mb-4">Latest Intelligence</h2>
-              <div className="flex gap-6">
-                <button
-                  onClick={() => setActiveSection("News")}
-                  className={`pb-1 text-sm font-bold tracking-wider uppercase transition-colors border-b-2 ${
-                    activeSection === "News"
-                      ? "text-primary border-primary"
-                      : "text-gray-400 border-transparent hover:text-gray-600"
-                  }`}
-                >
-                  News &amp; Info
-                </button>
-                <button
-                  onClick={() => setActiveSection("Events")}
-                  className={`pb-1 text-sm font-bold tracking-wider uppercase transition-colors border-b-2 ${
-                    activeSection === "Events"
-                      ? "text-primary border-primary"
-                      : "text-gray-400 border-transparent hover:text-gray-600"
-                  }`}
-                >
-                  Global Events
-                </button>
+          <AnimateIn variant="fadeUp">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4 mb-8">
+              <div>
+                <p className="tagline text-primary mb-2">Latest Updates</p>
+                <h2 className="h2 text-content-primary mb-4">Latest Intelligence</h2>
+                <div className="flex gap-6">
+                  <button
+                    onClick={() => setActiveSection("News")}
+                    className={`pb-1 text-sm font-bold tracking-wider uppercase transition-colors border-b-2 ${
+                      activeSection === "News"
+                        ? "text-primary border-primary"
+                        : "text-gray-400 border-transparent hover:text-gray-600"
+                    }`}
+                  >
+                    News &amp; Info
+                  </button>
+                  <button
+                    onClick={() => setActiveSection("Events")}
+                    className={`pb-1 text-sm font-bold tracking-wider uppercase transition-colors border-b-2 ${
+                      activeSection === "Events"
+                        ? "text-primary border-primary"
+                        : "text-gray-400 border-transparent hover:text-gray-600"
+                    }`}
+                  >
+                    Global Events
+                  </button>
+                </div>
               </div>
+              <Link
+                to="/news"
+                className="flex items-center gap-2 text-primary font-bold hover:underline tracking-wide uppercase text-sm mt-2 sm:mt-0"
+              >
+                View All <ArrowRight size={16} />
+              </Link>
             </div>
-            <Link
-              to="/news"
-              className="flex items-center gap-2 text-primary font-bold hover:underline tracking-wide uppercase text-sm mt-2 sm:mt-0"
-            >
-              View All <ArrowRight size={16} />
-            </Link>
-          </div>
+          </AnimateIn>
 
           {/* Cards grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
@@ -126,11 +130,16 @@ const HomePage = () => {
                 <Loader2 className="animate-spin text-primary" size={36} />
               </div>
             ) : news.length > 0 ? (
-              news.map((item) => (
-                <div
+              news.map((item, newsIdx) => (
+                <motion.div
                   key={item.id}
                   onClick={() => setActiveArticle(item)}
-                  className="bg-white rounded border border-gray-200 border-t-4 border-t-primary hover:shadow-lg transition-all cursor-pointer group flex flex-col"
+                  className="bg-white rounded border border-gray-200 border-t-4 border-t-primary cursor-pointer group flex flex-col"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ duration: 0.5, delay: newsIdx * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                  whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" }}
                 >
                   {item.image_url && (
                     <div className="w-full h-44 overflow-hidden">
@@ -162,7 +171,7 @@ const HomePage = () => {
                       />
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))
             ) : (
               <p className="col-span-3 text-center text-gray-400 py-10 uppercase tracking-widest text-sm">
@@ -239,7 +248,7 @@ const HomePage = () => {
       {/* Roster CTA */}
       <div className="bg-[#1C2B39] text-white py-10 sm:py-16">
         <div className="container sm:px-2 flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-10">
-          <div className="max-w-xl">
+          <AnimateIn variant="fadeLeft" className="max-w-xl">
             <p className="text-[#009EDB] text-xs font-black uppercase tracking-widest mb-3">Join Our Network</p>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight mb-4">
               Are you a disaster response expert?
@@ -247,21 +256,27 @@ const HomePage = () => {
             <p className="text-gray-300 text-base leading-relaxed">
               WDC connects vetted humanitarian professionals with global deployment opportunities. Join our expert roster and help communities before, during, and after disasters.
             </p>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-            <Link
-              to="/roster/apply"
-              className="bg-[#009EDB] hover:bg-[#0080b5] text-white font-bold px-8 py-3.5 rounded-sm text-sm tracking-wide transition-colors text-center whitespace-nowrap w-full sm:w-auto"
-            >
-              Apply to the Roster
-            </Link>
-            <Link
-              to="/roster"
-              className="border border-white/30 hover:border-white text-white font-bold px-8 py-3.5 rounded-sm text-sm tracking-wide transition-colors text-center whitespace-nowrap w-full sm:w-auto"
-            >
-              Learn More
-            </Link>
-          </div>
+          </AnimateIn>
+          <AnimateIn variant="fadeRight" delay={0.15}>
+            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+                <Link
+                  to="/roster/apply"
+                  className="bg-[#009EDB] hover:bg-[#0080b5] text-white font-bold px-8 py-3.5 rounded-sm text-sm tracking-wide transition-colors text-center whitespace-nowrap w-full sm:w-auto block"
+                >
+                  Apply to the Roster
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+                <Link
+                  to="/roster"
+                  className="border border-white/30 hover:border-white text-white font-bold px-8 py-3.5 rounded-sm text-sm tracking-wide transition-colors text-center whitespace-nowrap w-full sm:w-auto block"
+                >
+                  Learn More
+                </Link>
+              </motion.div>
+            </div>
+          </AnimateIn>
         </div>
       </div>
 

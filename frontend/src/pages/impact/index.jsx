@@ -1,4 +1,6 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import AnimateIn from "../../components/AnimateIn";
 import { ChevronLeft, ChevronRight, ExternalLink, X, Building2 } from "lucide-react";
 import Map from "../../components/Map";
 import NewsLetter from "../../components/newsletter";
@@ -327,19 +329,27 @@ function ImpactPage() {
       {/* ── Hero header ── */}
       <div className="bg-[#1C2B39] text-white">
         <div className="container py-14">
-          <div className="h-1 w-12 bg-[#009EDB] mb-5" />
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 text-white">Where We Work</h1>
-          <p className="text-white/70 text-base max-w-2xl leading-relaxed">
-            WDC operates across Africa, the Americas, Asia, and Europe — with offices in
-            Ottawa, New York, and Vienna — delivering disaster monitoring, early warning
-            systems, and community resilience programs worldwide.
-          </p>
+          <AnimateIn variant="fadeUp">
+            <div className="h-1 w-12 bg-[#009EDB] mb-5" />
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 text-white">Where We Work</h1>
+            <p className="text-white/70 text-base max-w-2xl leading-relaxed">
+              WDC operates across Africa, the Americas, Asia, and Europe — with offices in
+              Ottawa, New York, and Vienna — delivering disaster monitoring, early warning
+              systems, and community resilience programs worldwide.
+            </p>
+          </AnimateIn>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 mt-10">
-            {STATS.map((s) => (
-              <div key={s.label}>
+            {STATS.map((s, i) => (
+              <motion.div
+                key={s.label}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              >
                 <div className="text-3xl font-black text-[#009EDB]">{s.n}</div>
                 <div className="text-xs text-white/50 uppercase tracking-widest mt-1">{s.label}</div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>

@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Link } from "react-router-dom";
+import { motion, useInView } from "framer-motion";
+import AnimateIn from "../../components/AnimateIn";
 
 const SERVICES = [
   {
@@ -154,12 +156,19 @@ const CHARGE_TABLE = [
   },
 ];
 
-function ServiceCard({ service }) {
+function ServiceCard({ service, index }) {
   return (
-    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+    <motion.div
+      className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.55, delay: index * 0.12, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" }}
+    >
       <div className="h-1.5 w-full" style={{ backgroundColor: service.accent }} />
       <div className="p-8">
-        <div className="text-4xl mb-4">{service.icon}</div>
+        <motion.div className="text-4xl mb-4" whileHover={{ scale: 1.1, rotate: 5 }} transition={{ duration: 0.3 }}>{service.icon}</motion.div>
         <h3 className="text-xl font-bold text-gray-900 mb-3">{service.title}</h3>
         <p className="text-gray-600 text-sm leading-relaxed mb-5">{service.description}</p>
         <ul className="space-y-2 mb-6">
@@ -178,18 +187,23 @@ function ServiceCard({ service }) {
           {service.link.label} →
         </Link>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
-function PricingCard({ tier }) {
+function PricingCard({ tier, index }) {
   return (
-    <div
-      className={`rounded-lg p-7 flex flex-col border-2 transition-shadow hover:shadow-lg ${
+    <motion.div
+      className={`rounded-lg p-7 flex flex-col border-2 ${
         tier.highlight
           ? "bg-[#418FDE] border-[#418FDE] text-white shadow-md"
           : "bg-white border-gray-200 text-gray-900"
       }`}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.5, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={{ y: -4, boxShadow: "0 16px 36px rgba(0,0,0,0.12)" }}
     >
       {tier.highlight && (
         <span className="text-[10px] font-black uppercase tracking-widest bg-white/25 text-white px-2 py-0.5 rounded self-start mb-3">
@@ -228,7 +242,7 @@ function PricingCard({ tier }) {
       >
         {tier.cta.label}
       </Link>
-    </div>
+    </motion.div>
   );
 }
 
@@ -238,6 +252,7 @@ export default function ServicesPage() {
       {/* Hero */}
       <div className="bg-[#418FDE] py-12 sm:py-16 md:py-20 px-4">
         <div className="container max-w-4xl">
+          <AnimateIn variant="fadeUp">
           <span className="text-xs font-black uppercase tracking-widest text-white/70 mb-2 block">
             World Disaster Center
           </span>
@@ -246,19 +261,24 @@ export default function ServicesPage() {
             From free online training to government-scale technology deployments — WDC supports every organisation working to reduce disaster risk and save lives.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-8">
-            <Link
-              to="/training#estimator"
-              className="w-full sm:w-auto bg-white text-[#418FDE] font-bold px-6 py-3 rounded text-sm hover:bg-gray-100 transition-colors text-center"
-            >
-              Plan Your Training
-            </Link>
-            <Link
-              to="/contact"
-              className="w-full sm:w-auto border-2 border-white text-white font-bold px-6 py-3 rounded text-sm hover:bg-white/10 transition-colors text-center"
-            >
-              Request a Proposal
-            </Link>
+            <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+              <Link
+                to="/training#estimator"
+                className="w-full sm:w-auto bg-white text-[#418FDE] font-bold px-6 py-3 rounded text-sm hover:bg-gray-100 transition-colors text-center block"
+              >
+                Plan Your Training
+              </Link>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+              <Link
+                to="/contact"
+                className="w-full sm:w-auto border-2 border-white text-white font-bold px-6 py-3 rounded text-sm hover:bg-white/10 transition-colors text-center block"
+              >
+                Request a Proposal
+              </Link>
+            </motion.div>
           </div>
+          </AnimateIn>
         </div>
       </div>
 
@@ -279,7 +299,7 @@ export default function ServicesPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8">
             {SERVICES.map((s, i) => (
-              <ServiceCard key={i} service={s} />
+              <ServiceCard key={i} service={s} index={i} />
             ))}
           </div>
         </div>
@@ -299,7 +319,7 @@ export default function ServicesPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {PRICING.map((tier, i) => (
-              <PricingCard key={i} tier={tier} />
+              <PricingCard key={i} tier={tier} index={i} />
             ))}
           </div>
         </div>

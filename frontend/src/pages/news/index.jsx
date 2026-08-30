@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import AnimateIn from "../../components/AnimateIn";
 import { ArrowRight, Search, Plus, X, Upload, CheckCircle, Share2, Loader2 } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import DOMPurify from "dompurify";
@@ -155,11 +157,16 @@ const News = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {filteredArticles.map((article) => (
-                <div
+              {filteredArticles.map((article, artIdx) => (
+                <motion.div
                   key={article.id}
                   onClick={() => openArticle(article)}
-                  className="bg-white rounded border border-gray-200 border-t-4 border-t-primary hover:shadow-md transition-all cursor-pointer group flex flex-col"
+                  className="bg-white rounded border border-gray-200 border-t-4 border-t-primary cursor-pointer group flex flex-col"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ duration: 0.5, delay: Math.min(artIdx % 3, 2) * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                  whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" }}
                 >
                   {article.image_url && (
                     <div className="overflow-hidden h-44">
@@ -189,7 +196,7 @@ const News = () => {
                       />
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           )}

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 import { curve } from "../assets";
 import GIF1 from "../assets/gif/WDC_Shorts.gif";
 import VID1 from "../assets/video/Digital World Map.mp4";
@@ -33,11 +34,21 @@ const Hero = () => {
       <div className="container relative z-10 py-16 sm:py-20 lg:py-32">
         <div className="max-w-2xl">
           {/* Eyebrow tag */}
-          <span className="inline-block px-3 py-1 bg-primary text-white text-xs font-bold uppercase tracking-widest rounded mb-6">
+          <motion.span
+            className="inline-block px-3 py-1 bg-primary text-white text-xs font-bold uppercase tracking-widest rounded mb-6"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          >
             Global Early Warning System
-          </span>
+          </motion.span>
 
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
+          <motion.h1
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          >
             The Global Disaster{" "}
             <span className="relative inline-block">
               Monitoring &amp; Alert
@@ -49,40 +60,62 @@ const Hero = () => {
               />
             </span>{" "}
             System &ldquo;Michael&rdquo;
-          </h1>
+          </motion.h1>
 
-          <p className="text-base sm:text-lg text-white/90 leading-relaxed mb-8 max-w-xl font-light">
+          <motion.p
+            className="text-base sm:text-lg text-white/90 leading-relaxed mb-8 max-w-xl font-light"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.65, ease: [0.22, 1, 0.36, 1] }}
+          >
             Michael harnesses advanced AI and real-time data to deliver life-saving insights,
             empowering communities to navigate disasters with confidence and control.
-          </p>
+          </motion.p>
 
-          <div className="flex flex-wrap gap-4">
-            <a
+          <motion.div
+            className="flex flex-wrap gap-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.85, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <motion.a
               href="http://michael.worlddisastercenter.org/"
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-bold px-7 py-3.5 rounded transition-colors duration-200"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
             >
               Learn About Michael <ArrowRight size={18} />
-            </a>
-            <Link
-              to="/request-demo"
-              className="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 border border-white/40 text-white font-bold px-7 py-3.5 rounded backdrop-blur-sm transition-all duration-200"
+            </motion.a>
+            <motion.div
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
             >
-              Request a Demo
-            </Link>
-          </div>
+              <Link
+                to="/request-demo"
+                className="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 border border-white/40 text-white font-bold px-7 py-3.5 rounded backdrop-blur-sm transition-all duration-200"
+              >
+                Request a Demo
+              </Link>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
 
       {/* Preview frame — UNOCHA clean card style */}
-      <div className="container relative z-10 pb-16 hidden lg:block">
+      <motion.div
+        className="container relative z-10 pb-16 hidden lg:block"
+        initial={{ opacity: 0, x: 60 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.9, delay: 1.0, ease: [0.22, 1, 0.36, 1] }}
+      >
         <div className="ml-auto max-w-sm bg-white/10 backdrop-blur-md border border-white/20 rounded-xl overflow-hidden shadow-2xl">
           <Link to="/request-demo">
             <img src={GIF1} className="w-full object-contain" alt="Michael AI preview" />
           </Link>
         </div>
-      </div>
+      </motion.div>
 
       {/* Bottom gradient fade to white */}
       <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent" />

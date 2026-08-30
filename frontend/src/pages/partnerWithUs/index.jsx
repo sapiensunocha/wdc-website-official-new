@@ -1,6 +1,8 @@
 import { useRef, useState } from "react";
 import { toast } from "react-toastify";
 import client from "../../api/client";
+import { motion } from "framer-motion";
+import AnimateIn from "../../components/AnimateIn";
 
 const inputClass =
   "w-full px-4 py-2.5 border border-gray-300 rounded focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-content-primary bg-white transition-colors";
@@ -67,13 +69,15 @@ export default function PartnerWithUs() {
       {/* Hero section */}
       <div className="bg-primary py-16 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <span className="inline-block px-3 py-1 text-xs font-black uppercase tracking-widest bg-white/20 text-white rounded mb-4">
-            Partnership
-          </span>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Partner With WDC</h1>
-          <p className="text-white/90 text-lg max-w-2xl mx-auto">
-            Join our global network of governments, NGOs, academic institutions, and private sector leaders working together to build a more disaster-resilient world.
-          </p>
+          <AnimateIn variant="fadeUp">
+            <span className="inline-block px-3 py-1 text-xs font-black uppercase tracking-widest bg-white/20 text-white rounded mb-4">
+              Partnership
+            </span>
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Partner With WDC</h1>
+            <p className="text-white/90 text-lg max-w-2xl mx-auto">
+              Join our global network of governments, NGOs, academic institutions, and private sector leaders working together to build a more disaster-resilient world.
+            </p>
+          </AnimateIn>
         </div>
       </div>
 
@@ -113,12 +117,20 @@ export default function PartnerWithUs() {
                 title: "Visibility & Impact",
                 desc: "Be featured in WDC reports, events, and media as a recognized leader in disaster resilience.",
               },
-            ].map((item) => (
-              <div key={item.title} className="bg-white rounded border border-gray-200 p-6 flex flex-col gap-3">
+            ].map((item, i) => (
+              <motion.div
+                key={item.title}
+                className="bg-white rounded border border-gray-200 p-6 flex flex-col gap-3"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ y: -4, boxShadow: "0 16px 36px rgba(0,0,0,0.1)" }}
+              >
                 <span className="text-3xl">{item.icon}</span>
                 <h3 className="font-bold text-content-primary">{item.title}</h3>
                 <p className="text-sm text-content-secondary">{item.desc}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>

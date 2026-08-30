@@ -184,13 +184,13 @@ const Header = () => {
   }, [location]);
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 4);
+    const fn = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", fn);
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
   return (
-    <header className={`fixed top-0 left-0 w-full z-50 bg-white transition-shadow duration-200 ${scrolled ? "shadow-md" : "border-b border-gray-200"}`}>
+    <header className={`fixed top-0 left-0 w-full z-50 bg-white transition-all duration-300 ${scrolled ? "shadow-lg" : "border-b border-gray-200"}`}>
       {/* ── Slim utility top bar (UNOCHA style) ── */}
       <div className="bg-[#1C2B39] text-white">
         <div className="container flex items-center justify-between py-1.5 text-xs">
@@ -227,11 +227,15 @@ const Header = () => {
       <div className="h-0.5 w-full bg-[#418FDE]" />
 
       {/* ── Main navigation bar ── */}
-      <div className="container flex items-center justify-between py-3">
+      <div className={`container flex items-center justify-between transition-all duration-300 ${scrolled ? "py-1.5" : "py-3"}`}>
         
         {/* ── UPDATED LOGO: Horizontal WDC Logo with Hover Effect ── */}
         <Link to="/" className="flex items-center shrink-0 transition-opacity hover:opacity-80">
-          <img src={WDC_HORIZ_Logo} alt="World Disaster Center" className="w-auto h-12" />
+          <img
+            src={WDC_HORIZ_Logo}
+            alt="World Disaster Center"
+            className={`w-auto transition-all duration-300 ${scrolled ? "h-8" : "h-12"}`}
+          />
         </Link>
 
         {/* Desktop nav */}
