@@ -35,8 +35,18 @@ const footerColumns = [
     ],
   },
   {
+    heading: "Intelligence",
+    links: [
+      { label: "Chat with Michael", to: "/michael-chat" },
+      { label: "Disasters Tracker", to: "/trackers/disasters" },
+      { label: "Aid Tracker", to: "/trackers/aid" },
+      { label: "Climate Tracker", to: "/trackers/climate" },
+    ],
+  },
+  {
     heading: "Get Involved",
     links: [
+      { label: "WDC Shop", to: "/shop" },
       { label: "Donate", to: "/donate" },
       { label: "Become a Member", to: "/membership" },
       { label: "Partner With Us", to: "/partnerWithUs" },
@@ -52,7 +62,7 @@ function NewFooter() {
       <div className="h-1 w-full bg-[#009EDB]" />
 
       <div className="container py-14">
-        <div className="grid grid-cols-1 lg:grid-cols-6 gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-7 gap-10">
 
           {/* Brand — spans 2 columns */}
           <AnimateIn variant="fadeUp" className="lg:col-span-2 flex flex-col gap-5">

@@ -41,6 +41,17 @@ const navItems = [
     ],
   },
   {
+    title: "Intelligence",
+    items: [
+      { label: "Chat with Michael ⚡", to: "/michael-chat" },
+      { label: "Live Disasters Tracker", to: "/trackers/disasters" },
+      { label: "Aid & Response Tracker", to: "/trackers/aid" },
+      { label: "DRR Policy Tracker", to: "/trackers/policy" },
+      { label: "Climate Tracker", to: "/trackers/climate" },
+      { label: "All Trackers", to: "/trackers" },
+    ],
+  },
+  {
     title: "News & Media",
     items: [
       { label: "Newsroom & Media", to: "/media" },
@@ -52,6 +63,7 @@ const navItems = [
   {
     title: "Get Involved",
     items: [
+      { label: "WDC Shop 🛍️", to: "/shop" },
       { label: "Expert Roster", to: "/roster" },
       { label: "Membership", to: "/membership" },
       { label: "Donate", href: "https://www.paypal.com/donate/?hosted_button_id=XXS7D6VJDM2YE" },

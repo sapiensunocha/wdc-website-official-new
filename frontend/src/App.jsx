@@ -43,6 +43,13 @@ import Americas from "./pages/where_we_work/americas";
 import Asia from "./pages/where_we_work/asia";
 import Europe from "./pages/where_we_work/europe";
 import MediaPage from "./pages/media";
+import ShopPage from "./pages/shop";
+import MichaelChat from "./pages/michael-chat";
+import TrackersHub from "./pages/trackers";
+import DisastersTracker from "./pages/trackers/disasters";
+import AidTracker from "./pages/trackers/aid";
+import PolicyTracker from "./pages/trackers/policy";
+import ClimateTracker from "./pages/trackers/climate";
 import PartnerWithUs from "./pages/partnerWithUs";
 import TrainingPage from "./pages/training";
 import ServicesPage from "./pages/services";
@@ -177,6 +184,19 @@ const App = () => {
           {/* Legal */}
           <Route path="/policy" element={<PrivacyPolicyPage />} />
           <Route path="/terms-conditions" element={<TermsAndConditionPage />} />
+
+          {/* Shop */}
+          <Route path="/shop" element={<ShopPage />} />
+
+          {/* Michael Chat */}
+          <Route path="/michael-chat" element={<MichaelChat />} />
+
+          {/* Trackers */}
+          <Route path="/trackers" element={<TrackersHub />} />
+          <Route path="/trackers/disasters" element={<DisastersTracker />} />
+          <Route path="/trackers/aid" element={<AidTracker />} />
+          <Route path="/trackers/policy" element={<PolicyTracker />} />
+          <Route path="/trackers/climate" element={<ClimateTracker />} />
 
           {/* Admin */}
           <Route path="/management/wdc/worddisastercenter/admin" element={<AdminPage />} />
