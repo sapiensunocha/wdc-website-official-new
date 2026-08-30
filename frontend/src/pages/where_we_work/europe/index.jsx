@@ -1,8 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, MapPin, Users, Zap, Shield } from "lucide-react";
+import { ArrowRight, MapPin, Users, Zap, Shield, FileText } from "lucide-react";
 import AnimateIn from "../../../components/AnimateIn";
+import { Helmet } from "react-helmet-async";
+
+const COUNTRY_REPORTS = {
+  "Austria (Salzburg HQ)": [
+    { label: "Annual Report 2024", id: "annual-2024" },
+    { label: "Strategic Plan 2024", id: "strategic-plan-2024" },
+  ],
+  "Turkey (Istanbul Office)": [
+    { label: "Annual Report 2024", id: "annual-2024" },
+  ],
+};
 
 const countries = [
   {
@@ -70,6 +81,13 @@ function StatusBadge({ status }) {
 function Europe() {
   return (
     <div className="bg-white">
+      <Helmet>
+        <title>WDC in Europe — World Disaster Center</title>
+        <meta name="description" content="WDC's European operations — Salzburg HQ for EU institutional engagement, Istanbul office bridging Europe and the Middle East, and Germany board research network. Earthquake monitoring, EU coordination, and cross-border humanitarian intelligence." />
+        <meta property="og:title" content="WDC in Europe — World Disaster Center" />
+        <meta property="og:description" content="European headquarters in Salzburg, Istanbul Europe-MENA gateway, and Germany research board network — coordinating disaster intelligence across Europe and the Middle East." />
+        <meta name="keywords" content="World Disaster Center Europe, WDC Salzburg headquarters, WDC Istanbul office, disaster intelligence Europe, earthquake monitoring Europe, EU civil protection WDC" />
+      </Helmet>
       {/* Hero */}
       <section className="bg-[#1C2B39] text-white py-24">
         <div className="container sm:px-2">
@@ -127,6 +145,18 @@ function Europe() {
                   </div>
                   <p className="text-xs font-bold text-primary uppercase tracking-wide mb-2">{c.focus}</p>
                   <p className="text-content-secondary text-sm leading-relaxed">{c.detail}</p>
+                  {COUNTRY_REPORTS[c.name] && (
+                    <div className="mt-3 pt-3 border-t border-gray-100">
+                      <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1.5">WDC Reports</p>
+                      <div className="flex flex-col gap-1">
+                        {COUNTRY_REPORTS[c.name].map((r) => (
+                          <Link key={r.id} to="/reports" className="text-xs text-primary hover:underline flex items-center gap-1 font-semibold">
+                            <FileText size={11} className="shrink-0" /> {r.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </motion.div>
               </AnimateIn>
             ))}

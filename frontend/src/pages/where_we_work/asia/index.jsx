@@ -1,8 +1,25 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, MapPin, Users, Zap, Shield } from "lucide-react";
+import { ArrowRight, MapPin, Users, Zap, Shield, FileText } from "lucide-react";
 import AnimateIn from "../../../components/AnimateIn";
+import { Helmet } from "react-helmet-async";
+
+const COUNTRY_REPORTS = {
+  "Afghanistan": [
+    { label: "Afghanistan Earthquake Report 2025", id: "mission-afghanistan-2024" },
+    { label: "Annual Report 2024", id: "annual-2024" },
+  ],
+  "Nepal": [
+    { label: "Annual Report 2024", id: "annual-2024" },
+  ],
+  "India (Mumbai Office)": [
+    { label: "Annual Report 2024", id: "annual-2024" },
+  ],
+  "Bangladesh": [
+    { label: "Bangladesh Country Report 2024", id: "country-bangladesh-2024" },
+  ],
+};
 
 const countries = [
   {
@@ -78,6 +95,13 @@ function StatusBadge({ status }) {
 function Asia() {
   return (
     <div className="bg-white">
+      <Helmet>
+        <title>WDC in Asia — World Disaster Center</title>
+        <meta name="description" content="WDC's Asia operations — Afghanistan earthquake response, Nepal GLOF monitoring, South Asia and Southeast Asia coordination offices in Mumbai and Bangkok. Michael AI disaster intelligence serving 4.5 billion people." />
+        <meta property="og:title" content="WDC in Asia — World Disaster Center" />
+        <meta property="og:description" content="Earthquake emergency response, glacial lake flood monitoring, cyclone intelligence and humanitarian coordination across Asia's most disaster-prone regions." />
+        <meta name="keywords" content="World Disaster Center Asia, WDC Afghanistan earthquake, Nepal floods 2026, Michael AI Asia, disaster intelligence South Asia, WDC Bangkok Mumbai office" />
+      </Helmet>
       {/* Hero */}
       <section className="bg-[#1C2B39] text-white py-24">
         <div className="container sm:px-2">
@@ -135,6 +159,18 @@ function Asia() {
                   </div>
                   <p className="text-xs font-bold text-primary uppercase tracking-wide mb-2">{c.focus}</p>
                   <p className="text-content-secondary text-sm leading-relaxed">{c.detail}</p>
+                  {COUNTRY_REPORTS[c.name] && (
+                    <div className="mt-3 pt-3 border-t border-gray-100">
+                      <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1.5">WDC Reports</p>
+                      <div className="flex flex-col gap-1">
+                        {COUNTRY_REPORTS[c.name].map((r) => (
+                          <Link key={r.id} to="/reports" className="text-xs text-primary hover:underline flex items-center gap-1 font-semibold">
+                            <FileText size={11} className="shrink-0" /> {r.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </motion.div>
               </AnimateIn>
             ))}

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Globe } from "lucide-react";
 import AnimateIn from "../../components/AnimateIn";
+import { Helmet } from "react-helmet-async";
 
 const regions = [
   {
@@ -57,6 +58,13 @@ const stats = [
 export default function WhereWeWork() {
   return (
     <div className="bg-white">
+      <Helmet>
+        <title>Where We Work — World Disaster Center</title>
+        <meta name="description" content="WDC operates in 30+ countries across Africa, the Americas, Asia, and Europe. Field missions in DRC, Burundi, Haiti, Afghanistan, Nepal and more. Michael AI delivers disaster intelligence across all regions." />
+        <meta property="og:title" content="Where We Work — World Disaster Center" />
+        <meta property="og:description" content="Active field missions and disaster intelligence operations across Africa, the Americas, Asia, and Europe. 30+ countries, 8 regional offices, 6 continents." />
+        <meta name="keywords" content="World Disaster Center operations, WDC global presence, disaster response countries, WDC Africa Americas Asia Europe, Michael AI global coverage, humanitarian operations" />
+      </Helmet>
       {/* Hero */}
       <section className="bg-[#1C2B39] text-white py-24">
         <div className="container sm:px-2">

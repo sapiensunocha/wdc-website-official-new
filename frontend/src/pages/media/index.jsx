@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, MessageCircle, Share2, ExternalLink, Play, X, Send, ChevronDown, ChevronUp, LogIn } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { supabase } from "../../lib/supabase";
 import AnimateIn from "../../components/AnimateIn";
 import WDCLogo from "../../assets/images/wdclogobg.png";
@@ -14,6 +15,7 @@ import unescoEvent2  from "../../assets/media/unesco_event2.jpg";
 import unescoEvent3  from "../../assets/media/unesco_event3.jpg";
 import prrsFramework from "../../assets/media/prrs_framework.jpg";
 import lstSenegal    from "../../assets/media/lst_senegal.png";
+import wdcBanner2024 from "../../assets/video/WDC-Banner-2024.mp4";
 
 const SOCIAL = [
   { label: "LinkedIn",  href: "https://www.linkedin.com/company/worlddisastercenter", color: "#0077B5",
@@ -88,6 +90,34 @@ const STATIC_POSTS = [
     body: "Subscribe to the World Disaster Center YouTube channel for field mission updates, tool demonstrations, event recordings, and expert interviews on global disaster resilience.",
     image: null, tags: ["YouTube", "Video", "Field Reports"], date: "Ongoing", likes: 63,
     videoUrl: "https://www.youtube.com/@WorldDisasterCenterOffice",
+    youtubeEmbed: "https://www.youtube.com/embed?listType=user_uploads&list=WorldDisasterCenterOffice&autoplay=1&mute=1",
+    link: "https://www.youtube.com/@WorldDisasterCenterOffice" },
+  { id: "video-wdc-banner-local", type: "video", category: "Videos",
+    title: "WDC 2024 — Disaster Intelligence Platform Animation",
+    body: "Animated platform showcase of World Disaster Center's Michael system — real-time disaster monitoring, AI early warning alerts, and field mission coordination across 40+ countries.",
+    image: null, tags: ["Michael", "Platform", "2024", "Animation"], date: "2024", likes: 44,
+    localVideo: wdcBanner2024,
+    link: "https://www.youtube.com/@WorldDisasterCenterOffice" },
+  { id: "video-wdc-banner", type: "video", category: "Videos",
+    title: "WDC 2024 — Disaster Intelligence Platform Showcase",
+    body: "See how World Disaster Center's Michael platform delivers real-time disaster intelligence, early warning alerts, and field mission coordination across 40+ countries.",
+    image: null, tags: ["Michael", "Platform", "2024"], date: "2024", likes: 44,
+    videoUrl: "https://www.youtube.com/@WorldDisasterCenterOffice",
+    youtubeEmbed: "https://www.youtube.com/embed?listType=user_uploads&list=WorldDisasterCenterOffice&autoplay=1&mute=1",
+    link: "https://www.youtube.com/@WorldDisasterCenterOffice" },
+  { id: "video-disaster-resilience", type: "video", category: "Videos",
+    title: "Disaster Resilience — Sapiens Ndatabaye on WDC's Mission",
+    body: "WDC Founder Sapiens Ndatabaye discusses building AI-powered disaster resilience for communities in Africa, the Caribbean, and Southeast Asia.",
+    image: null, tags: ["Founder", "Mission", "Resilience"], date: "January 2025", likes: 38,
+    videoUrl: "https://www.youtube.com/@WorldDisasterCenterOffice",
+    youtubeEmbed: "https://www.youtube.com/embed?listType=user_uploads&list=WorldDisasterCenterOffice&autoplay=1&mute=1",
+    link: "https://www.youtube.com/@WorldDisasterCenterOffice" },
+  { id: "video-venezuela-eq", type: "video", category: "Videos",
+    title: "Venezuela M7.5 Earthquake — WDC Field Intelligence",
+    body: "WDC's earthquake response dashboard for the June 2026 Venezuela earthquake — live USGS seismic feeds, structural collapse mapping, and humanitarian needs assessment.",
+    image: null, tags: ["Venezuela", "Earthquake", "Michael", "2026"], date: "June 2026", likes: 71,
+    videoUrl: "https://www.youtube.com/@WorldDisasterCenterOffice",
+    youtubeEmbed: "https://www.youtube.com/embed?listType=user_uploads&list=WorldDisasterCenterOffice&autoplay=1&mute=1",
     link: "https://www.youtube.com/@WorldDisasterCenterOffice" },
   { id: "rising-stars-2025", type: "link", category: "Awards",
     title: "🌟 Geospatial World 50 Rising Stars 2025",
@@ -203,6 +233,80 @@ function CommentsSection({ postId, auth }) {
   );
 }
 
+// ── Video card with IntersectionObserver autoplay ─────────────────────────────
+function VideoEmbed({ post }) {
+  const [inView, setInView] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setInView(true); },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Local mp4 video (autoplay natively)
+  if (post.localVideo) {
+    return (
+      <div ref={ref} className="mx-5 mb-3">
+        {inView ? (
+          <video
+            src={post.localVideo}
+            autoPlay muted loop playsInline
+            controls
+            className="w-full rounded-lg"
+            style={{ maxHeight: 220 }}
+          />
+        ) : (
+          <div className="flex items-center justify-center gap-3 bg-[#1C2B39] rounded-lg h-40">
+            <div className="w-12 h-12 rounded-full bg-[#009EDB] flex items-center justify-center">
+              <Play size={22} className="text-white ml-1" fill="white" />
+            </div>
+            <div>
+              <p className="text-white text-sm font-bold">WDC Platform Video</p>
+              <p className="text-gray-400 text-xs">Scroll to play</p>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  const embedSrc = post.youtubeEmbed || post.videoUrl;
+
+  return (
+    <div ref={ref} className="mx-5 mb-3">
+      {inView ? (
+        <iframe
+          width="100%"
+          height="200"
+          src={embedSrc}
+          frameBorder="0"
+          allow="autoplay; encrypted-media"
+          allowFullScreen
+          className="rounded-lg block"
+          style={{ width: "100%" }}
+        />
+      ) : (
+        <a href={post.link || post.videoUrl} target="_blank" rel="noreferrer"
+          className="flex items-center justify-center gap-3 bg-[#1C2B39] rounded-lg h-40 group cursor-pointer">
+          <div className="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+            <Play size={22} className="text-white ml-1" fill="white" />
+          </div>
+          <div>
+            <p className="text-white text-sm font-bold">Watch on YouTube</p>
+            <p className="text-gray-400 text-xs">World Disaster Center Channel</p>
+          </div>
+        </a>
+      )}
+    </div>
+  );
+}
+
 // ── Post card ─────────────────────────────────────────────────────────────────
 function PostCard({ post, auth, liked, onToggleLike }) {
   const [expanded, setExpanded] = useState(false);
@@ -254,18 +358,7 @@ function PostCard({ post, auth, liked, onToggleLike }) {
           <img src={post.image} alt={post.title} className="w-full h-80 object-cover hover:scale-105 transition-transform duration-500" />
         </div>
       )}
-      {post.type === "video" && (
-        <a href={post.videoUrl} target="_blank" rel="noreferrer"
-          className="mx-5 mb-3 flex items-center justify-center gap-3 bg-[#1C2B39] rounded-lg h-40 group cursor-pointer">
-          <div className="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center group-hover:scale-110 transition-transform">
-            <Play size={22} className="text-white ml-1" fill="white" />
-          </div>
-          <div>
-            <p className="text-white text-sm font-bold">Watch on YouTube</p>
-            <p className="text-gray-400 text-xs">World Disaster Center Channel</p>
-          </div>
-        </a>
-      )}
+      {post.type === "video" && <VideoEmbed post={post} />}
       {post.type === "link" && (
         <a href={post.link} target="_blank" rel="noreferrer"
           className="mx-5 mb-3 flex items-center gap-3 border border-gray-200 rounded-lg p-4 hover:border-[#009EDB] transition-colors group">
@@ -386,6 +479,13 @@ export default function MediaPage() {
 
   return (
     <div className="bg-gray-50 min-h-screen">
+      <Helmet>
+        <title>Newsroom & Media — World Disaster Center</title>
+        <meta name="description" content="WDC news, field reports, awards, and video updates. Award ceremony from Kigali Rwanda, UNESCO climate events, field missions in DRC and Burundi, and disaster intelligence from 40+ countries." />
+        <meta property="og:title" content="Newsroom & Media — World Disaster Center" />
+        <meta property="og:description" content="Follow WDC's latest field missions, award ceremonies, disaster intelligence updates, and video reports from the World Disaster Center." />
+        <meta name="keywords" content="World Disaster Center news, WDC media, disaster intelligence updates, WDC awards, field mission reports, humanitarian news" />
+      </Helmet>
       {/* Hero */}
       <section className="bg-[#1C2B39] text-white py-16">
         <div className="container">

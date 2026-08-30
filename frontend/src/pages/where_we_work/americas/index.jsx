@@ -1,8 +1,32 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, MapPin, Users, Zap, Shield } from "lucide-react";
+import { ArrowRight, MapPin, Users, Zap, Shield, FileText } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 import AnimateIn from "../../../components/AnimateIn";
+
+const COUNTRY_REPORTS = {
+  "Haiti": [
+    { label: "Haiti Mission Report 2024", id: "mission-haiti-2024" },
+    { label: "EAGLE Haiti Assessment", id: "eagle-haiti-2024" },
+  ],
+  "Jamaica": [
+    { label: "Jamaica Mission Report", id: "mission-jamaica-2024" },
+  ],
+  "Venezuela": [
+    { label: "Annual Report 2024 — Venezuela Response", id: "annual-2024" },
+  ],
+  "Canada (Ottawa HQ)": [
+    { label: "WDC Annual Report 2024", id: "annual-2024" },
+    { label: "Strategic Plan 2024", id: "strategic-plan-2024" },
+  ],
+  "United States (New York)": [
+    { label: "WDC Annual Report 2024", id: "annual-2024" },
+  ],
+  "Chile (Santiago Office)": [
+    { label: "Annual Report 2024", id: "annual-2024" },
+  ],
+};
 
 const countries = [
   {
@@ -112,6 +136,14 @@ const techFeatures = [
 export default function Americas() {
   return (
     <div className="bg-white">
+      <Helmet>
+        <title>WDC in the Americas — World Disaster Center</title>
+        <meta name="description" content="WDC's Americas operations spanning 9 countries — hurricane response in the Caribbean (Haiti, Jamaica, Cuba, Bahamas, Dominican Republic), HQ operations in Canada and the US, South America coordination in Chile, and Venezuela earthquake response. Powered by Michael AI." />
+        <meta property="og:title" content="WDC in the Americas — World Disaster Center" />
+        <meta property="og:description" content="Caribbean hurricane response, earthquake preparedness, and WDC's flagship headquarters operations spanning 9 countries across North America, the Caribbean, and South America." />
+        <meta property="og:type" content="website" />
+        <meta name="keywords" content="World Disaster Center Americas, WDC hurricane response Caribbean, Haiti disaster response, Venezuela earthquake 2026, WDC Michael AI, disaster resilience Americas" />
+      </Helmet>
       {/* Hero */}
       <section className="bg-[#1C2B39] text-white py-24">
         <div className="container sm:px-2">
@@ -200,6 +232,19 @@ export default function Americas() {
                     <p className="text-content-secondary text-sm leading-relaxed flex-1">
                       {c.detail}
                     </p>
+                    {COUNTRY_REPORTS[c.name] && (
+                      <div className="mt-3 pt-3 border-t border-gray-100">
+                        <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1.5">WDC Reports</p>
+                        <div className="flex flex-col gap-1">
+                          {COUNTRY_REPORTS[c.name].map((r) => (
+                            <Link key={r.id} to={`/reports`}
+                              className="text-xs text-primary hover:underline flex items-center gap-1 font-semibold">
+                              <FileText size={11} className="shrink-0" /> {r.label}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </motion.div>
               </AnimateIn>
