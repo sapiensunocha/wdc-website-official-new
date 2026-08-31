@@ -51,6 +51,9 @@ import AidTracker from "./pages/trackers/aid";
 import PolicyTracker from "./pages/trackers/policy";
 import ClimateTracker from "./pages/trackers/climate";
 import PartnerWithUs from "./pages/partnerWithUs";
+import CampaignsPage from "./pages/campaigns";
+import CampaignDetail from "./pages/campaigns/CampaignDetail";
+import GlobalMonitor from "./pages/monitor";
 import TrainingPage from "./pages/training";
 import ServicesPage from "./pages/services";
 import SingleBlogDisplay from "./pages/blog";
@@ -159,6 +162,13 @@ const App = () => {
           <Route path="/disaster-heroes/login" element={<DisasterHeroesLogin />} />
           <Route path="/disaster-heroes/admin" element={<DisasterHeroesAdmin />} />
           <Route path="/disaster-heroes/dashboard" element={<DisasterHeroesDashboard />} />
+
+          {/* Campaigns */}
+          <Route path="/campaigns" element={<CampaignsPage />} />
+          <Route path="/campaigns/:slug" element={<CampaignDetail />} />
+
+          {/* Global Monitor */}
+          <Route path="/monitor" element={<GlobalMonitor />} />
 
           {/* Get Involved */}
           <Route path="/membership" element={<MembershipPage />} />

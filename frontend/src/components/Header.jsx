@@ -41,15 +41,25 @@ const navItems = [
     ],
   },
   {
-    title: "Intelligence",
+    title: "Campaigns",
     items: [
-      { label: "Chat with Michael ⚡", to: "/michael-chat" },
-      { label: "Live Disasters Tracker", to: "/trackers/disasters" },
-      { label: "Aid & Response Tracker", to: "/trackers/aid" },
-      { label: "DRR Policy Tracker", to: "/trackers/policy" },
-      { label: "Climate Tracker", to: "/trackers/climate" },
-      { label: "All Trackers", to: "/trackers" },
+      { label: "All Campaigns", to: "/campaigns" },
+      { label: "Protect Women", to: "/campaigns/protect-women" },
+      { label: "Protect Children", to: "/campaigns/protect-children" },
+      { label: "Home for Everyone", to: "/campaigns/home-for-everyone" },
+      { label: "Girls in Tech", to: "/campaigns/girls-in-tech" },
+      { label: "Climate Protect", to: "/campaigns/climate-protect" },
+      { label: "Protect People with Disabilities", to: "/campaigns/protect-disabilities" },
+      { label: "Safe Communities", to: "/campaigns/safe-communities" },
+      { label: "Reproductive Health & Safety", to: "/campaigns/reproductive-health-safety" },
+      { label: "Food Security", to: "/campaigns/food-security" },
+      { label: "Digital Safety", to: "/campaigns/digital-safety" },
+      { label: "Refugee & Displaced Protection", to: "/campaigns/refugee-displaced-protection" },
     ],
+  },
+  {
+    title: "Monitor",
+    to: "/monitor",
   },
   {
     title: "News & Media",
@@ -63,7 +73,6 @@ const navItems = [
   {
     title: "Get Involved",
     items: [
-      { label: "WDC Shop 🛍️", to: "/shop" },
       { label: "Expert Roster", to: "/roster" },
       { label: "Membership", to: "/membership" },
       { label: "Donate", href: "https://www.paypal.com/donate/?hosted_button_id=XXS7D6VJDM2YE" },
@@ -244,35 +253,52 @@ const Header = () => {
       <div className="h-0.5 w-full bg-[#418FDE]" />
 
       {/* ── Main navigation bar ── */}
-      <div className={`container flex items-center justify-between transition-all duration-300 ${scrolled ? "py-1.5" : "py-3"}`}>
-        
-        {/* ── UPDATED LOGO: Horizontal WDC Logo with Hover Effect ── */}
+      <div className={`container flex items-center justify-between transition-all duration-300 ${scrolled ? "py-1.5" : "py-2.5"}`}>
+
+        {/* Logo */}
         <Link to="/" className="flex items-center shrink-0 transition-opacity hover:opacity-80">
           <img
             src={WDC_HORIZ_Logo}
             alt="World Disaster Center"
-            className={`w-auto transition-all duration-300 ${scrolled ? "h-8" : "h-12"}`}
+            className={`w-auto transition-all duration-300 ${scrolled ? "h-8" : "h-10"}`}
           />
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden lg:flex items-center gap-0.5">
+        {/* Desktop nav — only render at xl so all 6 dropdowns fit */}
+        <nav className="hidden xl:flex items-center gap-0">
           <Link
             to="/"
-            className="px-3 py-2 text-sm font-semibold text-gray-700 hover:text-[#418FDE] hover:bg-[#E8F5FC] rounded-sm transition-colors"
+            className="px-2.5 py-2 text-[13px] font-semibold text-gray-700 hover:text-[#418FDE] hover:bg-[#E8F5FC] rounded-sm transition-colors"
           >
             Home
           </Link>
-          {navItems.map((item) => (
-            <NavDropdown key={item.title} title={item.title} items={item.items} />
-          ))}
+          {navItems.map((item) =>
+            item.to ? (
+              <Link
+                key={item.title}
+                to={item.to}
+                className="flex items-center gap-1 px-3 py-2 text-sm font-semibold text-gray-700 hover:text-[#418FDE] hover:bg-[#E8F5FC] rounded-sm transition-colors"
+              >
+                <span className="relative flex h-1.5 w-1.5 mr-0.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500" />
+                </span>
+                {item.title}
+              </Link>
+            ) : (
+              <NavDropdown key={item.title} title={item.title} items={item.items} />
+            )
+          )}
         </nav>
 
         {/* Right-side actions */}
-        <div className="hidden lg:flex items-center gap-2">
-          <button className="p-2 text-gray-500 hover:text-[#418FDE] hover:bg-[#E8F5FC] rounded-sm transition-colors" aria-label="Search">
-            <Search size={18} />
-          </button>
+        <div className="hidden xl:flex items-center gap-2">
+          <Link
+            to="/shop"
+            className="flex items-center gap-1.5 border border-[#418FDE] text-[#418FDE] hover:bg-[#E8F5FC] text-xs font-bold px-3 py-1.5 rounded-sm transition-colors"
+          >
+            🛍️ Shop
+          </Link>
           <a
             href="https://www.paypal.com/donate/?hosted_button_id=XXS7D6VJDM2YE"
             target="_blank"
@@ -283,9 +309,9 @@ const Header = () => {
           </a>
         </div>
 
-        {/* Mobile hamburger */}
+        {/* Mobile/tablet hamburger — shows on everything below xl */}
         <button
-          className="lg:hidden ml-auto p-2 text-gray-700 hover:text-[#418FDE]"
+          className="xl:hidden ml-auto p-2 text-gray-700 hover:text-[#418FDE]"
           onClick={() => setMobileOpen((v) => !v)}
           aria-label="Toggle menu"
         >
@@ -295,7 +321,7 @@ const Header = () => {
 
       {/* ── Mobile menu ── */}
       {mobileOpen && (
-        <div className="lg:hidden bg-white border-t border-gray-100 shadow-lg max-h-[75vh] overflow-y-auto">
+        <div className="xl:hidden bg-white border-t border-gray-100 shadow-lg max-h-[80vh] overflow-y-auto">
           <div className="container py-3 flex flex-col">
             <Link
               to="/"
@@ -306,6 +332,19 @@ const Header = () => {
 
             {navItems.map((group) => (
               <div key={group.title}>
+                {group.to ? (
+                  <Link
+                    to={group.to}
+                    className="flex items-center gap-2 px-4 py-3 text-sm font-semibold text-gray-800 hover:bg-[#E8F5FC] hover:text-[#418FDE] rounded-sm"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    <span className="relative flex h-1.5 w-1.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500" />
+                    </span>
+                    {group.title}
+                  </Link>
+                ) : (
                 <button
                   onClick={() => setMobileExpanded(mobileExpanded === group.title ? null : group.title)}
                   className="w-full flex justify-between items-center px-4 py-3 text-sm font-semibold text-gray-800 hover:bg-[#E8F5FC] hover:text-[#418FDE] rounded-sm"
@@ -313,9 +352,10 @@ const Header = () => {
                   {group.title}
                   {mobileExpanded === group.title ? <ExpandLess fontSize="small" /> : <ExpandMore fontSize="small" />}
                 </button>
-                {mobileExpanded === group.title && (
+                )}
+                {!group.to && mobileExpanded === group.title && (
                   <div className="bg-gray-50 border-l-2 border-[#418FDE] ml-4">
-                    {group.items.map((item) =>
+                    {(group.items || []).map((item) =>
                       item.href ? (
                         <a
                           key={item.label}
@@ -343,22 +383,19 @@ const Header = () => {
               </div>
             ))}
 
-            <div className="flex gap-2 mt-3 pt-3 border-t border-gray-100 px-4">
-              <a
-                href="https://www.paypal.com/donate/?hosted_button_id=XXS7D6VJDM2YE"
-                target="_blank"
-                rel="noreferrer"
-                className="flex-1 text-center bg-[#418FDE] hover:bg-[#005b9f] text-white text-sm font-bold py-2.5 rounded-sm transition-colors"
-              >
-                Donate
-              </a>
-              <Link
-                to="/membership"
-                onClick={() => setMobileOpen(false)}
-                className="flex-1 text-center border border-[#418FDE] text-[#418FDE] hover:bg-[#E8F5FC] text-sm font-bold py-2.5 rounded-sm transition-colors"
-              >
-                Membership
-              </Link>
+
+            <div className="pt-3 border-t border-gray-100 px-4 space-y-2">
+              <div className="flex gap-2">
+                <a href="https://www.paypal.com/donate/?hosted_button_id=XXS7D6VJDM2YE"
+                  target="_blank" rel="noreferrer"
+                  className="flex-1 text-center bg-[#418FDE] hover:bg-[#005b9f] text-white text-sm font-bold py-2.5 rounded-sm transition-colors">
+                  Donate
+                </a>
+                <Link to="/membership" onClick={() => setMobileOpen(false)}
+                  className="flex-1 text-center border border-[#418FDE] text-[#418FDE] hover:bg-[#E8F5FC] text-sm font-bold py-2.5 rounded-sm transition-colors">
+                  Membership
+                </Link>
+              </div>
             </div>
           </div>
         </div>

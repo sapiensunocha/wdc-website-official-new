@@ -47,6 +47,7 @@ const footerColumns = [
     heading: "Get Involved",
     links: [
       { label: "WDC Shop", to: "/shop" },
+      { label: "Campaigns", to: "/campaigns" },
       { label: "Donate", to: "/donate" },
       { label: "Become a Member", to: "/membership" },
       { label: "Partner With Us", to: "/partnerWithUs" },

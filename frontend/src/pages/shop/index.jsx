@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
-import { ShoppingBag, Package, ExternalLink, Tag, Star, Shield, Truck, Heart, ArrowRight, BookOpen, Globe, Zap } from "lucide-react";
+import { ShoppingBag, Package, ExternalLink, Tag, Star, Shield, Truck, Heart, ArrowRight, BookOpen, Globe, Zap, Shirt, Coffee, FileText, Map, Cpu } from "lucide-react";
 import AnimateIn from "../../components/AnimateIn";
 import WDCLogo from "../../assets/images/wdclogobg.png";
 
@@ -31,7 +31,7 @@ const products = [
     description: "100% organic cotton. WDC logo embroidered on chest, 'World Disaster Center' print on back. Available S–XXL.",
     sizes: ["S", "M", "L", "XL", "XXL"],
     tag: "APPAREL",
-    icon: "👕",
+    icon: <Shirt size={56} strokeWidth={1.2} />,
   },
   {
     id: "wdc-hoodie",
@@ -45,7 +45,7 @@ const products = [
     description: "Heavyweight 320gsm fleece. 'Disaster Response' back print. Two zip pockets. WDC logo on left chest.",
     sizes: ["S", "M", "L", "XL", "XXL"],
     tag: "APPAREL",
-    icon: "🧥",
+    icon: <Shirt size={56} strokeWidth={1.2} />,
   },
   {
     id: "wdc-polo",
@@ -60,7 +60,7 @@ const products = [
     description: "Professional piqué polo in WDC signature OCHA blue. WDC logo embroidered on chest. Perfect for events and field visits.",
     sizes: ["S", "M", "L", "XL", "XXL"],
     tag: "APPAREL",
-    icon: "👔",
+    icon: <Shirt size={56} strokeWidth={1.2} />,
   },
   {
     id: "wdc-cap",
@@ -74,7 +74,7 @@ const products = [
     description: "Structured 6-panel cap with WDC embroidered logo. Adjustable strap. UV protection rating UPF 30+.",
     sizes: ["One Size"],
     tag: "APPAREL",
-    icon: "🧢",
+    icon: <Tag size={52} strokeWidth={1.2} />,
   },
   {
     id: "wdc-vest",
@@ -89,7 +89,7 @@ const products = [
     description: "OCHA-standard high-visibility vest. 'WORLD DISASTER CENTER' printed front and back. Multiple pockets. For field deployments.",
     sizes: ["S/M", "L/XL", "XXL"],
     tag: "APPAREL",
-    icon: "🦺",
+    icon: <Shield size={52} strokeWidth={1.2} />,
   },
   // ── Field Gear ────────────────────────────────────────────────────────────
   {
@@ -105,7 +105,7 @@ const products = [
     description: "Double-wall vacuum insulated. Hot 12h / Cold 24h. WDC logo laser-engraved. BPA-free. Leakproof lid.",
     sizes: ["500ml"],
     tag: "GEAR",
-    icon: "☕",
+    icon: <Coffee size={52} strokeWidth={1.2} />,
   },
   {
     id: "wdc-tote",
@@ -119,7 +119,7 @@ const products = [
     description: "Heavy-duty canvas tote. 15L capacity. WDC logo screen-printed. 'Preparedness Saves Lives' on reverse. Reinforced handles.",
     sizes: ["One Size"],
     tag: "GEAR",
-    icon: "🛍️",
+    icon: <ShoppingBag size={52} strokeWidth={1.2} />,
   },
   {
     id: "wdc-notebook",
@@ -133,7 +133,7 @@ const products = [
     description: "Hardcover A5 notebook. 200 pages dotted grid. WDC logo embossed cover. Elastic strap, back pocket, ribbon bookmark.",
     sizes: ["A5"],
     tag: "GEAR",
-    icon: "📓",
+    icon: <BookOpen size={52} strokeWidth={1.2} />,
   },
   {
     id: "wdc-emergency-kit",
@@ -148,7 +148,7 @@ const products = [
     description: "WDC-branded 72-hour emergency preparedness kit. First aid, LED torch, emergency blanket, whistle, water purification tablets, WDC prep guide. IFRC-aligned contents.",
     sizes: ["Standard"],
     tag: "GEAR",
-    icon: "🧰",
+    icon: <Package size={52} strokeWidth={1.2} />,
   },
   {
     id: "wdc-sticker-pack",
@@ -162,7 +162,7 @@ const products = [
     description: "8 waterproof vinyl stickers. WDC logo, Michael AI logo, Disaster Heroes badge, 'Preparedness Saves Lives', globe maps, and more.",
     sizes: ["One Size"],
     tag: "GEAR",
-    icon: "🏷️",
+    icon: <Tag size={52} strokeWidth={1.2} />,
   },
   // ── Digital ───────────────────────────────────────────────────────────────
   {
@@ -177,7 +177,7 @@ const products = [
     reviews: 478,
     description: "Full 2024 annual report: missions in DRC & Burundi, Michael deployments, partnerships, financials, and WDC's 2025–2026 strategy.",
     tag: "DIGITAL",
-    icon: "📄",
+    icon: <FileText size={52} strokeWidth={1.2} />,
   },
   {
     id: "wdc-prep-guide",
@@ -191,7 +191,7 @@ const products = [
     reviews: 134,
     description: "WDC's comprehensive household disaster preparedness guide. 48 pages covering floods, earthquakes, disease outbreaks, evacuation plans, and 72-hour kit checklist. Available in English, French, Spanish.",
     tag: "DIGITAL",
-    icon: "📚",
+    icon: <FileText size={52} strokeWidth={1.2} />,
   },
   {
     id: "michael-api",
@@ -205,7 +205,7 @@ const products = [
     reviews: 18,
     description: "API access to Michael's disaster intelligence platform. Real-time alerts, risk scoring, country profiles, epidemic models, and AI chat agents. Contact WDC for pricing and terms.",
     tag: "DIGITAL",
-    icon: "⚡",
+    icon: <Cpu size={52} strokeWidth={1.2} />,
   },
   // ── Awareness ─────────────────────────────────────────────────────────────
   {
@@ -219,7 +219,7 @@ const products = [
     reviews: 67,
     description: "Premium A2 print on recycled paper. WDC's flagship 'Disasters Know No Borders' design with world map and impact statistics. Perfect for offices, schools, and community centers.",
     tag: "AWARENESS",
-    icon: "🗺️",
+    icon: <Map size={52} strokeWidth={1.2} />,
   },
   {
     id: "wdc-wallmap",
@@ -233,7 +233,7 @@ const products = [
     reviews: 29,
     description: "Large-format A1 wall map showing all WDC operations, partner locations, and Michael coverage zones. Updated annually. Ships flat in protective tube.",
     tag: "AWARENESS",
-    icon: "🌍",
+    icon: <Globe size={52} strokeWidth={1.2} />,
   },
 ];
 
@@ -297,9 +297,11 @@ function ProductCard({ product, onBuy }) {
       transition={{ duration: 0.2 }}
       className="bg-white border border-gray-200 rounded-xl overflow-hidden flex flex-col"
     >
-      {/* Product image / icon area */}
-      <div className="bg-gradient-to-br from-[#1C2B39]/5 to-[#009EDB]/10 h-44 flex items-center justify-center relative">
-        <span className="text-6xl">{product.icon}</span>
+      {/* Product icon area */}
+      <div className="bg-white border-b border-gray-100 h-44 flex items-center justify-center relative">
+        <div className="text-gray-200">
+          {product.icon}
+        </div>
         {product.badge && (
           <span className={`absolute top-3 right-3 text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full ${product.badgeColor || "bg-amber-100 text-amber-700"}`}>
             {product.badge}
