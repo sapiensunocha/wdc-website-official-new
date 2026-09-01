@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 const SITE_URL  = "https://www.worlddisastercenter.org";
 const SITE_NAME = "World Disaster Center";
 const DEFAULT_IMAGE = "https://images.unsplash.com/photo-1594841343391-97ac1b9a950e?auto=format&fit=crop&w=1200&h=630&q=80";
-const DEFAULT_DESC  = "World Disaster Center monitors, tracks, and responds to disasters worldwide using AI. Protecting vulnerable people through early warning, field missions, and humanitarian campaigns.";
+const DEFAULT_DESC  = "WDC uses AI to monitor disasters and protect vulnerable people through early warnings and field missions in 30+ countries.";
 
 /**
  * Drop-in SEO + Open Graph component for every page.
