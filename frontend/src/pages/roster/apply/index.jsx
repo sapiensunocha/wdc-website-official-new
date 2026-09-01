@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import SEOMeta from "../../../components/SEOMeta";
 import { toast } from "react-toastify";
 import {
   User, Briefcase, Globe, Award, MapPin, Users, FileText,
@@ -246,11 +246,12 @@ export default function RosterApplyPage() {
 
   return (
     <>
-      <Helmet>
-        <title>Apply to the WDC Expert Roster | World Disaster Center</title>
-        <meta name="description" content="Join the WDC Global Expert Roster. Apply as a certified humanitarian professional and get deployed to disaster response missions worldwide." />
-        <link rel="canonical" href="https://www.worlddisastercenter.org/roster/apply" />
-      </Helmet>
+      <SEOMeta
+        title="Apply as Expert — WDC Global Roster"
+        description="Join the WDC Global Roster. Apply as a certified disaster expert and get deployed to the world's most critical humanitarian missions."
+        url="/roster/apply"
+        noindex={false}
+      />
 
       <div className="bg-surface-subtle py-12 px-4">
         <div className="max-w-3xl mx-auto">

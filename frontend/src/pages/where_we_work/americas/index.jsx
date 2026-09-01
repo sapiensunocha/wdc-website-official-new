@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, MapPin, Users, Zap, Shield, FileText } from "lucide-react";
-import { Helmet } from "react-helmet-async";
+import SEOMeta from "../../../components/SEOMeta";
 import AnimateIn from "../../../components/AnimateIn";
 
 const COUNTRY_REPORTS = {
@@ -136,14 +136,12 @@ const techFeatures = [
 export default function Americas() {
   return (
     <div className="bg-white">
-      <Helmet>
-        <title>WDC in the Americas — World Disaster Center</title>
-        <meta name="description" content="WDC's Americas operations spanning 9 countries — hurricane response in the Caribbean (Haiti, Jamaica, Cuba, Bahamas, Dominican Republic), HQ operations in Canada and the US, South America coordination in Chile, and Venezuela earthquake response. Powered by Michael AI." />
-        <meta property="og:title" content="WDC in the Americas — World Disaster Center" />
-        <meta property="og:description" content="Caribbean hurricane response, earthquake preparedness, and WDC's flagship headquarters operations spanning 9 countries across North America, the Caribbean, and South America." />
-        <meta property="og:type" content="website" />
-        <meta name="keywords" content="World Disaster Center Americas, WDC hurricane response Caribbean, Haiti disaster response, Venezuela earthquake 2026, WDC Michael AI, disaster resilience Americas" />
-      </Helmet>
+      <SEOMeta
+        title="WDC in the Americas — Disaster Response & Early Warning"
+        description="World Disaster Center operations across the Americas — disaster monitoring, early warning systems, and humanitarian campaigns."
+        image="https://images.unsplash.com/photo-1728320764872-2eebb4f95e4e?auto=format&fit=crop&w=1200&h=630&q=80"
+        url="/where-we-work/americas"
+      />
       {/* Hero */}
       <section className="bg-[#1C2B39] text-white py-24">
         <div className="container sm:px-2">
@@ -333,7 +331,7 @@ export default function Americas() {
                 Donate <ArrowRight size={16} />
               </Link>
               <Link
-                to="/partnerWithUs"
+                to="/roster"
                 className="border border-gray-300 text-content-primary font-bold px-8 py-3 rounded-sm text-sm tracking-wide hover:border-primary hover:text-primary transition-colors"
               >
                 Partner With Us

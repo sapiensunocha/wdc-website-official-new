@@ -6,6 +6,7 @@ import FounderPhoto from "../../assets/images/Photoroom_20251006_010721.JPG";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import AnimateIn from "../../components/AnimateIn";
+import SEOMeta from "../../components/SEOMeta";
 
 const SOCIAL_LINKS = [
   {
@@ -176,6 +177,12 @@ function FollowSection() {
 function AboutPage() {
   return (
     <div className="bg-white">
+      <SEOMeta
+        title="About WDC — World Disaster Center"
+        description="World Disaster Center is an AI-powered humanitarian organization founded in 2023. We build early warning systems, deploy expert rosters, and run 11 protection campaigns worldwide."
+        image="https://images.unsplash.com/photo-1594841343391-97ac1b9a950e?auto=format&fit=crop&w=1200&h=630&q=80"
+        url="/about"
+      />
 
       {/* ── Page hero ── */}
       <div className="bg-[#1C2B39] text-white">

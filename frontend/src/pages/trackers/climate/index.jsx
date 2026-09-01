@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Helmet } from "react-helmet-async";
+import SEOMeta from "../../../components/SEOMeta";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Thermometer, TrendingUp, AlertTriangle, Wind, Droplets, Flame, ArrowRight, RefreshCw } from "lucide-react";
@@ -68,10 +68,12 @@ export default function ClimateTracker() {
 
   return (
     <div className="bg-white">
-      <Helmet>
-        <title>Climate Disaster Tracker — World Disaster Center</title>
-        <meta name="description" content="WDC Climate Disaster Tracker monitors climate-linked disaster trends, global hotspots, and real-time predictions powered by Michael AI." />
-      </Helmet>
+      <SEOMeta
+        title="Climate Tracker — WDC Climate Crisis Intelligence"
+        description="Monitor climate-driven disasters, displacement, and vulnerability in real time. WDC tracks the communities most exposed to floods, droughts, and extreme heat."
+        image="https://images.unsplash.com/photo-1485617359743-4dc5d2e53c89?auto=format&fit=crop&w=1200&h=630&q=80"
+        url="/trackers/climate"
+      />
 
       {/* Hero */}
       <section className="bg-[#1C2B39] text-white py-20">

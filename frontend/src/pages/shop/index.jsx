@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Helmet } from "react-helmet-async";
+import SEOMeta from "../../components/SEOMeta";
 import { Link } from "react-router-dom";
 import { ShoppingBag, Package, ExternalLink, Tag, Star, Shield, Truck, Heart, ArrowRight, BookOpen, Globe, Zap, Shirt, Coffee, FileText, Map, Cpu } from "lucide-react";
 import AnimateIn from "../../components/AnimateIn";
@@ -252,7 +252,7 @@ const revenueStreams = [
     desc: "Grants from UN agencies, EU funds, government bilateral aid, and international foundations support field missions and research.",
     amount: "$10k – $5M+",
     cta: "Partner With Us",
-    link: "/partnerWithUs",
+    link: "/roster",
   },
   {
     icon: <ShoppingBag size={20} className="text-[#009EDB]" />,
@@ -395,11 +395,11 @@ export default function ShopPage() {
 
   return (
     <div className="bg-white" id="top">
-      <Helmet>
-        <title>WDC Shop — World Disaster Center</title>
-        <meta name="description" content="Shop WDC branded merchandise, field gear, digital reports, and awareness products. All proceeds fund WDC's global disaster monitoring and humanitarian response programs." />
-        <meta property="og:title" content="WDC Shop — World Disaster Center" />
-      </Helmet>
+      <SEOMeta
+        title="WDC Shop — Support the Mission"
+        description="Shop WDC merchandise and support humanitarian disaster response. Every purchase helps fund WDC's early warning systems and field missions."
+        url="/shop"
+      />
 
       {/* Hero */}
       <section className="bg-[#1C2B39] text-white py-20">

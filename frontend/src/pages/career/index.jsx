@@ -4,9 +4,16 @@ import Section from "../../components/Section";
 import Heading from "../../components/Heading";
 import { motion } from "framer-motion";
 import AnimateIn from "../../components/AnimateIn";
+import SEOMeta from "../../components/SEOMeta";
 
 function CareerPage() {
   return (
+    <>
+      <SEOMeta
+        title="Careers — World Disaster Center"
+        description="Join the World Disaster Center team. Open positions in AI, disaster response, communications, partnerships, and humanitarian operations."
+        url="/careers"
+      />
     <Section className="overflow-hidden" id="career">
       <div className="container flex flex-col justify-center items-center">
         <AnimateIn variant="fadeUp">
@@ -178,6 +185,7 @@ function CareerPage() {
         </div>
       </div>
     </Section>
+    </>
   );
 }
 

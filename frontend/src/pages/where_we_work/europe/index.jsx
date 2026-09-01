@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, MapPin, Users, Zap, Shield, FileText } from "lucide-react";
 import AnimateIn from "../../../components/AnimateIn";
-import { Helmet } from "react-helmet-async";
+import SEOMeta from "../../../components/SEOMeta";
 
 const COUNTRY_REPORTS = {
   "Austria (Salzburg HQ)": [
@@ -81,13 +81,12 @@ function StatusBadge({ status }) {
 function Europe() {
   return (
     <div className="bg-white">
-      <Helmet>
-        <title>WDC in Europe — World Disaster Center</title>
-        <meta name="description" content="WDC's European operations — Salzburg HQ for EU institutional engagement, Istanbul office bridging Europe and the Middle East, and Germany board research network. Earthquake monitoring, EU coordination, and cross-border humanitarian intelligence." />
-        <meta property="og:title" content="WDC in Europe — World Disaster Center" />
-        <meta property="og:description" content="European headquarters in Salzburg, Istanbul Europe-MENA gateway, and Germany research board network — coordinating disaster intelligence across Europe and the Middle East." />
-        <meta name="keywords" content="World Disaster Center Europe, WDC Salzburg headquarters, WDC Istanbul office, disaster intelligence Europe, earthquake monitoring Europe, EU civil protection WDC" />
-      </Helmet>
+      <SEOMeta
+        title="WDC in Europe — Disaster Response & Early Warning"
+        description="World Disaster Center operations across Europe — disaster monitoring, refugee protection, and humanitarian campaigns."
+        image="https://images.unsplash.com/photo-1594841343391-97ac1b9a950e?auto=format&fit=crop&w=1200&h=630&q=80"
+        url="/where-we-work/europe"
+      />
       {/* Hero */}
       <section className="bg-[#1C2B39] text-white py-24">
         <div className="container sm:px-2">
@@ -225,7 +224,7 @@ function Europe() {
                 Donate <ArrowRight size={16} />
               </Link>
               <Link
-                to="/partnerWithUs"
+                to="/roster"
                 className="border border-gray-300 text-content-primary font-bold px-8 py-3 rounded-sm text-sm tracking-wide hover:border-primary hover:text-primary transition-colors"
               >
                 Partner With Us

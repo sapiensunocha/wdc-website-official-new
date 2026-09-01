@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Helmet } from "react-helmet-async";
+import SEOMeta from "../../components/SEOMeta";
 import { Link } from "react-router-dom";
 import { Send, Zap, Shield, BarChart3, AlertTriangle, Globe, RefreshCw, ChevronDown, ExternalLink } from "lucide-react";
 
@@ -190,10 +190,11 @@ export default function MichaelChat() {
 
   return (
     <div className="bg-[#0f172a] min-h-screen text-white">
-      <Helmet>
-        <title>Chat with Michael — WDC Disaster Intelligence AI</title>
-        <meta name="description" content="Chat with MICHAEL, WDC's AI disaster intelligence platform. Get real-time risk assessments, hazard briefings, and humanitarian situation updates powered by Michael Global Ops." />
-      </Helmet>
+      <SEOMeta
+        title="Chat with Michael — WDC AI Disaster Intelligence"
+        description="Chat with Michael, WDC's AI-powered disaster intelligence system. Ask about active crises, early warnings, risk data, and humanitarian response."
+        url="/michael-chat"
+      />
 
       {/* Top bar */}
       <div className="border-b border-white/10 bg-[#1C2B39]/80 backdrop-blur-sm sticky top-0 z-30">

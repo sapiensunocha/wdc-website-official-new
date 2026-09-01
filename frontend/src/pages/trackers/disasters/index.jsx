@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import SEOMeta from "../../../components/SEOMeta";
 import {
   AlertTriangle,
   MapPin,
@@ -243,13 +243,12 @@ export default function ActiveDisastersPage() {
 
   return (
     <>
-      <Helmet>
-        <title>Active Disasters Tracker | WDC Intelligence</title>
-        <meta
-          name="description"
-          content="Real-time tracker of active global disasters: floods, earthquakes, conflicts, disease outbreaks, and climate emergencies monitored by World Disaster Center."
-        />
-      </Helmet>
+      <SEOMeta
+        title="Disasters Tracker — Live Global Monitoring"
+        description="Track active disasters worldwide in real time. WDC's Michael AI platform monitors floods, earthquakes, conflicts, and humanitarian crises as they unfold."
+        image="https://images.unsplash.com/photo-1485617359743-4dc5d2e53c89?auto=format&fit=crop&w=1200&h=630&q=80"
+        url="/trackers/disasters"
+      />
 
       <div className="min-h-screen bg-[#0D1B26] text-white font-mono">
         {/* ── Header ── */}

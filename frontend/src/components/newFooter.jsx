@@ -50,7 +50,7 @@ const footerColumns = [
       { label: "Campaigns", to: "/campaigns" },
       { label: "Donate", to: "/donate" },
       { label: "Become a Member", to: "/membership" },
-      { label: "Partner With Us", to: "/partnerWithUs" },
+      { label: "Partner With Us", to: "/roster" },
       { label: "Contact Us", to: "/contact" },
     ],
   },

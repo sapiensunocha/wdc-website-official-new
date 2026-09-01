@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import SEOMeta from "../../components/SEOMeta";
 import { motion } from "framer-motion";
 import {
   Users, Calendar, Globe, MessageSquare, Mail, ArrowRight,
@@ -377,13 +377,11 @@ export default function DisasterHeroesPage() {
 
   return (
     <>
-      <Helmet>
-        <title>Disaster Heroes | World Disaster Center</title>
-        <meta name="description" content="Join WDC Disaster Heroes — a global community of 1,840+ disaster practitioners working on early warning, rapid response, and recovery across 72 countries. Apply today." />
-        <link rel="canonical" href="https://worlddisastercenter.org/membership" />
-        <meta property="og:title" content="WDC Disaster Heroes — Join the Global Community" />
-        <meta property="og:description" content="Apply to join 1,840+ disaster professionals across 72 countries working to save lives and build resilience." />
-      </Helmet>
+      <SEOMeta
+        title="WDC Membership — Join the Global Disaster Community"
+        description="Become a WDC member and join a global network of disaster professionals, researchers, and humanitarian organizations."
+        url="/membership"
+      />
 
       <div style={{ background: T.bg, minHeight: "100vh" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 0 80px", fontFamily: '-apple-system, BlinkMacSystemFont, "Geist", "Helvetica Neue", system-ui, sans-serif' }}>

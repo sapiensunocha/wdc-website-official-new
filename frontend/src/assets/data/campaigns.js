@@ -26,7 +26,7 @@ export const PARTNER_TYPES = [
 export const WDC_CAMPAIGNS = [
   {
     slug:        "protect-women",
-    heroImage:   "/campaign-hero-community.jpg",
+    heroImage: "https://images.unsplash.com/photo-1553775927-a071d5a6a39a?auto=format&fit=crop&w=1920&q=80",
     title:       "Protect Women",
     tagline:     "Gender equality, sexual violence prevention, women's safety",
     shortDesc:   "Women bear a disproportionate burden in every form of crisis. WDC identifies the communities where women face the greatest combined risk and mobilizes protection, prevention, and recovery.",
@@ -62,14 +62,14 @@ export const WDC_CAMPAIGNS = [
     relatedLinks: [
       { label: "Live Disaster Tracker",  to: "/trackers/disasters" },
       { label: "WDC Reports",            to: "/reports" },
-      { label: "Partner With Us",        to: "/partnerWithUs" },
+      { label: "Partner With Us",        to: "/roster" },
     ],
     michaelEndpoint: "/api/alerts",
   },
 
   {
     slug:        "protect-children",
-    heroImage:   "/campaign-hero-community.jpg",
+    heroImage: "https://images.unsplash.com/photo-1742202618461-31f6f3584247?auto=format&fit=crop&w=1920&q=80",
     title:       "Protect Children",
     tagline:     "Child abuse, trafficking, exploitation, online safety",
     shortDesc:   "Children in crisis zones face a convergence of threats: abandonment, trafficking, forced recruitment, and digital exploitation. WDC maps their exposure and funds systematic prevention.",
@@ -112,7 +112,7 @@ export const WDC_CAMPAIGNS = [
 
   {
     slug:        "home-for-everyone",
-    heroImage:   "/campaign-hero-community.jpg",
+    heroImage: "https://images.unsplash.com/photo-1728320764872-2eebb4f95e4e?auto=format&fit=crop&w=1920&q=80",
     title:       "Home for Everyone",
     tagline:     "Housing insecurity, homelessness, disaster displacement",
     shortDesc:   "Displacement is the fastest-growing form of human vulnerability. WDC tracks it, analyzes it, and mobilizes the housing, policy, and funding needed to bring people home.",
@@ -147,14 +147,14 @@ export const WDC_CAMPAIGNS = [
     relatedLinks: [
       { label: "Displacement Tracker",  to: "/trackers/disasters" },
       { label: "Aid Tracker",           to: "/trackers/aid" },
-      { label: "Partner With Us",       to: "/partnerWithUs" },
+      { label: "Partner With Us",       to: "/roster" },
     ],
     michaelEndpoint: "/api/v1/events",
   },
 
   {
     slug:        "girls-in-tech",
-    heroImage:   "/campaign-hero.jpg",
+    heroImage: "https://images.unsplash.com/photo-1759984782106-4b56d0aa05b8?auto=format&fit=crop&w=1920&q=80",
     title:       "Girls in Tech",
     tagline:     "Digital access, STEM education, technology careers",
     shortDesc:   "The gender gap in technology is a crisis multiplier. Girls excluded from digital tools, STEM education, and tech careers face compounded vulnerability in every future crisis. WDC builds the pipeline.",
@@ -189,14 +189,14 @@ export const WDC_CAMPAIGNS = [
     relatedLinks: [
       { label: "WDC Reports",      to: "/reports" },
       { label: "Chat with Michael", to: "/michael-chat" },
-      { label: "Partner With Us",   to: "/partnerWithUs" },
+      { label: "Partner With Us",   to: "/roster" },
     ],
     michaelEndpoint: null,
   },
 
   {
     slug:        "climate-protect",
-    heroImage:   "/campaign-hero.jpg",
+    heroImage: "https://images.unsplash.com/photo-1485617359743-4dc5d2e53c89?auto=format&fit=crop&w=1920&q=80",
     title:       "Climate Protect",
     tagline:     "Communities most vulnerable to climate disasters",
     shortDesc:   "Climate change is a vulnerability amplifier. WDC identifies the communities at the frontline of climate risk — floods, droughts, heat, sea-level rise — and builds the data, policy, and protection systems they need.",
@@ -239,7 +239,7 @@ export const WDC_CAMPAIGNS = [
 
   {
     slug:        "protect-disabilities",
-    heroImage:   "/campaign-hero-community.jpg",
+    heroImage: "https://images.unsplash.com/photo-1720804272012-37d51e9fede5?auto=format&fit=crop&w=1920&q=80",
     title:       "Protect People with Disabilities",
     tagline:     "Inclusive disaster preparedness and accessibility",
     shortDesc:   "People with disabilities are among the most exposed and least served in any disaster. WDC mandates their inclusion in every system — from early warning to evacuation to recovery.",
@@ -281,7 +281,7 @@ export const WDC_CAMPAIGNS = [
 
   {
     slug:        "safe-communities",
-    heroImage:   "/campaign-hero.jpg",
+    heroImage: "https://images.unsplash.com/photo-1547496614-54ff387d650a?auto=format&fit=crop&w=1920&q=80",
     title:       "Safe Communities",
     tagline:     "Violence prevention and community resilience",
     shortDesc:   "Violence and disaster feed each other. Post-disaster communities face surging crime, gang recruitment, and inter-community conflict. WDC builds the resilience systems that keep communities safe before, during, and after crisis.",
@@ -316,14 +316,14 @@ export const WDC_CAMPAIGNS = [
     relatedLinks: [
       { label: "Disaster Tracker",   to: "/trackers/disasters" },
       { label: "Aid Tracker",        to: "/trackers/aid" },
-      { label: "Partner With Us",    to: "/partnerWithUs" },
+      { label: "Partner With Us",    to: "/roster" },
     ],
     michaelEndpoint: "/api/alerts",
   },
 
   {
     slug:        "reproductive-health-safety",
-    heroImage:   "/campaign-hero-community.jpg",
+    heroImage: "https://images.unsplash.com/photo-1666991041002-a1faef2d6de0?auto=format&fit=crop&w=1920&q=80",
     title:       "Reproductive Health & Safety",
     tagline:     "Access, safety and informed choice in crisis contexts",
     shortDesc:   "Reproductive healthcare is among the first systems to collapse in a disaster. WDC maps access gaps, funds emergency reproductive health services, and advocates for inclusion in every humanitarian response.",
@@ -365,7 +365,7 @@ export const WDC_CAMPAIGNS = [
 
   {
     slug:        "food-security",
-    heroImage:   "/campaign-hero-community.jpg",
+    heroImage: "https://images.unsplash.com/photo-1746014929708-fcb859fd3185?auto=format&fit=crop&w=1920&q=80",
     title:       "Food Security",
     tagline:     "Protect vulnerable communities from hunger and famine",
     shortDesc:   "Disaster and food insecurity are the same crisis from different angles. WDC maps food vulnerability before the next drought, flood, or conflict triggers a famine and mobilizes early action that costs a fraction of emergency response.",
@@ -407,7 +407,7 @@ export const WDC_CAMPAIGNS = [
 
   {
     slug:        "digital-safety",
-    heroImage:   "/campaign-hero.jpg",
+    heroImage: "https://images.unsplash.com/photo-1666875758412-5957b60d7969?auto=format&fit=crop&w=1920&q=80",
     title:       "Digital Safety",
     tagline:     "Online exploitation, misinformation and digital vulnerability",
     shortDesc:   "The digital world creates new dimensions of vulnerability: misinformation during disasters, online exploitation of the displaced, and digital exclusion of the most at-risk. WDC builds the intelligence and policy frameworks to protect people in digital spaces.",
@@ -442,14 +442,14 @@ export const WDC_CAMPAIGNS = [
     relatedLinks: [
       { label: "Chat with Michael",  to: "/michael-chat" },
       { label: "WDC Reports",        to: "/reports" },
-      { label: "Partner With Us",    to: "/partnerWithUs" },
+      { label: "Partner With Us",    to: "/roster" },
     ],
     michaelEndpoint: "/api/alerts",
   },
 
   {
     slug:        "refugee-displaced-protection",
-    heroImage:   "/campaign-hero-community.jpg",
+    heroImage: "https://images.unsplash.com/photo-1594841343391-97ac1b9a950e?auto=format&fit=crop&w=1920&q=80",
     title:       "Refugee & Displaced Protection",
     tagline:     "Protection and resilience for displaced populations",
     shortDesc:   "Displaced people are among the most vulnerable on earth. WDC tracks displacement in real time, maps gaps in protection, and builds the systems that turn displacement from a long-term crisis into a bridge to safety.",

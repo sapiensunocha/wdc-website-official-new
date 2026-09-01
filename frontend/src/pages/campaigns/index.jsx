@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
 import { ArrowRight, Shield } from "lucide-react";
+import SEOMeta from "../../components/SEOMeta";
 import AnimateIn from "../../components/AnimateIn";
 import { WDC_CAMPAIGNS, PARTNER_TYPES } from "../../assets/data/campaigns";
+import HumanitarianIcon from "../../components/HumanitarianIcon";
 
 // ─── Campaign card ────────────────────────────────────────────────────────────
 function CampaignCard({ c, index }) {
@@ -17,8 +18,9 @@ function CampaignCard({ c, index }) {
 
         <div className={`bg-gradient-to-br ${c.gradFrom} ${c.gradTo} px-5 pt-5 pb-4`}>
           <div className="flex items-start justify-between gap-3">
-            <div className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-2xl shrink-0">
-              {c.emoji}
+            <div className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center shrink-0"
+              style={{ color: c.color }}>
+              <HumanitarianIcon icon={c.emoji} size={22} />
             </div>
             <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full ${c.badgeBg} ${c.badgeText} shrink-0 mt-1`}>
               PROTECT
@@ -43,13 +45,27 @@ function CampaignCard({ c, index }) {
 export default function CampaignsHub() {
   return (
     <>
-      <Helmet>
-        <title>WDC PROTECT — Campaigns — World Disaster Center</title>
-        <meta name="description" content="WDC PROTECT: 11 campaign families protecting the world's most vulnerable people. Find the vulnerable. Protect them. Prevent the crisis. Measure the impact." />
-      </Helmet>
+      <SEOMeta
+        title="WDC PROTECT — 11 Humanitarian Campaigns"
+        description="WDC PROTECT: 11 campaign families targeting women, children, climate, food security, displacement, digital safety, and more. Find the vulnerable. Protect them."
+        image="https://images.unsplash.com/photo-1553775927-a071d5a6a39a?auto=format&fit=crop&w=1200&h=630&q=80"
+        url="/campaigns"
+      />
 
       {/* ── Hero ── */}
-      <section className="bg-[#0f172a] text-white relative overflow-hidden">
+      <section className="text-white relative overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src="https://images.unsplash.com/photo-1564121211835-e88c852648ab?auto=format&fit=crop&w=1920&q=80"
+            alt=""
+            className="w-full h-full object-cover object-center"
+            style={{ filter: "saturate(0.55) brightness(0.35)" }}
+            loading="eager"
+          />
+          <div className="absolute inset-0"
+            style={{ background: "linear-gradient(135deg, rgba(10,18,35,0.96) 0%, rgba(15,23,42,0.88) 55%, rgba(0,158,219,0.12) 100%)" }} />
+          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#f8fafc] to-transparent" />
+        </div>
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-[#009EDB]/6 blur-3xl" />
           <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full bg-violet-500/6 blur-3xl" />
@@ -163,7 +179,7 @@ export default function CampaignsHub() {
             {PARTNER_TYPES.map((p, i) => (
               <AnimateIn key={p.title} variant="fadeUp" delay={0.05 * i}>
                 <div className="bg-[#f8fafc] border border-gray-200 rounded-xl p-5 h-full hover:border-[#009EDB]/40 hover:shadow-sm transition-all">
-                  <p className="text-2xl mb-3">{p.icon}</p>
+                  <p className="text-2xl mb-3"><HumanitarianIcon icon={p.icon} size={20} /></p>
                   <p className="font-black text-[#1C2B39] text-sm mb-1">{p.title}</p>
                   <p className="text-xs text-gray-500 leading-relaxed">{p.desc}</p>
                 </div>
@@ -171,7 +187,7 @@ export default function CampaignsHub() {
             ))}
           </div>
           <AnimateIn variant="fadeUp" delay={0.1} className="mt-10 flex flex-wrap gap-4">
-            <Link to="/partnerWithUs" className="inline-flex items-center gap-2 bg-[#009EDB] hover:bg-[#0072BC] text-white font-bold px-7 py-3 rounded-xl transition-colors">
+            <Link to="/roster" className="inline-flex items-center gap-2 bg-[#009EDB] hover:bg-[#0072BC] text-white font-bold px-7 py-3 rounded-xl transition-colors">
               <Shield size={16} /> Become a Partner
             </Link>
             <Link to="/contact" className="inline-flex items-center gap-2 border border-gray-300 text-gray-600 hover:bg-gray-50 font-bold px-7 py-3 rounded-xl transition-colors">
@@ -227,7 +243,7 @@ export default function CampaignsHub() {
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold border transition-all hover:shadow-sm"
                   style={{ borderColor: c.color + "60", color: c.color, backgroundColor: c.color + "10" }}
                 >
-                  {c.emoji} {c.title}
+                  <HumanitarianIcon icon={c.emoji} size={11} /> {c.title}
                 </Link>
               ))}
             </div>

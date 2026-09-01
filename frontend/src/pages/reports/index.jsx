@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import AnimateIn from "../../components/AnimateIn";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import SEOMeta from "../../components/SEOMeta";
 import { Search, FileText, Download, ArrowRight, BookOpen, Filter, Eye,
          BarChart2, Globe, Users, Cpu, Layers, Shield, BookOpen as BookIcon,
          Heart, TrendingUp, MapPin, Satellite, Activity } from "lucide-react";
@@ -124,6 +125,12 @@ const ReportsPage = () => {
 
   return (
     <div className="bg-white min-h-screen">
+      <SEOMeta
+        title="Reports & Intelligence — WDC"
+        description="WDC publishes disaster situation reports, vulnerability indices, campaign intelligence, and humanitarian research used by UN agencies and governments."
+        image="https://images.unsplash.com/photo-1746014929708-fcb859fd3185?auto=format&fit=crop&w=1200&h=630&q=80"
+        url="/reports"
+      />
       <Helmet>
         <title>WDC Reports & Documents | World Disaster Center</title>
         <meta name="description" content="Official publications of the World Disaster Center — annual reports, field mission reports, financial summaries, technology documentation, thematic analyses, and country situation reports." />

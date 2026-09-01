@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import SEOMeta from "../../../components/SEOMeta";
 import {
   HandHeart,
   ChevronLeft,
@@ -142,13 +142,12 @@ function FundingBar({ item }) {
 export default function AidResponsePage() {
   return (
     <>
-      <Helmet>
-        <title>Aid & Response Tracker | WDC Intelligence</title>
-        <meta
-          name="description"
-          content="Track humanitarian funding gaps, active response operations, and aid accountability for the world's most critical crises — World Disaster Center."
-        />
-      </Helmet>
+      <SEOMeta
+        title="Aid Tracker — Humanitarian Funding Intelligence"
+        description="Track global humanitarian aid flows, funding gaps, and response operations. WDC's AI monitors where aid is needed and where it's going."
+        image="https://images.unsplash.com/photo-1746014929708-fcb859fd3185?auto=format&fit=crop&w=1200&h=630&q=80"
+        url="/trackers/aid"
+      />
 
       <div className="min-h-screen bg-[#0D1B26] text-white font-mono">
         {/* ── Header ── */}

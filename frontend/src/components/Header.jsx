@@ -1,10 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ExpandMore, ExpandLess } from "@mui/icons-material";
-import { Menu, X, Search, ChevronDown } from "lucide-react";
+import { Menu, X, Search, ChevronDown, Heart, ArrowRight } from "lucide-react";
 import PropTypes from "prop-types";
 // Correct relative path for your horizontal logo asset
 import WDC_HORIZ_Logo from "../assets/images/WDC-HORIZ-logo.png";
+
+const PAYPAL_URL = "https://www.paypal.com/donate/?hosted_button_id=XXS7D6VJDM2YE";
 
 // Exactly mirroring UNOCHA navigation structure
 const navItems = [
@@ -59,7 +61,7 @@ const navItems = [
   },
   {
     title: "Monitor",
-    to: "/monitor",
+    href: "https://michael.worlddisastercenter.org",
   },
   {
     title: "News & Media",
@@ -75,13 +77,65 @@ const navItems = [
     items: [
       { label: "Expert Roster", to: "/roster" },
       { label: "Membership", to: "/membership" },
-      { label: "Donate", href: "https://www.paypal.com/donate/?hosted_button_id=XXS7D6VJDM2YE" },
-      { label: "Partner With Us", to: "/partnerWithUs" },
+      { label: "Donate", to: "/donate" },
+      { label: "Partner With Us", to: "/roster" },
       { label: "Careers", to: "/careers" },
       { label: "Contact Us", to: "/contact" },
     ],
   },
 ];
+
+function DonateDropdown() {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="flex items-center gap-1.5 bg-[#418FDE] hover:bg-[#005b9f] text-white text-sm font-bold px-5 py-2 rounded-sm transition-colors duration-200"
+      >
+        Donate{" "}
+        <ChevronDown
+          size={12}
+          className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+      {open && (
+        <div
+          className="absolute right-0 top-[calc(100%+6px)] z-50 bg-white border border-gray-200 rounded-xl shadow-2xl overflow-hidden min-w-[200px]"
+          onClick={() => setOpen(false)}
+        >
+          <a
+            href={PAYPAL_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-3 px-4 py-3.5 hover:bg-[#009EDB] hover:text-white text-gray-800 font-bold text-sm transition-colors group"
+          >
+            <Heart size={15} className="text-[#009EDB] group-hover:text-white" />
+            Donate Now
+          </a>
+          <div className="border-t border-gray-100" />
+          <Link
+            to="/donate"
+            className="flex items-center gap-3 px-4 py-3.5 hover:bg-gray-50 text-gray-600 font-semibold text-sm transition-colors"
+          >
+            <ArrowRight size={15} className="text-gray-400" />
+            Other Ways to Donate
+          </Link>
+        </div>
+      )}
+    </div>
+  );
+}
 
 function NavDropdown({ title, items, onClose }) {
   const [open, setOpen] = useState(false);
@@ -273,7 +327,21 @@ const Header = () => {
             Home
           </Link>
           {navItems.map((item) =>
-            item.to ? (
+            item.href ? (
+              <a
+                key={item.title}
+                href={item.href}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-1 px-3 py-2 text-sm font-semibold text-gray-700 hover:text-[#418FDE] hover:bg-[#E8F5FC] rounded-sm transition-colors"
+              >
+                <span className="relative flex h-1.5 w-1.5 mr-0.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500" />
+                </span>
+                {item.title}
+              </a>
+            ) : item.to ? (
               <Link
                 key={item.title}
                 to={item.to}
@@ -299,14 +367,7 @@ const Header = () => {
           >
             🛍️ Shop
           </Link>
-          <a
-            href="https://www.paypal.com/donate/?hosted_button_id=XXS7D6VJDM2YE"
-            target="_blank"
-            rel="noreferrer"
-            className="bg-[#418FDE] hover:bg-[#005b9f] text-white text-sm font-bold px-5 py-2 rounded-sm transition-colors duration-200"
-          >
-            Donate
-          </a>
+          <DonateDropdown />
         </div>
 
         {/* Mobile/tablet hamburger — shows on everything below xl */}
@@ -332,7 +393,21 @@ const Header = () => {
 
             {navItems.map((group) => (
               <div key={group.title}>
-                {group.to ? (
+                {group.href ? (
+                  <a
+                    href={group.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-2 px-4 py-3 text-sm font-semibold text-gray-800 hover:bg-[#E8F5FC] hover:text-[#418FDE] rounded-sm"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    <span className="relative flex h-1.5 w-1.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500" />
+                    </span>
+                    {group.title}
+                  </a>
+                ) : group.to ? (
                   <Link
                     to={group.to}
                     className="flex items-center gap-2 px-4 py-3 text-sm font-semibold text-gray-800 hover:bg-[#E8F5FC] hover:text-[#418FDE] rounded-sm"
@@ -386,11 +461,10 @@ const Header = () => {
 
             <div className="pt-3 border-t border-gray-100 px-4 space-y-2">
               <div className="flex gap-2">
-                <a href="https://www.paypal.com/donate/?hosted_button_id=XXS7D6VJDM2YE"
-                  target="_blank" rel="noreferrer"
+                <Link to="/donate" onClick={() => setMobileOpen(false)}
                   className="flex-1 text-center bg-[#418FDE] hover:bg-[#005b9f] text-white text-sm font-bold py-2.5 rounded-sm transition-colors">
                   Donate
-                </a>
+                </Link>
                 <Link to="/membership" onClick={() => setMobileOpen(false)}
                   className="flex-1 text-center border border-[#418FDE] text-[#418FDE] hover:bg-[#E8F5FC] text-sm font-bold py-2.5 rounded-sm transition-colors">
                   Membership

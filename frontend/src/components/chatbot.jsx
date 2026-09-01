@@ -146,7 +146,7 @@ const KB = [
   // ── Partnerships ────────────────────────────────────────────────────────────
   {
     keywords: ["partner", "partnership", "become partner", "how to partner", "collaborate", "strategic partner", "technical partner"],
-    answer: "WDC welcomes strategic, technical, and financial partnerships. To partner, contact office@worlddisastercenter.org or visit worlddisastercenter.org/partnerWithUs. Partners gain access to WDC's global network, co-branding, joint impact projects, and Michael's disaster intelligence. Current partners include the Canadian Government, ESA, Microsoft, UNDP, Google, ESRI, and 50+ others."
+    answer: "WDC welcomes strategic, technical, and financial partnerships. To partner, contact office@worlddisastercenter.org or visit worlddisastercenter.org/roster. Partners gain access to WDC's global network, co-branding, joint impact projects, and Michael's disaster intelligence. Current partners include the Canadian Government, ESA, Microsoft, UNDP, Google, ESRI, and 50+ others."
   },
   {
     keywords: ["partners list", "who are partners", "current partners", "wdc partners", "list of partners"],

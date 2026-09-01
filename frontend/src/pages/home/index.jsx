@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import AnimateIn from "../../components/AnimateIn";
+import SEOMeta from "../../components/SEOMeta";
 import { ArrowRight, Share2, X, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import DOMPurify from "dompurify";
@@ -47,6 +48,12 @@ const HomePage = () => {
 
   return (
     <div className="bg-white overflow-hidden">
+      <SEOMeta
+        title="World Disaster Center — Monitoring. Alerting. Protecting."
+        description="World Disaster Center uses AI to monitor disasters, deliver early warnings, and protect the world's most vulnerable people. The Michael platform. 11 campaigns. Field missions worldwide."
+        image="https://images.unsplash.com/photo-1594841343391-97ac1b9a950e?auto=format&fit=crop&w=1200&h=630&q=80"
+        url="/"
+      />
       <Hero />
       <VideoSection />
       <Benefits />

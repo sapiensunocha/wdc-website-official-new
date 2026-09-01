@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, MessageCircle, Share2, ExternalLink, Play, X, Send, ChevronDown, ChevronUp, LogIn } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import SEOMeta from "../../components/SEOMeta";
 import { supabase } from "../../lib/supabase";
 import AnimateIn from "../../components/AnimateIn";
 import WDCLogo from "../../assets/images/wdclogobg.png";
@@ -475,13 +475,12 @@ export default function MediaPage() {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      <Helmet>
-        <title>Newsroom & Media — World Disaster Center</title>
-        <meta name="description" content="WDC news, field reports, awards, and video updates. Award ceremony from Kigali Rwanda, UNESCO climate events, field missions in DRC and Burundi, and disaster intelligence from 40+ countries." />
-        <meta property="og:title" content="Newsroom & Media — World Disaster Center" />
-        <meta property="og:description" content="Follow WDC's latest field missions, award ceremonies, disaster intelligence updates, and video reports from the World Disaster Center." />
-        <meta name="keywords" content="World Disaster Center news, WDC media, disaster intelligence updates, WDC awards, field mission reports, humanitarian news" />
-      </Helmet>
+      <SEOMeta
+        title="Newsroom & Media — World Disaster Center"
+        description="Latest news, press releases, and media resources from World Disaster Center. Contact our communications team for media enquiries."
+        image="https://images.unsplash.com/photo-1594841343391-97ac1b9a950e?auto=format&fit=crop&w=1200&h=630&q=80"
+        url="/media"
+      />
       {/* Hero */}
       <section className="bg-[#1C2B39] text-white py-16">
         <div className="container">

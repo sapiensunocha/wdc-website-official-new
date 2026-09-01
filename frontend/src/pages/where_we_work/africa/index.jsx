@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, MapPin, Users, Zap, Shield, FileText } from "lucide-react";
-import { Helmet } from "react-helmet-async";
+import SEOMeta from "../../../components/SEOMeta";
 
 const COUNTRY_REPORTS = {
   "Democratic Republic of Congo": [
@@ -115,13 +115,12 @@ const stats = [
 function Africa() {
   return (
     <div className="bg-white">
-      <Helmet>
-        <title>WDC in Africa — World Disaster Center</title>
-        <meta name="description" content="WDC's Africa operations spanning 14 countries — DRC, Burundi, Sudan, Nigeria, Kenya, Rwanda, Ghana, Côte d'Ivoire, Uganda, and more. Field missions, Michael AI early warnings, Ebola monitoring, and flood intelligence for communities across Sub-Saharan Africa." />
-        <meta property="og:title" content="WDC in Africa — World Disaster Center" />
-        <meta property="og:description" content="Floods, conflict, disease outbreaks, drought. Africa faces the most disasters with the fewest resources. WDC's largest field presence, powered by Michael AI." />
-        <meta name="keywords" content="World Disaster Center Africa, WDC DRC field mission, Burundi flood early warning, Sudan humanitarian, Ghana floods 2026, Uganda Ebola response, Michael AI Africa, disaster resilience Africa" />
-      </Helmet>
+      <SEOMeta
+        title="WDC in Africa — Disaster Response & Early Warning"
+        description="World Disaster Center operations across Africa — disaster monitoring, expert deployments, and humanitarian campaigns protecting vulnerable communities."
+        image="https://images.unsplash.com/photo-1553775927-a071d5a6a39a?auto=format&fit=crop&w=1200&h=630&q=80"
+        url="/where-we-work/africa"
+      />
       {/* Hero */}
       <section className="bg-[#1C2B39] text-white py-24">
         <div className="container sm:px-2">

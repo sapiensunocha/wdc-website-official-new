@@ -1,26 +1,28 @@
 import { useParams, Link, Navigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { Helmet } from "react-helmet-async";
+import SEOMeta from "../../components/SEOMeta";
 import {
   ChevronLeft, ChevronRight, Shield, Heart, Share2, ArrowRight,
   AlertTriangle, Activity, RefreshCw, ExternalLink, Download,
   Clock, CheckCircle, Circle, TrendingUp, Globe, Users, Zap,
   FileText, MapPin, Quote, Play, BookOpen, Radio
 } from "lucide-react";
+import { getCampaignScores, CAMPAIGN_MAP_META } from "../../assets/data/riskScores";
+import HumanitarianIcon from "../../components/HumanitarianIcon";
 import AnimateIn from "../../components/AnimateIn";
 import CampaignWorldMap from "../../components/CampaignWorldMap";
 import { WDC_CAMPAIGNS, PARTNER_TYPES } from "../../assets/data/campaigns";
 import { CAMPAIGN_DETAILS } from "../../assets/data/campaignDetails";
 
-// ─── MICHAEL + World Bank hybrid config ──────────────────────────────────────
+// ─── Live alert / ReliefWeb config (used for the intel feed only) ────────────
 const MICHAEL_API = "https://michael-api-382117221028.us-central1.run.app";
-const MICHAEL_KEY = import.meta.env.VITE_MICHAEL_API_KEY || "";
-const WB_BASE     = "https://api.worldbank.org/v2";
 
-// ── Hardcoded baseline: every country on Earth, scores 1–10 ──────────────────
-// Source: WB income group + UNDP HDI + regional vulnerability context
-// WB indicator data + MICHAEL events override these at runtime
+// ── Static campaign-specific risk scores (replaces WB + MICHAEL API) ─────────
+// getCampaignScores(slug) returns { ISO2: score 1-10 } for all ~240 countries
+// Each campaign has an independent index — see riskScores.js for full methodology
+
+// ── Placeholder so the old COUNTRY_BASELINE references compile (unused now) ──
 const COUNTRY_BASELINE = {
   // Critical / Active Crisis (9–10)
   AF:9,SS:9,SO:9,YE:9,CD:9,CF:9,SD:8,ET:8,ER:8,ML:8,NE:8,BF:8,BI:8,GW:8,
@@ -59,9 +61,17 @@ const COUNTRY_BASELINE = {
   NC:2,PF:2,WF:5,AS:3,GU:2,PR:2,VI:2,CK:3,NU:3,
   // Other territories
   EH:7,GQ:4,AW:2,CW:2,SX:2,TC:2,KY:1,VG:2,AI:2,MS:3,
+  // European territories & dependencies
+  GL:2,FO:2,SJ:1,GI:1,IM:1,JE:1,GG:1,AX:1,LI:1,AD:1,SM:1,MC:1,VA:1,
+  // French overseas
+  RE:3,YT:5,GP:3,MQ:3,GF:4,PM:1,BL:2,MF:3,TF:1,
+  // British overseas & South Atlantic
+  SH:3,FK:2,GS:2,BM:1,
+  // Pacific/Indian Ocean territories
+  MO:1,HK:1,CX:2,CC:2,NF:3,
 };
 // Cache version — increment to bust stale sessionStorage
-const CACHE_VER = "v3";
+const CACHE_VER = "v4";
 
 // Per-campaign: Michael event category + World Bank indicator for precision fill
 const CAMPAIGN_CFG = {
@@ -127,92 +137,20 @@ function eventNameToISO2(raw) {
   return null;
 }
 
-// ─── Hook: hardcoded baseline (instant, all countries) → refined by WB + MICHAEL ──
-function useLiveCampaignData(slug, accentColor) {
-  const [countries, setCountries] = useState({});
-  const [scale,     setScale]     = useState(null);
-  const [dataLabel, setDataLabel] = useState("");
-  const [srcLabel,  setSrcLabel]  = useState("");
-  const [refining,  setRefining]  = useState(false); // non-blocking: map already visible
-  const [lastFetch, setLast]      = useState(null);
-
-  useEffect(() => {
-    const cfg = CAMPAIGN_CFG[slug];
-    if (!cfg) return;
-
-    const colorScale = [accentColor + "44", accentColor + "66", accentColor + "88", accentColor + "aa", accentColor + "cc", accentColor];
-
-    // ── Phase 1: Instantly paint every country from hardcoded baseline ──
-    setCountries({ ...COUNTRY_BASELINE });
-    setScale(colorScale);
-    setDataLabel(cfg.label);
-    setSrcLabel(cfg.src);
-
-    // ── Phase 2: Check sessionStorage cache ──
-    const cacheKey = `wdc_riskmap_${CACHE_VER}_${slug}`;
-    try {
-      const hit = JSON.parse(sessionStorage.getItem(cacheKey) || "null");
-      if (hit && Date.now() - hit.ts < 30 * 60 * 1000) {
-        setCountries(hit.data);
-        setLast(new Date(hit.ts));
-        return;
-      }
-    } catch (_) {}
-
-    // ── Phase 3: Refine with WB + MICHAEL (non-blocking — map already colored) ──
-    setRefining(true);
-    const headers = MICHAEL_KEY ? { "X-API-Key": MICHAEL_KEY } : {};
-
-    Promise.allSettled([
-      fetch(`${WB_BASE}/country/all/indicator/${cfg.wb}?format=json&mrv=1&mrnev=1&per_page=300`).then(r => r.json()),
-      fetch(`${MICHAEL_API}/api/v1/events?category=${encodeURIComponent(cfg.cat)}&limit=1000`, { headers }).then(r => r.json()),
-    ]).then(([wbRes, mRes]) => {
-      const working = { ...COUNTRY_BASELINE };
-
-      if (wbRes.status === "fulfilled" && Array.isArray(wbRes.value?.[1])) {
-        const wbRows = wbRes.value[1].filter(r => r.country?.id && r.value != null && /^[A-Z]{2}$/.test(r.country.id));
-        if (wbRows.length) {
-          const rawVals = wbRows.map(r => cfg.wbInvert ? 1 / (r.value + 0.01) : r.value);
-          const lo = Math.min(...rawVals), hi = Math.max(...rawVals);
-          wbRows.forEach((r, i) => {
-            const iso2 = r.country.id;
-            if (working[iso2] !== undefined || iso2.length === 2) {
-              working[iso2] = hi === lo ? 5 : Math.round((1 + 9 * (rawVals[i] - lo) / (hi - lo)) * 10) / 10;
-            }
-          });
-        }
-      }
-
-      if (mRes.status === "fulfilled" && !mRes.value?.error) {
-        const events = mRes.value.events || [];
-        const michaelRaw = {};
-        for (const ev of events) {
-          const iso2 = eventNameToISO2(ev.country || ev.location_name || "");
-          if (!iso2) continue;
-          const val = (ev.people_affected || 0) + (ev.severity_level || 1) * 100_000;
-          michaelRaw[iso2] = (michaelRaw[iso2] || 0) + val;
-        }
-        if (Object.keys(michaelRaw).length) {
-          const mVals = Object.values(michaelRaw).map(v => Math.log1p(v));
-          const mLo = Math.min(...mVals), mHi = Math.max(...mVals);
-          for (const [iso2, raw] of Object.entries(michaelRaw)) {
-            const mScore = mHi === mLo ? 7 : 1 + 9 * (Math.log1p(raw) - mLo) / (mHi - mLo);
-            working[iso2] = Math.max(working[iso2] ?? 3, Math.round(mScore * 10) / 10);
-          }
-        }
-      }
-
-      try { sessionStorage.setItem(cacheKey, JSON.stringify({ data: working, ts: Date.now() })); } catch (_) {}
-      setCountries(working);
-      setLast(new Date());
-    }).catch(() => {})
-      .finally(() => setRefining(false));
-  }, [slug, accentColor]);
-
-  return { countries, scale, dataLabel, srcLabel, refining, lastFetch };
+// ─── Hook: static campaign-specific risk index (instant, all countries) ──────
+// Each campaign uses an independent index derived from campaign-specific data.
+// See riskScores.js for full methodology and sources per campaign.
+function useLiveCampaignData(slug) {
+  const meta = CAMPAIGN_MAP_META[slug] || { label: "Global Risk Index", src: "WDC Analysis" };
+  const countries = getCampaignScores(slug);
+  return {
+    countries,
+    dataLabel: meta.label,
+    srcLabel:  meta.src,
+    refining:  false,
+    lastFetch: null,
+  };
 }
-
-const RELIEFWEB_BASE  = "https://api.reliefweb.int/v1";
 
 // ─── Animated counter ─────────────────────────────────────────────────────────
 function AnimCount({ target, prefix = "", suffix = "", duration = 1600 }) {
@@ -284,25 +222,19 @@ function SevBadge({ sev = "ACTIVE" }) {
 
 // ─── ReliefWeb + Michael live hook ────────────────────────────────────────────
 function useLiveData(theme) {
-  const [alerts, setAlerts]   = useState([]);
-  const [reports, setReports] = useState([]);
+  const [alerts, setAlerts] = useState([]);
+  const [reports]           = useState([]);
   const [loading, setLoading] = useState(true);
   const [lastFetch, setLast]  = useState(null);
 
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [aRes, rRes] = await Promise.allSettled([
-        fetch(`${MICHAEL_API}/api/alerts`),
-        fetch(`${RELIEFWEB_BASE}/reports?query[value]=${encodeURIComponent(theme)}&limit=4&sort[]=date:desc&fields[include][]=title&fields[include][]=date&fields[include][]=url_alias`),
-      ]);
-      if (aRes.status === "fulfilled" && aRes.value.ok) {
-        const d = await aRes.value.json();
+      // Try MICHAEL alerts — silently falls back if auth fails
+      const aRes = await fetch(`${MICHAEL_API}/api/alerts`).catch(() => null);
+      if (aRes && aRes.ok) {
+        const d = await aRes.json();
         setAlerts((Array.isArray(d) ? d : d.alerts || d.data || []).slice(0, 4));
-      }
-      if (rRes.status === "fulfilled" && rRes.value.ok) {
-        const d = await rRes.value.json();
-        setReports((d.data || []).slice(0, 3));
       }
     } catch (_) {}
     setLoading(false);
@@ -385,12 +317,11 @@ export default function CampaignDetail() {
   const { alerts, reports, loading, lastFetch: liveLastFetch, refresh } = useLiveData(d?.reliefwebTheme || c.title);
   const {
     countries: mapCountries,
-    scale:     mapScale,
     dataLabel: mapDataLabel,
     srcLabel:  mapSrcLabel,
     refining:  mapRefining,
     lastFetch: mapLastFetch,
-  } = useLiveCampaignData(slug, c.color);
+  } = useLiveCampaignData(slug);
 
   const liveAlerts  = alerts.length  ? alerts  : FALLBACK_ALERTS;
   const currentIdx  = WDC_CAMPAIGNS.findIndex(x => x.slug === slug);
@@ -413,10 +344,12 @@ export default function CampaignDetail() {
 
   return (
     <>
-      <Helmet>
-        <title>WDC PROTECT · {c.title} — World Disaster Center</title>
-        <meta name="description" content={c.shortDesc} />
-      </Helmet>
+      <SEOMeta
+        title={`${c.title} — WDC PROTECT`}
+        description={c.shortDesc}
+        image={c.heroImage ? c.heroImage.replace(/w=\d+/, 'w=1200') + '&h=630' : undefined}
+        url={`/campaigns/${c.slug}`}
+      />
 
       {/* ════════════════════════════════════════════════════════
           HERO SITREP BANNER — photo background
@@ -429,6 +362,9 @@ export default function CampaignDetail() {
             alt=""
             className="w-full h-full object-cover object-center"
             style={{ filter: "saturate(0.7) brightness(0.45)" }}
+            loading="eager"
+            referrerPolicy="no-referrer-when-downgrade"
+            onError={e => { e.currentTarget.style.display = "none"; }}
           />
           {/* Dark-to-campaign gradient overlay */}
           <div className="absolute inset-0"
@@ -472,9 +408,9 @@ export default function CampaignDetail() {
 
             {/* Identity row */}
             <div className="flex items-start gap-5 mb-5">
-              <div className="w-18 h-18 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center text-4xl sm:text-5xl shrink-0"
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center shrink-0"
                 style={{ background: `${c.color}20`, border: `1px solid ${c.color}40`, backdropFilter: "blur(12px)" }}>
-                {c.emoji}
+                <HumanitarianIcon icon={c.emoji} size={36} style={{ color: "white" }} />
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-2">
@@ -517,7 +453,7 @@ export default function CampaignDetail() {
                 style={{ backgroundColor: c.color }}>
                 <Heart size={15} /> Fund This Campaign
               </a>
-              <Link to="/partnerWithUs"
+              <Link to="/roster"
                 className="inline-flex items-center gap-2 text-white font-bold px-6 py-3 rounded-xl transition-colors text-sm"
                 style={{ background: "rgba(255,255,255,0.12)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.2)" }}
                 onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.2)"}
@@ -590,20 +526,20 @@ export default function CampaignDetail() {
                       style={{ backgroundColor: c.color }} />
                   </div>
                   <p className="text-[10px] font-black uppercase tracking-[0.25em] text-gray-500">
-                    Live Global Risk Intelligence
+                    Global Risk Index — Campaign Specific
                   </p>
                 </div>
                 {/* Source badges */}
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="inline-flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-full px-3 py-1 text-[9px] font-bold text-gray-400 backdrop-blur-sm">
-                    <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: c.color }} />
-                    MICHAEL GLOBAL OPS
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-full px-3 py-1 text-[9px] font-bold text-gray-500">
-                    WORLD BANK
+                    <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: c.color }} />
+                    WDC PROTECT INDEX
                   </span>
                   <span className="inline-flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-full px-3 py-1 text-[9px] font-bold text-gray-500">
                     UN AGENCIES
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-full px-3 py-1 text-[9px] font-bold text-gray-500">
+                    UNHCR · WHO · UNICEF
                   </span>
                 </div>
               </div>
@@ -633,10 +569,8 @@ export default function CampaignDetail() {
                     },
                     { value: "1–10", label: "Risk Scale", accent: false },
                     {
-                      value: mapLastFetch
-                        ? mapLastFetch.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-                        : mapRefining ? "…" : "—",
-                      label: "Last Sync",
+                      value: "2025",
+                      label: "Dataset Vintage",
                       accent: false,
                     },
                   ].map((s, i) => (
@@ -697,10 +631,10 @@ export default function CampaignDetail() {
               {/* Map */}
               <div className="p-5 sm:p-8">
                 <CampaignWorldMap
-                  key={`${slug}-${c.color}-${Object.keys(mapCountries).length}`}
+                  key={`${slug}-${Object.keys(mapCountries).length}`}
                   countries={mapCountries}
-                  scale={mapScale}
                   accentColor={c.color}
+                  campaignLabel={mapDataLabel}
                 />
               </div>
 
@@ -708,18 +642,12 @@ export default function CampaignDetail() {
               <div className="border-t px-5 sm:px-8 py-3 flex items-center justify-between flex-wrap gap-2"
                 style={{ borderColor: `${c.color}15` }}>
                 <p className="text-[9px] text-gray-600">
-                  Risk index 1 (lowest) → 10 (highest) · Composite: crisis events × indicator data × income baseline
+                  {mapSrcLabel || "WDC campaign-specific risk index · Scale 1 (lowest) → 10 (highest)"}
                 </p>
                 <div className="flex items-center gap-3 text-[9px] text-gray-600">
-                  <a href="https://michael.worlddisastercenter.org" target="_blank" rel="noopener noreferrer"
-                    className="flex items-center gap-1 hover:text-gray-400 transition-colors">
-                    MICHAEL <ExternalLink size={8} />
-                  </a>
+                  <span>WDC PROTECT Research · 2025</span>
                   <span className="text-white/10">|</span>
-                  <a href="https://data.worldbank.org" target="_blank" rel="noopener noreferrer"
-                    className="flex items-center gap-1 hover:text-gray-400 transition-colors">
-                    World Bank <ExternalLink size={8} />
-                  </a>
+                  <span>{Object.keys(mapCountries).length} countries</span>
                 </div>
               </div>
             </div>
@@ -910,7 +838,7 @@ export default function CampaignDetail() {
                 <div className="bg-white border border-gray-200 rounded-2xl p-6 h-full hover:shadow-md transition-shadow">
                   <div className="w-11 h-11 rounded-xl flex items-center justify-center text-2xl mb-4 border"
                     style={{ backgroundColor: c.color + "15", borderColor: c.color + "30" }}>
-                    {item.icon}
+                    <HumanitarianIcon icon={item.icon} size={20} style={{ color: c.color }} />
                   </div>
                   <h3 className="font-black text-[#1C2B39] mb-2 text-sm">{item.title}</h3>
                   <p className="text-xs text-gray-500 leading-relaxed">{item.desc}</p>
@@ -962,7 +890,7 @@ export default function CampaignDetail() {
                     transition={{ duration: 0.5, delay: i * 0.1 }}
                     className="flex gap-4 bg-white/5 border border-white/10 rounded-xl p-4 hover:border-white/20 transition-colors"
                   >
-                    <span className="text-2xl shrink-0">{o.icon}</span>
+                    <span className="shrink-0" style={{ color: c.color }}><HumanitarianIcon icon={o.icon} size={18} /></span>
                     <div>
                       <p className="font-bold text-white text-sm mb-0.5">{o.title}</p>
                       <p className="text-xs text-gray-400 leading-relaxed">{o.desc}</p>
@@ -979,11 +907,11 @@ export default function CampaignDetail() {
                 <div className="flex flex-wrap gap-2">
                   {PARTNER_TYPES.map(p => (
                     <span key={p.title} className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-white/10 text-gray-300">
-                      {p.icon} {p.title}
+                      <HumanitarianIcon icon={p.icon} size={12} className="shrink-0" /> {p.title}
                     </span>
                   ))}
                 </div>
-                <Link to="/partnerWithUs" className="mt-3 text-xs font-bold flex items-center gap-1 transition-colors hover:opacity-80" style={{ color: c.color }}>
+                <Link to="/roster" className="mt-3 text-xs font-bold flex items-center gap-1 transition-colors hover:opacity-80" style={{ color: c.color }}>
                   Explore partnerships <ChevronRight size={11} />
                 </Link>
               </div>
@@ -1179,7 +1107,7 @@ export default function CampaignDetail() {
                 style={{ color: c.color }}>
                 <Heart size={16} className="fill-current" /> Fund This Campaign
               </a>
-              <Link to="/partnerWithUs"
+              <Link to="/roster"
                 className="inline-flex items-center gap-2 border-2 border-white/40 text-white hover:bg-white/10 font-bold px-8 py-4 rounded-xl transition-colors text-sm">
                 <Shield size={16} /> Corporate Partnership
               </Link>
@@ -1204,7 +1132,10 @@ export default function CampaignDetail() {
                 <ChevronLeft size={18} className="text-gray-400 group-hover:text-gray-700 shrink-0" />
                 <div>
                   <p className="text-[9px] font-black uppercase tracking-wider text-gray-400">Previous</p>
-                  <p className="text-sm font-bold text-[#1C2B39] mt-0.5">{prev.emoji} {prev.title}</p>
+                  <p className="text-sm font-bold text-[#1C2B39] mt-0.5 flex items-center gap-1.5">
+                    <HumanitarianIcon icon={prev.emoji} size={13} style={{ color: prev.color }} />
+                    {prev.title}
+                  </p>
                 </div>
               </Link>
             ) : <div className="flex-1" />}
@@ -1219,7 +1150,10 @@ export default function CampaignDetail() {
                 className="flex-1 flex items-center justify-end gap-4 bg-white border border-gray-200 rounded-xl px-5 py-4 hover:shadow-sm transition-all group text-right">
                 <div>
                   <p className="text-[9px] font-black uppercase tracking-wider text-gray-400">Next</p>
-                  <p className="text-sm font-bold text-[#1C2B39] mt-0.5">{next.emoji} {next.title}</p>
+                  <p className="text-sm font-bold text-[#1C2B39] mt-0.5 flex items-center gap-1.5 justify-end">
+                    <HumanitarianIcon icon={next.emoji} size={13} style={{ color: next.color }} />
+                    {next.title}
+                  </p>
                 </div>
                 <ChevronRight size={18} className="text-gray-400 group-hover:text-gray-700 shrink-0" />
               </Link>

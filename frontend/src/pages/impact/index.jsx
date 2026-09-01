@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import AnimateIn from "../../components/AnimateIn";
+import SEOMeta from "../../components/SEOMeta";
 import { ChevronLeft, ChevronRight, ExternalLink, X, Building2, FileText, Play, Award, Star, Cpu, Globe, Users, Zap, Shield, BookOpen, TrendingUp, MapPin } from "lucide-react";
 import Map from "../../components/Map";
 import NewsLetter from "../../components/newsletter";
@@ -339,6 +340,12 @@ function ImpactPage() {
 
   return (
     <div className="bg-white min-h-screen">
+      <SEOMeta
+        title="Impact & Coverage — World Disaster Center"
+        description="See WDC's global impact: early warnings issued, communities protected, experts deployed, and disasters monitored across 68 countries."
+        image="https://images.unsplash.com/photo-1553775927-a071d5a6a39a?auto=format&fit=crop&w=1200&h=630&q=80"
+        url="/impact"
+      />
       {/* ── Hero header ── */}
       <div className="bg-[#1C2B39] text-white">
         <div className="container py-14">
