@@ -70,22 +70,22 @@ export default function CampaignsHub() {
           <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-[#009EDB]/6 blur-3xl" />
           <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full bg-violet-500/6 blur-3xl" />
         </div>
-        <div className="container relative py-24">
+        <div className="container relative pt-28 pb-16 sm:py-24">
           <AnimateIn variant="fadeUp">
             <div className="flex items-center gap-3 mb-4">
               <Shield size={20} className="text-[#009EDB]" />
               <span className="text-[10px] font-black uppercase tracking-[0.25em] text-[#009EDB]">WDC PROTECT</span>
             </div>
-            <h1 className="text-5xl sm:text-7xl font-black leading-[1.0] mb-4">
+            <h1 className="text-3xl sm:text-5xl lg:text-7xl font-black leading-[1.05] sm:leading-[1.0] mb-4">
               Protecting the people<br />
               <span className="text-[#009EDB]">most vulnerable to crisis.</span>
             </h1>
-            <p className="text-gray-300 text-xl max-w-2xl leading-relaxed mb-8">
+            <p className="text-gray-300 text-sm sm:text-base lg:text-xl max-w-2xl leading-relaxed mb-8">
               WDC doesn't build campaigns around disasters alone. We build them around <strong className="text-white">vulnerability</strong>. Disasters, violence, displacement, climate, poverty, and digital exclusion are all forms of vulnerability — and WDC's institutional promise is the same for every one:
             </p>
-            <div className="flex flex-wrap gap-3 text-sm font-bold">
+            <div className="flex flex-wrap gap-2 sm:gap-3 text-xs sm:text-sm font-bold">
               {["Find the vulnerable", "Protect them", "Prevent the crisis", "Measure the impact"].map((s, i) => (
-                <span key={s} className="flex items-center gap-2 bg-white/10 border border-white/20 px-4 py-2 rounded-full">
+                <span key={s} className="flex items-center gap-1.5 sm:gap-2 bg-white/10 border border-white/20 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full">
                   <span className="text-[#009EDB] font-black">{i + 1}</span> {s}
                 </span>
               ))}

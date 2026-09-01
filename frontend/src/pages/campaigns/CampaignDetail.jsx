@@ -381,9 +381,9 @@ export default function CampaignDetail() {
         {/* Campaign accent top stripe */}
         <div className="relative h-1 w-full" style={{ backgroundColor: c.color }} />
 
-        <div className="container relative pt-10 pb-16">
+        <div className="container relative pt-24 sm:pt-16 pb-16">
           {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-xs text-white/40 mb-10">
+          <div className="flex items-center gap-2 text-xs text-white/40 mb-8 sm:mb-10">
             <Link to="/campaigns" className="hover:text-white/70 flex items-center gap-1 transition-colors">
               <ChevronLeft size={12} /> WDC PROTECT
             </Link>
@@ -428,18 +428,18 @@ export default function CampaignDetail() {
 
             {/* Key facts strip */}
             {d?.keyFacts && (
-              <div className="grid grid-cols-3 gap-3 mb-10 max-w-xl">
+              <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-8 sm:mb-10 max-w-xl">
                 {d.keyFacts.map((f, i) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.15 + i * 0.08, duration: 0.5, ease: [0.22,1,0.36,1] }}
-                    className="rounded-xl p-3 sm:p-4 text-center"
+                    className="rounded-xl p-2.5 sm:p-4 text-center"
                     style={{ background: "rgba(0,0,0,0.45)", backdropFilter: "blur(12px)", border: `1px solid ${c.color}30` }}
                   >
-                    <p className="text-xl sm:text-2xl font-black drop-shadow" style={{ color: c.color }}>{f.value}</p>
-                    <p className="text-[10px] text-white/50 mt-1 leading-snug">{f.label}</p>
+                    <p className="text-lg sm:text-2xl font-black drop-shadow" style={{ color: c.color }}>{f.value}</p>
+                    <p className="text-[9px] sm:text-[10px] text-white/50 mt-1 leading-snug">{f.label}</p>
                   </motion.div>
                 ))}
               </div>
@@ -474,7 +474,7 @@ export default function CampaignDetail() {
           <div className="container flex overflow-x-auto gap-0">
             {sections.map(s => (
               <a key={s.id} href={`#${s.id}`}
-                className="shrink-0 px-5 py-3.5 text-[11px] font-bold uppercase tracking-wider text-white/40 hover:text-white border-b-2 border-transparent transition-all"
+                className="shrink-0 px-4 sm:px-5 py-4 text-[11px] font-bold uppercase tracking-wider text-white/40 hover:text-white border-b-2 border-transparent transition-all min-h-[44px] flex items-center"
                 onMouseEnter={e => { e.target.style.borderColor = c.color; e.target.style.color = "white"; }}
                 onMouseLeave={e => { e.target.style.borderColor = "transparent"; e.target.style.color = ""; }}>
                 {s.label}
@@ -1045,14 +1045,14 @@ export default function CampaignDetail() {
                   {d?.latestReport?.summary || c.shortDesc}
                 </p>
 
-                <div className="flex gap-3">
+                <div className="flex flex-wrap gap-3">
                   <Link to={d?.latestReport?.link || "/reports"}
-                    className="inline-flex items-center gap-2 text-white font-bold px-5 py-2.5 rounded-lg text-sm transition-opacity hover:opacity-90"
+                    className="inline-flex items-center gap-2 text-white font-bold px-5 py-3 rounded-lg text-sm transition-opacity hover:opacity-90 min-h-[44px]"
                     style={{ backgroundColor: c.color }}>
                     <Download size={14} /> Download Report
                   </Link>
                   <Link to="/newsletter"
-                    className="inline-flex items-center gap-2 border border-white/20 text-gray-300 hover:text-white font-bold px-5 py-2.5 rounded-lg text-sm transition-colors">
+                    className="inline-flex items-center gap-2 border border-white/20 text-gray-300 hover:text-white font-bold px-5 py-3 rounded-lg text-sm transition-colors min-h-[44px]">
                     Subscribe for Updates
                   </Link>
                 </div>

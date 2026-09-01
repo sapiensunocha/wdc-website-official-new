@@ -101,7 +101,7 @@ export default function DonorsPage() {
               href={PAYPAL_URL}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center justify-center gap-2 bg-[#009EDB] hover:bg-[#0072BC] text-white font-black text-base px-8 py-4 rounded-xl transition-colors duration-200"
+              className="inline-flex items-center justify-center gap-2 bg-[#009EDB] hover:bg-[#0072BC] text-white font-black text-base px-8 py-4 rounded-xl transition-colors duration-200 min-h-[52px]"
             >
               <Heart size={18} /> Donate Now
             </a>
@@ -109,7 +109,7 @@ export default function DonorsPage() {
               href={PAYPAL_MONTHLY_URL}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center justify-center gap-2 border-2 border-white text-white hover:bg-white/10 font-black text-base px-8 py-4 rounded-xl transition-colors duration-200"
+              className="inline-flex items-center justify-center gap-2 border-2 border-white text-white hover:bg-white/10 font-black text-base px-8 py-4 rounded-xl transition-colors duration-200 min-h-[52px]"
             >
               <Calendar size={18} /> Give Monthly
             </a>
@@ -139,7 +139,7 @@ export default function DonorsPage() {
         <p className="text-gray-300 text-sm mb-2">Questions about giving? Email us directly.</p>
         <a
           href="mailto:office@worlddisastercenter.org"
-          className="text-white text-lg font-black hover:underline"
+          className="text-white text-base sm:text-lg font-black hover:underline break-all"
         >
           office@worlddisastercenter.org
         </a>

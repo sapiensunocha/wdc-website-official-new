@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { ExpandMore, ExpandLess } from "@mui/icons-material";
-import { Menu, X, Search, ChevronDown, Heart, ArrowRight } from "lucide-react";
+import { Menu, X, Search, ChevronDown, Heart, ArrowRight, ShoppingBag } from "lucide-react";
 import PropTypes from "prop-types";
 // Correct relative path for your horizontal logo asset
 import WDC_HORIZ_Logo from "../assets/images/WDC-HORIZ-logo.png";
@@ -365,7 +365,7 @@ const Header = () => {
             to="/shop"
             className="flex items-center gap-1.5 border border-[#418FDE] text-[#418FDE] hover:bg-[#E8F5FC] text-xs font-bold px-3 py-1.5 rounded-sm transition-colors"
           >
-            🛍️ Shop
+            <ShoppingBag size={13} /> Shop
           </Link>
           <DonateDropdown />
         </div>
