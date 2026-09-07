@@ -335,7 +335,7 @@ export default function CampaignsHub() {
                 {[
                   { icon: Globe, value: "194", label: "Countries Ranked" },
                   { icon: TrendingUp, value: "10", label: "Dimensions" },
-                  { icon: FileText, value: "10", label: "Chapters" },
+                  { icon: FileText, value: "27", label: "Pages" },
                 ].map(({ icon: Icon, value, label }) => (
                   <div
                     key={label}
