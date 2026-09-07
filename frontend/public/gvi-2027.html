@@ -1109,9 +1109,123 @@ td.dim-score {
 .mt-16 { margin-top: 16px; }
 .mt-24 { margin-top: 24px; }
 .no-break { page-break-inside: avoid; }
+
+/* ============================================================
+   ISSUU-STYLE BOOK MODE  (StPageFlip)
+   ============================================================ */
+body {
+  background: #0d0d1a !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* StPageFlip container */
+#gvi-book {
+  width: 100vw;
+  height: 100vh;
+}
+
+/* Reset page sizing inside the flipbook – StPageFlip controls it */
+.stf__item .page,
+.stf__item .cover-page {
+  margin: 0 !important;
+  box-shadow: none !important;
+  width: 100% !important;
+  min-height: unset !important;
+  overflow: hidden;
+}
+
+/* ── Navigation overlay ── */
+#book-nav {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(5,8,20,0.82);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 40px;
+  padding: 8px 16px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  user-select: none;
+}
+
+.book-arrow {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.07);
+  color: #fff;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.18s, border-color 0.18s;
+  font-family: sans-serif;
+}
+
+.book-arrow:hover { background: rgba(0,158,219,0.35); border-color: #009EDB88; }
+.book-arrow:disabled { opacity: 0.25; cursor: default; }
+
+#book-counter {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: rgba(255,255,255,0.65);
+  letter-spacing: 0.06em;
+  min-width: 56px;
+  text-align: center;
+}
+
+/* Left / right page-flip click zones */
+#flip-prev-zone, #flip-next-zone {
+  position: fixed;
+  top: 0;
+  width: 22%;
+  height: 100vh;
+  z-index: 200;
+  cursor: pointer;
+  opacity: 0;
+}
+#flip-prev-zone { left: 0; }
+#flip-next-zone { right: 0; }
+
+@media print {
+  body { background: #fff !important; overflow: visible !important; height: auto !important; }
+  #book-nav, #flip-prev-zone, #flip-next-zone { display: none; }
+  #gvi-book { width: 21cm; height: auto; }
+}
+
 </style>
 </head>
 <body>
+
+  <!-- ── Issuu-style page flip zones ── -->
+  <div id="flip-prev-zone" onclick="if(window._pf) window._pf.flipPrev()"></div>
+  <div id="flip-next-zone" onclick="if(window._pf) window._pf.flipNext()"></div>
+
+  <!-- ── StPageFlip mounts here ── -->
+  <div id="gvi-book"></div>
+
+  <!-- ── Bottom navigation bar ── -->
+  <div id="book-nav">
+    <button class="book-arrow" id="btn-prev" onclick="if(window._pf) window._pf.flipPrev()">&#8249;</button>
+    <span id="book-counter">1 / 10</span>
+    <button class="book-arrow" id="btn-next" onclick="if(window._pf) window._pf.flipNext()">&#8250;</button>
+  </div>
+
 
 <!-- =============================================
      COVER PAGE
@@ -6962,42 +7076,70 @@ td.dim-score {
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
 <script>
 (function () {
-  // Collect all page divs once DOM is ready
-  function getPages() {
-    return Array.from(document.querySelectorAll('.cover-page, .page'));
+  var el = document.getElementById('gvi-book');
+  var counter = document.getElementById('book-counter');
+  var btnPrev = document.getElementById('btn-prev');
+  var btnNext = document.getElementById('btn-next');
+
+  // Collect all page elements (they're still in DOM but below gvi-book)
+  var pages = Array.from(document.querySelectorAll('.cover-page, .page'));
+  var total = pages.length;
+
+  function updateUI(idx) {
+    if (counter) counter.textContent = (idx + 1) + ' / ' + total;
+    if (btnPrev) btnPrev.disabled = idx === 0;
+    if (btnNext) btnNext.disabled = idx >= total - 1;
+    // postMessage so React wrapper can sync if needed
+    try { window.parent.postMessage({ type: 'gvi_state', page: idx, total: total }, '*'); } catch(e){}
   }
 
-  // Show only the requested page
-  function showPage(index) {
-    var pages = getPages();
-    var clamped = Math.max(0, Math.min(index, pages.length - 1));
-    pages.forEach(function (p, i) {
-      p.style.display = i === clamped ? 'block' : 'none';
-    });
-    window.scrollTo(0, 0);
-    window.parent.postMessage({ type: 'gvi_state', page: clamped, total: pages.length }, '*');
-  }
-
-  // Listen for commands from the React reader
-  window.addEventListener('message', function (e) {
-    var d = e.data;
-    if (!d || d.source !== 'gvi_reader') return;
-    if (d.type === 'init') {
-      var pages = getPages();
-      // Hide all but first on init
-      pages.forEach(function (p, i) { p.style.display = i === 0 ? 'block' : 'none'; });
-      window.parent.postMessage({ type: 'gvi_state', page: 0, total: pages.length }, '*');
-    } else if (d.type === 'go') {
-      showPage(d.page);
-    }
+  var pf = new St.PageFlip(el, {
+    width: 794,
+    height: 1123,
+    size: 'stretch',
+    minWidth: 280,
+    maxWidth: 900,
+    minHeight: 380,
+    maxHeight: 1200,
+    maxShadowOpacity: 0.55,
+    showCover: true,
+    mobileScrollSupport: true,
+    clickEventForward: false,
+    useMouseEvents: true,
+    swipeDistance: 20,
+    showPageCorners: true,
+    disableFlipByClick: false,
+    autoSize: true,
+    drawShadow: true,
+    flippingTime: 700,
+    usePortrait: true,
+    startPage: 0,
+    startZIndex: 0,
   });
 
-  // Also init when loaded standalone (no reader wrapping it)
-  window.addEventListener('load', function () {
-    // If embedded in an iframe, wait for init command; otherwise show all
-    if (window.self === window.top) return; // standalone: do nothing
+  pf.loadFromHTML(pages);
+  window._pf = pf;
+
+  pf.on('flip', function(e) { updateUI(e.data); });
+  pf.on('init',  function(e) { updateUI(0); });
+
+  // Listen for messages from React wrapper
+  window.addEventListener('message', function(ev) {
+    var d = ev.data;
+    if (!d || d.source !== 'gvi_reader') return;
+    if (d.type === 'go') { pf.flip(d.page); }
+    if (d.type === 'prev') { pf.flipPrev(); }
+    if (d.type === 'next') { pf.flipNext(); }
+    if (d.type === 'init') { updateUI(pf.getCurrentPageIndex()); }
+  });
+
+  // Keyboard navigation
+  document.addEventListener('keydown', function(ev) {
+    if (ev.key === 'ArrowRight' || ev.key === 'ArrowDown') pf.flipNext();
+    if (ev.key === 'ArrowLeft'  || ev.key === 'ArrowUp')   pf.flipPrev();
   });
 })();
 </script>
