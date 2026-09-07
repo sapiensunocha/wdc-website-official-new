@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { X, ChevronLeft, ChevronRight, Download, BookOpen, Maximize2, Minimize2 } from "lucide-react";
 
-const TOTAL_PAGES_FALLBACK = 18;
+const TOTAL_PAGES_FALLBACK = 10;
 
 export default function GVIBookReader({ onClose }) {
   const iframeRef = useRef(null);
@@ -51,11 +51,16 @@ export default function GVIBookReader({ onClose }) {
   }
 
   const SECTION_LABELS = [
-    "Cover", "Table of Contents", "Executive Summary", "Methodology",
-    "Global Rankings", "Africa", "Americas", "Asia-Pacific",
-    "Europe & CIS", "MENA", "Top 20 Profiles", "Conflict & Fragility",
-    "Climate Risk", "Food Security", "Health Systems", "Gender & Inclusion",
-    "Policy Recommendations", "Appendix",
+    "Cover",
+    "Table of Contents",
+    "Executive Summary",
+    "Methodology",
+    "Global Rankings",
+    "Regional Analysis",
+    "Thematic Analysis",
+    "Country Profiles",
+    "Policy Recommendations",
+    "Appendix",
   ];
 
   return (

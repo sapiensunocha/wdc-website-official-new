@@ -91,16 +91,34 @@ body {
   flex-direction: column;
 }
 
+/* Full-bleed background photo */
+.cover-bg-img {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center 30%;
+  filter: saturate(0.5) brightness(0.22);
+  z-index: 0;
+}
+
+/* Bottom-up dark fade over photo */
+.cover-bg-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(28,43,57,0.2) 0%, rgba(28,43,57,0.75) 60%, rgba(28,43,57,0.95) 100%);
+}
+
 /* Grid dot overlay */
 .cover-page::before {
   content: '';
   position: absolute;
   inset: 0;
   background-image:
-    radial-gradient(circle, rgba(0,158,219,0.18) 1.5px, transparent 1.5px);
+    radial-gradient(circle, rgba(0,158,219,0.15) 1.5px, transparent 1.5px);
   background-size: 28px 28px;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
 }
 
 /* Large decorative circle */
@@ -112,14 +130,14 @@ body {
   width: 500px;
   height: 500px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0,158,219,0.12) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(0,158,219,0.14) 0%, transparent 70%);
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
 }
 
 .cover-inner {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -295,9 +313,46 @@ body {
   background: var(--navy);
   color: #fff;
   margin: 0 calc(-1 * var(--page-margin));
-  padding: 28px var(--page-margin) 24px;
+  padding: 44px var(--page-margin) 32px;
   margin-bottom: 32px;
   page-break-before: always;
+  position: relative;
+  overflow: hidden;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+/* dark directional gradient over chapter photo */
+.chapter-header::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, rgba(28,43,57,0.82) 0%, rgba(28,43,57,0.55) 55%, rgba(0,158,219,0.12) 100%);
+  z-index: 1;
+}
+
+/* left accent bar */
+.chapter-header::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--blue);
+  z-index: 3;
+}
+
+/* full-bleed chapter illustration */
+.ch-img {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: saturate(0.4) brightness(0.32);
+  z-index: 0;
 }
 
 .chapter-header-first {
@@ -311,7 +366,9 @@ body {
   color: var(--blue);
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 2;
 }
 
 .chapter-title {
@@ -321,13 +378,17 @@ body {
   color: #fff;
   letter-spacing: -0.01em;
   line-height: 1.1;
+  position: relative;
+  z-index: 2;
 }
 
 .chapter-subtitle {
   font-family: 'Inter', sans-serif;
   font-size: 10pt;
-  color: rgba(255,255,255,0.65);
-  margin-top: 6px;
+  color: rgba(255,255,255,0.7);
+  margin-top: 8px;
+  position: relative;
+  z-index: 2;
 }
 
 /* =============================================
@@ -1056,6 +1117,7 @@ td.dim-score {
      COVER PAGE
      ============================================= -->
 <div class="cover-page">
+  <div class="cover-bg-img" style="background-image:url('https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1400&q=80')"></div>
   <div class="cover-inner">
     <div class="cover-header">
       <div class="wdc-logo">
@@ -1119,6 +1181,7 @@ td.dim-score {
      ============================================= -->
 <div class="page page-interior">
   <div class="chapter-header chapter-header-first">
+    <div class="ch-img" style="background-image:url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1400&q=80')"></div>
     <div class="chapter-number">Navigation</div>
     <div class="chapter-title">Table of Contents</div>
   </div>
@@ -1239,6 +1302,7 @@ td.dim-score {
      ============================================= -->
 <div class="page page-interior">
   <div class="chapter-header">
+    <div class="ch-img" style="background-image:url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1400&q=80')"></div>
     <div class="chapter-number">Section 01</div>
     <div class="chapter-title">Executive Summary</div>
     <div class="chapter-subtitle">What the GVI is, why it matters, and the 2027 critical findings</div>
@@ -1353,6 +1417,7 @@ td.dim-score {
      ============================================= -->
 <div class="page page-interior">
   <div class="chapter-header">
+    <div class="ch-img" style="background-image:url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1400&q=80')"></div>
     <div class="chapter-number">Section 02</div>
     <div class="chapter-title">Methodology</div>
     <div class="chapter-subtitle">Index construction, dimensional weights, data sources &amp; scoring methodology</div>
@@ -1523,6 +1588,7 @@ td.dim-score {
      ═══════════════════════════════════════════════════════════════════ -->
 <div class="page page-interior">
   <div class="chapter-header">
+    <div class="ch-img" style="background-image:url('https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=1400&q=80')"></div>
     <div class="chapter-number">Section 3</div>
     <div class="chapter-title">Global Vulnerability Rankings</div>
     <div class="chapter-subtitle">195 Countries &middot; Composite GVI Score 1&ndash;10 &middot; 2027 Edition</div>
@@ -4871,6 +4937,7 @@ td.dim-score {
      ═══════════════════════════════════════════════════════════════════ -->
 <div class="page page-interior">
   <div class="chapter-header">
+    <div class="ch-img" style="background-image:url('https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1400&q=80')"></div>
     <div class="chapter-number">Section 4</div>
     <div class="chapter-title">Regional Analysis</div>
     <div class="chapter-subtitle">Six Global Regions &middot; Vulnerability Patterns &middot; WDC Priority Interventions</div>
@@ -5026,6 +5093,7 @@ td.dim-score {
      ═══════════════════════════════════════════════════════════════════ -->
 <div class="page page-interior">
   <div class="chapter-header">
+    <div class="ch-img" style="background-image:url('https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=1400&q=80')"></div>
     <div class="chapter-number">Section 5</div>
     <div class="chapter-title">Thematic Vulnerability Analysis</div>
     <div class="chapter-subtitle">11 WDC PROTECT Campaign Dimensions &middot; Cross-Country Rankings &middot; 2027 Targets</div>
@@ -5172,6 +5240,7 @@ td.dim-score {
      ═══════════════════════════════════════════════════════════════════ -->
 <div class="page page-interior">
   <div class="chapter-header">
+    <div class="ch-img" style="background-image:url('https://images.unsplash.com/photo-1578496479914-7ef3b0193be3?auto=format&fit=crop&w=1400&q=80')"></div>
     <div class="chapter-number">Section 6</div>
     <div class="chapter-title">Country Profiles — Top 20</div>
     <div class="chapter-subtitle">Critical &amp; Upper-Severe Tier Countries &middot; Full Vulnerability Breakdown &middot; WDC Priority Actions</div>
@@ -6735,6 +6804,7 @@ td.dim-score {
      ═══════════════════════════════════════════════════════════════════ -->
 <div class="page page-interior">
   <div class="chapter-header">
+    <div class="ch-img" style="background-image:url('https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1400&q=80')"></div>
     <div class="chapter-number">Section 7</div>
     <div class="chapter-title">Policy Recommendations</div>
     <div class="chapter-subtitle">Evidence-Based Action Framework &middot; Five Stakeholder Categories &middot; 2027&ndash;2030 Horizon</div>
@@ -6815,6 +6885,7 @@ td.dim-score {
      ═══════════════════════════════════════════════════════════════════ -->
 <div class="page page-interior">
   <div class="chapter-header">
+    <div class="ch-img" style="background-image:url('https://images.unsplash.com/photo-1543286386-713bdd548da4?auto=format&fit=crop&w=1400&q=80')"></div>
     <div class="chapter-number">Section 8</div>
     <div class="chapter-title">Appendix</div>
     <div class="chapter-subtitle">Glossary &bull; Data Sources &bull; Methodology Notes &bull; WDC Contact Information</div>
