@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WDC Global Vulnerability Index 2027</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%; height: 100%;
+  background: #0a0a18;
+  overflow: hidden;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* ── Loading screen ── */
+#loading {
+  position: fixed; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: #0a0a18; z-index: 9999;
+  gap: 20px; color: #fff;
+}
+#loading-bar-wrap {
+  width: 260px; height: 4px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 4px; overflow: hidden;
+}
+#loading-bar {
+  height: 100%; width: 0%;
+  background: #009EDB;
+  border-radius: 4px;
+  transition: width 0.2s ease;
+}
+#loading-label {
+  font-size: 12px; color: rgba(255,255,255,0.45);
+  letter-spacing: 0.08em;
+}
+
+/* ── Flipbook container ── */
+#flip-wrap {
+  width: 100vw; height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+}
+#gvi-book {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Page canvases ── */
+.pdf-page {
+  background: #fff;
+  overflow: hidden;
+}
+.pdf-page canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* ── Bottom navigation pill ── */
+#book-nav {
+  position: fixed; bottom: 20px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 9998;
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(5, 8, 22, 0.85);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 40px;
+  padding: 7px 14px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  user-select: none;
+}
+.nav-btn {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.07);
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s, border-color 0.15s;
+  line-height: 1;
+}
+.nav-btn:hover  { background: rgba(0,158,219,0.35); border-color: #009EDB88; }
+.nav-btn:disabled { opacity: 0.22; cursor: default; }
+#page-counter {
+  font-size: 11px; color: rgba(255,255,255,0.6);
+  letter-spacing: 0.07em; min-width: 60px; text-align: center;
+}
+
+/* ── Click zones ── */
+.flip-zone {
+  position: fixed; top: 0; height: 100vh;
+  width: 18%; z-index: 200; cursor: pointer; opacity: 0;
+}
+#zone-prev { left: 0; }
+#zone-next { right: 0; }
+</style>
+</head>
+<body>
+
+<!-- Loading -->
+<div id="loading">
+  <svg width="42" height="42" viewBox="0 0 42 42" fill="none">
+    <circle cx="21" cy="21" r="19" stroke="#009EDB" stroke-width="2" stroke-dasharray="4 3" opacity="0.3"/>
+    <circle cx="21" cy="21" r="10" fill="#009EDB" opacity="0.15"/>
+    <circle cx="21" cy="21" r="5" fill="#009EDB"/>
+  </svg>
+  <div id="loading-bar-wrap"><div id="loading-bar"></div></div>
+  <span id="loading-label">Loading GVI 2027 Report…</span>
+</div>
+
+<!-- Click zones -->
+<div class="flip-zone" id="zone-prev"></div>
+<div class="flip-zone" id="zone-next"></div>
+
+<!-- Flipbook -->
+<div id="flip-wrap">
+  <div id="gvi-book"></div>
+</div>
+
+<!-- Navigation -->
+<div id="book-nav" style="display:none">
+  <button class="nav-btn" id="btn-prev">&#8249;</button>
+  <span id="page-counter">… / …</span>
+  <button class="nav-btn" id="btn-next">&#8250;</button>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+<script>
+(async function () {
+  const PDF_URL    = '/gvi-2027.pdf';
+  const SCALE      = 2;          // render at 2× for crisp display
+  const PAGE_W     = 794;        // A4 @ 96 dpi
+  const PAGE_H     = 1123;
+
+  const loadingEl  = document.getElementById('loading');
+  const barEl      = document.getElementById('loading-bar');
+  const labelEl    = document.getElementById('loading-label');
+  const bookEl     = document.getElementById('gvi-book');
+  const navEl      = document.getElementById('book-nav');
+  const counter    = document.getElementById('page-counter');
+  const btnPrev    = document.getElementById('btn-prev');
+  const btnNext    = document.getElementById('btn-next');
+  const zonePrev   = document.getElementById('zone-prev');
+  const zoneNext   = document.getElementById('zone-next');
+
+  // ── PDF.js setup ──────────────────────────────────────────────────────────
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+  labelEl.textContent = 'Loading PDF…';
+  const pdf = await pdfjsLib.getDocument(PDF_URL).promise;
+  const numPages = pdf.numPages;
+
+  // ── Render all pages to canvas divs ───────────────────────────────────────
+  const pageDivs = [];
+
+  for (let i = 1; i <= numPages; i++) {
+    barEl.style.width = ((i / numPages) * 90) + '%';
+    labelEl.textContent = `Rendering page ${i} of ${numPages}…`;
+
+    const pdfPage  = await pdf.getPage(i);
+    const viewport = pdfPage.getViewport({ scale: SCALE });
+
+    const canvas   = document.createElement('canvas');
+    canvas.width   = viewport.width;
+    canvas.height  = viewport.height;
+
+    await pdfPage.render({
+      canvasContext: canvas.getContext('2d'),
+      viewport,
+    }).promise;
+
+    const div = document.createElement('div');
+    div.className = 'pdf-page';
+    div.appendChild(canvas);
+    bookEl.appendChild(div);
+    pageDivs.push(div);
+  }
+
+  barEl.style.width = '100%';
+  labelEl.textContent = 'Opening book…';
+
+  // ── StPageFlip init ───────────────────────────────────────────────────────
+  await new Promise(r => setTimeout(r, 300));
+
+  const pf = new St.PageFlip(bookEl, {
+    width:  PAGE_W,
+    height: PAGE_H,
+    size: 'stretch',
+    minWidth: 280, maxWidth: 1600,
+    minHeight: 380, maxHeight: 2200,
+    maxShadowOpacity: 0.6,
+    showCover: true,
+    mobileScrollSupport: true,
+    clickEventForward: false,
+    useMouseEvents: true,
+    swipeDistance: 20,
+    showPageCorners: true,
+    disableFlipByClick: false,
+    autoSize: true,
+    drawShadow: true,
+    flippingTime: 650,
+    startPage: 0,
+  });
+
+  pf.loadFromHTML(pageDivs);
+  window._pf = pf;
+
+  function updateUI(idx) {
+    counter.textContent = (idx + 1) + ' / ' + numPages;
+    btnPrev.disabled = idx === 0;
+    btnNext.disabled = idx >= numPages - 1;
+    try {
+      window.parent.postMessage({ type: 'gvi_state', page: idx, total: numPages }, '*');
+    } catch(e) {}
+  }
+
+  pf.on('flip', e => updateUI(e.data));
+  pf.on('init',  e => {
+    loadingEl.style.opacity = '0';
+    loadingEl.style.transition = 'opacity 0.4s';
+    setTimeout(() => { loadingEl.style.display = 'none'; }, 450);
+    navEl.style.display = 'flex';
+    updateUI(0);
+  });
+
+  btnPrev.onclick  = () => pf.flipPrev();
+  btnNext.onclick  = () => pf.flipNext();
+  zonePrev.onclick = () => pf.flipPrev();
+  zoneNext.onclick = () => pf.flipNext();
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') pf.flipNext();
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   pf.flipPrev();
+  });
+
+  // postMessage bridge for React wrapper
+  window.addEventListener('message', e => {
+    const d = e.data;
+    if (!d || d.source !== 'gvi_reader') return;
+    if (d.type === 'go')   pf.flip(d.page);
+    if (d.type === 'prev') pf.flipPrev();
+    if (d.type === 'next') pf.flipNext();
+    if (d.type === 'init') updateUI(pf.getCurrentPageIndex());
+  });
+})();
+</script>
+</body>
+</html>

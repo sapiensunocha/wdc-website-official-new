@@ -4,13 +4,13 @@ import { X, Download, BookOpen } from "lucide-react";
 export default function GVIBookReader({ onClose }) {
   const iframeRef = useRef(null);
   const [page, setPage] = useState(0);
-  const [total, setTotal] = useState(10);
+  const [total, setTotal] = useState(34);
 
   useEffect(() => {
     function onMsg(e) {
       if (e.data?.type === "gvi_state") {
         setPage(e.data.page ?? 0);
-        setTotal(e.data.total ?? 10);
+        setTotal(e.data.total ?? 34);
       }
     }
     window.addEventListener("message", onMsg);
@@ -18,18 +18,14 @@ export default function GVIBookReader({ onClose }) {
   }, []);
 
   useEffect(() => {
-    function onKey(e) {
-      if (e.key === "Escape") onClose();
-    }
+    function onKey(e) { if (e.key === "Escape") onClose(); }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
   return (
-    <div
-      className="fixed inset-0 z-[9999] flex flex-col"
-      style={{ background: "#08081a" }}
-    >
+    <div className="fixed inset-0 z-[9999] flex flex-col" style={{ background: "#08081a" }}>
+
       {/* ── Top bar ── */}
       <div
         className="flex items-center justify-between px-4 py-2 shrink-0"
@@ -47,12 +43,12 @@ export default function GVIBookReader({ onClose }) {
 
         <div className="flex items-center gap-2">
           <a
-            href="/gvi-2027.html"
-            download="WDC-Global-Vulnerability-Index-2027.html"
+            href="/gvi-2027.pdf"
+            download="WDC-Global-Vulnerability-Index-2027.pdf"
             className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold transition-all hover:opacity-80"
             style={{ background: "#009EDB22", border: "1px solid #009EDB44", color: "#009EDB" }}
           >
-            <Download size={11} /> Download
+            <Download size={11} /> Download PDF
           </a>
           <button
             onClick={onClose}
@@ -64,13 +60,13 @@ export default function GVIBookReader({ onClose }) {
         </div>
       </div>
 
-      {/* ── Full-screen iframe — StPageFlip runs inside ── */}
+      {/* ── PDF Flipbook ── */}
       <iframe
         ref={iframeRef}
-        src="/gvi-2027.html"
+        src="/gvi-reader.html"
         title="WDC GVI 2027"
         className="flex-1 w-full border-0"
-        style={{ background: "#0d0d1a" }}
+        style={{ background: "#0a0a18" }}
       />
     </div>
   );

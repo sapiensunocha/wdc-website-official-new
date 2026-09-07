@@ -359,8 +359,8 @@ export default function CampaignsHub() {
                   <BookOpen size={16} /> Read the Report
                 </button>
                 <a
-                  href="/gvi-2027.html"
-                  download="WDC-Global-Vulnerability-Index-2027.html"
+                  href="/gvi-2027.pdf"
+                  download="WDC-Global-Vulnerability-Index-2027.pdf"
                   className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:-translate-y-0.5"
                   style={{
                     background: "rgba(255,255,255,0.06)",
