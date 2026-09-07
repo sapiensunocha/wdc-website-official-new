@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Shield } from "lucide-react";
+import { ArrowRight, Shield, BookOpen, Globe, TrendingUp, FileText } from "lucide-react";
 import SEOMeta from "../../components/SEOMeta";
 import AnimateIn from "../../components/AnimateIn";
 import { WDC_CAMPAIGNS, PARTNER_TYPES } from "../../assets/data/campaigns";
 import HumanitarianIcon from "../../components/HumanitarianIcon";
+import GVIBookReader from "../../components/GVIBookReader";
 
 // ─── Campaign card ────────────────────────────────────────────────────────────
 function CampaignCard({ c, index }) {
@@ -11,29 +13,83 @@ function CampaignCard({ c, index }) {
     <AnimateIn variant="fadeUp" delay={0.04 * index}>
       <Link
         to={`/campaigns/${c.slug}`}
-        className="group block bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+        className="group block rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 relative"
+        style={{ minHeight: 280 }}
       >
-        {/* Color top bar */}
-        <div className="h-1.5 w-full transition-all duration-300" style={{ backgroundColor: c.color }} />
+        {/* Background image layer */}
+        <div className="absolute inset-0">
+          <img
+            src={c.heroImage}
+            alt=""
+            className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+            style={{ filter: "saturate(0.55) brightness(0.3)" }}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+          {/* Dark-to-accent gradient overlay */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: `linear-gradient(160deg, rgba(0,5,18,0.72) 0%, rgba(0,5,18,0.82) 55%, ${c.color}28 100%)`,
+            }}
+          />
+          {/* Campaign accent top stripe */}
+          <div className="absolute top-0 left-0 right-0 h-0.5 z-10" style={{ backgroundColor: c.color }} />
+        </div>
 
-        <div className={`bg-gradient-to-br ${c.gradFrom} ${c.gradTo} px-5 pt-5 pb-4`}>
-          <div className="flex items-start justify-between gap-3">
-            <div className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center shrink-0"
-              style={{ color: c.color }}>
+        {/* Glass content layer */}
+        <div className="relative z-10 p-5 h-full flex flex-col" style={{ minHeight: 280 }}>
+          {/* Icon + badge */}
+          <div className="flex items-start justify-between gap-3 mb-4">
+            <div
+              className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-105"
+              style={{
+                background: "rgba(255,255,255,0.10)",
+                backdropFilter: "blur(12px)",
+                WebkitBackdropFilter: "blur(12px)",
+                border: `1px solid ${c.color}55`,
+                color: "white",
+              }}
+            >
               <HumanitarianIcon icon={c.emoji} size={22} />
             </div>
-            <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full ${c.badgeBg} ${c.badgeText} shrink-0 mt-1`}>
+            <span
+              className="text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full shrink-0 mt-1"
+              style={{
+                background: "rgba(255,255,255,0.10)",
+                backdropFilter: "blur(8px)",
+                WebkitBackdropFilter: "blur(8px)",
+                border: `1px solid ${c.color}40`,
+                color: c.color,
+              }}
+            >
               PROTECT
             </span>
           </div>
-          <h3 className="text-base font-black text-[#1C2B39] mt-3 leading-tight group-hover:text-opacity-80">{c.title}</h3>
-          <p className="text-xs text-gray-500 mt-1 leading-snug">{c.tagline}</p>
-        </div>
 
-        <div className="px-5 py-4">
-          <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">{c.shortDesc}</p>
-          <div className="mt-3 flex items-center gap-1.5 text-xs font-bold" style={{ color: c.color }}>
-            Explore Campaign <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+          {/* Title + tagline */}
+          <h3 className="text-base font-black text-white leading-tight mb-1.5 group-hover:opacity-90 transition-opacity">
+            {c.title}
+          </h3>
+          <p className="text-[11px] leading-snug mb-3" style={{ color: `${c.color}cc` }}>
+            {c.tagline}
+          </p>
+
+          {/* Short desc */}
+          <p className="text-[11px] text-white/50 leading-relaxed line-clamp-2 flex-1">
+            {c.shortDesc}
+          </p>
+
+          {/* CTA */}
+          <div
+            className="mt-4 pt-3 flex items-center gap-1.5 text-xs font-bold"
+            style={{
+              borderTop: "1px solid rgba(255,255,255,0.10)",
+              color: c.color,
+            }}
+          >
+            Explore Campaign{" "}
+            <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
           </div>
         </div>
       </Link>
@@ -43,6 +99,8 @@ function CampaignCard({ c, index }) {
 
 // ─── Hub page ─────────────────────────────────────────────────────────────────
 export default function CampaignsHub() {
+  const [gviOpen, setGviOpen] = useState(false);
+
   return (
     <>
       <SEOMeta
@@ -95,12 +153,12 @@ export default function CampaignsHub() {
       </section>
 
       {/* ── 11 Campaign Families ── */}
-      <section className="bg-[#f8fafc] py-20">
+      <section className="bg-[#0a1628] py-20">
         <div className="container">
           <AnimateIn variant="fadeUp">
             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#009EDB] mb-2">11 Campaign Families</p>
-            <h2 className="text-3xl font-black text-[#1C2B39] mb-2">WDC PROTECT Campaign Platform</h2>
-            <p className="text-gray-500 mb-10 max-w-2xl text-sm leading-relaxed">
+            <h2 className="text-3xl font-black text-white mb-2">WDC PROTECT Campaign Platform</h2>
+            <p className="text-white/50 mb-10 max-w-2xl text-sm leading-relaxed">
               Each campaign targets a distinct form of vulnerability — but all share a common identity, a common methodology, and a common institutional promise. Click any campaign to explore its intelligence, outputs, and partnership opportunities.
             </p>
           </AnimateIn>
@@ -118,7 +176,7 @@ export default function CampaignsHub() {
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <AnimateIn variant="fadeLeft">
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#009EDB] mb-2">Coming 2026</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#009EDB] mb-2">Nostradamus · 2027 Edition</p>
               <h2 className="text-3xl font-black mb-4">WDC Global Vulnerability Index</h2>
               <p className="text-gray-300 leading-relaxed mb-5">
                 Every year, WDC will identify the populations most exposed to different forms of crisis — and publish the evidence globally. This is where WDC's model becomes much more sophisticated.
@@ -227,12 +285,103 @@ export default function CampaignsHub() {
         </div>
       </section>
 
+      {/* ── GVI 2027 Book Section ── */}
+      <section
+        className="relative py-20 overflow-hidden"
+        style={{ background: "linear-gradient(135deg, #050a19 0%, #0a1628 60%, #0d1f3c 100%)" }}
+      >
+        {/* Decorative grid */}
+        <div
+          className="absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage:
+              "linear-gradient(#009EDB 1px, transparent 1px), linear-gradient(90deg, #009EDB 1px, transparent 1px)",
+            backgroundSize: "48px 48px",
+          }}
+        />
+        {/* Glow */}
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full pointer-events-none"
+          style={{ background: "radial-gradient(ellipse, #009EDB18 0%, transparent 70%)" }}
+        />
+
+        <div className="container relative z-10">
+          <AnimateIn variant="fadeUp">
+            <div className="max-w-4xl mx-auto">
+              {/* Label */}
+              <div className="flex items-center gap-2 mb-6 justify-center">
+                <div
+                  className="w-8 h-8 rounded-lg flex items-center justify-center"
+                  style={{ background: "#009EDB22", border: "1px solid #009EDB55" }}
+                >
+                  <BookOpen size={16} className="text-[#009EDB]" />
+                </div>
+                <span className="text-[10px] font-black uppercase tracking-[0.25em] text-[#009EDB]">
+                  WDC Intelligence Report · 2027 Edition
+                </span>
+              </div>
+
+              {/* Heading */}
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white text-center leading-tight mb-4">
+                Global Vulnerability<br />
+                <span style={{ color: "#009EDB" }}>Index 2027</span>
+              </h2>
+              <p className="text-center text-white/50 text-sm sm:text-base max-w-2xl mx-auto mb-10 leading-relaxed">
+                WDC's landmark annual intelligence report — codenamed <strong className="text-white/70">Nostradamus</strong> — ranks all 194 countries across 10 dimensions of vulnerability: conflict, climate, food, health, displacement, poverty, governance, gender, digital access, and disaster exposure.
+              </p>
+
+              {/* Stat trio */}
+              <div className="grid grid-cols-3 gap-4 max-w-xl mx-auto mb-10">
+                {[
+                  { icon: Globe, value: "194", label: "Countries Ranked" },
+                  { icon: TrendingUp, value: "10", label: "Dimensions" },
+                  { icon: FileText, value: "18", label: "Report Pages" },
+                ].map(({ icon: Icon, value, label }) => (
+                  <div
+                    key={label}
+                    className="rounded-xl p-4 text-center"
+                    style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}
+                  >
+                    <Icon size={18} className="text-[#009EDB] mx-auto mb-2" />
+                    <p className="text-xl font-black text-white">{value}</p>
+                    <p className="text-[10px] text-white/40 uppercase tracking-wider">{label}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA */}
+              <div className="flex flex-wrap justify-center gap-4">
+                <button
+                  onClick={() => setGviOpen(true)}
+                  className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:shadow-lg hover:-translate-y-0.5"
+                  style={{ background: "#009EDB", color: "#fff" }}
+                >
+                  <BookOpen size={16} /> Read the Report
+                </button>
+                <a
+                  href="/gvi-2027.html"
+                  download="WDC-Global-Vulnerability-Index-2027.html"
+                  className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:-translate-y-0.5"
+                  style={{
+                    background: "rgba(255,255,255,0.06)",
+                    border: "1px solid rgba(255,255,255,0.12)",
+                    color: "white",
+                  }}
+                >
+                  <FileText size={16} /> Download
+                </a>
+              </div>
+            </div>
+          </AnimateIn>
+        </div>
+      </section>
+
       {/* ── All campaigns CTA ── */}
-      <section className="bg-[#f8fafc] py-14">
+      <section className="bg-[#0a1628] py-14 border-t border-white/5">
         <div className="container text-center">
           <AnimateIn variant="fadeUp">
-            <h2 className="text-2xl font-black text-[#1C2B39] mb-3">Choose a Campaign</h2>
-            <p className="text-gray-500 mb-8 max-w-lg mx-auto text-sm">
+            <h2 className="text-2xl font-black text-white mb-3">Choose a Campaign</h2>
+            <p className="text-white/50 mb-8 max-w-lg mx-auto text-sm">
               Every campaign produces data, reports, policy briefs, and measurable outcomes. Explore any campaign to see who is vulnerable, what WDC does, and how to get involved.
             </p>
             <div className="flex flex-wrap justify-center gap-2">
@@ -250,6 +399,9 @@ export default function CampaignsHub() {
           </AnimateIn>
         </div>
       </section>
+
+      {/* ── GVI Book Reader modal ── */}
+      {gviOpen && <GVIBookReader onClose={() => setGviOpen(false)} />}
     </>
   );
 }
