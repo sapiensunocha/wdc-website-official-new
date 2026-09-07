@@ -59,22 +59,7 @@ body {
   background: #fff;
 }
 
-/* Watermark on interior pages */
-.page-interior::before {
-  content: "DRAFT — CONFIDENTIAL";
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(-45deg);
-  font-size: 72pt;
-  font-family: 'Barlow', sans-serif;
-  font-weight: 900;
-  color: rgba(0, 158, 219, 0.04);
-  pointer-events: none;
-  z-index: 0;
-  white-space: nowrap;
-  letter-spacing: 0.05em;
-}
+/* watermark removed */
 
 /* =============================================
    COVER PAGE
@@ -1054,11 +1039,7 @@ td.dim-score {
     min-height: auto;
   }
 
-  .page-interior::before {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-  }
+  /* print watermark removed */
 
   .chapter-header {
     page-break-before: always;
@@ -1284,6 +1265,34 @@ body {
   margin: 0 !important;
 }
 
+
+@media print {
+  .cover-page {
+    width: 21cm !important;
+    height: 29.7cm !important;
+    min-height: 29.7cm !important;
+    margin: 0 !important;
+    page-break-after: always;
+  }
+  .cover-inner {
+    min-height: 29.7cm !important;
+    height: 100% !important;
+  }
+  .page {
+    width: 21cm !important;
+    min-height: 29.7cm !important;
+    height: auto !important;
+    margin: 0 !important;
+    page-break-after: always;
+    overflow: visible !important;
+  }
+  .chapter-header {
+    page-break-inside: avoid;
+  }
+  #book-nav, #flip-prev-zone, #flip-next-zone { display: none !important; }
+  .page-interior::before { display: none !important; content: none !important; }
+}
+
 </style>
 </head>
 <body>
@@ -1359,7 +1368,7 @@ body {
       </div>
       <div class="cover-footer-right">
         Published: January 2027<br>
-        Version 1.0 &mdash; DRAFT CONFIDENTIAL<br>
+        Version 1.0 &mdash; 2027 Edition<br>
         &copy; 2027 World Disaster Center
       </div>
     </div>
@@ -1482,7 +1491,7 @@ body {
 
   <div class="page-footer">
     <span>WDC Global Vulnerability Index 2027</span>
-    <span class="page-footer-center">DRAFT &mdash; CONFIDENTIAL</span>
+    <span class="page-footer-center">WDC &mdash; Global Intelligence Division</span>
     <span>Table of Contents &mdash; p. 2</span>
   </div>
 </div>
@@ -1597,7 +1606,7 @@ body {
 
   <div class="page-footer">
     <span>WDC Global Vulnerability Index 2027</span>
-    <span class="page-footer-center">DRAFT &mdash; CONFIDENTIAL</span>
+    <span class="page-footer-center">WDC &mdash; Global Intelligence Division</span>
     <span>Executive Summary &mdash; p. 3&ndash;4</span>
   </div>
 </div>
@@ -1767,7 +1776,7 @@ body {
 
   <div class="page-footer">
     <span>WDC Global Vulnerability Index 2027</span>
-    <span class="page-footer-center">DRAFT &mdash; CONFIDENTIAL</span>
+    <span class="page-footer-center">WDC &mdash; Global Intelligence Division</span>
     <span>Methodology &mdash; p. 5&ndash;6</span>
   </div>
 </div>
@@ -1935,7 +1944,7 @@ body {
 
   <div class="page-footer">
     <span>WDC Global Vulnerability Index 2027</span>
-    <span class="page-footer-center">DRAFT &mdash; CONFIDENTIAL</span>
+    <span class="page-footer-center">WDC &mdash; Global Intelligence Division</span>
     <span>Rankings #1–#18</span>
   </div>
 </div>
@@ -2159,7 +2168,7 @@ body {
 
   <div class="page-footer">
     <span>WDC Global Vulnerability Index 2027</span>
-    <span class="page-footer-center">DRAFT &mdash; CONFIDENTIAL</span>
+    <span class="page-footer-center">WDC &mdash; Global Intelligence Division</span>
     <span>Rankings #19–#46</span>
   </div>
 </div>
@@ -2383,7 +2392,7 @@ body {
 
   <div class="page-footer">
     <span>WDC Global Vulnerability Index 2027</span>
-    <span class="page-footer-center">DRAFT &mdash; CONFIDENTIAL</span>
+    <span class="page-footer-center">WDC &mdash; Global Intelligence Division</span>
     <span>Rankings #47–#74</span>
   </div>
 </div>
@@ -2607,7 +2616,7 @@ body {
 
   <div class="page-footer">
     <span>WDC Global Vulnerability Index 2027</span>
-    <span class="page-footer-center">DRAFT &mdash; CONFIDENTIAL</span>
+    <span class="page-footer-center">WDC &mdash; Global Intelligence Division</span>
     <span>Rankings #75–#102</span>
   </div>
 </div>
@@ -2831,7 +2840,7 @@ body {
 
   <div class="page-footer">
     <span>WDC Global Vulnerability Index 2027</span>
-    <span class="page-footer-center">DRAFT &mdash; CONFIDENTIAL</span>
+    <span class="page-footer-center">WDC &mdash; Global Intelligence Division</span>
     <span>Rankings #103–#130</span>
   </div>
 </div>
@@ -3055,7 +3064,7 @@ body {
 
   <div class="page-footer">
     <span>WDC Global Vulnerability Index 2027</span>
-    <span class="page-footer-center">DRAFT &mdash; CONFIDENTIAL</span>
+    <span class="page-footer-center">WDC &mdash; Global Intelligence Division</span>
     <span>Rankings #131–#158</span>
   </div>
 </div>
@@ -3279,7 +3288,7 @@ body {
 
   <div class="page-footer">
     <span>WDC Global Vulnerability Index 2027</span>
-    <span class="page-footer-center">DRAFT &mdash; CONFIDENTIAL</span>
+    <span class="page-footer-center">WDC &mdash; Global Intelligence Division</span>
     <span>Rankings #159–#186</span>
   </div>
 </div>
@@ -3365,7 +3374,7 @@ body {
 
   <div class="page-footer">
     <span>WDC Global Vulnerability Index 2027</span>
-    <span class="page-footer-center">DRAFT &mdash; CONFIDENTIAL</span>
+    <span class="page-footer-center">WDC &mdash; Global Intelligence Division</span>
     <span>Rankings #187–#194</span>
   </div>
 </div>
@@ -3518,7 +3527,7 @@ body {
 
   <div class="page-footer">
     <span>WDC Global Vulnerability Index 2027</span>
-    <span class="page-footer-center">DRAFT &mdash; CONFIDENTIAL</span>
+    <span class="page-footer-center">WDC &mdash; Global Intelligence Division</span>
     <span>Regional Analysis &mdash; p. 15&ndash;22</span>
   </div>
 </div>
@@ -3665,7 +3674,7 @@ body {
 
   <div class="page-footer">
     <span>WDC Global Vulnerability Index 2027</span>
-    <span class="page-footer-center">DRAFT &mdash; CONFIDENTIAL</span>
+    <span class="page-footer-center">WDC &mdash; Global Intelligence Division</span>
     <span>Thematic Analysis &mdash; p. 23&ndash;34</span>
   </div>
 </div>
@@ -3696,7 +3705,7 @@ body {
           </div>
   <div class="page-footer">
     <span>WDC Global Vulnerability Index 2027</span>
-    <span class="page-footer-center">DRAFT &mdash; CONFIDENTIAL</span>
+    <span class="page-footer-center">WDC &mdash; Global Intelligence Division</span>
     <span>Country Profile: 1 of 20</span>
   </div>
 </div>
@@ -3728,7 +3737,7 @@ body {
           </div>
   <div class="page-footer">
     <span>WDC Global Vulnerability Index 2027</span>
-    <span class="page-footer-center">DRAFT &mdash; CONFIDENTIAL</span>
+    <span class="page-footer-center">WDC &mdash; Global Intelligence Division</span>
     <span>Profiles #2–#3</span>
   </div>
 
@@ -3761,7 +3770,7 @@ body {
           </div>
   <div class="page-footer">
     <span>WDC Global Vulnerability Index 2027</span>
-    <span class="page-footer-center">DRAFT &mdash; CONFIDENTIAL</span>
+    <span class="page-footer-center">WDC &mdash; Global Intelligence Division</span>
     <span>Profiles #4–#5</span>
   </div>
 
@@ -3794,7 +3803,7 @@ body {
           </div>
   <div class="page-footer">
     <span>WDC Global Vulnerability Index 2027</span>
-    <span class="page-footer-center">DRAFT &mdash; CONFIDENTIAL</span>
+    <span class="page-footer-center">WDC &mdash; Global Intelligence Division</span>
     <span>Profiles #6–#7</span>
   </div>
 
@@ -3827,7 +3836,7 @@ body {
           </div>
   <div class="page-footer">
     <span>WDC Global Vulnerability Index 2027</span>
-    <span class="page-footer-center">DRAFT &mdash; CONFIDENTIAL</span>
+    <span class="page-footer-center">WDC &mdash; Global Intelligence Division</span>
     <span>Profiles #8–#9</span>
   </div>
 
@@ -3860,7 +3869,7 @@ body {
           </div>
   <div class="page-footer">
     <span>WDC Global Vulnerability Index 2027</span>
-    <span class="page-footer-center">DRAFT &mdash; CONFIDENTIAL</span>
+    <span class="page-footer-center">WDC &mdash; Global Intelligence Division</span>
     <span>Profiles #10–#11</span>
   </div>
 
@@ -3893,7 +3902,7 @@ body {
           </div>
   <div class="page-footer">
     <span>WDC Global Vulnerability Index 2027</span>
-    <span class="page-footer-center">DRAFT &mdash; CONFIDENTIAL</span>
+    <span class="page-footer-center">WDC &mdash; Global Intelligence Division</span>
     <span>Profiles #12–#13</span>
   </div>
 
@@ -3926,7 +3935,7 @@ body {
           </div>
   <div class="page-footer">
     <span>WDC Global Vulnerability Index 2027</span>
-    <span class="page-footer-center">DRAFT &mdash; CONFIDENTIAL</span>
+    <span class="page-footer-center">WDC &mdash; Global Intelligence Division</span>
     <span>Profiles #14–#15</span>
   </div>
 
@@ -3959,7 +3968,7 @@ body {
           </div>
   <div class="page-footer">
     <span>WDC Global Vulnerability Index 2027</span>
-    <span class="page-footer-center">DRAFT &mdash; CONFIDENTIAL</span>
+    <span class="page-footer-center">WDC &mdash; Global Intelligence Division</span>
     <span>Profiles #16–#17</span>
   </div>
 
@@ -3992,7 +4001,7 @@ body {
           </div>
   <div class="page-footer">
     <span>WDC Global Vulnerability Index 2027</span>
-    <span class="page-footer-center">DRAFT &mdash; CONFIDENTIAL</span>
+    <span class="page-footer-center">WDC &mdash; Global Intelligence Division</span>
     <span>Profiles #18–#19</span>
   </div>
 
@@ -4017,7 +4026,7 @@ body {
 
 <div class="page-footer">
     <span>WDC Global Vulnerability Index 2027</span>
-    <span class="page-footer-center">DRAFT &mdash; CONFIDENTIAL</span>
+    <span class="page-footer-center">WDC &mdash; Global Intelligence Division</span>
     <span>Country Profiles &mdash; p. 35&ndash;54</span>
   </div>
 
@@ -4096,7 +4105,7 @@ body {
 
   <div class="page-footer">
     <span>WDC Global Vulnerability Index 2027</span>
-    <span class="page-footer-center">DRAFT &mdash; CONFIDENTIAL</span>
+    <span class="page-footer-center">WDC &mdash; Global Intelligence Division</span>
     <span>Policy Recommendations &mdash; p. 55&ndash;58</span>
   </div>
 </div>
@@ -4178,7 +4187,7 @@ body {
 
   <div class="page-footer">
     <span>WDC Global Vulnerability Index 2027</span>
-    <span class="page-footer-center">DRAFT &mdash; CONFIDENTIAL</span>
+    <span class="page-footer-center">WDC &mdash; Global Intelligence Division</span>
     <span>Appendix &mdash; p. 59&ndash;62</span>
   </div>
 </div>
