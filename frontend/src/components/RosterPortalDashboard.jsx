@@ -418,20 +418,20 @@ export default function RosterPortalDashboard({ onClose }) {
 
       {/* ── Header ── */}
       <div style={{ background: D.bg, borderBottom: `1px solid ${D.border}`, padding: "14px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{ background: "#f0fdf4", borderRadius: 8, padding: 7 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", flex: 1, minWidth: 0 }}>
+          <div style={{ background: "#f0fdf4", borderRadius: 8, padding: 7, flexShrink: 0 }}>
             <Shield size={15} style={{ color: "#1A7644" }} />
           </div>
-          <div>
+          <div style={{ minWidth: 0 }}>
             <h3 style={{ fontSize: 14, fontWeight: 900, color: D.textPri, margin: 0, lineHeight: 1.2 }}>Global Disaster Roster Portal</h3>
             <p style={{ fontSize: 11, color: D.textSec, margin: 0, marginTop: 2 }}>Vetted humanitarian professionals ready for rapid deployment</p>
           </div>
-          <span style={{ fontSize: 11, background: "#f0fdf4", border: "1px solid #bbf7d0", color: "#16a34a", borderRadius: 20, padding: "3px 10px", fontWeight: 700, display: "flex", alignItems: "center", gap: 5 }}>
+          <span style={{ fontSize: 11, background: "#f0fdf4", border: "1px solid #bbf7d0", color: "#16a34a", borderRadius: 20, padding: "3px 10px", fontWeight: 700, display: "flex", alignItems: "center", gap: 5, flexShrink: 0 }}>
             <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#16a34a", display: "inline-block" }} />
             {loading ? "Loading…" : `${members.length} Resources Live`}
           </span>
         </div>
-        <button onClick={onClose} style={{ background: D.bgSubtle, border: `1px solid ${D.border}`, borderRadius: 8, padding: "6px 12px", color: D.textSec, cursor: "pointer", fontSize: 12, fontWeight: 600, display: "flex", alignItems: "center", gap: 5 }}>
+        <button onClick={onClose} style={{ background: D.bgSubtle, border: `1px solid ${D.border}`, borderRadius: 8, padding: "6px 12px", color: D.textSec, cursor: "pointer", fontSize: 12, fontWeight: 600, display: "flex", alignItems: "center", gap: 5, flexShrink: 0 }}>
           <ChevronDown size={14} /> Collapse
         </button>
       </div>
@@ -462,7 +462,7 @@ export default function RosterPortalDashboard({ onClose }) {
         </div>
 
         {/* ── World Map + Top Countries ── */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 260px", gap: 12 }}>
+        <div className="roster-map-grid" style={{ display: "grid", gridTemplateColumns: "1fr 260px", gap: 12 }}>
           <div style={cardStyle}>
             <div style={{ padding: "12px 16px", borderBottom: `1px solid ${D.border}`, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div>
@@ -500,7 +500,7 @@ export default function RosterPortalDashboard({ onClose }) {
         </div>
 
         {/* ── Timeline + Status donut ── */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 280px", gap: 12 }}>
+        <div className="roster-timeline-grid" style={{ display: "grid", gridTemplateColumns: "1fr 280px", gap: 12 }}>
           <div style={cardStyle}>
             <div style={{ padding: "12px 16px", borderBottom: `1px solid ${D.border}` }}>
               <h4 style={{ fontWeight: 800, fontSize: 13, color: D.textPri, margin: 0 }}>Application Timeline</h4>
@@ -525,7 +525,7 @@ export default function RosterPortalDashboard({ onClose }) {
         </div>
 
         {/* ── Skills + Sectors ── */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <div className="roster-skills-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
           <div style={cardStyle}>
             <div style={{ padding: "12px 16px", borderBottom: `1px solid ${D.border}` }}>
               <h4 style={{ fontWeight: 800, fontSize: 13, color: D.textPri, margin: 0 }}>Top Skills</h4>
@@ -547,6 +547,14 @@ export default function RosterPortalDashboard({ onClose }) {
         </div>
 
       </div>
+
+      <style>{`
+        @media (max-width: 640px) {
+          .roster-map-grid      { grid-template-columns: 1fr !important; }
+          .roster-timeline-grid { grid-template-columns: 1fr !important; }
+          .roster-skills-grid   { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </div>
   );
 }

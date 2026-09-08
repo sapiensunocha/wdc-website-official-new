@@ -210,8 +210,20 @@ export default function GlobalProducts() {
 
   return (
     <>
-      <section className="py-16 sm:py-24 bg-white">
-        <div className="container">
+      <section className="py-16 sm:py-24 relative overflow-hidden" style={{ background: "#05081a" }}>
+        {/* Satellite earth background */}
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: "url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80')",
+            opacity: 0.18,
+          }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{ background: "linear-gradient(160deg, rgba(0,12,35,0.94) 0%, rgba(0,28,58,0.90) 50%, rgba(5,8,26,0.95) 100%)" }}
+        />
+        <div className="container relative z-10">
 
           {/* Section header */}
           <AnimateIn variant="fadeUp">
@@ -220,10 +232,10 @@ export default function GlobalProducts() {
                 <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
                 <span className="text-primary text-xs font-black tracking-widest uppercase">Global Products</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-black leading-tight mb-3" style={{ color: "#0D1F2D" }}>
+              <h2 className="text-3xl sm:text-4xl font-black leading-tight mb-3" style={{ color: "#FFFFFF" }}>
                 Intelligence Tools Built<br className="hidden sm:block" /> for the Real World
               </h2>
-              <p className="text-base leading-relaxed" style={{ color: "#475569" }}>
+              <p className="text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.62)" }}>
                 From monthly strategic intelligence to real-time disaster dashboards and expert deployment networks —
                 WDC's products give decision-makers the insight and connections they need before the next crisis strikes.
               </p>
@@ -267,10 +279,10 @@ export default function GlobalProducts() {
           {/* Bottom CTA strip */}
           <AnimateIn variant="fadeUp" delay={0.3}>
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4 px-6 py-5 rounded-2xl border"
-              style={{ borderColor: "#E2E8F0", background: "#F8FAFB" }}>
+              style={{ borderColor: "rgba(255,255,255,0.14)", background: "rgba(255,255,255,0.07)" }}>
               <div>
-                <p className="font-bold text-sm" style={{ color: "#0D1F2D" }}>Need a customised intelligence briefing?</p>
-                <p className="text-xs mt-0.5" style={{ color: "#94A3B8" }}>WDC analysts deliver bespoke reports for governments, NGOs, and the private sector.</p>
+                <p className="font-bold text-sm" style={{ color: "#FFFFFF" }}>Need a customised intelligence briefing?</p>
+                <p className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.48)" }}>WDC analysts deliver bespoke reports for governments, NGOs, and the private sector.</p>
               </div>
               <Link
                 to="/contact"
@@ -283,7 +295,6 @@ export default function GlobalProducts() {
           </AnimateIn>
         </div>
       </section>
-
     </>
   );
 }

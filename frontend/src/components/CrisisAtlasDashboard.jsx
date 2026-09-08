@@ -100,7 +100,7 @@ export default function CrisisAtlasDashboard({ onClose }) {
 
       {/* ── Header ── */}
       <div style={{ background: D.bg, borderBottom: `1px solid ${D.border}`, padding: "14px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", flex: 1, minWidth: 0 }}>
           <div style={{ background: "#fff7ed", borderRadius: 8, padding: 7 }}>
             <Activity size={15} style={{ color: "#f97316" }} />
           </div>
@@ -127,7 +127,7 @@ export default function CrisisAtlasDashboard({ onClose }) {
       </div>
 
       {/* ── KPI row ── */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12, padding: "16px 20px" }}>
+      <div className="crisis-kpi-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12, padding: "16px 20px" }}>
         {[
           { icon: AlertTriangle, label: "Active Events",   value: loading ? "…" : events.length.toLocaleString(), accent: D.primary,  sub: `of ${total.toLocaleString()} tracked` },
           { icon: TrendingDown,  label: "Fatalities",      value: loading ? "…" : fatalities > 999 ? `${(fatalities/1000).toFixed(1)}k` : fatalities || "—", accent: "#CC2936", sub: "confirmed" },
@@ -146,10 +146,10 @@ export default function CrisisAtlasDashboard({ onClose }) {
       </div>
 
       {/* ── Body: left panel + map ── */}
-      <div style={{ display: "grid", gridTemplateColumns: "240px 1fr", borderTop: `1px solid ${D.border}` }}>
+      <div className="crisis-body-grid" style={{ display: "grid", gridTemplateColumns: "240px 1fr", borderTop: `1px solid ${D.border}` }}>
 
         {/* Left: type filter + severity bars */}
-        <div style={{ background: D.bg, borderRight: `1px solid ${D.border}`, padding: 14, display: "flex", flexDirection: "column", gap: 14, overflowY: "auto", maxHeight: 580 }}>
+        <div className="crisis-left-panel" style={{ background: D.bg, borderRight: `1px solid ${D.border}`, padding: 14, display: "flex", flexDirection: "column", gap: 14, overflowY: "auto", maxHeight: 580 }}>
           <div>
             <p style={{ fontSize: 10, fontWeight: 800, color: D.textTer, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>Filter by Type</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -208,7 +208,7 @@ export default function CrisisAtlasDashboard({ onClose }) {
         </div>
 
         {/* Map — ESRI Ocean Basemap: deep blue oceans, true depth colors, hillshade terrain */}
-        <div style={{ position: "relative", minHeight: 580 }}>
+        <div className="crisis-map-area" style={{ position: "relative", minHeight: 580 }}>
           {loading ? (
             <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 12, background: D.bgSubtle }}>
               <Activity size={28} style={{ color: D.primary }} />
@@ -234,6 +234,7 @@ export default function CrisisAtlasDashboard({ onClose }) {
                 zoom={2}
                 minZoom={1}
                 maxZoom={13}
+                className="crisis-leaflet-map"
                 style={{ width: "100%", height: 580 }}
                 scrollWheelZoom={true}
                 zoomControl={false}
@@ -366,9 +367,7 @@ export default function CrisisAtlasDashboard({ onClose }) {
 
       <style>{`
         @keyframes atlas-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .crisis-critical-dot {
-          animation: crisis-pulse-ring 2s ease-in-out infinite;
-        }
+        .crisis-critical-dot { animation: crisis-pulse-ring 2s ease-in-out infinite; }
         @keyframes crisis-pulse-ring {
           0%, 100% { stroke-opacity: 0.95; stroke-width: 2; }
           50% { stroke-opacity: 0.35; stroke-width: 5; }
@@ -381,6 +380,23 @@ export default function CrisisAtlasDashboard({ onClose }) {
           font-size: 12px !important;
         }
         .leaflet-tooltip::before { display: none !important; }
+        @media (max-width: 640px) {
+          .crisis-kpi-grid { grid-template-columns: repeat(2,1fr) !important; }
+          .crisis-body-grid { grid-template-columns: 1fr !important; }
+          .crisis-left-panel {
+            border-right: none !important;
+            border-bottom: 1px solid #E2E8F0 !important;
+            max-height: none !important;
+            flex-direction: row !important;
+            flex-wrap: wrap !important;
+            overflow-x: auto !important;
+            padding: 10px !important;
+            gap: 8px !important;
+          }
+          .crisis-left-panel > div { min-width: 140px; }
+          .crisis-map-area { min-height: 360px !important; }
+          .crisis-leaflet-map { height: 360px !important; }
+        }
       `}</style>
     </div>
   );
