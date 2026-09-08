@@ -252,38 +252,94 @@ const HomePage = () => {
         </div>
       )}
 
-      {/* Roster CTA */}
-      <div className="bg-[#1C2B39] text-white py-10 sm:py-16">
-        <div className="container sm:px-2 flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-10">
-          <AnimateIn variant="fadeLeft" className="max-w-xl">
-            <p className="text-[#009EDB] text-xs font-black uppercase tracking-widest mb-3">Join Our Network</p>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight mb-4">
-              Are you a disaster response expert?
-            </h2>
-            <p className="text-gray-300 text-base leading-relaxed">
-              WDC connects vetted humanitarian professionals with global deployment opportunities. Join our expert roster and help communities before, during, and after disasters.
-            </p>
-          </AnimateIn>
-          <AnimateIn variant="fadeRight" delay={0.15}>
-            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
-                <Link
-                  to="/roster/apply"
-                  className="bg-[#009EDB] hover:bg-[#0080b5] text-white font-bold px-8 py-3.5 rounded-sm text-sm tracking-wide transition-colors text-center whitespace-nowrap w-full sm:w-auto block"
-                >
-                  Apply to the Roster
-                </Link>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
-                <Link
-                  to="/roster"
-                  className="border border-white/30 hover:border-white text-white font-bold px-8 py-3.5 rounded-sm text-sm tracking-wide transition-colors text-center whitespace-nowrap w-full sm:w-auto block"
-                >
-                  Learn More
-                </Link>
-              </motion.div>
+      {/* Join Our Network — 3-audience section */}
+      <div className="relative py-16 sm:py-24 overflow-hidden" style={{ background: "#05081a" }}>
+        {/* World map watermark */}
+        <div
+          className="absolute inset-0 opacity-[0.04] bg-center bg-cover pointer-events-none"
+          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1600&q=60')" }}
+        />
+        <div className="container relative z-10">
+          <AnimateIn variant="fadeUp">
+            <div className="text-center max-w-2xl mx-auto mb-12">
+              <p className="text-[#009EDB] text-xs font-black tracking-widest uppercase mb-3">Join Our Network</p>
+              <h2 className="text-3xl sm:text-4xl font-black text-white leading-tight mb-4">
+                Who Are You?<br className="hidden sm:block" />
+                <span className="text-[#009EDB]">There's a Role for Everyone.</span>
+              </h2>
+              <p className="text-white/50 text-base leading-relaxed">
+                WDC's global network brings together experts, organizations, and partners
+                committed to ending preventable disaster impacts.
+              </p>
             </div>
           </AnimateIn>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {[
+              {
+                emoji: "🧑‍💼",
+                color: "#009EDB",
+                label: "Expert / Professional",
+                heading: "Apply to the Roster",
+                body: "Vetted humanitarian professionals — field responders, analysts, logisticians, health workers — deployed where they're needed most.",
+                stats: [{ v: "2,000+", l: "Members" }, { v: "72h", l: "Deploy time" }, { v: "47", l: "Countries" }],
+                cta: "Apply Now",
+                href: "/roster/apply",
+              },
+              {
+                emoji: "🏛️",
+                color: "#f97316",
+                label: "NGO / Government",
+                heading: "Request Deployment",
+                body: "Access a global pool of vetted experts for your next emergency response, capacity-building mission, or early-warning programme.",
+                stats: [{ v: "150+", l: "Deployments" }, { v: "24/7", l: "Availability" }, { v: "60+", l: "Partners" }],
+                cta: "Request Experts",
+                href: "/roster",
+              },
+              {
+                emoji: "🤝",
+                color: "#a855f7",
+                label: "Company / Funder",
+                heading: "Partner With WDC",
+                body: "Fund life-saving missions, co-develop products, or provide in-kind support. Your investment reaches the communities that need it most.",
+                stats: [{ v: "$2M+", l: "Mobilised" }, { v: "11", l: "Campaigns" }, { v: "3x", l: "Impact ratio" }],
+                cta: "Become a Partner",
+                href: "/about/partner-with-us",
+              },
+            ].map((card, i) => (
+              <motion.div
+                key={card.label}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.55, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <Link
+                  to={card.href}
+                  className="flex flex-col h-full rounded-2xl border border-white/10 bg-white/5 p-6 group hover:border-white/20 hover:bg-white/8 transition-all duration-300"
+                  style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.2)" }}
+                >
+                  <div className="flex items-center gap-3 mb-5">
+                    <span className="text-2xl">{card.emoji}</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: card.color }}>{card.label}</span>
+                  </div>
+                  <h3 className="text-white font-black text-xl mb-3">{card.heading}</h3>
+                  <p className="text-white/50 text-sm leading-relaxed flex-1 mb-5">{card.body}</p>
+                  <div className="grid grid-cols-3 gap-2 py-4 border-y border-white/10 mb-5">
+                    {card.stats.map((s) => (
+                      <div key={s.l} className="text-center">
+                        <div className="font-black text-base leading-none mb-1" style={{ color: card.color }}>{s.v}</div>
+                        <div className="text-white/30 text-[10px] uppercase tracking-wide">{s.l}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-1.5 text-sm font-black transition-all group-hover:gap-2.5" style={{ color: card.color }}>
+                    {card.cta} <ArrowRight size={14} />
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
 
