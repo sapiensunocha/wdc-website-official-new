@@ -7,6 +7,8 @@ import {
 } from "lucide-react";
 import AnimateIn from "./AnimateIn";
 import GVIBookReader from "./GVIBookReader";
+import CrisisAtlasDashboard from "./CrisisAtlasDashboard";
+import RosterPortalDashboard from "./RosterPortalDashboard";
 
 import nostraImg   from "../assets/images/cases/nostra.png";
 import crisisImg   from "../assets/images/cases/weeklydashboard.png";
@@ -188,6 +190,7 @@ export default function GlobalProducts() {
   const liveStats = useLiveStats();
   const [atlasOpen, setAtlasOpen] = useState(false);
   const [gviOpen, setGviOpen] = useState(false);
+  const [rosterOpen, setRosterOpen] = useState(false);
 
   const products = [
     {
@@ -229,6 +232,7 @@ export default function GlobalProducts() {
       href: "#crisis-atlas",
       cta: "Open Dashboard",
       onCardClick: () => setAtlasOpen(true),
+      // Crisis Atlas now uses CrisisAtlasDashboard (real Supabase data)
     },
     {
       name: "Global Disaster Roster Portal",
@@ -246,8 +250,9 @@ export default function GlobalProducts() {
         { value: "47",     label: "Countries" },
         { value: "72h",    label: "Deploy time" },
       ],
-      href: "/roster",
-      cta: "Explore the Portal",
+      href: "#roster",
+      cta: "Open Portal",
+      onCardClick: () => setRosterOpen(true),
     },
   ];
 
@@ -305,11 +310,14 @@ export default function GlobalProducts() {
         </div>
       </section>
 
-      {/* Crisis Atlas full-screen embed */}
-      <CrisisAtlasEmbed open={atlasOpen} onClose={() => setAtlasOpen(false)} />
+      {/* Crisis Atlas — live dashboard from sentinel_events */}
+      {atlasOpen && <CrisisAtlasDashboard onClose={() => setAtlasOpen(false)} />}
 
       {/* Nostradamus GVI Reader */}
       {gviOpen && <GVIBookReader onClose={() => setGviOpen(false)} />}
+
+      {/* Roster Portal Dashboard */}
+      {rosterOpen && <RosterPortalDashboard onClose={() => setRosterOpen(false)} />}
     </>
   );
 }
