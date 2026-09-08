@@ -6,6 +6,7 @@ import {
   Zap, Radio, BookOpen, ChevronRight, Activity
 } from "lucide-react";
 import AnimateIn from "./AnimateIn";
+import GVIBookReader from "./GVIBookReader";
 
 import nostraImg   from "../assets/images/cases/nostra.png";
 import crisisImg   from "../assets/images/cases/weeklydashboard.png";
@@ -128,6 +129,14 @@ function ProductCard({ product, index }) {
           >
             {product.cta} <ExternalLink size={14} />
           </a>
+        ) : product.onCardClick ? (
+          <button
+            onClick={(e) => { e.stopPropagation(); product.onCardClick(); }}
+            className="flex items-center gap-2 text-sm font-bold transition-all hover:gap-3"
+            style={{ color: product.glowColor }}
+          >
+            {product.cta} <ArrowRight size={14} />
+          </button>
         ) : (
           <Link
             to={product.href}
@@ -178,6 +187,7 @@ function CrisisAtlasEmbed({ open, onClose }) {
 export default function GlobalProducts() {
   const liveStats = useLiveStats();
   const [atlasOpen, setAtlasOpen] = useState(false);
+  const [gviOpen, setGviOpen] = useState(false);
 
   const products = [
     {
@@ -193,11 +203,12 @@ export default function GlobalProducts() {
         "Monthly global disaster intelligence with 30-day projections, regional risk rankings, and an executive action plan. The definitive briefing for decision-makers and humanitarian leaders.",
       stats: [
         { value: "195",        label: "Countries" },
-        { value: liveStats.disasters, label: "Active events" },
+        { value: "53",         label: "Pages" },
         { value: "30-day",     label: "Outlook" },
       ],
-      href: "/campaigns",
+      href: "#nostradamus",
       cta: "Read the Report",
+      onCardClick: () => setGviOpen(true),
     },
     {
       name: "Crisis Atlas",
@@ -296,6 +307,9 @@ export default function GlobalProducts() {
 
       {/* Crisis Atlas full-screen embed */}
       <CrisisAtlasEmbed open={atlasOpen} onClose={() => setAtlasOpen(false)} />
+
+      {/* Nostradamus GVI Reader */}
+      {gviOpen && <GVIBookReader onClose={() => setGviOpen(false)} />}
     </>
   );
 }
