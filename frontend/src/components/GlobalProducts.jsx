@@ -138,14 +138,13 @@ function ProductCard({ product, index, active, onClick }) {
 export default function GlobalProducts() {
   const liveStats   = useLiveStats();
   const [active, setActive] = useState(null); // null | "nostradamus" | "crisis" | "roster"
-  const [gviOpen, setGviOpen] = useState(false);
   const dashboardRef = useRef(null);
 
   const toggle = (key) => setActive(prev => prev === key ? null : key);
 
-  // Scroll the expanded dashboard into view
+  // Scroll expanded dashboard into view
   useEffect(() => {
-    if (active && active !== "nostradamus" && dashboardRef.current) {
+    if (active && dashboardRef.current) {
       setTimeout(() => {
         dashboardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
       }, 120);
@@ -239,13 +238,7 @@ export default function GlobalProducts() {
                 product={product}
                 index={i}
                 active={active === product.key}
-                onClick={() => {
-                  if (product.key === "nostradamus") {
-                    setGviOpen(true);
-                  } else {
-                    toggle(product.key);
-                  }
-                }}
+                onClick={() => toggle(product.key)}
               />
             ))}
           </div>
@@ -253,27 +246,18 @@ export default function GlobalProducts() {
           {/* ── Inline expanded dashboard ── */}
           <div ref={dashboardRef}>
             <AnimatePresence>
+              {active === "nostradamus" && (
+                <motion.div key="nostradamus" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }} style={{ overflow: "hidden" }}>
+                  <GVIBookReader onClose={() => setActive(null)} />
+                </motion.div>
+              )}
               {active === "crisis" && (
-                <motion.div
-                  key="crisis"
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                  style={{ overflow: "hidden" }}
-                >
+                <motion.div key="crisis" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }} style={{ overflow: "hidden" }}>
                   <CrisisAtlasDashboard onClose={() => setActive(null)} />
                 </motion.div>
               )}
               {active === "roster" && (
-                <motion.div
-                  key="roster"
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                  style={{ overflow: "hidden" }}
-                >
+                <motion.div key="roster" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }} style={{ overflow: "hidden" }}>
                   <RosterPortalDashboard onClose={() => setActive(null)} />
                 </motion.div>
               )}
@@ -300,8 +284,6 @@ export default function GlobalProducts() {
         </div>
       </section>
 
-      {/* GVI Book Reader — full-screen (intentional for a report reader) */}
-      {gviOpen && <GVIBookReader onClose={() => setGviOpen(false)} />}
     </>
   );
 }

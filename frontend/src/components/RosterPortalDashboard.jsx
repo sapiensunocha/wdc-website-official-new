@@ -311,7 +311,7 @@ function RosterMap({ clusters }) {
   );
 }
 
-// ── Demo data ───────────────────────────────────────────────────────────────────
+// ── Country coords for map clusters ────────────────────────────────────────────
 const COUNTRY_COORDS = {
   "Afghanistan":[67.7,33.9],"Angola":[17.9,-11.2],"Bangladesh":[90.4,23.7],
   "Brazil":[-51.9,-14.2],"Burkina Faso":[-1.6,12.4],"Burundi":[29.9,-3.4],
@@ -330,26 +330,64 @@ const COUNTRY_COORDS = {
   "Zambia":[27.8,-13.1],"Zimbabwe":[29.2,-20.0],
 };
 
-const DEMO_MEMBERS = [
-  {id:"1",fullName:"Dr. Amara Diallo",country:"DR Congo",status:"deployed",sectors:["Health","Protection"],skills:[{name:"Emergency Response"},{name:"Health"}],applicationDate:"2026-01-15"},
-  {id:"2",fullName:"Jean-Pierre Nkurunziza",country:"Burundi",status:"active",sectors:["Protection"],skills:[{name:"Protection"},{name:"GBV"}],applicationDate:"2026-02-01"},
-  {id:"3",fullName:"Fatima Al-Hassan",country:"Yemen",status:"deployed",sectors:["WASH"],skills:[{name:"WASH"},{name:"Logistics"}],applicationDate:"2025-11-10"},
-  {id:"4",fullName:"Carlos Rivera",country:"Haiti",status:"active",sectors:["Logistics"],skills:[{name:"Logistics"},{name:"Supply Chain"}],applicationDate:"2025-12-03"},
-  {id:"5",fullName:"Priya Sharma",country:"Bangladesh",status:"screening",sectors:["Data"],skills:[{name:"Data & Monitoring"},{name:"GIS"}],applicationDate:"2026-04-22"},
-  {id:"6",fullName:"Kwame Asante",country:"Ghana",status:"active",sectors:["Food Security"],skills:[{name:"Food Security"},{name:"Livelihoods"}],applicationDate:"2025-10-14"},
-  {id:"7",fullName:"Leila Nazari",country:"Afghanistan",status:"applied",sectors:["Education"],skills:[{name:"Education in Emergencies"}],applicationDate:"2026-06-01"},
-  {id:"8",fullName:"Emmanuel Okafor",country:"Nigeria",status:"deployed",sectors:["Health"],skills:[{name:"Health"},{name:"Epidemiology"}],applicationDate:"2025-09-05"},
-  {id:"9",fullName:"Maria Santos",country:"Philippines",status:"active",sectors:["Shelter"],skills:[{name:"Shelter"},{name:"NFI"}],applicationDate:"2026-03-17"},
-  {id:"10",fullName:"Ahmed Mahmoud",country:"Sudan",status:"interview_scheduled",sectors:["Protection"],skills:[{name:"Protection"},{name:"SGBV"}],applicationDate:"2026-07-02"},
-  {id:"11",fullName:"Sophia Mensah",country:"Kenya",status:"active",sectors:["WASH","Health"],skills:[{name:"WASH"},{name:"Emergency Response"}],applicationDate:"2025-08-20"},
-  {id:"12",fullName:"Daniel Kamau",country:"Ethiopia",status:"deployed",sectors:["Food Security"],skills:[{name:"Food Security"},{name:"Nutrition"}],applicationDate:"2025-07-11"},
-];
+// resource_type → status mapping
+const TYPE_TO_STATUS = {
+  wdc_hero:      "deployed",
+  ingo:          "active",
+  medical:       "active",
+  hospital:      "active",
+  food_depot:    "active",
+  csr_stockpile: "active",
+  shelter:       "active",
+  evacuation:    "active",
+};
+
+// resource_type → sectors mapping
+const TYPE_TO_SECTORS = {
+  wdc_hero:      ["Emergency Response","Field Operations"],
+  ingo:          ["Protection","Shelter","Food Security"],
+  medical:       ["Health","Medical"],
+  hospital:      ["Health","Surgery"],
+  food_depot:    ["Food Security","WASH"],
+  csr_stockpile: ["Logistics","Supply Chain"],
+  shelter:       ["Shelter","NFI"],
+  evacuation:    ["Logistics","Emergency Response"],
+};
 
 // ── Main component ──────────────────────────────────────────────────────────────
 export default function RosterPortalDashboard({ onClose }) {
   const [dashSearch, setDashSearch] = useState("");
+  const [resources, setResources]   = useState([]);
+  const [loading, setLoading]       = useState(true);
 
-  const members = DEMO_MEMBERS;
+  useEffect(() => {
+    fetch(`${SB_URL}/rest/v1/wdc_resources?select=id,name,resource_type,organization,country,city,latitude,longitude,trust_score,capacity_status,services,is_active&order=trust_score.desc&limit=200`, {
+      headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}` },
+    })
+      .then(r => r.ok ? r.json() : [])
+      .then(rows => {
+        setResources(rows.map(r => ({
+          id:              r.id,
+          fullName:        r.name,
+          organization:    r.organization ?? "",
+          country:         r.country ?? "",
+          city:            r.city ?? "",
+          latitude:        r.latitude,
+          longitude:       r.longitude,
+          status:          TYPE_TO_STATUS[r.resource_type] ?? "active",
+          sectors:         (TYPE_TO_SECTORS[r.resource_type] ?? []).concat(r.services ?? []).filter((v,i,a) => a.indexOf(v) === i).slice(0, 3),
+          skills:          (r.services ?? []).map(s => ({ name: s.charAt(0).toUpperCase() + s.slice(1) })),
+          resource_type:   r.resource_type,
+          trust_score:     r.trust_score,
+          capacity_status: r.capacity_status,
+          applicationDate: r.capacity_status === "available" ? "2026-01-01" : "2025-06-01",
+        })));
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  const members = resources;
 
   const countries         = new Set(members.map(m => m.country).filter(Boolean));
   const activeDeployments = members.filter(m => m.status === "active").length;
@@ -385,13 +423,16 @@ export default function RosterPortalDashboard({ onClose }) {
   members.forEach(m => { if (m.country) countryMap[m.country] = (countryMap[m.country] ?? 0) + 1; });
   const topCountries = Object.entries(countryMap).map(([country, count]) => ({ country, count })).sort((a, b) => b.count - a.count).slice(0, 8);
 
+  // Build map clusters — use actual lat/lng from wdc_resources, fall back to COUNTRY_COORDS
   const clusterMap = {};
   members.forEach(m => {
-    if (!m.country) return;
-    const coords = COUNTRY_COORDS[m.country];
+    const key    = m.country || m.city || "unknown";
+    const coords = (m.longitude && m.latitude)
+      ? [m.longitude, m.latitude]
+      : COUNTRY_COORDS[m.country];
     if (!coords) return;
-    if (!clusterMap[m.country]) clusterMap[m.country] = { country: m.country, coords, memberCount: 0 };
-    clusterMap[m.country].memberCount++;
+    if (!clusterMap[key]) clusterMap[key] = { country: m.country || key, coords, memberCount: 0 };
+    clusterMap[key].memberCount++;
   });
   const mapClusters = Object.values(clusterMap);
 
@@ -422,7 +463,7 @@ export default function RosterPortalDashboard({ onClose }) {
           </div>
           <span style={{ fontSize: 11, background: "#f0fdf4", border: "1px solid #bbf7d0", color: "#16a34a", borderRadius: 20, padding: "3px 10px", fontWeight: 700, display: "flex", alignItems: "center", gap: 5 }}>
             <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#16a34a", display: "inline-block" }} />
-            Live Network
+            {loading ? "Loading…" : `${members.length} Resources Live`}
           </span>
         </div>
         <button onClick={onClose} style={{ background: D.bgSubtle, border: `1px solid ${D.border}`, borderRadius: 8, padding: "6px 12px", color: D.textSec, cursor: "pointer", fontSize: 12, fontWeight: 600, display: "flex", alignItems: "center", gap: 5 }}>

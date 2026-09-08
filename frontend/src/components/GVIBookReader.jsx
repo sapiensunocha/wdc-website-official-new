@@ -1,72 +1,76 @@
 import { useRef, useState, useEffect } from "react";
-import { X, Download, BookOpen } from "lucide-react";
+import { Download, BookOpen, ExternalLink, ChevronDown } from "lucide-react";
+
+// WDC design tokens
+const D = {
+  bg: "#FFFFFF", bgSubtle: "#F1F5F9", border: "#E2E8F0",
+  textPri: "#0D1F2D", textSec: "#475569", textTer: "#94A3B8",
+  primary: "#009EDB", primaryMt: "#E8F5FC",
+};
 
 export default function GVIBookReader({ onClose }) {
   const iframeRef = useRef(null);
-  const [page, setPage] = useState(0);
-  const [total, setTotal] = useState(34);
+  const [page, setPage]   = useState(0);
+  const [total, setTotal] = useState(53);
 
   useEffect(() => {
     function onMsg(e) {
       if (e.data?.type === "gvi_state") {
         setPage(e.data.page ?? 0);
-        setTotal(e.data.total ?? 34);
+        setTotal(e.data.total ?? 53);
       }
     }
     window.addEventListener("message", onMsg);
     return () => window.removeEventListener("message", onMsg);
   }, []);
 
-  useEffect(() => {
-    function onKey(e) { if (e.key === "Escape") onClose(); }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [onClose]);
-
   return (
-    <div className="fixed inset-0 z-[9999] flex flex-col" style={{ background: "#08081a" }}>
+    <div style={{ background: D.bgSubtle, border: `1px solid ${D.border}`, borderRadius: 16, overflow: "hidden", marginTop: 24 }}>
 
-      {/* ── Top bar ── */}
-      <div
-        className="flex items-center justify-between px-4 py-2 shrink-0"
-        style={{ background: "rgba(0,0,0,0.55)", borderBottom: "1px solid rgba(255,255,255,0.07)" }}
-      >
-        <div className="flex items-center gap-2.5">
-          <BookOpen size={15} className="text-[#009EDB]" />
-          <span className="text-white text-xs font-black">Global Vulnerability Index 2027</span>
-          <span className="text-white/30 text-xs hidden sm:inline">· Nostradamus Report</span>
+      {/* ── Header ── */}
+      <div style={{ background: D.bg, borderBottom: `1px solid ${D.border}`, padding: "14px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div style={{ background: D.primaryMt, borderRadius: 8, padding: 7 }}>
+            <BookOpen size={15} style={{ color: D.primary }} />
+          </div>
+          <div>
+            <h3 style={{ fontSize: 14, fontWeight: 900, color: D.textPri, margin: 0, lineHeight: 1.2 }}>Global Vulnerability Index 2027</h3>
+            <p style={{ fontSize: 11, color: D.textSec, margin: 0, marginTop: 2 }}>
+              Nostradamus Report · Page {page + 1} of {total}
+            </p>
+          </div>
+          <span style={{ fontSize: 11, background: D.primaryMt, border: `1px solid ${D.primary}33`, color: D.primary, borderRadius: 20, padding: "3px 10px", fontWeight: 700 }}>
+            Monthly Intelligence
+          </span>
         </div>
-
-        <span className="text-white/40 text-xs tabular-nums">
-          {page + 1} / {total}
-        </span>
-
-        <div className="flex items-center gap-2">
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <a
             href="/gvi-2027.pdf"
             download="WDC-Global-Vulnerability-Index-2027.pdf"
-            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold transition-all hover:opacity-80"
-            style={{ background: "#009EDB22", border: "1px solid #009EDB44", color: "#009EDB" }}
+            style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600, background: D.primaryMt, border: `1px solid ${D.primary}44`, color: D.primary, textDecoration: "none" }}
           >
-            <Download size={11} /> Download PDF
+            <Download size={12} /> Download PDF
           </a>
-          <button
-            onClick={onClose}
-            className="w-7 h-7 rounded-lg flex items-center justify-center transition-all hover:bg-red-500/20"
-            style={{ background: "rgba(255,255,255,0.07)", color: "white" }}
+          <a
+            href="/gvi-reader.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600, background: D.bgSubtle, border: `1px solid ${D.border}`, color: D.textSec, textDecoration: "none" }}
           >
-            <X size={14} />
+            <ExternalLink size={12} /> Full Page
+          </a>
+          <button onClick={onClose} style={{ display: "flex", alignItems: "center", gap: 5, padding: "6px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600, background: D.bgSubtle, border: `1px solid ${D.border}`, color: D.textSec, cursor: "pointer" }}>
+            <ChevronDown size={14} /> Collapse
           </button>
         </div>
       </div>
 
-      {/* ── PDF Flipbook ── */}
+      {/* ── Flipbook ── */}
       <iframe
         ref={iframeRef}
         src="/gvi-reader.html"
         title="WDC GVI 2027"
-        className="flex-1 w-full border-0"
-        style={{ background: "#0a0a18" }}
+        style={{ width: "100%", height: 640, border: "none", display: "block", background: "#f8fafb" }}
       />
     </div>
   );
