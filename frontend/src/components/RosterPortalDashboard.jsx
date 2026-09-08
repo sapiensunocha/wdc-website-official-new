@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
 import {
   Users, Globe, CheckCircle2, Target, Briefcase, TrendingUp,
-  Search, Shield, ChevronDown, X,
+  Shield, ChevronDown,
 } from "lucide-react";
 
 // ── WDC design tokens ──────────────────────────────────────────────────────────
@@ -186,28 +186,6 @@ function HorizontalBars({ data, color }) {
   );
 }
 
-// ── Avatar ──────────────────────────────────────────────────────────────────────
-function Avatar({ name, size = 34 }) {
-  const initials = name.split(" ").map(w => w[0]).slice(0, 2).join("").toUpperCase();
-  const palette  = ["#009EDB", "#7c3aed", "#1A7644", "#E87722", "#CC2936"];
-  const color    = palette[name.charCodeAt(0) % palette.length];
-  return (
-    <div style={{ width: size, height: size, borderRadius: "50%", background: color, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 700, fontSize: size * 0.36, flexShrink: 0 }}>
-      {initials}
-    </div>
-  );
-}
-
-// ── Status badge ────────────────────────────────────────────────────────────────
-function StatusBadge({ status }) {
-  const color = MEMBER_STATUS_COLOR[status] ?? "#6b7280";
-  return (
-    <span style={{ background: color + "18", color, borderRadius: 20, padding: "2px 9px", fontSize: 10, fontWeight: 700, whiteSpace: "nowrap", textTransform: "capitalize", letterSpacing: 0.2 }}>
-      {status.replace(/_/g, " ")}
-    </span>
-  );
-}
-
 // ── World map ───────────────────────────────────────────────────────────────────
 function RosterMap({ clusters }) {
   const [riskByISO3, setRiskByISO3] = useState({});
@@ -356,20 +334,18 @@ const TYPE_TO_SECTORS = {
 
 // ── Main component ──────────────────────────────────────────────────────────────
 export default function RosterPortalDashboard({ onClose }) {
-  const [dashSearch, setDashSearch] = useState("");
-  const [resources, setResources]   = useState([]);
-  const [loading, setLoading]       = useState(true);
+  const [resources, setResources] = useState([]);
+  const [loading, setLoading]     = useState(true);
 
   useEffect(() => {
-    fetch(`${SB_URL}/rest/v1/wdc_resources?select=id,name,resource_type,organization,country,city,latitude,longitude,trust_score,capacity_status,services,is_active&order=trust_score.desc&limit=200`, {
+    // Fetch only non-identifying fields — no names exposed publicly
+    fetch(`${SB_URL}/rest/v1/wdc_resources?select=id,resource_type,country,city,latitude,longitude,trust_score,capacity_status,services,is_active&order=trust_score.desc&limit=200`, {
       headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}` },
     })
       .then(r => r.ok ? r.json() : [])
       .then(rows => {
         setResources(rows.map(r => ({
           id:              r.id,
-          fullName:        r.name,
-          organization:    r.organization ?? "",
           country:         r.country ?? "",
           city:            r.city ?? "",
           latitude:        r.latitude,
@@ -388,7 +364,6 @@ export default function RosterPortalDashboard({ onClose }) {
   }, []);
 
   const members = resources;
-
   const countries         = new Set(members.map(m => m.country).filter(Boolean));
   const activeDeployments = members.filter(m => m.status === "active").length;
 
@@ -436,16 +411,6 @@ export default function RosterPortalDashboard({ onClose }) {
   });
   const mapClusters = Object.values(clusterMap);
 
-  const searchResults = dashSearch.trim()
-    ? members.filter(m => {
-        const q = dashSearch.toLowerCase();
-        return m.fullName?.toLowerCase().includes(q) ||
-          m.country?.toLowerCase().includes(q) ||
-          (m.skills ?? []).some(s => s.name.toLowerCase().includes(q)) ||
-          (m.sectors ?? []).some(s => s.toLowerCase().includes(q));
-      }).slice(0, 12)
-    : [];
-
   const cardStyle = { background: D.bg, border: `1px solid ${D.border}`, borderRadius: 12, overflow: "hidden" };
 
   return (
@@ -472,40 +437,6 @@ export default function RosterPortalDashboard({ onClose }) {
       </div>
 
       <div style={{ padding: 16, display: "flex", flexDirection: "column", gap: 16 }}>
-
-        {/* ── Search ── */}
-        <div style={{ position: "relative" }}>
-          <Search size={15} style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", color: D.textTer, pointerEvents: "none" }} />
-          <input type="text" value={dashSearch} onChange={e => setDashSearch(e.target.value)}
-            placeholder="Search members by name, country, skill or sector…"
-            style={{ width: "100%", paddingLeft: 36, paddingRight: 36, paddingTop: 10, paddingBottom: 10, borderRadius: 10, border: `1px solid ${D.border}`, background: D.bg, color: D.textPri, fontSize: 13, outline: "none", boxSizing: "border-box" }}
-          />
-          {dashSearch && (
-            <button onClick={() => setDashSearch("")} style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", color: D.textTer, background: "none", border: "none", cursor: "pointer" }}>
-              <X size={14} />
-            </button>
-          )}
-        </div>
-
-        {/* ── Search results ── */}
-        {dashSearch.trim() && (
-          <div style={cardStyle}>
-            <div style={{ padding: "10px 16px", borderBottom: `1px solid ${D.border}` }}>
-              <span style={{ fontSize: 13, fontWeight: 600, color: D.textPri }}>{searchResults.length} result{searchResults.length !== 1 ? "s" : ""} for "{dashSearch}"</span>
-            </div>
-            {searchResults.length === 0 && <p style={{ textAlign: "center", padding: "20px", color: D.textTer, fontSize: 12 }}>No members found</p>}
-            {searchResults.map(m => (
-              <div key={m.id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 16px", borderBottom: `1px solid ${D.bgSubtle}` }}>
-                <Avatar name={m.fullName ?? "?"} />
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontWeight: 700, fontSize: 13, color: D.textPri }}>{m.fullName}</div>
-                  <div style={{ fontSize: 11, color: D.textSec, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{m.country} · {(m.sectors ?? []).slice(0, 2).join(", ")}</div>
-                </div>
-                <StatusBadge status={m.status ?? "applied"} />
-              </div>
-            ))}
-          </div>
-        )}
 
         {/* ── KPI Row ── */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10 }} className="sm:grid-cols-3 lg:grid-cols-6">
@@ -612,28 +543,6 @@ export default function RosterPortalDashboard({ onClose }) {
             <div style={{ padding: "16px" }}>
               <HorizontalBars data={topSectors.map(s => ({ label: s.sector, value: s.count }))} color="#1A7644" />
             </div>
-          </div>
-        </div>
-
-        {/* ── Members preview ── */}
-        <div style={cardStyle}>
-          <div style={{ padding: "12px 16px", borderBottom: `1px solid ${D.border}`, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <h4 style={{ fontWeight: 800, fontSize: 13, color: D.textPri, margin: 0 }}>Roster Members</h4>
-            <a href="/roster" style={{ fontSize: 12, color: D.primary, fontWeight: 700, textDecoration: "none" }}>View Full Roster →</a>
-          </div>
-          <div>
-            {members.map(m => (
-              <div key={m.id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 16px", borderBottom: `1px solid ${D.bgSubtle}` }}>
-                <Avatar name={m.fullName ?? "?"} />
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontWeight: 700, fontSize: 13, color: D.textPri }}>{m.fullName}</div>
-                  <div style={{ fontSize: 11, color: D.textSec, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                    {m.country} · {(m.sectors ?? []).join(", ")}
-                  </div>
-                </div>
-                <StatusBadge status={m.status ?? "applied"} />
-              </div>
-            ))}
           </div>
         </div>
 
