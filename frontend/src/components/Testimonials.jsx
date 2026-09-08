@@ -148,7 +148,7 @@ export default function Testimonials() {
     const track = trackRef.current;
     if (!track) return;
     const card = track.children[clamped];
-    if (card) card.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
+    if (card) track.scrollTo({ left: card.offsetLeft, behavior: "smooth" });
   }, [maxActive]);
 
   // Sync active dot when user swipes
