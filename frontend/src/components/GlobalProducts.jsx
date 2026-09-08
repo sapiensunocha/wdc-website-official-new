@@ -14,33 +14,27 @@ import nostraImg   from "../assets/images/cases/nostra.png";
 import crisisImg   from "../assets/images/cases/weeklydashboard.png";
 import rosterImg   from "../assets/images/cases/global_roster.png";
 
-// ─── Live stat ticker pulled from Michael data ─────────────────────────────
+// ─── Live stat ticker from Michael API ─────────────────────────────────────
+const MICHAEL_URL = import.meta.env.VITE_MICHAEL_API_URL || "https://michael-api-382117221028.us-central1.run.app";
+const MICHAEL_KEY = import.meta.env.VITE_MICHAEL_API_SECRET || "xeltis-prod-key-2026";
+
 function useLiveStats() {
   const [stats, setStats] = useState({ disasters: 47, affected: "2.3M", countries: 38 });
   useEffect(() => {
-    // Lightweight ping to get current active disaster count
-    const base = import.meta.env.VITE_API_BASE_URL || "https://wdc-backend-service-325766897035.us-central1.run.app";
-    fetch(`${base}/api/chat`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        message: "Give me ONLY a JSON object (no explanation) with 3 fields: activeDisasters (number of current active disaster events worldwide), affectedPeople (string like '2.1M'), countriesAffected (number). Use your latest knowledge.",
-      }),
+    fetch(`${MICHAEL_URL}/api/alerts`, {
+      headers: { "X-API-Key": MICHAEL_KEY },
     })
       .then((r) => r.json())
-      .then((d) => {
-        const text = d.reply || d.message || "";
-        const match = text.match(/\{[\s\S]*\}/);
-        if (match) {
-          try {
-            const parsed = JSON.parse(match[0]);
-            setStats({
-              disasters: parsed.activeDisasters ?? 47,
-              affected: parsed.affectedPeople ?? "2.3M",
-              countries: parsed.countriesAffected ?? 38,
-            });
-          } catch (_) {}
-        }
+      .then((json) => {
+        const events = Array.isArray(json) ? json : (json.events ?? []);
+        const total  = json.total ?? events.length;
+        const countries = new Set(events.map(e => e.location_name).filter(Boolean)).size;
+        const affected  = events.reduce((s, e) => s + (Number(e.people_affected) || 0), 0);
+        setStats({
+          disasters: total,
+          affected: affected > 1_000_000 ? `${(affected / 1_000_000).toFixed(1)}M` : affected > 1000 ? `${(affected / 1000).toFixed(0)}k` : String(affected || "2.3M"),
+          countries: countries || 38,
+        });
       })
       .catch(() => {});
   }, []);
