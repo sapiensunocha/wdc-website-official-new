@@ -1,14 +1,27 @@
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, CircleMarker, Popup, ZoomControl } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { X, Activity, RefreshCw, AlertTriangle, Globe, Zap, TrendingDown } from "lucide-react";
+import { Activity, RefreshCw, AlertTriangle, Globe, Zap, TrendingDown, ChevronDown } from "lucide-react";
 
 const MICHAEL_URL = import.meta.env.VITE_MICHAEL_API_URL || "https://michael-api-382117221028.us-central1.run.app";
 const MICHAEL_KEY = import.meta.env.VITE_MICHAEL_API_SECRET || "xeltis-prod-key-2026";
 
-// severity: API returns number 1–5
-const SEV_COLOR = { 5: "#ef4444", 4: "#f97316", 3: "#F59E0B", 2: "#22c55e", 1: "#94a3b8" };
-const SEV_LABEL = { 5: "critical", 4: "high", 3: "medium", 2: "low", 1: "minimal" };
+// WDC design tokens
+const D = {
+  bg:        "#FFFFFF",
+  bgRaised:  "#F8FAFB",
+  bgSubtle:  "#F1F5F9",
+  border:    "#E2E8F0",
+  borderStr: "#CBD5E1",
+  textPri:   "#0D1F2D",
+  textSec:   "#475569",
+  textTer:   "#94A3B8",
+  primary:   "#009EDB",
+  primaryMt: "#E8F5FC",
+};
+
+const SEV_COLOR = { 5: "#CC2936", 4: "#E87722", 3: "#F59E0B", 2: "#1A7644", 1: "#94A3B8" };
+const SEV_LABEL = { 5: "critical", 4: "high", 3: "moderate", 2: "low", 1: "minimal" };
 const SEV_ORDER = [5, 4, 3, 2, 1];
 
 function normType(raw) {
@@ -21,7 +34,7 @@ function normType(raw) {
   if (t.includes("drought"))    return "Drought";
   if (t.includes("volcano"))    return "Volcano";
   if (t.includes("tsunami"))    return "Tsunami";
-  if (t.includes("conflict") || t.includes("violence") || t.includes("gbv")) return "Conflict";
+  if (t.includes("conflict") || t.includes("violence")) return "Conflict";
   if (t.includes("disease") || t.includes("epidemic")) return "Disease";
   if (t.includes("landslide"))  return "Landslide";
   return "Other";
@@ -33,42 +46,25 @@ const TYPE_ICON = {
   Disease: "🦠", Landslide: "⛰️", Other: "⚠️",
 };
 
-function SevBadge({ sev }) {
-  const color = SEV_COLOR[sev] ?? "#94a3b8";
-  const label = SEV_LABEL[sev] ?? "unknown";
+function KpiCard({ icon: Icon, label, value, accent, sub }) {
   return (
-    <span style={{
-      background: color + "22", color, borderRadius: 12,
-      padding: "2px 8px", fontSize: 10, fontWeight: 800,
-      textTransform: "uppercase", letterSpacing: 1, whiteSpace: "nowrap",
-    }}>
-      {label}
-    </span>
-  );
-}
-
-function KpiCard({ icon: Icon, label, value, color, sub }) {
-  return (
-    <div style={{
-      background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)",
-      borderRadius: 16, padding: "16px 18px",
-    }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
-        <div style={{ background: color + "22", borderRadius: 8, padding: 7 }}>
-          <Icon size={15} style={{ color }} />
+    <div style={{ background: D.bg, border: `1px solid ${D.border}`, borderRadius: 12, padding: "14px 16px", borderTop: `3px solid ${accent}` }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+        <div style={{ background: accent + "18", borderRadius: 8, padding: 6 }}>
+          <Icon size={14} style={{ color: accent }} />
         </div>
-        <span style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", fontWeight: 600 }}>{label}</span>
+        <span style={{ fontSize: 11, color: D.textSec, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>{label}</span>
       </div>
-      <div style={{ fontSize: 28, fontWeight: 900, color, lineHeight: 1 }}>{value}</div>
-      {sub && <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", marginTop: 4, textTransform: "uppercase", letterSpacing: 1 }}>{sub}</div>}
+      <div style={{ fontSize: 26, fontWeight: 900, color: D.textPri, lineHeight: 1 }}>{value}</div>
+      {sub && <div style={{ fontSize: 10, color: D.textTer, marginTop: 3 }}>{sub}</div>}
     </div>
   );
 }
 
 export default function CrisisAtlasDashboard({ onClose }) {
-  const [events, setEvents] = useState([]);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [events, setEvents]         = useState([]);
+  const [total, setTotal]           = useState(0);
+  const [loading, setLoading]       = useState(true);
   const [lastUpdated, setLastUpdated] = useState(null);
   const [selectedType, setSelectedType] = useState("All");
 
@@ -80,15 +76,11 @@ export default function CrisisAtlasDashboard({ onClose }) {
       });
       if (res.ok) {
         const json = await res.json();
-        const raw = Array.isArray(json) ? json : (json.events ?? []);
+        const raw  = Array.isArray(json) ? json : (json.events ?? []);
         setTotal(json.total ?? raw.length);
         setEvents(raw
           .filter(e => e.latitude && e.longitude)
-          .map(e => ({
-            ...e,
-            _sev: Number(e.severity_level) || 3,
-            _type: normType(e.event_type),
-          }))
+          .map(e => ({ ...e, _sev: Number(e.severity_level) || 3, _type: normType(e.event_type) }))
         );
         setLastUpdated(new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }));
       }
@@ -98,96 +90,98 @@ export default function CrisisAtlasDashboard({ onClose }) {
 
   useEffect(() => { load(); }, []);
 
-  useEffect(() => {
-    function onKey(e) { if (e.key === "Escape") onClose(); }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [onClose]);
-
   const filtered = selectedType === "All" ? events : events.filter(e => e._type === selectedType);
-
-  const countries = new Set(events.map(e => e.location_name).filter(Boolean)).size;
+  const countries  = new Set(events.map(e => e.location_name).filter(Boolean)).size;
   const fatalities = events.reduce((s, e) => s + (Number(e.fatalities || e.people_killed) || 0), 0);
   const criticals  = events.filter(e => e._sev >= 4).length;
-  const forecasts  = events.filter(e => e.is_forecast).length;
 
   const typeCounts = {};
   events.forEach(e => { typeCounts[e._type] = (typeCounts[e._type] || 0) + 1; });
-  const topTypes = Object.entries(typeCounts).sort((a, b) => b[1] - a[1]);
-
-  const sevCounts = {};
+  const topTypes   = Object.entries(typeCounts).sort((a, b) => b[1] - a[1]);
+  const sevCounts  = {};
   events.forEach(e => { sevCounts[e._sev] = (sevCounts[e._sev] || 0) + 1; });
-
-  const allTypes = ["All", ...Object.keys(typeCounts).sort()];
+  const allTypes   = ["All", ...Object.keys(typeCounts).sort()];
 
   return (
-    <div style={{ position: "fixed", inset: 0, zIndex: 9999, display: "flex", flexDirection: "column", background: "#060d18" }}>
+    <div style={{ background: D.bgSubtle, border: `1px solid ${D.border}`, borderRadius: 16, overflow: "hidden", marginTop: 24 }}>
 
-      {/* ── Top bar ── */}
-      <div style={{
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        padding: "10px 16px", borderBottom: "1px solid rgba(255,255,255,0.08)",
-        background: "rgba(0,0,0,0.4)", flexShrink: 0,
-      }}>
+      {/* ── Header ── */}
+      <div style={{ background: D.bg, borderBottom: `1px solid ${D.border}`, padding: "14px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <Activity size={15} style={{ color: "#f97316" }} />
-          <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>Crisis Atlas</span>
-          <span style={{ color: "rgba(255,255,255,0.3)", fontSize: 12 }}>· Live Global Disaster Dashboard</span>
-          <span style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 11,
-            background: "#22c55e22", border: "1px solid #22c55e55", color: "#22c55e",
-            borderRadius: 20, padding: "2px 10px", fontWeight: 700 }}>
-            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#22c55e", display: "inline-block", animation: "ca-pulse 2s infinite" }} />
-            Live · {total.toLocaleString()} total events
-          </span>
+          <div style={{ background: D.primaryMt, borderRadius: 8, padding: 7 }}>
+            <Activity size={15} style={{ color: D.primary }} />
+          </div>
+          <div>
+            <h3 style={{ fontSize: 14, fontWeight: 900, color: D.textPri, margin: 0, lineHeight: 1.2 }}>Crisis Atlas</h3>
+            <p style={{ fontSize: 11, color: D.textSec, margin: 0, marginTop: 2 }}>Live Global Disaster Dashboard · Powered by Michael AI</p>
+          </div>
+          {!loading && (
+            <span style={{ fontSize: 11, background: "#f0fdf4", border: "1px solid #bbf7d0", color: "#16a34a", borderRadius: 20, padding: "3px 10px", fontWeight: 700, display: "flex", alignItems: "center", gap: 5 }}>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#16a34a", display: "inline-block" }} />
+              Live · {total.toLocaleString()} events
+            </span>
+          )}
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          {lastUpdated && <span style={{ fontSize: 11, color: "rgba(255,255,255,0.3)" }}>Updated {lastUpdated}</span>}
-          <button onClick={load} disabled={loading} style={{
-            background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)",
-            borderRadius: 8, padding: "6px 10px", color: "rgba(255,255,255,0.6)",
-            cursor: "pointer", display: "flex", alignItems: "center", gap: 5, fontSize: 11,
-          }}>
-            <RefreshCw size={11} style={{ animation: loading ? "ca-spin 1s linear infinite" : "none" }} /> Refresh
+          {lastUpdated && <span style={{ fontSize: 11, color: D.textTer }}>Updated {lastUpdated}</span>}
+          <button onClick={load} disabled={loading} style={{ background: D.bgSubtle, border: `1px solid ${D.border}`, borderRadius: 8, padding: "6px 12px", color: D.textSec, cursor: "pointer", display: "flex", alignItems: "center", gap: 5, fontSize: 12, fontWeight: 600 }}>
+            <RefreshCw size={12} style={{ animation: loading ? "atlas-spin 1s linear infinite" : "none" }} /> Refresh
           </button>
-          <button onClick={onClose} style={{
-            background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)",
-            borderRadius: 8, padding: "6px 10px", color: "rgba(255,255,255,0.6)", cursor: "pointer",
-          }}>
-            <X size={15} />
+          <button onClick={onClose} style={{ background: D.bgSubtle, border: `1px solid ${D.border}`, borderRadius: 8, padding: "6px 12px", color: D.textSec, cursor: "pointer", fontSize: 12, fontWeight: 600, display: "flex", alignItems: "center", gap: 5 }}>
+            <ChevronDown size={14} /> Collapse
           </button>
         </div>
       </div>
 
-      {/* ── Body ── */}
-      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
+      {/* ── KPI Row ── */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, padding: "16px 20px" }}>
+        <KpiCard icon={AlertTriangle} label="Active Events"  value={loading ? "…" : events.length.toLocaleString()} accent={D.primary}   sub={`of ${total.toLocaleString()} total tracked`} />
+        <KpiCard icon={TrendingDown}  label="Fatalities"     value={loading ? "…" : fatalities > 1000 ? `${(fatalities/1000).toFixed(1)}k` : fatalities || "—"} accent="#CC2936" sub="confirmed deaths" />
+        <KpiCard icon={Globe}         label="Locations"      value={loading ? "…" : countries}   accent="#7c3aed"  sub="distinct areas" />
+        <KpiCard icon={Zap}           label="High / Critical" value={loading ? "…" : criticals}  accent="#E87722"  sub="severity 4–5 events" />
+      </div>
 
-        {/* ── Left panel ── */}
-        <div style={{
-          width: 300, flexShrink: 0, display: "flex", flexDirection: "column",
-          borderRight: "1px solid rgba(255,255,255,0.06)", overflowY: "auto",
-          padding: "14px 12px", gap: 12,
-        }}>
-          {/* KPI cards */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-            <KpiCard icon={AlertTriangle} label="Loaded Events" value={loading ? "…" : events.length.toLocaleString()} color="#f97316" sub={`of ${total.toLocaleString()} total`} />
-            <KpiCard icon={TrendingDown}  label="Fatalities"    value={loading ? "…" : fatalities > 1000 ? `${(fatalities/1000).toFixed(1)}k` : fatalities || "—"} color="#ef4444" sub="confirmed" />
-            <KpiCard icon={Globe}         label="Locations"     value={loading ? "…" : countries} color="#009EDB" sub="distinct places" />
-            <KpiCard icon={Zap}           label="High Severity" value={loading ? "…" : criticals} color="#F59E0B" sub="sev 4–5" />
+      {/* ── Body: Left panel + Map ── */}
+      <div style={{ display: "grid", gridTemplateColumns: "260px 1fr", gap: 0, borderTop: `1px solid ${D.border}` }}>
+
+        {/* Left panel */}
+        <div style={{ background: D.bg, borderRight: `1px solid ${D.border}`, padding: "16px", display: "flex", flexDirection: "column", gap: 16, overflowY: "auto", maxHeight: 520 }}>
+
+          {/* Type filter */}
+          <div>
+            <p style={{ fontSize: 10, fontWeight: 800, color: D.textTer, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>Filter by Type</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+              {allTypes.map(t => (
+                <button key={t} onClick={() => setSelectedType(t)} style={{
+                  display: "flex", alignItems: "center", justifyContent: "space-between",
+                  padding: "6px 10px", borderRadius: 8, fontSize: 12, fontWeight: 600,
+                  cursor: "pointer", border: selectedType === t ? `1px solid ${D.primary}` : `1px solid transparent`,
+                  background: selectedType === t ? D.primaryMt : "transparent",
+                  color: selectedType === t ? D.primary : D.textSec,
+                  textAlign: "left", width: "100%",
+                }}>
+                  <span>{t === "All" ? "All Types" : `${TYPE_ICON[t] || "⚠️"} ${t}`}</span>
+                  <span style={{ fontSize: 11, color: D.textTer }}>
+                    {t === "All" ? events.length : (typeCounts[t] || 0)}
+                  </span>
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Severity breakdown */}
-          <div style={{ background: "rgba(255,255,255,0.03)", borderRadius: 12, padding: "12px 14px", border: "1px solid rgba(255,255,255,0.06)" }}>
-            <div style={{ fontSize: 11, color: "rgba(255,255,255,0.5)", fontWeight: 700, marginBottom: 10, textTransform: "uppercase", letterSpacing: 1 }}>Severity Breakdown</div>
+          <div>
+            <p style={{ fontSize: 10, fontWeight: 800, color: D.textTer, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>Severity Breakdown</p>
             {SEV_ORDER.map(sev => {
               const count = sevCounts[sev] || 0;
-              const pct = events.length ? (count / events.length) * 100 : 0;
+              const pct   = events.length ? (count / events.length) * 100 : 0;
               return (
                 <div key={sev} style={{ marginBottom: 8 }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4, fontSize: 11 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 3, fontSize: 11 }}>
                     <span style={{ color: SEV_COLOR[sev], fontWeight: 700, textTransform: "capitalize" }}>Sev {sev} — {SEV_LABEL[sev]}</span>
-                    <span style={{ color: "rgba(255,255,255,0.4)" }}>{count}</span>
+                    <span style={{ color: D.textTer }}>{count}</span>
                   </div>
-                  <div style={{ height: 4, borderRadius: 4, background: "rgba(255,255,255,0.08)" }}>
+                  <div style={{ height: 5, borderRadius: 4, background: D.bgSubtle }}>
                     <div style={{ height: "100%", borderRadius: 4, width: `${pct}%`, background: SEV_COLOR[sev] }} />
                   </div>
                 </div>
@@ -195,134 +189,122 @@ export default function CrisisAtlasDashboard({ onClose }) {
             })}
           </div>
 
-          {/* By type */}
-          <div style={{ background: "rgba(255,255,255,0.03)", borderRadius: 12, padding: "12px 14px", border: "1px solid rgba(255,255,255,0.06)" }}>
-            <div style={{ fontSize: 11, color: "rgba(255,255,255,0.5)", fontWeight: 700, marginBottom: 10, textTransform: "uppercase", letterSpacing: 1 }}>By Disaster Type</div>
-            {topTypes.slice(0, 8).map(([type, count]) => {
+          {/* Top disaster types */}
+          <div>
+            <p style={{ fontSize: 10, fontWeight: 800, color: D.textTer, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>Top Disaster Types</p>
+            {topTypes.slice(0, 7).map(([type, count]) => {
               const max = topTypes[0]?.[1] || 1;
               return (
-                <div key={type} style={{ marginBottom: 7 }}>
+                <div key={type} style={{ marginBottom: 6 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 3, fontSize: 11 }}>
-                    <span style={{ color: "rgba(255,255,255,0.75)" }}>{TYPE_ICON[type]} {type}</span>
-                    <span style={{ color: "rgba(255,255,255,0.4)" }}>{count}</span>
+                    <span style={{ color: D.textSec }}>{TYPE_ICON[type]} {type}</span>
+                    <span style={{ color: D.textTer }}>{count}</span>
                   </div>
-                  <div style={{ height: 3, borderRadius: 3, background: "rgba(255,255,255,0.08)" }}>
-                    <div style={{ height: "100%", borderRadius: 3, width: `${(count/max)*100}%`, background: "linear-gradient(90deg,#009EDB,#f97316)" }} />
+                  <div style={{ height: 4, borderRadius: 3, background: D.bgSubtle }}>
+                    <div style={{ height: "100%", borderRadius: 3, width: `${(count/max)*100}%`, background: `linear-gradient(90deg,${D.primary},#7c3aed)` }} />
                   </div>
                 </div>
               );
             })}
           </div>
-
-          {forecasts > 0 && (
-            <div style={{ background: "#7c3aed22", border: "1px solid #7c3aed44", borderRadius: 10, padding: "10px 12px", display: "flex", alignItems: "center", gap: 8 }}>
-              <Zap size={14} style={{ color: "#7c3aed" }} />
-              <span style={{ fontSize: 12, color: "#a78bfa" }}><strong>{forecasts}</strong> AI-forecast events</span>
-            </div>
-          )}
         </div>
 
-        {/* ── Right: Map + Events ── */}
-        <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-
-          {/* Type filter tabs */}
-          <div style={{
-            display: "flex", gap: 6, padding: "10px 14px", overflowX: "auto",
-            borderBottom: "1px solid rgba(255,255,255,0.06)", flexShrink: 0, scrollbarWidth: "none",
-          }}>
-            {allTypes.map(t => (
+        {/* Map */}
+        <div style={{ position: "relative", minHeight: 520 }}>
+          {/* Type filter pill row above map */}
+          <div style={{ position: "absolute", top: 10, left: 10, right: 10, zIndex: 1000, display: "flex", gap: 5, flexWrap: "wrap" }}>
+            {allTypes.slice(0, 10).map(t => (
               <button key={t} onClick={() => setSelectedType(t)} style={{
-                padding: "4px 12px", borderRadius: 20, fontSize: 11, fontWeight: 700,
-                cursor: "pointer", whiteSpace: "nowrap", transition: "all 0.2s",
-                background: selectedType === t ? "#009EDB" : "rgba(255,255,255,0.06)",
-                color: selectedType === t ? "#fff" : "rgba(255,255,255,0.5)",
-                border: selectedType === t ? "none" : "1px solid rgba(255,255,255,0.1)",
+                padding: "3px 10px", borderRadius: 20, fontSize: 11, fontWeight: 700,
+                cursor: "pointer", border: selectedType === t ? "none" : `1px solid ${D.border}`,
+                background: selectedType === t ? D.primary : D.bg,
+                color: selectedType === t ? "#fff" : D.textSec,
+                boxShadow: "0 1px 4px rgba(0,0,0,0.1)",
               }}>
                 {t === "All" ? `All (${events.length})` : `${TYPE_ICON[t] || "⚠️"} ${t}`}
               </button>
             ))}
           </div>
 
-          {/* Map */}
-          <div style={{ flex: 1, position: "relative", minHeight: 0 }}>
-            {loading ? (
-              <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "#060d18", flexDirection: "column", gap: 12 }}>
-                <Activity size={28} style={{ color: "#f97316", animation: "ca-pulse 1.5s ease-in-out infinite" }} />
-                <span style={{ color: "rgba(255,255,255,0.4)", fontSize: 13 }}>Fetching live disaster data from Michael API…</span>
-              </div>
-            ) : (
-              <MapContainer center={[20, 10]} zoom={2} minZoom={2} maxZoom={8} style={{ width: "100%", height: "100%" }} zoomControl={false}>
-                <ZoomControl position="bottomright" />
-                <TileLayer
-                  url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-                  attribution='&copy; <a href="https://carto.com">CARTO</a>'
-                />
-                {filtered.map((e, i) => {
-                  const color  = SEV_COLOR[e._sev] ?? "#94a3b8";
-                  const radius = e._sev === 5 ? 10 : e._sev === 4 ? 7 : 5;
-                  return (
-                    <CircleMarker
-                      key={e.event_id ?? i}
-                      center={[e.latitude, e.longitude]}
-                      radius={radius}
-                      pathOptions={{ color, fillColor: color, fillOpacity: 0.7, weight: 1.5, opacity: 0.9 }}
-                    >
-                      <Popup>
-                        <div style={{ minWidth: 190 }}>
-                          <div style={{ fontWeight: 800, fontSize: 13, marginBottom: 4 }}>{TYPE_ICON[e._type]} {e._type}</div>
-                          <div style={{ fontSize: 12, color: "#555", marginBottom: 6 }}>{e.location_name || "Location unknown"}</div>
-                          {(e.fatalities || e.people_killed) > 0 && <div style={{ fontSize: 11, color: "#ef4444" }}>⚠ {e.fatalities || e.people_killed} fatalities</div>}
-                          {e.people_affected > 0 && <div style={{ fontSize: 11, color: "#f97316" }}>👥 {Number(e.people_affected).toLocaleString()} affected</div>}
-                          {e.magnitude && <div style={{ fontSize: 11, color: "#888" }}>Magnitude: {e.magnitude}</div>}
-                          {e.short_description && <div style={{ fontSize: 11, color: "#555", marginTop: 4, fontStyle: "italic" }}>{e.short_description.slice(0, 120)}{e.short_description.length > 120 ? "…" : ""}</div>}
-                          <div style={{ fontSize: 10, color: "#aaa", marginTop: 6, display: "flex", alignItems: "center", gap: 6 }}>
-                            <span style={{ background: (SEV_COLOR[e._sev] ?? "#94a3b8") + "22", color: SEV_COLOR[e._sev] ?? "#94a3b8", padding: "1px 6px", borderRadius: 8, fontWeight: 700 }}>Sev {e._sev}</span>
-                            {e.timestamp ? new Date(e.timestamp).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : ""}
-                            {e.is_forecast && <span style={{ color: "#7c3aed", fontWeight: 700 }}>· AI Forecast</span>}
-                          </div>
+          {loading ? (
+            <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", background: D.bgSubtle, flexDirection: "column", gap: 12 }}>
+              <Activity size={28} style={{ color: D.primary }} />
+              <span style={{ color: D.textSec, fontSize: 13 }}>Fetching live disaster data from Michael AI…</span>
+            </div>
+          ) : (
+            <MapContainer center={[20, 10]} zoom={2} minZoom={2} maxZoom={8} style={{ width: "100%", height: "100%", minHeight: 520 }} zoomControl={false}>
+              <ZoomControl position="bottomright" />
+              <TileLayer
+                url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com">CARTO</a>'
+              />
+              {filtered.map((e, i) => {
+                const color  = SEV_COLOR[e._sev] ?? "#94A3B8";
+                const radius = e._sev === 5 ? 9 : e._sev === 4 ? 6 : 4;
+                return (
+                  <CircleMarker
+                    key={e.event_id ?? i}
+                    center={[e.latitude, e.longitude]}
+                    radius={radius}
+                    pathOptions={{ color, fillColor: color, fillOpacity: 0.75, weight: 1.5, opacity: 0.9 }}
+                  >
+                    <Popup>
+                      <div style={{ minWidth: 200, fontFamily: "inherit" }}>
+                        <div style={{ fontWeight: 800, fontSize: 13, marginBottom: 4, color: D.textPri }}>{TYPE_ICON[e._type]} {e._type}</div>
+                        <div style={{ fontSize: 12, color: D.textSec, marginBottom: 6 }}>{e.location_name || "Location unknown"}</div>
+                        {(e.fatalities || e.people_killed) > 0 && <div style={{ fontSize: 11, color: "#CC2936", marginBottom: 2 }}>⚠ {e.fatalities || e.people_killed} fatalities</div>}
+                        {e.people_affected > 0 && <div style={{ fontSize: 11, color: "#E87722", marginBottom: 2 }}>👥 {Number(e.people_affected).toLocaleString()} affected</div>}
+                        {e.short_description && <div style={{ fontSize: 11, color: D.textSec, marginTop: 4, fontStyle: "italic" }}>{e.short_description.slice(0, 120)}{e.short_description.length > 120 ? "…" : ""}</div>}
+                        <div style={{ fontSize: 10, color: D.textTer, marginTop: 6, display: "flex", alignItems: "center", gap: 6 }}>
+                          <span style={{ background: (SEV_COLOR[e._sev] ?? "#94A3B8") + "20", color: SEV_COLOR[e._sev] ?? "#94A3B8", padding: "1px 6px", borderRadius: 8, fontWeight: 700, textTransform: "capitalize" }}>
+                            {SEV_LABEL[e._sev]}
+                          </span>
+                          {e.timestamp ? new Date(e.timestamp).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : ""}
+                          {e.is_forecast && <span style={{ color: "#7c3aed", fontWeight: 700 }}>· AI Forecast</span>}
                         </div>
-                      </Popup>
-                    </CircleMarker>
-                  );
-                })}
-              </MapContainer>
-            )}
-          </div>
+                      </div>
+                    </Popup>
+                  </CircleMarker>
+                );
+              })}
+            </MapContainer>
+          )}
+        </div>
+      </div>
 
-          {/* Recent events strip */}
-          <div style={{ height: 200, overflowY: "auto", borderTop: "1px solid rgba(255,255,255,0.06)", flexShrink: 0 }}>
-            <div style={{ padding: "8px 14px", borderBottom: "1px solid rgba(255,255,255,0.05)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <span style={{ fontSize: 11, color: "rgba(255,255,255,0.5)", fontWeight: 700, textTransform: "uppercase", letterSpacing: 1 }}>
-                Showing {filtered.length.toLocaleString()} events · Powered by Michael API
-              </span>
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))" }}>
-              {filtered.slice(0, 30).map((e, i) => (
-                <div key={e.event_id ?? i} style={{ padding: "8px 14px", borderBottom: "1px solid rgba(255,255,255,0.04)", display: "flex", alignItems: "flex-start", gap: 8 }}>
-                  <span style={{ fontSize: 16, flexShrink: 0 }}>{TYPE_ICON[e._type]}</span>
-                  <div style={{ minWidth: 0 }}>
-                    <div style={{ fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,0.85)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                      {e.location_name || e._type}
-                    </div>
-                    <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 3 }}>
-                      <SevBadge sev={e._sev} />
-                      {e.is_forecast && <span style={{ fontSize: 10, color: "#7c3aed", fontWeight: 700 }}>AI</span>}
-                      <span style={{ fontSize: 10, color: "rgba(255,255,255,0.25)" }}>
-                        {e.timestamp ? new Date(e.timestamp).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : ""}
-                      </span>
-                    </div>
-                  </div>
+      {/* ── Recent events strip ── */}
+      <div style={{ background: D.bg, borderTop: `1px solid ${D.border}` }}>
+        <div style={{ padding: "10px 20px", borderBottom: `1px solid ${D.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <span style={{ fontSize: 11, color: D.textSec, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em" }}>
+            {filtered.length.toLocaleString()} events showing · Michael AI Intelligence Platform
+          </span>
+          {lastUpdated && <span style={{ fontSize: 11, color: D.textTer }}>Last updated {lastUpdated}</span>}
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", maxHeight: 160, overflowY: "auto" }}>
+          {filtered.slice(0, 40).map((e, i) => (
+            <div key={e.event_id ?? i} style={{ padding: "8px 16px", borderBottom: `1px solid ${D.bgSubtle}`, borderRight: `1px solid ${D.bgSubtle}`, display: "flex", alignItems: "flex-start", gap: 8 }}>
+              <span style={{ fontSize: 15, flexShrink: 0 }}>{TYPE_ICON[e._type]}</span>
+              <div style={{ minWidth: 0 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: D.textPri, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  {e.location_name || e._type}
                 </div>
-              ))}
+                <div style={{ display: "flex", alignItems: "center", gap: 5, marginTop: 2 }}>
+                  <span style={{ fontSize: 9, fontWeight: 800, textTransform: "uppercase", color: SEV_COLOR[e._sev], background: (SEV_COLOR[e._sev]) + "18", padding: "1px 5px", borderRadius: 6 }}>
+                    {SEV_LABEL[e._sev]}
+                  </span>
+                  <span style={{ fontSize: 10, color: D.textTer }}>
+                    {e.timestamp ? new Date(e.timestamp).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : ""}
+                  </span>
+                </div>
+              </div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
 
       <style>{`
-        @keyframes ca-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-        @keyframes ca-spin  { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .leaflet-container { background: #07141e; }
+        @keyframes atlas-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .leaflet-container { background: #e8f0f5; }
       `}</style>
     </div>
   );

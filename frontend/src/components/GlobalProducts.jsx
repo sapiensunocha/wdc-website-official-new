@@ -1,38 +1,38 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import {
-  Globe, BarChart2, Users, ArrowRight, ExternalLink,
-  Zap, Radio, BookOpen, ChevronRight, Activity
+  BarChart2, Users, ArrowRight, ExternalLink,
+  BookOpen, ChevronRight, ChevronDown,
 } from "lucide-react";
 import AnimateIn from "./AnimateIn";
 import GVIBookReader from "./GVIBookReader";
 import CrisisAtlasDashboard from "./CrisisAtlasDashboard";
 import RosterPortalDashboard from "./RosterPortalDashboard";
 
-import nostraImg   from "../assets/images/cases/nostra.png";
-import crisisImg   from "../assets/images/cases/weeklydashboard.png";
-import rosterImg   from "../assets/images/cases/global_roster.png";
+import nostraImg from "../assets/images/cases/nostra.png";
+import crisisImg from "../assets/images/cases/weeklydashboard.png";
+import rosterImg from "../assets/images/cases/global_roster.png";
 
-// ─── Live stat ticker from Michael API ─────────────────────────────────────
+// ─── Live stat ticker from Michael API ─────────────────────────────────────────
 const MICHAEL_URL = import.meta.env.VITE_MICHAEL_API_URL || "https://michael-api-382117221028.us-central1.run.app";
 const MICHAEL_KEY = import.meta.env.VITE_MICHAEL_API_SECRET || "xeltis-prod-key-2026";
 
 function useLiveStats() {
   const [stats, setStats] = useState({ disasters: 47, affected: "2.3M", countries: 38 });
   useEffect(() => {
-    fetch(`${MICHAEL_URL}/api/alerts`, {
-      headers: { "X-API-Key": MICHAEL_KEY },
-    })
-      .then((r) => r.json())
-      .then((json) => {
-        const events = Array.isArray(json) ? json : (json.events ?? []);
-        const total  = json.total ?? events.length;
+    fetch(`${MICHAEL_URL}/api/alerts`, { headers: { "X-API-Key": MICHAEL_KEY } })
+      .then(r => r.json())
+      .then(json => {
+        const events   = Array.isArray(json) ? json : (json.events ?? []);
+        const total    = json.total ?? events.length;
         const countries = new Set(events.map(e => e.location_name).filter(Boolean)).size;
         const affected  = events.reduce((s, e) => s + (Number(e.people_affected) || 0), 0);
         setStats({
           disasters: total,
-          affected: affected > 1_000_000 ? `${(affected / 1_000_000).toFixed(1)}M` : affected > 1000 ? `${(affected / 1000).toFixed(0)}k` : String(affected || "2.3M"),
+          affected: affected > 1_000_000 ? `${(affected / 1_000_000).toFixed(1)}M`
+                  : affected > 1000     ? `${(affected / 1000).toFixed(0)}k`
+                  : String(affected || "2.3M"),
           countries: countries || 38,
         });
       })
@@ -41,8 +41,8 @@ function useLiveStats() {
   return stats;
 }
 
-// ─── Single product card ────────────────────────────────────────────────────
-function ProductCard({ product, index }) {
+// ─── Product card ───────────────────────────────────────────────────────────────
+function ProductCard({ product, index, active, onClick }) {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -53,145 +53,111 @@ function ProductCard({ product, index }) {
       transition={{ duration: 0.6, delay: index * 0.12, ease: [0.22, 1, 0.36, 1] }}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
-      className="flex flex-col rounded-2xl overflow-hidden border border-white/10 bg-[#0d1321] group"
-      style={{ boxShadow: hovered ? `0 24px 60px ${product.glowColor}33` : "0 4px 24px rgba(0,0,0,0.3)" }}
+      onClick={onClick}
+      className="flex flex-col rounded-2xl overflow-hidden border bg-white group cursor-pointer"
+      style={{
+        borderColor: active ? product.glowColor : "#E2E8F0",
+        boxShadow: active
+          ? `0 0 0 2px ${product.glowColor}44, 0 8px 32px ${product.glowColor}22`
+          : hovered
+            ? "0 8px 32px rgba(0,0,0,0.10)"
+            : "0 2px 8px rgba(0,0,0,0.06)",
+        transition: "box-shadow 0.25s, border-color 0.25s",
+      }}
     >
-      {/* Preview area */}
-      <div className="relative h-56 sm:h-64 overflow-hidden">
+      {/* Preview image */}
+      <div className="relative h-44 sm:h-52 overflow-hidden">
         <img
           src={product.image}
           alt={product.name}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-          style={{ filter: "saturate(0.8) brightness(0.7)" }}
         />
-        {/* gradient overlay */}
         <div className="absolute inset-0" style={{
-          background: `linear-gradient(180deg, transparent 30%, #0d1321 100%),
-                       linear-gradient(135deg, ${product.glowColor}22 0%, transparent 60%)`
+          background: `linear-gradient(180deg, transparent 40%, rgba(255,255,255,0.95) 100%),
+                       linear-gradient(135deg, ${product.glowColor}11 0%, transparent 60%)`
         }} />
 
         {/* Badge */}
-        <div className="absolute top-4 left-4 flex items-center gap-2">
-          <span
-            className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black tracking-widest uppercase"
-            style={{ background: `${product.glowColor}22`, color: product.glowColor, border: `1px solid ${product.glowColor}55` }}
-          >
+        <div className="absolute top-3 left-3 flex items-center gap-2">
+          <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-black tracking-widest uppercase bg-white shadow-sm"
+            style={{ color: product.glowColor, border: `1px solid ${product.glowColor}33` }}>
             {product.live && <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: product.glowColor }} />}
             {product.badge}
           </span>
-          {product.comingSoon && (
-            <span className="px-3 py-1 rounded-full text-[10px] font-black tracking-widest uppercase bg-white/10 text-white/60 border border-white/15">
-              Coming Soon
-            </span>
-          )}
         </div>
 
         {/* Icon */}
-        <div
-          className="absolute bottom-4 right-4 w-10 h-10 rounded-xl flex items-center justify-center"
-          style={{ background: `${product.glowColor}22`, border: `1px solid ${product.glowColor}44` }}
-        >
-          <product.Icon size={18} style={{ color: product.glowColor }} />
+        <div className="absolute bottom-3 right-3 w-9 h-9 rounded-xl flex items-center justify-center bg-white shadow-sm"
+          style={{ border: `1px solid ${product.glowColor}33` }}>
+          <product.Icon size={16} style={{ color: product.glowColor }} />
         </div>
       </div>
 
-      {/* Info area */}
-      <div className="flex flex-col flex-1 p-6">
-        <h3 className="text-white font-black text-xl mb-2 leading-snug">{product.name}</h3>
-        <p className="text-white/55 text-sm leading-relaxed mb-5 flex-1">{product.description}</p>
+      {/* Info */}
+      <div className="flex flex-col flex-1 p-5">
+        <h3 className="font-black text-lg mb-1.5 leading-snug" style={{ color: "#0D1F2D" }}>{product.name}</h3>
+        <p className="text-sm leading-relaxed mb-4 flex-1" style={{ color: "#475569" }}>{product.description}</p>
 
-        {/* Stats row */}
-        <div className="grid grid-cols-3 gap-2 mb-5 py-4 border-y border-white/10">
+        {/* Stats */}
+        <div className="grid grid-cols-3 gap-2 mb-4 py-3 border-y" style={{ borderColor: "#E2E8F0" }}>
           {product.stats.map((s, i) => (
             <div key={i} className="text-center">
-              <div className="text-white font-black text-base leading-none mb-1" style={{ color: product.glowColor }}>{s.value}</div>
-              <div className="text-white/40 text-[10px] uppercase tracking-wide leading-tight">{s.label}</div>
+              <div className="font-black text-base leading-none mb-1" style={{ color: product.glowColor }}>{s.value}</div>
+              <div className="text-[10px] uppercase tracking-wide leading-tight" style={{ color: "#94A3B8" }}>{s.label}</div>
             </div>
           ))}
         </div>
 
         {/* CTA */}
-        {product.comingSoon ? (
-          <div className="flex items-center gap-2 text-white/30 text-sm font-bold cursor-default select-none">
-            <Users size={14} /> Join Waitlist
-          </div>
-        ) : product.external ? (
-          <a
-            href={product.href}
-            target="_blank"
-            rel="noopener noreferrer"
+        {product.external ? (
+          <a href={product.href} target="_blank" rel="noopener noreferrer"
             className="flex items-center gap-2 text-sm font-bold transition-all hover:gap-3"
             style={{ color: product.glowColor }}
-          >
+            onClick={e => e.stopPropagation()}>
             {product.cta} <ExternalLink size={14} />
           </a>
-        ) : product.onCardClick ? (
-          <button
-            onClick={(e) => { e.stopPropagation(); product.onCardClick(); }}
-            className="flex items-center gap-2 text-sm font-bold transition-all hover:gap-3"
-            style={{ color: product.glowColor }}
-          >
-            {product.cta} <ArrowRight size={14} />
-          </button>
         ) : (
-          <Link
-            to={product.href}
-            className="flex items-center gap-2 text-sm font-bold transition-all hover:gap-3"
-            style={{ color: product.glowColor }}
-          >
-            {product.cta} <ArrowRight size={14} />
-          </Link>
+          <div className="flex items-center justify-between">
+            <span className="flex items-center gap-2 text-sm font-bold" style={{ color: product.glowColor }}>
+              {product.cta} <ArrowRight size={14} />
+            </span>
+            {active && (
+              <span className="flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full"
+                style={{ background: product.glowColor + "15", color: product.glowColor }}>
+                <ChevronDown size={12} /> Open
+              </span>
+            )}
+          </div>
         )}
       </div>
     </motion.div>
   );
 }
 
-// ─── Crisis Atlas live embed modal ─────────────────────────────────────────
-function CrisisAtlasEmbed({ open, onClose }) {
-  if (!open) return null;
-  return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[9999] flex flex-col"
-        style={{ background: "rgba(5,8,20,0.95)" }}
-      >
-        <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
-          <div className="flex items-center gap-2">
-            <Activity size={14} className="text-[#009EDB]" />
-            <span className="text-white text-xs font-black">Crisis Atlas — Weekly Disaster Dashboard</span>
-          </div>
-          <button onClick={onClose} className="text-white/50 hover:text-white text-xs px-3 py-1.5 rounded bg-white/10 transition-colors">
-            Close ✕
-          </button>
-        </div>
-        <iframe
-          src="https://public.tableau.com/views/WorldDisasterCentreReport-ActNowforTomorrow/WeeklyDashboard?:showVizHome=no&:embed=true&:toolbar=no"
-          className="flex-1 w-full border-0"
-          title="WDC Crisis Atlas"
-          allowFullScreen
-        />
-      </motion.div>
-    </AnimatePresence>
-  );
-}
-
-// ─── Main component ─────────────────────────────────────────────────────────
+// ─── Main component ─────────────────────────────────────────────────────────────
 export default function GlobalProducts() {
-  const liveStats = useLiveStats();
-  const [atlasOpen, setAtlasOpen] = useState(false);
+  const liveStats   = useLiveStats();
+  const [active, setActive] = useState(null); // null | "nostradamus" | "crisis" | "roster"
   const [gviOpen, setGviOpen] = useState(false);
-  const [rosterOpen, setRosterOpen] = useState(false);
+  const dashboardRef = useRef(null);
+
+  const toggle = (key) => setActive(prev => prev === key ? null : key);
+
+  // Scroll the expanded dashboard into view
+  useEffect(() => {
+    if (active && active !== "nostradamus" && dashboardRef.current) {
+      setTimeout(() => {
+        dashboardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 120);
+    }
+  }, [active]);
 
   const products = [
     {
+      key: "nostradamus",
       name: "Nostradamus",
       badge: "Monthly Intelligence",
       live: true,
-      comingSoon: false,
       external: false,
       image: nostraImg,
       glowColor: "#009EDB",
@@ -199,19 +165,17 @@ export default function GlobalProducts() {
       description:
         "Monthly global disaster intelligence with 30-day projections, regional risk rankings, and an executive action plan. The definitive briefing for decision-makers and humanitarian leaders.",
       stats: [
-        { value: "195",        label: "Countries" },
-        { value: "53",         label: "Pages" },
-        { value: "30-day",     label: "Outlook" },
+        { value: "195",    label: "Countries" },
+        { value: "53",     label: "Pages" },
+        { value: "30-day", label: "Outlook" },
       ],
-      href: "#nostradamus",
       cta: "Read the Report",
-      onCardClick: () => setGviOpen(true),
     },
     {
+      key: "crisis",
       name: "Crisis Atlas",
       badge: "Live Weekly",
       live: true,
-      comingSoon: false,
       external: false,
       image: crisisImg,
       glowColor: "#f97316",
@@ -223,74 +187,106 @@ export default function GlobalProducts() {
         { value: liveStats.countries, label: "Countries" },
         { value: "Weekly",            label: "Updates" },
       ],
-      href: "#crisis-atlas",
       cta: "Open Dashboard",
-      onCardClick: () => setAtlasOpen(true),
-      // Crisis Atlas now uses CrisisAtlasDashboard (real Supabase data)
     },
     {
+      key: "roster",
       name: "Global Disaster Roster Portal",
       badge: "Expert Network",
       live: true,
-      comingSoon: false,
       external: false,
       image: rosterImg,
       glowColor: "#22c55e",
       Icon: Users,
       description:
-        "Connecting vetted humanitarian professionals, organizations, and companies worldwide. Rapid deployment, transparent funding flows, and a global talent network — ready when disaster strikes.",
+        "Connecting vetted humanitarian professionals, organisations, and companies worldwide. Rapid deployment, transparent funding flows, and a global talent network — ready when disaster strikes.",
       stats: [
         { value: "2,000+", label: "Experts" },
         { value: "47",     label: "Countries" },
         { value: "72h",    label: "Deploy time" },
       ],
-      href: "#roster",
       cta: "Open Portal",
-      onCardClick: () => setRosterOpen(true),
     },
   ];
 
   return (
     <>
-      <section className="py-16 sm:py-24" style={{ background: "#05081a" }}>
+      <section className="py-16 sm:py-24 bg-white">
         <div className="container">
 
           {/* Section header */}
           <AnimateIn variant="fadeUp">
-            <div className="max-w-2xl mb-12 sm:mb-16">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="w-2 h-2 rounded-full bg-[#009EDB] animate-pulse" />
-                <span className="text-[#009EDB] text-xs font-black tracking-widest uppercase">Global Products</span>
+            <div className="max-w-2xl mb-10 sm:mb-14">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                <span className="text-primary text-xs font-black tracking-widest uppercase">Global Products</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-black text-white leading-tight mb-4">
+              <h2 className="text-3xl sm:text-4xl font-black leading-tight mb-3" style={{ color: "#0D1F2D" }}>
                 Intelligence Tools Built<br className="hidden sm:block" /> for the Real World
               </h2>
-              <p className="text-white/50 text-base leading-relaxed">
+              <p className="text-base leading-relaxed" style={{ color: "#475569" }}>
                 From monthly strategic intelligence to real-time disaster dashboards and expert deployment networks —
                 WDC's products give decision-makers the insight and connections they need before the next crisis strikes.
               </p>
             </div>
           </AnimateIn>
 
-          {/* Product cards grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Product cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {products.map((product, i) => (
-              <div
-                key={product.name}
-                onClick={product.onCardClick}
-                style={{ cursor: product.onCardClick ? "pointer" : "default" }}
-              >
-                <ProductCard product={product} index={i} />
-              </div>
+              <ProductCard
+                key={product.key}
+                product={product}
+                index={i}
+                active={active === product.key}
+                onClick={() => {
+                  if (product.key === "nostradamus") {
+                    setGviOpen(true);
+                  } else {
+                    toggle(product.key);
+                  }
+                }}
+              />
             ))}
+          </div>
+
+          {/* ── Inline expanded dashboard ── */}
+          <div ref={dashboardRef}>
+            <AnimatePresence>
+              {active === "crisis" && (
+                <motion.div
+                  key="crisis"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  style={{ overflow: "hidden" }}
+                >
+                  <CrisisAtlasDashboard onClose={() => setActive(null)} />
+                </motion.div>
+              )}
+              {active === "roster" && (
+                <motion.div
+                  key="roster"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  style={{ overflow: "hidden" }}
+                >
+                  <RosterPortalDashboard onClose={() => setActive(null)} />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           {/* Bottom CTA strip */}
           <AnimateIn variant="fadeUp" delay={0.3}>
-            <div className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 px-6 py-5 rounded-2xl border border-white/10 bg-white/5">
+            <div className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4 px-6 py-5 rounded-2xl border"
+              style={{ borderColor: "#E2E8F0", background: "#F8FAFB" }}>
               <div>
-                <p className="text-white font-bold text-sm">Need a customised intelligence briefing?</p>
-                <p className="text-white/40 text-xs mt-0.5">WDC analysts deliver bespoke reports for governments, NGOs, and the private sector.</p>
+                <p className="font-bold text-sm" style={{ color: "#0D1F2D" }}>Need a customised intelligence briefing?</p>
+                <p className="text-xs mt-0.5" style={{ color: "#94A3B8" }}>WDC analysts deliver bespoke reports for governments, NGOs, and the private sector.</p>
               </div>
               <Link
                 to="/contact"
@@ -304,14 +300,8 @@ export default function GlobalProducts() {
         </div>
       </section>
 
-      {/* Crisis Atlas — live dashboard from sentinel_events */}
-      {atlasOpen && <CrisisAtlasDashboard onClose={() => setAtlasOpen(false)} />}
-
-      {/* Nostradamus GVI Reader */}
+      {/* GVI Book Reader — full-screen (intentional for a report reader) */}
       {gviOpen && <GVIBookReader onClose={() => setGviOpen(false)} />}
-
-      {/* Roster Portal Dashboard */}
-      {rosterOpen && <RosterPortalDashboard onClose={() => setRosterOpen(false)} />}
     </>
   );
 }
