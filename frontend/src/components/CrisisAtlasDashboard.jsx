@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup } from "react-simple-maps";
-import { Activity, RefreshCw, AlertTriangle, Globe, Zap, TrendingDown, ChevronDown, ExternalLink } from "lucide-react";
+import { useEffect, useState, useRef } from "react";
+import { MapContainer, TileLayer, CircleMarker, Tooltip, useMap } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import { Activity, RefreshCw, AlertTriangle, Globe, Zap, TrendingDown, ChevronDown } from "lucide-react";
 
 const MICHAEL_URL = import.meta.env.VITE_MICHAEL_API_URL || "https://michael-api-382117221028.us-central1.run.app";
 const MICHAEL_KEY = import.meta.env.VITE_MICHAEL_API_SECRET || "xeltis-prod-key-2026";
-const GEO_URL = "/countries-110m.json";
 
 const D = {
   bg: "#FFFFFF", bgRaised: "#F8FAFB", bgSubtle: "#F1F5F9",
@@ -44,15 +44,20 @@ const TYPE_COLOR = {
   Disease:"#16a34a", Landslide:"#92400e", Other:"#6b7280",
 };
 
+// Expose Leaflet map instance to parent for custom zoom controls
+function MapController({ mapRef }) {
+  const map = useMap();
+  useEffect(() => { mapRef.current = map; }, [map, mapRef]);
+  return null;
+}
+
 export default function CrisisAtlasDashboard({ onClose }) {
-  const [events, setEvents]       = useState([]);
-  const [total, setTotal]         = useState(0);
-  const [loading, setLoading]     = useState(true);
+  const [events, setEvents]           = useState([]);
+  const [total, setTotal]             = useState(0);
+  const [loading, setLoading]         = useState(true);
   const [lastUpdated, setLastUpdated] = useState(null);
   const [selectedType, setSelectedType] = useState("All");
-  const [tooltip, setTooltip]     = useState(null);
-  const [zoom, setZoom]           = useState(1);
-  const [center, setCenter]       = useState([0, 20]);
+  const mapRef = useRef(null);
 
   const load = async () => {
     setLoading(true);
@@ -75,8 +80,7 @@ export default function CrisisAtlasDashboard({ onClose }) {
 
   useEffect(() => { load(); }, []);
 
-  const filtered = selectedType === "All" ? events : events.filter(e => e._type === selectedType);
-
+  const filtered   = selectedType === "All" ? events : events.filter(e => e._type === selectedType);
   const countries  = new Set(events.map(e => e.location_name).filter(Boolean)).size;
   const fatalities = events.reduce((s, e) => s + (Number(e.fatalities || e.people_killed) || 0), 0);
   const criticals  = events.filter(e => e._sev >= 4).length;
@@ -85,10 +89,8 @@ export default function CrisisAtlasDashboard({ onClose }) {
   const typeCounts = {};
   events.forEach(e => { typeCounts[e._type] = (typeCounts[e._type] || 0) + 1; });
   const topTypes = Object.entries(typeCounts).sort((a, b) => b[1] - a[1]);
-
   const sevCounts = {};
   events.forEach(e => { sevCounts[e._sev] = (sevCounts[e._sev] || 0) + 1; });
-
   const allTypes = ["All", ...Object.keys(typeCounts).sort()];
 
   const cardStyle = { background: D.bg, border: `1px solid ${D.border}`, borderRadius: 12 };
@@ -127,10 +129,10 @@ export default function CrisisAtlasDashboard({ onClose }) {
       {/* ── KPI row ── */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12, padding: "16px 20px" }}>
         {[
-          { icon: AlertTriangle, label: "Active Events",    value: loading ? "…" : events.length.toLocaleString(), accent: D.primary,  sub: `of ${total.toLocaleString()} tracked` },
-          { icon: TrendingDown,  label: "Fatalities",       value: loading ? "…" : fatalities > 999 ? `${(fatalities/1000).toFixed(1)}k` : fatalities || "—", accent: "#CC2936", sub: "confirmed" },
-          { icon: Globe,         label: "Locations",        value: loading ? "…" : countries,   accent: "#7c3aed", sub: "distinct areas" },
-          { icon: Zap,           label: "High / Critical",  value: loading ? "…" : criticals,   accent: "#E87722", sub: "severity 4–5" },
+          { icon: AlertTriangle, label: "Active Events",   value: loading ? "…" : events.length.toLocaleString(), accent: D.primary,  sub: `of ${total.toLocaleString()} tracked` },
+          { icon: TrendingDown,  label: "Fatalities",      value: loading ? "…" : fatalities > 999 ? `${(fatalities/1000).toFixed(1)}k` : fatalities || "—", accent: "#CC2936", sub: "confirmed" },
+          { icon: Globe,         label: "Locations",       value: loading ? "…" : countries,  accent: "#7c3aed", sub: "distinct areas" },
+          { icon: Zap,           label: "High / Critical", value: loading ? "…" : criticals,  accent: "#E87722", sub: "severity 4–5" },
         ].map(({ icon: Icon, label, value, accent, sub }) => (
           <div key={label} style={{ ...cardStyle, padding: "14px 16px", borderTop: `3px solid ${accent}` }}>
             <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 6 }}>
@@ -147,7 +149,7 @@ export default function CrisisAtlasDashboard({ onClose }) {
       <div style={{ display: "grid", gridTemplateColumns: "240px 1fr", borderTop: `1px solid ${D.border}` }}>
 
         {/* Left: type filter + severity bars */}
-        <div style={{ background: D.bg, borderRight: `1px solid ${D.border}`, padding: 14, display: "flex", flexDirection: "column", gap: 14, overflowY: "auto", maxHeight: 560 }}>
+        <div style={{ background: D.bg, borderRight: `1px solid ${D.border}`, padding: 14, display: "flex", flexDirection: "column", gap: 14, overflowY: "auto", maxHeight: 580 }}>
           <div>
             <p style={{ fontSize: 10, fontWeight: 800, color: D.textTer, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>Filter by Type</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -205,8 +207,8 @@ export default function CrisisAtlasDashboard({ onClose }) {
           </div>
         </div>
 
-        {/* Map using react-simple-maps — no API key needed */}
-        <div style={{ position: "relative", background: "#e8f4f8", minHeight: 560 }}>
+        {/* Map — ESRI Ocean Basemap: deep blue oceans, true depth colors, hillshade terrain */}
+        <div style={{ position: "relative", minHeight: 580 }}>
           {loading ? (
             <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 12, background: D.bgSubtle }}>
               <Activity size={28} style={{ color: D.primary }} />
@@ -214,91 +216,104 @@ export default function CrisisAtlasDashboard({ onClose }) {
             </div>
           ) : (
             <>
-              {/* Zoom controls */}
-              <div style={{ position: "absolute", top: 10, right: 10, zIndex: 10, display: "flex", flexDirection: "column", gap: 4 }}>
-                <button onClick={() => setZoom(z => Math.min(z * 1.5, 8))} style={{ width: 30, height: 30, borderRadius: 6, border: `1px solid ${D.border}`, background: D.bg, cursor: "pointer", fontSize: 16, fontWeight: 700, color: D.textSec, display: "flex", alignItems: "center", justifyContent: "center" }}>+</button>
-                <button onClick={() => setZoom(z => Math.max(z / 1.5, 1))} style={{ width: 30, height: 30, borderRadius: 6, border: `1px solid ${D.border}`, background: D.bg, cursor: "pointer", fontSize: 16, fontWeight: 700, color: D.textSec, display: "flex", alignItems: "center", justifyContent: "center" }}>−</button>
-                <button onClick={() => { setZoom(1); setCenter([0, 20]); }} style={{ width: 30, height: 30, borderRadius: 6, border: `1px solid ${D.border}`, background: D.bg, cursor: "pointer", fontSize: 10, fontWeight: 700, color: D.textTer, display: "flex", alignItems: "center", justifyContent: "center" }}>↺</button>
+              {/* Custom zoom controls */}
+              <div style={{ position: "absolute", top: 10, right: 10, zIndex: 1000, display: "flex", flexDirection: "column", gap: 4 }}>
+                {[
+                  { label: "+", action: () => mapRef.current?.zoomIn() },
+                  { label: "−", action: () => mapRef.current?.zoomOut() },
+                  { label: "↺", action: () => mapRef.current?.setView([20, 0], 2) },
+                ].map(({ label, action }) => (
+                  <button key={label} onClick={action} style={{ width: 30, height: 30, borderRadius: 6, border: `1px solid ${D.border}`, background: D.bg, cursor: "pointer", fontSize: label === "↺" ? 14 : 18, fontWeight: 700, color: D.textSec, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 1px 4px rgba(0,0,0,0.12)" }}>
+                    {label}
+                  </button>
+                ))}
               </div>
 
-              <ComposableMap projection="geoNaturalEarth1" projectionConfig={{ scale: 155, center }} style={{ width: "100%", height: 560 }}>
-                <ZoomableGroup zoom={zoom} center={center} onMoveEnd={({ coordinates, zoom: z }) => { setCenter(coordinates); setZoom(z); }}>
-                  <Geographies geography={GEO_URL}>
-                    {({ geographies }) =>
-                      geographies.map(geo => (
-                        <Geography key={geo.rsmKey} geography={geo}
-                          style={{
-                            default: { fill: "#dbeafe", stroke: "#ffffff", strokeWidth: 0.4, outline: "none" },
-                            hover:   { fill: "#bfdbfe", outline: "none" },
-                            pressed: { outline: "none" },
-                          }}
-                        />
-                      ))
-                    }
-                  </Geographies>
+              <MapContainer
+                center={[20, 0]}
+                zoom={2}
+                minZoom={1}
+                maxZoom={13}
+                style={{ width: "100%", height: 580 }}
+                scrollWheelZoom={true}
+                zoomControl={false}
+              >
+                <MapController mapRef={mapRef} />
 
-                  {filtered.map((e, i) => {
-                    const color  = SEV_COLOR[e._sev] ?? "#94A3B8";
-                    const tColor = TYPE_COLOR[e._type] ?? "#6b7280";
-                    const r      = e._sev === 5 ? 7 : e._sev === 4 ? 5 : 4;
-                    return (
-                      <Marker key={e.event_id ?? i} coordinates={[e.longitude, e.latitude]}>
-                        <circle
-                          r={r}
-                          fill={tColor}
-                          fillOpacity={0.78}
-                          stroke={color}
-                          strokeWidth={e._sev >= 4 ? 1.5 : 0.8}
-                          strokeOpacity={0.9}
-                          style={{ cursor: "pointer" }}
-                          onMouseEnter={ev => {
-                            const rect = ev.currentTarget.closest("svg")?.getBoundingClientRect();
-                            setTooltip({ event: e, x: ev.clientX - (rect?.left ?? 0), y: ev.clientY - (rect?.top ?? 0) });
-                          }}
-                          onMouseLeave={() => setTooltip(null)}
-                        />
-                        {e._sev === 5 && (
-                          <circle r={r + 5} fill="none" stroke={color} strokeWidth={1}>
-                            <animate attributeName="r" values={`${r};${r+5};${r}`} dur="2s" repeatCount="indefinite" />
-                            <animate attributeName="opacity" values="0.7;0;0.7" dur="2s" repeatCount="indefinite" />
-                          </circle>
-                        )}
-                      </Marker>
-                    );
-                  })}
-                </ZoomableGroup>
-              </ComposableMap>
+                {/* ESRI Ocean Base — deep ocean blues, bathymetry, coastal features, hillshade */}
+                <TileLayer
+                  url="https://server.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}"
+                  attribution='Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri'
+                  maxZoom={13}
+                />
+                {/* ESRI Ocean Reference — country names, city labels, borders on top */}
+                <TileLayer
+                  url="https://server.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Reference/MapServer/tile/{z}/{y}/{x}"
+                  maxZoom={13}
+                  opacity={0.85}
+                />
 
-              {/* Tooltip */}
-              {tooltip && (
-                <div style={{ position: "absolute", left: tooltip.x + 12, top: Math.max(8, tooltip.y - 10), background: D.bg, border: `1px solid ${D.border}`, borderRadius: 10, padding: "10px 14px", pointerEvents: "none", zIndex: 20, boxShadow: "0 4px 20px rgba(0,0,0,0.12)", minWidth: 200, maxWidth: 260 }}>
-                  <div style={{ fontWeight: 800, fontSize: 13, color: D.textPri, marginBottom: 4 }}>{TYPE_ICON[tooltip.event._type]} {tooltip.event._type}</div>
-                  <div style={{ fontSize: 12, color: D.textSec, marginBottom: 6 }}>{tooltip.event.location_name || "Location unknown"}</div>
-                  {(tooltip.event.fatalities || tooltip.event.people_killed) > 0 && (
-                    <div style={{ fontSize: 11, color: "#CC2936", marginBottom: 2 }}>⚠ {tooltip.event.fatalities || tooltip.event.people_killed} fatalities</div>
-                  )}
-                  {tooltip.event.people_affected > 0 && (
-                    <div style={{ fontSize: 11, color: "#E87722", marginBottom: 2 }}>👥 {Number(tooltip.event.people_affected).toLocaleString()} affected</div>
-                  )}
-                  {tooltip.event.short_description && (
-                    <div style={{ fontSize: 11, color: D.textSec, marginTop: 4, fontStyle: "italic" }}>{tooltip.event.short_description.slice(0, 100)}{tooltip.event.short_description.length > 100 ? "…" : ""}</div>
-                  )}
-                  <div style={{ marginTop: 6, display: "flex", alignItems: "center", gap: 6 }}>
-                    <span style={{ fontSize: 10, fontWeight: 800, textTransform: "uppercase", color: SEV_COLOR[tooltip.event._sev], background: SEV_COLOR[tooltip.event._sev] + "18", padding: "1px 6px", borderRadius: 6 }}>
-                      {SEV_LABEL[tooltip.event._sev]}
-                    </span>
-                    {tooltip.event.timestamp && (
-                      <span style={{ fontSize: 10, color: D.textTer }}>
-                        {new Date(tooltip.event.timestamp).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
-                      </span>
-                    )}
-                    {tooltip.event.is_forecast && <span style={{ fontSize: 10, color: "#7c3aed", fontWeight: 700 }}>· AI Forecast</span>}
-                  </div>
-                </div>
-              )}
+                {filtered.map((e, i) => {
+                  const color  = SEV_COLOR[e._sev] ?? "#94A3B8";
+                  const tColor = TYPE_COLOR[e._type] ?? "#6b7280";
+                  const r      = e._sev === 5 ? 11 : e._sev === 4 ? 8 : e._sev === 3 ? 6 : 4;
+                  return (
+                    <CircleMarker
+                      key={e.event_id ?? i}
+                      center={[e.latitude, e.longitude]}
+                      radius={r}
+                      pathOptions={{
+                        fillColor: tColor,
+                        fillOpacity: 0.82,
+                        color,
+                        weight: e._sev >= 4 ? 2 : 1,
+                        opacity: 0.95,
+                        className: e._sev === 5 ? "crisis-critical-dot" : "",
+                      }}
+                    >
+                      <Tooltip sticky direction="top" offset={[0, -r]}>
+                        <div style={{ minWidth: 190, fontFamily: "inherit" }}>
+                          <div style={{ fontWeight: 800, fontSize: 13, color: D.textPri, marginBottom: 4 }}>
+                            {TYPE_ICON[e._type]} {e._type}
+                          </div>
+                          <div style={{ fontSize: 12, color: D.textSec, marginBottom: 5 }}>
+                            {e.location_name || "Location unknown"}
+                          </div>
+                          {(Number(e.fatalities || e.people_killed) > 0) && (
+                            <div style={{ fontSize: 11, color: "#CC2936", marginBottom: 2 }}>
+                              ⚠ {e.fatalities || e.people_killed} fatalities
+                            </div>
+                          )}
+                          {Number(e.people_affected) > 0 && (
+                            <div style={{ fontSize: 11, color: "#E87722", marginBottom: 2 }}>
+                              👥 {Number(e.people_affected).toLocaleString()} affected
+                            </div>
+                          )}
+                          {e.short_description && (
+                            <div style={{ fontSize: 11, color: D.textSec, marginTop: 4, fontStyle: "italic" }}>
+                              {e.short_description.slice(0, 100)}{e.short_description.length > 100 ? "…" : ""}
+                            </div>
+                          )}
+                          <div style={{ marginTop: 6, display: "flex", alignItems: "center", gap: 6 }}>
+                            <span style={{ fontSize: 10, fontWeight: 800, textTransform: "uppercase", color, background: color + "18", padding: "1px 6px", borderRadius: 6 }}>
+                              {SEV_LABEL[e._sev]}
+                            </span>
+                            {e.timestamp && (
+                              <span style={{ fontSize: 10, color: D.textTer }}>
+                                {new Date(e.timestamp).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                              </span>
+                            )}
+                            {e.is_forecast && <span style={{ fontSize: 10, color: "#7c3aed", fontWeight: 700 }}>· AI Forecast</span>}
+                          </div>
+                        </div>
+                      </Tooltip>
+                    </CircleMarker>
+                  );
+                })}
+              </MapContainer>
 
               {/* Legend */}
-              <div style={{ position: "absolute", bottom: 10, left: 12, background: "rgba(255,255,255,0.92)", border: `1px solid ${D.border}`, borderRadius: 8, padding: "6px 10px" }}>
+              <div style={{ position: "absolute", bottom: 10, left: 12, zIndex: 900, background: "rgba(255,255,255,0.93)", border: `1px solid ${D.border}`, borderRadius: 8, padding: "6px 10px", backdropFilter: "blur(4px)" }}>
                 <div style={{ fontSize: 9, fontWeight: 700, color: D.textTer, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 4 }}>Severity Border</div>
                 <div style={{ display: "flex", gap: 6 }}>
                   {SEV_ORDER.map(sev => (
@@ -308,7 +323,7 @@ export default function CrisisAtlasDashboard({ onClose }) {
                     </div>
                   ))}
                 </div>
-                <div style={{ fontSize: 9, fontWeight: 700, color: D.textTer, marginTop: 5, marginBottom: 3 }}>Dot colour = type</div>
+                <div style={{ fontSize: 9, fontWeight: 700, color: D.textTer, marginTop: 5, marginBottom: 3 }}>Fill = disaster type</div>
                 <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
                   {Object.entries(TYPE_COLOR).slice(0, 6).map(([t, c]) => (
                     <div key={t} style={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -349,7 +364,24 @@ export default function CrisisAtlasDashboard({ onClose }) {
         </div>
       </div>
 
-      <style>{`@keyframes atlas-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
+      <style>{`
+        @keyframes atlas-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .crisis-critical-dot {
+          animation: crisis-pulse-ring 2s ease-in-out infinite;
+        }
+        @keyframes crisis-pulse-ring {
+          0%, 100% { stroke-opacity: 0.95; stroke-width: 2; }
+          50% { stroke-opacity: 0.35; stroke-width: 5; }
+        }
+        .leaflet-tooltip {
+          border-radius: 10px !important;
+          border: 1px solid #E2E8F0 !important;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.12) !important;
+          padding: 10px 14px !important;
+          font-size: 12px !important;
+        }
+        .leaflet-tooltip::before { display: none !important; }
+      `}</style>
     </div>
   );
 }
