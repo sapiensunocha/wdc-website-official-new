@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import SEOMeta from "../../components/SEOMeta";
 import { motion } from "framer-motion";
 import AnimateIn from "../../components/AnimateIn";
 import { ArrowRight, Search, Plus, X, Upload, CheckCircle, Share2, Loader2 } from "lucide-react";
@@ -119,6 +120,12 @@ const News = () => {
 
   return (
     <div className="bg-white min-h-screen">
+      <SEOMeta
+        title="Humanitarian News & Disaster Intelligence Updates"
+        description="Latest humanitarian news, disaster intelligence, and emergency response updates from the World Disaster Center. Weekly briefings covering crises, climate events, and global disaster trends."
+        url="/news"
+        keywords="humanitarian news, disaster news, NGO news, emergency response updates, disaster intelligence, crisis news, climate disaster news, humanitarian briefing"
+      />
       {/* Page header */}
       <div className="bg-surface-subtle border-b border-gray-200">
         <div className="container py-14">

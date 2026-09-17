@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getProfile, profile } from "../../api/user";
+import { Helmet } from "react-helmet-async";
 import { toast } from "react-toastify";
 import BlogForm from "../../components/blogForm";
 import CreatePost from "./createpost";
@@ -52,6 +53,7 @@ function AdminPage() {
 
   return (
     <div>
+      <Helmet><meta name="robots" content="noindex,nofollow" /><title>Admin — World Disaster Center</title></Helmet>
       <br />
       <br />
       <Box sx={{ width: "100%" }}>

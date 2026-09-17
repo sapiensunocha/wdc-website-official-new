@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import client from "../../api/client";
 import { motion } from "framer-motion";
 import AnimateIn from "../../components/AnimateIn";
+import SEOMeta from "../../components/SEOMeta";
 
 const inputClass =
   "w-full px-4 py-2.5 border border-gray-300 rounded focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-content-primary bg-white transition-colors";
@@ -66,6 +67,12 @@ export default function PartnerWithUs() {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEOMeta
+        title="Partner With WDC | Global Humanitarian Partnerships"
+        description="Partner with the World Disaster Center to scale disaster intelligence, expert deployment, and community protection. WDC works with governments, UN agencies, NGOs, and the private sector across 142 countries."
+        url="/about/partner-with-us"
+        keywords="humanitarian partnership, NGO partnership, disaster management partner, UN partnership, government partnership, humanitarian collaboration"
+      />
       {/* Hero section */}
       <div className="bg-primary py-16 px-4">
         <div className="max-w-4xl mx-auto text-center">

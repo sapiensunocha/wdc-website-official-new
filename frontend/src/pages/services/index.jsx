@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import SEOMeta from "../../components/SEOMeta";
 import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
 import AnimateIn from "../../components/AnimateIn";
@@ -249,6 +250,12 @@ function PricingCard({ tier, index }) {
 export default function ServicesPage() {
   return (
     <div className="min-h-screen bg-white">
+      <SEOMeta
+        title="Disaster Management Consulting, Technology & Training Services"
+        description="WDC provides disaster risk consulting, AI early warning technology, capacity building, and research services to governments, UN agencies, and NGOs. Operating across 142 countries."
+        url="/services"
+        keywords="disaster management consulting, humanitarian technology services, early warning system, DRR consulting, NGO capacity building, disaster risk assessment, humanitarian advisory"
+      />
       {/* Hero */}
       <div className="bg-[#418FDE] py-12 sm:py-16 md:py-20 px-4">
         <div className="container max-w-4xl">

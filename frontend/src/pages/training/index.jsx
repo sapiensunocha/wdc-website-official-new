@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import SEOMeta from "../../components/SEOMeta";
 import { CheckCircle, Play, FileText, HelpCircle, ChevronRight, ChevronLeft, Award, X, Search, Clock, BookOpen, BarChart2, ExternalLink, Printer } from "lucide-react";
 import WDCLogo from "../../components/WDCLogo";
 import { COURSES } from "./trainingData";
@@ -1021,6 +1022,12 @@ export default function TrainingPage() {
 
   return (
     <>
+      <SEOMeta
+        title="Free Humanitarian Training Courses & Certification | WDC Academy"
+        description="Free online humanitarian training and certification. 7 courses covering disaster preparedness, emergency response, GIS, WASH, climate risk, and community resilience. Open to all — no cost ever."
+        url="/training"
+        keywords="humanitarian training online, free NGO courses, disaster management certification, WASH training, GIS humanitarian course, emergency response training, community resilience training, DRR certification, free humanitarian certification"
+      />
       {!userName && <NameDialog onSave={handleSaveName} />}
       {showCert && certCourse && (
         <Certificate course={certCourse} userName={userName} onClose={() => setShowCert(false)} />

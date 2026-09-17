@@ -7,7 +7,7 @@
   <!-- ═══════════════════════════════════════════════════════════
        WORLD DISASTER CENTER — Main Site Sitemap
        Organization: https://www.worlddisastercenter.org
-       Last updated: 2026-07-29
+       Last updated: 2026-09-16
   ════════════════════════════════════════════════════════════════ -->
 
   <!-- Home -->
@@ -117,9 +117,9 @@
   <!-- Get Involved -->
   <url>
     <loc>https://www.worlddisastercenter.org/membership</loc>
-    <lastmod>2026-07-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <lastmod>2026-09-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.worlddisastercenter.org/donate</loc>
@@ -129,9 +129,9 @@
   </url>
   <url>
     <loc>https://www.worlddisastercenter.org/careers</loc>
-    <lastmod>2026-07-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <lastmod>2026-09-16</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://www.worlddisastercenter.org/contact</loc>
@@ -197,9 +197,9 @@
   </url>
   <url>
     <loc>https://www.worlddisastercenter.org/roster/apply</loc>
-    <lastmod>2026-07-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <lastmod>2026-09-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
 
   <!-- Legal -->

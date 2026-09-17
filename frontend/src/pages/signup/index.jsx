@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { profile, signup } from "../../api/user";
 import { Link, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 function SignUp() {
   const [email, setEmail] = useState("");
@@ -40,6 +41,7 @@ function SignUp() {
 
   return (
     <div className="min-h-screen bg-surface-subtle flex items-center justify-center px-4 py-16">
+      <Helmet><meta name="robots" content="noindex,nofollow" /><title>Sign Up — World Disaster Center</title></Helmet>
       <div className="w-full max-w-md">
         <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
           <div className="h-1 w-full bg-primary" />

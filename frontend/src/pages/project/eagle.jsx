@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Camera, Database, Map, AlertTriangle, Cpu, Globe } from "lucide-react";
 import EagleImage from "../../assets/eagle.png";
+import SEOMeta from "../../components/SEOMeta";
 
 const features = [
   {
@@ -57,6 +58,12 @@ const useCases = [
 function EagleProject() {
   return (
     <div className="bg-white">
+      <SEOMeta
+        title="EAGLE | AI Satellite Disaster Assessment Platform"
+        description="EAGLE is WDC's AI-powered satellite damage assessment system — automating building damage mapping, displaced population estimation, and casualty modelling within hours of any disaster event."
+        url="/projects/eagle"
+        keywords="EAGLE disaster assessment, satellite damage assessment, AI disaster mapping, building damage AI, disaster impact assessment, satellite humanitarian, displaced population mapping"
+      />
       {/* Hero */}
       <section className="bg-[#1C2B39] text-white py-24">
         <div className="container sm:px-2">

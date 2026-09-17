@@ -4,6 +4,7 @@ import { ArrowRight, Globe, Zap, Users, Award } from "lucide-react";
 import { motion } from "framer-motion";
 import FounderPhoto from "../../assets/images/Photoroom_20251006_010721.JPG";
 import AnimateIn from "../../components/AnimateIn";
+import SEOMeta from "../../components/SEOMeta";
 
 const milestones = [
   {
@@ -70,6 +71,12 @@ const values = [
 const Story = () => {
   return (
     <div className="bg-white">
+      <SEOMeta
+        title="Our Story | How World Disaster Center Was Founded"
+        description="From DRC conflict zones to 142 countries — the story of how Dr. Sapiens Ndatabaye founded WDC in 2023 after 15 years of humanitarian field work with OCHA, WFP, and USAID."
+        url="/about/story"
+        keywords="WDC story, World Disaster Center founded, humanitarian organization history, Sapiens Ndatabaye, disaster center founding"
+      />
       {/* Hero */}
       <section className="bg-[#1C2B39] text-white py-24">
         <div className="container sm:px-2">

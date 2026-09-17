@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Section from "../../components/Section";
 import Heading from "../../components/Heading";
 import NewsLetter from "../../components/newsletter";
+import SEOMeta from "../../components/SEOMeta";
 
 function NewsLetterPage() {
   // Data for the sections
@@ -98,6 +99,12 @@ function NewsLetterPage() {
 
   return (
     <>
+      <SEOMeta
+        title="WDC Newsletter | Weekly Disaster Intelligence Briefings"
+        description="Subscribe to WDC's weekly disaster intelligence newsletter — covering global emergencies, early warnings, field missions, and humanitarian updates from 142 countries."
+        url="/newsletter"
+        keywords="humanitarian newsletter, disaster intelligence newsletter, NGO newsletter, early warning newsletter, weekly disaster briefing, humanitarian updates"
+      />
       {/* Main Newsletter Section */}
       <Section className="overflow-hidden" id="newsletter">
         <div className="container flex flex-col items-center justify-center">

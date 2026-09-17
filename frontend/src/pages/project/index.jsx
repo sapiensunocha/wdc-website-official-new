@@ -1,9 +1,16 @@
 import React from "react";
 import EagleImage from '../../assets/eagle.png'
 import { useNavigate } from "react-router-dom";
+import SEOMeta from "../../components/SEOMeta";
 const ProjectsPage = () => {
   return (
     <>
+      <SEOMeta
+        title="WDC Projects | EAGLE, Lifeline, MaiLafiya & More"
+        description="WDC's active projects: EAGLE AI satellite assessment, Lifeline blockchain aid distribution, MaiLafiya early warning app in Nigeria, and more — all designed to end preventable disaster deaths."
+        url="/projects"
+        keywords="WDC projects, EAGLE project, humanitarian technology projects, disaster AI projects, NGO projects, early warning projects"
+      />
       <section className="bg-white pb-10 pt-20 lg:pb-20 lg:pt-[120px]">
         <div className="container">
           <div className="-mx-4 flex flex-wrap">
