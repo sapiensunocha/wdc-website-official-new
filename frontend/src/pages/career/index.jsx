@@ -8,7 +8,7 @@ import {
 import AnimateIn from "../../components/AnimateIn";
 import SEOMeta from "../../components/SEOMeta";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://wdc-backend-1044744936985.us-central1.run.app";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://wdc-roster-backend-lzjl4ttoxq-uc.a.run.app";
 const WDC_ORG_URL = "https://www.idealist.org/en/nonprofit/059fab99846344a385266ced93563c9f-world-disaster-center-new-york";
 
 // Hardcoded from Idealist — always visible even when API is unreachable
