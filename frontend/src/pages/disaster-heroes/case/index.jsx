@@ -1,19 +1,167 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
-  ArrowLeft,
-  Shield,
-  CheckCircle,
-  Share2,
-  Lock,
-  MapPin,
-  Calendar,
-  Heart,
+  ArrowLeft, Shield, CheckCircle, Share2, Lock,
+  MapPin, Calendar, Heart, Zap, AlertTriangle, RefreshCw, ExternalLink,
 } from "lucide-react";
 import SEOMeta from "../../../components/SEOMeta";
 import AnimateIn from "../../../components/AnimateIn";
 import { CRISIS_CASES } from "../../../assets/data/crisis-cases";
+
+const MICHAEL_URL = import.meta.env.VITE_MICHAEL_API_URL || "https://michael-api-lzjl4ttoxq-uc.a.run.app";
+const MICHAEL_KEY = import.meta.env.VITE_MICHAEL_API_SECRET || "xeltis-prod-key-2026";
+
+const SEV_COLOR = { 5: "#EF4444", 4: "#F97316", 3: "#F59E0B", 2: "#22c55e", 1: "#94A3B8" };
+const SEV_LABEL = { 5: "Critical", 4: "High", 3: "Moderate", 2: "Low", 1: "Minimal" };
+
+function normType(raw) {
+  if (!raw) return "Crisis";
+  const t = String(raw).toLowerCase();
+  if (t.includes("flood"))      return "Flood";
+  if (t.includes("earthquake")) return "Earthquake";
+  if (t.includes("storm") || t.includes("cyclone") || t.includes("hurricane")) return "Storm";
+  if (t.includes("fire"))       return "Wildfire";
+  if (t.includes("drought"))    return "Drought";
+  if (t.includes("conflict") || t.includes("violence")) return "Conflict";
+  if (t.includes("disease") || t.includes("epidemic"))  return "Disease";
+  if (t.includes("tsunami"))    return "Tsunami";
+  return "Crisis";
+}
+
+function MichaelPanel({ country }) {
+  const [alerts, setAlerts]   = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError]     = useState(false);
+
+  const load = () => {
+    setLoading(true); setError(false);
+    fetch(`${MICHAEL_URL}/api/alerts`, { headers: { "X-API-Key": MICHAEL_KEY } })
+      .then(r => r.json())
+      .then(data => {
+        const raw = Array.isArray(data) ? data : (data.events ?? []);
+        const matched = raw.filter(a => {
+          const loc = (a.location_name || "").toLowerCase();
+          const cLow = country.toLowerCase();
+          return loc.includes(cLow) || cLow.includes(loc.split(" ")[0]);
+        });
+        setAlerts(matched.sort((a, b) => (b.severity_level || 0) - (a.severity_level || 0)).slice(0, 6));
+      })
+      .catch(() => setError(true))
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => { load(); }, [country]);
+
+  const criticals = alerts.filter(a => a.severity_level >= 4).length;
+
+  return (
+    <div
+      className="rounded-2xl overflow-hidden"
+      style={{ background: "#0a0f1e", border: "1px solid rgba(251,191,36,0.2)" }}
+    >
+      {/* Header */}
+      <div
+        className="flex items-center justify-between px-4 py-3"
+        style={{ borderBottom: "1px solid rgba(251,191,36,0.12)" }}
+      >
+        <div className="flex items-center gap-2">
+          <div
+            className="w-6 h-6 rounded-md flex items-center justify-center"
+            style={{ background: "rgba(251,191,36,0.15)" }}
+          >
+            <Zap size={12} style={{ color: "#fbbf24" }} />
+          </div>
+          <div>
+            <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: "#fbbf24" }}>MICHAEL AI</p>
+            <p className="text-white/40 text-[9px]">Live Intelligence · {country}</p>
+          </div>
+        </div>
+        <button
+          onClick={load}
+          title="Refresh"
+          className="text-white/30 hover:text-white/60 transition-colors"
+        >
+          <RefreshCw size={12} className={loading ? "animate-spin" : ""} />
+        </button>
+      </div>
+
+      {/* Body */}
+      <div className="p-4">
+        {loading && (
+          <div className="flex items-center gap-2 py-3">
+            <div className="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse" />
+            <span className="text-white/40 text-xs">Fetching live intelligence…</span>
+          </div>
+        )}
+        {error && (
+          <div className="flex items-center gap-2 py-3 text-white/40 text-xs">
+            <AlertTriangle size={12} /> Unable to load MICHAEL data.
+          </div>
+        )}
+        {!loading && !error && alerts.length === 0 && (
+          <div className="py-3">
+            <p className="text-white/40 text-xs">No active MICHAEL alerts for {country} right now.</p>
+          </div>
+        )}
+        {!loading && alerts.length > 0 && (
+          <>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-yellow-400 animate-pulse" />
+                <span className="text-white text-xs font-black">{alerts.length}</span>
+                <span className="text-white/40 text-[10px]">alerts in region</span>
+              </div>
+              {criticals > 0 && (
+                <span
+                  className="text-[9px] font-black px-2 py-0.5 rounded-full"
+                  style={{ background: "rgba(239,68,68,0.2)", color: "#f87171" }}
+                >
+                  {criticals} CRITICAL
+                </span>
+              )}
+            </div>
+            <div className="space-y-2">
+              {alerts.map((a, i) => (
+                <div
+                  key={a.event_id || i}
+                  className="rounded-xl p-3"
+                  style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
+                >
+                  <div className="flex items-start justify-between gap-2 mb-1">
+                    <span className="text-white text-[11px] font-bold leading-snug">{normType(a.event_type)}</span>
+                    <span
+                      className="text-[9px] font-black px-1.5 py-0.5 rounded shrink-0"
+                      style={{ background: SEV_COLOR[a.severity_level] + "25", color: SEV_COLOR[a.severity_level] || "#94a3b8" }}
+                    >
+                      {SEV_LABEL[a.severity_level] || "Unknown"}
+                    </span>
+                  </div>
+                  {a.location_name && (
+                    <p className="text-white/40 text-[10px]">📍 {a.location_name}</p>
+                  )}
+                  {a.alert_message && (
+                    <p className="text-white/30 text-[10px] mt-1 leading-snug line-clamp-2">{a.alert_message}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
+        <a
+          href="https://michael.worlddisastercenter.org"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-3 flex items-center justify-center gap-1.5 w-full text-[10px] font-black uppercase tracking-wider py-2 rounded-xl transition-opacity hover:opacity-70"
+          style={{ background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.2)", color: "#fbbf24" }}
+        >
+          Full MICHAEL Dashboard <ExternalLink size={9} />
+        </a>
+      </div>
+    </div>
+  );
+}
 
 // ─── Design Tokens ────────────────────────────────────────────────────────────
 const PRIMARY = "#009EDB";
@@ -226,6 +374,11 @@ function SponsorCard({ c }) {
       </div>
     </div>
   );
+}
+
+// ─── MICHAEL wrapper that receives country prop ───────────────────────────────
+function MichaelPanelWrapper({ country }) {
+  return <MichaelPanel country={country} />;
 }
 
 // ─── Case Detail Page ─────────────────────────────────────────────────────────
@@ -502,10 +655,13 @@ export default function DisasterHeroesCase() {
               </AnimateIn>
             </div>
 
-            {/* ── RIGHT: Sticky sponsor card ── (1/3) */}
-            <div className="lg:col-span-1 pt-8">
+            {/* ── RIGHT: Sticky sponsor card + MICHAEL intel ── (1/3) */}
+            <div className="lg:col-span-1 pt-8 flex flex-col gap-5">
               <AnimateIn variant="fadeRight" delay={0.1}>
                 <SponsorCard c={c} />
+              </AnimateIn>
+              <AnimateIn variant="fadeRight" delay={0.18}>
+                <MichaelPanel country={c.country} />
               </AnimateIn>
             </div>
           </div>

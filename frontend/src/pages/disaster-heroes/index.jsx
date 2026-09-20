@@ -1,10 +1,29 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { ArrowRight, Search, Shield, CheckCircle, Activity } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, Search, Shield, CheckCircle, Activity, Zap, ExternalLink } from "lucide-react";
 import SEOMeta from "../../components/SEOMeta";
 import AnimateIn from "../../components/AnimateIn";
 import { CRISIS_CASES } from "../../assets/data/crisis-cases";
+
+const MICHAEL_URL = import.meta.env.VITE_MICHAEL_API_URL || "https://michael-api-lzjl4ttoxq-uc.a.run.app";
+const MICHAEL_KEY = import.meta.env.VITE_MICHAEL_API_SECRET || "xeltis-prod-key-2026";
+
+function normType(raw) {
+  if (!raw) return "Other";
+  const t = String(raw).toLowerCase();
+  if (t.includes("flood"))      return "Flood";
+  if (t.includes("earthquake")) return "Earthquake";
+  if (t.includes("storm") || t.includes("cyclone") || t.includes("hurricane")) return "Storm";
+  if (t.includes("fire"))       return "Wildfire";
+  if (t.includes("drought"))    return "Drought";
+  if (t.includes("conflict") || t.includes("violence")) return "Conflict";
+  if (t.includes("disease") || t.includes("epidemic"))  return "Disease";
+  if (t.includes("tsunami"))    return "Tsunami";
+  return "Crisis";
+}
+
+const TYPE_ICON = { Flood:"💧", Earthquake:"🌍", Storm:"🌀", Wildfire:"🔥", Drought:"🌵", Conflict:"⚔️", Disease:"🦠", Tsunami:"🌊", Crisis:"⚠️" };
 
 // ─── Design Tokens ────────────────────────────────────────────────────────────
 const PRIMARY = "#009EDB";
@@ -35,7 +54,7 @@ function pct(funded, goal) {
 }
 
 // ─── Case Card ────────────────────────────────────────────────────────────────
-function CaseCard({ c, index }) {
+function CaseCard({ c, index, hasAlert, alertCount }) {
   const funded = pct(c.fundedMonthly, c.monthlyGoal);
   const accentColor = URGENCY_COLOR[c.urgency];
   const minMonthly = Math.min(...Object.values(c.needs));
@@ -68,8 +87,8 @@ function CaseCard({ c, index }) {
 
           {/* Image zone content */}
           <div className="relative z-10 p-4" style={{ height: 160, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-            {/* Top row: flag + urgency badge */}
-            <div className="flex items-start justify-between">
+            {/* Top row: flag + badges */}
+            <div className="flex items-start justify-between gap-2">
               <div className="flex items-center gap-2">
                 <span className="text-xl">{c.flag}</span>
                 <div>
@@ -77,12 +96,23 @@ function CaseCard({ c, index }) {
                   <p className="text-white/60 text-[10px]">{c.region}</p>
                 </div>
               </div>
-              <span
-                className="text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded-full"
-                style={{ background: accentColor + "22", border: `1px solid ${accentColor}55`, color: accentColor }}
-              >
-                {URGENCY_LABEL[c.urgency]}
-              </span>
+              <div className="flex flex-col items-end gap-1.5">
+                <span
+                  className="text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded-full"
+                  style={{ background: accentColor + "22", border: `1px solid ${accentColor}55`, color: accentColor }}
+                >
+                  {URGENCY_LABEL[c.urgency]}
+                </span>
+                {hasAlert && (
+                  <span
+                    className="flex items-center gap-1 text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-full"
+                    style={{ background: "rgba(251,191,36,0.18)", border: "1px solid rgba(251,191,36,0.45)", color: "#fbbf24" }}
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse inline-block" />
+                    MICHAEL LIVE{alertCount > 1 ? ` ·${alertCount}` : ""}
+                  </span>
+                )}
+              </div>
             </div>
 
             {/* Name + crisis type */}
@@ -178,6 +208,46 @@ export default function DisasterHeroesHome() {
   const [activeFilter, setActiveFilter] = useState("all");
   const [search, setSearch] = useState("");
   const gridRef = useRef(null);
+
+  // ── MICHAEL live data ──
+  const [michaelAlerts, setMichaelAlerts] = useState([]);
+  const [michaelLoading, setMichaelLoading] = useState(true);
+
+  useEffect(() => {
+    const ctrl = new AbortController();
+    fetch(`${MICHAEL_URL}/api/alerts`, {
+      headers: { "X-API-Key": MICHAEL_KEY },
+      signal: ctrl.signal,
+    })
+      .then(r => r.json())
+      .then(data => {
+        const raw = Array.isArray(data) ? data : (data.events ?? []);
+        setMichaelAlerts(raw);
+      })
+      .catch(() => {})
+      .finally(() => setMichaelLoading(false));
+    return () => ctrl.abort();
+  }, []);
+
+  // Build a map: country → alert count (case-insensitive match)
+  const alertsByCountry = {};
+  michaelAlerts.forEach(a => {
+    const loc = (a.location_name || "").toLowerCase();
+    CRISIS_CASES.forEach(c => {
+      if (loc.includes(c.country.toLowerCase()) || c.country.toLowerCase().includes(loc.split(" ")[0])) {
+        alertsByCountry[c.id] = (alertsByCountry[c.id] || 0) + 1;
+      }
+    });
+  });
+
+  // Top-level stats for the intel strip
+  const criticals  = michaelAlerts.filter(a => a.severity_level >= 4).length;
+  const typeCounts = {};
+  michaelAlerts.forEach(a => {
+    const t = normType(a.event_type);
+    typeCounts[t] = (typeCounts[t] || 0) + 1;
+  });
+  const topTypes = Object.entries(typeCounts).sort((a, b) => b[1] - a[1]).slice(0, 4);
 
   const FILTERS = [
     { id: "all",       label: "All Cases" },
@@ -312,6 +382,73 @@ export default function DisasterHeroesHome() {
         </div>
       </section>
 
+      {/* ── MICHAEL LIVE INTEL STRIP ── */}
+      <section style={{ background: "#0a0f1e", borderBottom: "1px solid rgba(251,191,36,0.15)" }}>
+        <div className="container py-4">
+          <div className="flex flex-wrap items-center gap-4 sm:gap-8">
+            {/* Brand */}
+            <div className="flex items-center gap-2.5 shrink-0">
+              <div
+                className="w-7 h-7 rounded-lg flex items-center justify-center"
+                style={{ background: "rgba(251,191,36,0.15)", border: "1px solid rgba(251,191,36,0.3)" }}
+              >
+                <Zap size={14} style={{ color: "#fbbf24" }} />
+              </div>
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: "#fbbf24" }}>MICHAEL AI</p>
+                <p className="text-white/40 text-[9px]">Live Disaster Intelligence</p>
+              </div>
+            </div>
+
+            {/* Divider */}
+            <div className="hidden sm:block w-px h-8 bg-white/10" />
+
+            {/* Stats */}
+            {michaelLoading ? (
+              <div className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse" />
+                <span className="text-white/40 text-xs">Loading live data…</span>
+              </div>
+            ) : (
+              <div className="flex flex-wrap items-center gap-4 sm:gap-6 flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-yellow-400 animate-pulse" />
+                  <span className="text-white text-xs font-black">{michaelAlerts.length.toLocaleString()}</span>
+                  <span className="text-white/40 text-xs">active events</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-red-400" />
+                  <span className="text-white text-xs font-black">{criticals.toLocaleString()}</span>
+                  <span className="text-white/40 text-xs">critical</span>
+                </div>
+                <div className="hidden sm:flex items-center gap-2 flex-wrap">
+                  {topTypes.map(([type, count]) => (
+                    <span
+                      key={type}
+                      className="inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full"
+                      style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.6)" }}
+                    >
+                      {TYPE_ICON[type] || "⚠️"} {type} ({count})
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Link */}
+            <a
+              href="https://michael.worlddisastercenter.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-auto hidden sm:flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider transition-opacity hover:opacity-70"
+              style={{ color: "#fbbf24" }}
+            >
+              Open MICHAEL <ExternalLink size={10} />
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* ── HOW IT WORKS ── */}
       <section style={{ background: BG, paddingTop: "5rem", paddingBottom: "5rem" }}>
         <div className="container">
@@ -436,7 +573,7 @@ export default function DisasterHeroesHome() {
           {filtered.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {filtered.map((c, i) => (
-                <CaseCard key={c.id} c={c} index={i} />
+                <CaseCard key={c.id} c={c} index={i} hasAlert={!!alertsByCountry[c.id]} alertCount={alertsByCountry[c.id] || 0} />
               ))}
             </div>
           ) : (
