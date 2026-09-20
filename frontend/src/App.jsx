@@ -83,6 +83,8 @@ import RosterAdminPage from "./pages/roster/admin";
 import RosterPartnerPage from "./pages/roster/partner";
 
 // Disaster Heroes pages
+import DisasterHeroesHome from "./pages/disaster-heroes";
+import DisasterHeroesCase from "./pages/disaster-heroes/case";
 import DisasterHeroesApply from "./pages/disaster-heroes/apply";
 import DisasterHeroesLogin from "./pages/disaster-heroes/login";
 import DisasterHeroesAdmin from "./pages/disaster-heroes/admin";
@@ -158,6 +160,8 @@ const App = () => {
           <Route path="/events/:eventsName" element={<EventsDetail />} />
 
           {/* Disaster Heroes */}
+          <Route path="/disaster-heroes" element={<DisasterHeroesHome />} />
+          <Route path="/disaster-heroes/case/:id" element={<DisasterHeroesCase />} />
           <Route path="/disaster-heroes/apply" element={<DisasterHeroesApply />} />
           <Route path="/disaster-heroes/login" element={<DisasterHeroesLogin />} />
           <Route path="/disaster-heroes/admin" element={<DisasterHeroesAdmin />} />
