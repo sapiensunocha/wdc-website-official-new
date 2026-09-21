@@ -1,7 +1,9 @@
 import axios from "axios";
 
+const BACKEND = import.meta.env.VITE_ROSTER_API_URL || import.meta.env.VITE_API_BASE_URL || "https://wdc-roster-backend-lzjl4ttoxq-uc.a.run.app";
+
 const rosterClient = axios.create({
-  baseURL: import.meta.env.VITE_ROSTER_API_URL || "https://wdc-roster-backend-lzjl4ttoxq-uc.a.run.app",
+  baseURL: BACKEND,
   withCredentials: true,
   timeout: 15000,
 });
