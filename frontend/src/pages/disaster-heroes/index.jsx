@@ -454,7 +454,7 @@ export default function DisasterHeroesHome() {
   const totalCases = CRISIS_CASES.length;
   const totalFamilies = CRISIS_CASES.filter((c) => c.caseType === "family").length;
   const countries = [...new Set(CRISIS_CASES.map((c) => c.country))].length;
-  const activeDonors = CRISIS_CASES.reduce((s, c) => s + (c.sponsors || 0), 0) + 1840;
+  const activeDonors = CRISIS_CASES.reduce((s, c) => s + (c.sponsors || 0), 0);
 
   const FILTERS = [
     { id: "all",        label: "All" },
@@ -768,7 +768,39 @@ export default function DisasterHeroesHome() {
             </p>
           </div>
 
-          {sorted.length > 0 ? (
+          {CRISIS_CASES.length === 0 ? (
+            <AnimateIn variant="fadeUp">
+              <div
+                className="text-center py-20 rounded-2xl"
+                style={{ background: "#fff", border: "2px dashed #e5e7eb" }}
+              >
+                <div style={{ fontSize: 48, marginBottom: 16 }}>🌍</div>
+                <h3 className="font-black text-xl mb-2" style={{ color: NAVY }}>
+                  No active cases yet
+                </h3>
+                <p className="text-gray-400 text-sm max-w-md mx-auto leading-relaxed mb-6">
+                  Cases are submitted by verified organizations and WDC field teams.
+                  The map above shows where MICHAEL is detecting live crises right now.
+                </p>
+                <div className="flex flex-wrap gap-3 justify-center">
+                  <Link
+                    to="/disaster-heroes/organizations/register"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-bold text-sm"
+                    style={{ background: PRIMARY }}
+                  >
+                    Register your organization <ArrowRight size={14} />
+                  </Link>
+                  <Link
+                    to="/disaster-heroes/feed"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm"
+                    style={{ background: "#f1f5f9", color: NAVY }}
+                  >
+                    View community feed
+                  </Link>
+                </div>
+              </div>
+            </AnimateIn>
+          ) : sorted.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {sorted.map((c, i) => (
                 <CaseCard

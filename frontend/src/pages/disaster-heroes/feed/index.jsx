@@ -38,19 +38,9 @@ const SEVERITY_META = {
   moderate: { label: "MODERATE", color: "#fff", bg: "#F59E0B" },
 };
 
-const TRENDING_TAGS = [
-  "#Somalia", "#FloodAlert", "#NewCase", "#DRCCrisis",
-  "#YemenFamine", "#BangladeshFlood", "#MYANMARFlood",
-  "#DisasterHero", "#Urgent",
-];
+const TRENDING_TAGS = [];
 
-const ACTIVE_HEROES = [
-  { name: "Marco R.",   initials: "MR", color: "#7c3aed", activity: "just posted" },
-  { name: "Sofia M.",   initials: "SM", color: "#be185d", activity: "active 1h ago" },
-  { name: "Amara D.",   initials: "AD", color: "#d97706", activity: "active 2h ago" },
-  { name: "Yuki T.",    initials: "YT", color: "#059669", activity: "just posted" },
-  { name: "Emmanuel O.", initials: "EO", color: "#009EDB", activity: "active 3h ago" },
-];
+const ACTIVE_HEROES = [];
 
 const FILTER_TABS = [
   { id: "all",              label: "All" },
@@ -796,7 +786,33 @@ export default function DisasterHeroesFeed() {
         >
           {/* Feed Column */}
           <div>
-            {filtered.length === 0 ? (
+            {COMMUNITY_POSTS.length === 0 ? (
+              <div
+                style={{
+                  background: T.surface, borderRadius: 18, padding: "3rem 2rem",
+                  textAlign: "center", border: `2px dashed ${T.border}`,
+                }}
+              >
+                <div style={{ fontSize: 40, marginBottom: 12 }}>📡</div>
+                <p style={{ color: T.fg, fontWeight: 800, fontSize: 16, marginBottom: 8 }}>
+                  No posts yet
+                </p>
+                <p style={{ color: T.muted, fontSize: 13, lineHeight: 1.6, maxWidth: 360, margin: "0 auto 20px" }}>
+                  This feed is open to WDC field officers, partner organizations, and verified community reporters.
+                  Posts will appear here as cases are submitted and crises are reported.
+                </p>
+                <button
+                  onClick={() => setComposeOpen(true)}
+                  style={{
+                    background: T.primary, color: "#fff", border: "none",
+                    padding: "10px 24px", borderRadius: 100, fontWeight: 700,
+                    fontSize: 13, cursor: "pointer",
+                  }}
+                >
+                  Be the first to post
+                </button>
+              </div>
+            ) : filtered.length === 0 ? (
               <div
                 style={{
                   background: T.surface, borderRadius: 18, padding: "3rem",
