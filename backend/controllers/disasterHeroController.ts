@@ -11,16 +11,76 @@ const FRONTEND_URL = process.env.ALLOWED_ORIGIN?.split(',')[0]?.trim() || 'https
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
 
-async function sendApplicationConfirmation(name: string, email: string) {
+async function sendWelcomeEmail(name: string, email: string) {
   if (!process.env.RESEND_API_KEY) return;
   try {
     await resend.emails.send({
       from: FROM,
       to: email,
-      subject: 'Your WDC Disaster Heroes Application — Received',
-      html: `<p>Hi ${name},</p><p>We've received your application to join WDC Disaster Heroes. Our team will review it within 5–7 business days and notify you at this email.</p><p>— World Disaster Center</p>`,
+      subject: 'Welcome to WDC Disaster Heroes — Your account is ready!',
+      html: `<p>Hi ${name},</p><p>Your WDC Disaster Heroes account is active. You can sign in now at <a href="${FRONTEND_URL}/disaster-heroes/login">${FRONTEND_URL}/disaster-heroes/login</a>.</p><p>Our AI system (ARIA) is reviewing your profile in the background. Once verified, you'll receive a Verified Hero badge and access to advanced features.</p><p>— World Disaster Center</p>`,
     });
   } catch { /* silent */ }
+}
+
+async function runAriaVerification(heroId: string, data: {
+  fullName: string; country: string; city: string; heroRole: string;
+  motivation: string; experience: string; sectors: string[]; skills: string[];
+  organization: string;
+}) {
+  if (!process.env.ANTHROPIC_API_KEY) return;
+  try {
+    const prompt = `You are ARIA, the WDC Disaster Heroes verification AI. Review this Disaster Hero application and decide if the person is genuine.
+
+Applicant:
+- Name: ${data.fullName}
+- Country/City: ${data.country}, ${data.city}
+- Role: ${data.heroRole || 'Not specified'}
+- Organization: ${data.organization || 'Independent'}
+- Sectors: ${data.sectors.join(', ')}
+- Skills: ${data.skills.join(', ')}
+- Motivation: ${data.motivation}
+- Experience: ${data.experience || 'Not provided'}
+
+Criteria:
+- Approve if: motivation is genuine and specific, person is from or works in disaster-prone/humanitarian context, skills align with humanitarian work
+- Needs more info if: motivation is vague/generic, inconsistencies in profile
+- Flag if: clear red flags (fake info, spam patterns, malicious intent)
+- Be inclusive: accept volunteers, students, community workers, professionals; accept all countries; do not require formal credentials
+
+Respond ONLY with valid JSON:
+{"decision":"verified"|"needs_more_info"|"flagged","score":0-100,"notes":"brief reason for admin","userMessage":"friendly message to show user"}`;
+
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'x-api-key': process.env.ANTHROPIC_API_KEY,
+        'anthropic-version': '2023-06-01',
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 300,
+        messages: [{ role: 'user', content: prompt }],
+      }),
+    });
+
+    const json = await resp.json() as any;
+    const raw = json?.content?.[0]?.text || '';
+    const match = raw.match(/\{[\s\S]*\}/);
+    if (!match) return;
+
+    const result = JSON.parse(match[0]);
+    const decision = ['verified', 'needs_more_info', 'flagged'].includes(result.decision)
+      ? result.decision : 'needs_more_info';
+
+    await DisasterHeroFS.update(heroId, {
+      verificationStatus: decision,
+      verificationScore: result.score ?? null,
+      verificationNotes: result.notes ?? null,
+      verifiedAt: decision === 'verified' ? new Date().toISOString() : null,
+    });
+  } catch { /* silent — verification can be retried manually */ }
 }
 
 async function sendApprovalEmail(name: string, email: string) {
@@ -95,6 +155,10 @@ export const register: RequestHandler = async (req: Request, res: Response): Pro
       catch { /* photo optional */ }
     }
 
+    const parsedSectors = JSON.parse(sectors || '[]');
+    const parsedSkills = JSON.parse(skills || '[]');
+    const parsedLanguages = JSON.parse(languages || '[]');
+
     const hero = await DisasterHeroFS.create({
       fullName,
       email: email.toLowerCase(),
@@ -102,23 +166,35 @@ export const register: RequestHandler = async (req: Request, res: Response): Pro
       organization: organization || '',
       heroRole: heroRole || '',
       linkedinUrl: linkedinUrl || '',
-      sectors: JSON.parse(sectors || '[]'),
-      skills: JSON.parse(skills || '[]'),
-      languages: JSON.parse(languages || '[]'),
+      sectors: parsedSectors,
+      skills: parsedSkills,
+      languages: parsedLanguages,
       availability,
       country,
       city,
       motivation,
       experience: experience || '',
       photoUrl,
-      status: 'pending',
-      approvedAt: null,
+      status: 'approved',
+      approvedAt: new Date().toISOString(),
+      verificationStatus: 'reviewing',
+      verificationScore: null,
+      verificationNotes: null,
+      verifiedAt: null,
     });
 
-    sendApplicationConfirmation(fullName, email.toLowerCase()).catch(() => {});
+    sendWelcomeEmail(fullName, email.toLowerCase()).catch(() => {});
     sendNewHeroAlert(fullName, email.toLowerCase(), country).catch(() => {});
 
-    res.status(201).json({ message: 'Application submitted. You will hear from us within 5–7 business days.' });
+    runAriaVerification(hero.id!, {
+      fullName, country, city,
+      heroRole: heroRole || '',
+      motivation, experience: experience || '',
+      sectors: parsedSectors, skills: parsedSkills,
+      organization: organization || '',
+    }).catch(() => {});
+
+    res.status(201).json({ message: 'Account created! You can sign in now.', autoApproved: true });
   } catch (error) {
     res.status(500).json({ message: 'Something went wrong', error });
   }

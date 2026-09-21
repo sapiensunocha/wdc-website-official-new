@@ -204,19 +204,22 @@ export default function DisasterHeroesApply() {
             <CheckCircle2 size={36} style={{ color: T.blue }} />
           </div>
           <h1 style={{ fontSize: 26, fontWeight: 800, color: T.fg, marginBottom: 10, letterSpacing: "-0.02em" }}>
-            Application submitted!
+            Account created!
           </h1>
-          <p style={{ fontSize: 15, color: T.muted, lineHeight: 1.7, marginBottom: 24 }}>
-            Thank you, <strong style={{ color: T.fg }}>{form.full_name}</strong>. We've received your application and will review it within 5–7 business days. You'll get an email at <strong style={{ color: T.fg }}>{form.email}</strong> once a decision is made.
+          <p style={{ fontSize: 15, color: T.muted, lineHeight: 1.7, marginBottom: 16 }}>
+            Welcome, <strong style={{ color: T.fg }}>{form.full_name}</strong>! Your account is active — you can sign in right now. A confirmation email has been sent to <strong style={{ color: T.fg }}>{form.email}</strong>.
+          </p>
+          <p style={{ fontSize: 13, color: T.muted, marginBottom: 8 }}>
+            Our AI system (ARIA) is reviewing your profile in the background. Once verified, you'll receive a <strong style={{ color: T.blue }}>Verified Hero</strong> badge in your dashboard.
           </p>
           <p style={{ fontSize: 13, color: T.muted, marginBottom: 28 }}>
             Questions? Write to <a href="mailto:office@worlddisastercenter.org" style={{ color: T.blue }}>office@worlddisastercenter.org</a>
           </p>
-          <Link to="/membership"
+          <Link to="/disaster-heroes/login"
             style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "11px 24px",
                      borderRadius: 100, background: T.blue, color: "#fff", fontWeight: 700,
                      fontSize: 14, textDecoration: "none" }}>
-            Back to Disaster Heroes
+            Sign In Now →
           </Link>
         </div>
       </div>
@@ -597,7 +600,7 @@ export default function DisasterHeroesApply() {
 
                 <div style={{ padding: "14px 16px", borderRadius: 12, background: `rgba(0,158,219,.06)`,
                               border: `1px solid rgba(0,158,219,.18)`, fontSize: 13, color: T.muted, lineHeight: 1.6 }}>
-                  By submitting, you confirm your information is accurate. WDC will review your application within 5–7 business days and notify you at <strong style={{ color: T.fg }}>{form.email}</strong>.
+                  By submitting, you confirm your information is accurate. Your account will be activated immediately. Our AI system (ARIA) will verify your profile in the background.
                 </div>
               </div>
             )}

@@ -25,6 +25,10 @@ export interface IDisasterHero {
   photoUrl?: string;
   status: 'pending' | 'approved' | 'rejected';
   approvedAt?: string | null;
+  verificationStatus: 'not_started' | 'reviewing' | 'verified' | 'needs_more_info' | 'flagged';
+  verificationScore?: number | null;
+  verificationNotes?: string | null;
+  verifiedAt?: string | null;
   resetPasswordToken?: string | null;
   resetPasswordExpiry?: string | null;
   createdAt?: Timestamp;
