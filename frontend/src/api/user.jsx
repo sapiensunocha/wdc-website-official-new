@@ -160,7 +160,7 @@ export const getUser = async (id) => {
 
 export const getAllUsers = async () => {
   try {
-    const { data } = await client.get(`${api_suffix}users`, {
+    const { data } = await client.get(`${api_suffix}all`, {
       withCredentials: true,
       method: "GET",
     });

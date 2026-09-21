@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE = import.meta.env.VITE_ROSTER_API_URL || "https://wdc-roster-backend-382117221028.us-central1.run.app";
+const BASE = import.meta.env.VITE_ROSTER_API_URL || "https://wdc-roster-backend-lzjl4ttoxq-uc.a.run.app";
 
 const client = axios.create({ baseURL: BASE, withCredentials: true, timeout: 20000 });
 
