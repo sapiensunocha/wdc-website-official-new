@@ -89,6 +89,7 @@ import DisasterHeroesApply from "./pages/disaster-heroes/apply";
 import DisasterHeroesLogin from "./pages/disaster-heroes/login";
 import DisasterHeroesAdmin from "./pages/disaster-heroes/admin";
 import DisasterHeroesDashboard from "./pages/disaster-heroes/dashboard";
+import DisasterHeroesFeed from "./pages/disaster-heroes/feed";
 
 const App = () => {
   const [loading, setLoading] = useState(false);
@@ -166,6 +167,7 @@ const App = () => {
           <Route path="/disaster-heroes/login" element={<DisasterHeroesLogin />} />
           <Route path="/disaster-heroes/admin" element={<DisasterHeroesAdmin />} />
           <Route path="/disaster-heroes/dashboard" element={<DisasterHeroesDashboard />} />
+          <Route path="/disaster-heroes/feed" element={<DisasterHeroesFeed />} />
 
           {/* Campaigns */}
           <Route path="/campaigns" element={<CampaignsPage />} />

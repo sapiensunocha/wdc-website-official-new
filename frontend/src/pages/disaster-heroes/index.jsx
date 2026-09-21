@@ -377,6 +377,17 @@ export default function DisasterHeroesHome() {
               >
                 Register Your Case
               </Link>
+              <Link
+                to="/disaster-heroes/feed"
+                className="inline-flex items-center gap-2 font-black text-sm px-6 py-3 rounded-xl transition-all hover:-translate-y-0.5"
+                style={{
+                  background: "rgba(255,255,255,0.06)",
+                  border: "1px solid rgba(255,255,255,0.14)",
+                  color: "rgba(255,255,255,0.85)",
+                }}
+              >
+                📡 Community Feed
+              </Link>
             </div>
           </AnimateIn>
         </div>
@@ -519,6 +530,19 @@ export default function DisasterHeroesHome() {
           {/* Filter bar */}
           <AnimateIn variant="fadeUp" delay={0.05}>
             <div className="flex flex-wrap items-center gap-3 mb-5">
+              {/* Community Feed quick link */}
+              <Link
+                to="/disaster-heroes/feed"
+                className="inline-flex items-center gap-2 text-xs font-black px-4 py-2 rounded-full transition-all hover:opacity-80"
+                style={{
+                  background: "rgba(251,191,36,0.12)",
+                  border: "1px solid rgba(251,191,36,0.28)",
+                  color: "#fbbf24",
+                }}
+              >
+                📡 Community Feed
+              </Link>
+
               {/* Filter tabs */}
               <div className="flex flex-wrap gap-2">
                 {FILTERS.map((f) => (
