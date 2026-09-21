@@ -6,8 +6,10 @@ import {
   Shield, LogOut, User, BookOpen, Award, Users, Star, Globe,
   ExternalLink, ChevronRight, Bell, Laptop, GraduationCap,
   Cpu, Calendar, Briefcase, MapPin, Clock, CheckCircle,
-  AlertCircle, Lock
+  AlertCircle, Lock, Heart, MessageSquare, Target, Trophy,
+  Send, ChevronDown, ChevronUp
 } from "lucide-react";
+import { HERO_BADGES } from "../../../assets/data/crisis-cases";
 
 const T = {
   bg:       "#F5F5F7",
@@ -119,6 +121,303 @@ const BENEFITS = [
   },
 ];
 
+const MOCK_SPONSORSHIPS = [
+  {
+    caseId: "case-somali-001",
+    caseName: "Amina",
+    caseCountry: "Somalia",
+    caseFlag: "🇸🇴",
+    casePhoto: "https://images.unsplash.com/photo-1542810634-71277d95dcbb?auto=format&fit=crop&w=400&q=80",
+    crisisType: "Drought & Displacement",
+    amount: 25,
+    category: "All Needs",
+    startedAt: "Jul 15, 2026",
+    monthsActive: 2,
+    totalGiven: 50,
+    goal: {
+      title: "Amina enrolled in school by December 2026",
+      dueDate: "December 2026",
+      milestones: [
+        { label: "Health assessment completed", done: true, date: "Aug 2026" },
+        { label: "School enrollment application submitted", done: true, date: "Aug 2026" },
+        { label: "School uniform & supplies purchased", done: false },
+        { label: "First day of school", done: false },
+        { label: "First school report card", done: false },
+      ],
+    },
+    updates: [
+      { id: 3, date: "Sep 15, 2026", type: "health", text: "Amina completed her health check this week. She is now receiving iron supplements and her energy levels have improved significantly. The community health worker reports she is gaining weight as expected." },
+      { id: 2, date: "Aug 28, 2026", type: "education", text: "The enrollment application for the local primary school has been submitted. We expect a confirmation within 2 weeks. The school principal has been very welcoming." },
+      { id: 1, date: "Aug 10, 2026", type: "shelter", text: "Your first contribution arrived safely. Amina's family has received emergency food supplies and clean water access has been secured through the community borehole." },
+    ],
+    messages: [
+      { id: 1, sender: "coordinator", senderName: "WDC Field Coordinator · Bay Region", text: "Hello! Thank you for sponsoring Amina. We will update you every 2 weeks with verified field reports. Feel free to ask us anything at any time.", date: "Jul 16, 2026" },
+      { id: 2, sender: "donor", senderName: "You", text: "Thank you so much for the update. I am glad things are moving in the right direction. Please share a photo when it's safe to do so.", date: "Aug 12, 2026" },
+      { id: 3, sender: "coordinator", senderName: "WDC Field Coordinator · Bay Region", text: "Of course! We will include field photos in our next verified report. Amina's mother asked us to pass on her deepest gratitude.", date: "Aug 13, 2026" },
+    ],
+  },
+];
+
+const UPDATE_ICONS = { health: "💊", education: "📚", shelter: "🏠" };
+
+const HERO_RANKS = [
+  { name: "Spark Hero",    minBadges: 1 },
+  { name: "Shield Bearer", minBadges: 2 },
+  { name: "Rescue Angel",  minBadges: 3 },
+  { name: "Crisis Guardian", minBadges: 4 },
+  { name: "Steadfast Hero", minBadges: 5 },
+  { name: "Legendary Hero", minBadges: 6 },
+  { name: "Lifesaver",     minBadges: 7 },
+];
+
+function SponsorshipCard({ sp }) {
+  const [open, setOpen] = useState(false);
+  const [reportOpen, setReportOpen] = useState(false);
+  const [msgInput, setMsgInput] = useState("");
+  const [toastVisible, setToastVisible] = useState(false);
+
+  const doneCount = sp.goal.milestones.filter(m => m.done).length;
+  const totalCount = sp.goal.milestones.length;
+  const pct = Math.round((doneCount / totalCount) * 100);
+
+  function sendMessage() {
+    if (!msgInput.trim()) return;
+    setMsgInput("");
+    setToastVisible(true);
+    setTimeout(() => setToastVisible(false), 2800);
+  }
+
+  return (
+    <div style={{ background: T.surface, borderRadius: 20, boxShadow: T.shadow,
+                  border: `1px solid ${T.border}`, overflow: "hidden", marginBottom: 20 }}>
+      {/* Card header — always visible */}
+      <div style={{ padding: "20px 22px", display: "flex", alignItems: "center",
+                    gap: 16, cursor: "pointer" }} onClick={() => setOpen(o => !o)}>
+        <img src={sp.casePhoto} alt={sp.caseName}
+          style={{ width: 60, height: 60, borderRadius: "50%", objectFit: "cover",
+                   border: `2px solid ${T.border}`, flexShrink: 0 }} />
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3 }}>
+            <span style={{ fontSize: 18 }}>{sp.caseFlag}</span>
+            <span style={{ fontSize: 16, fontWeight: 800, color: T.fg }}>{sp.caseName}</span>
+            <span style={{ fontSize: 11, fontWeight: 700, padding: "2px 10px", borderRadius: 100,
+                           background: `rgba(0,158,219,.10)`, color: T.blue }}>
+              {sp.crisisType}
+            </span>
+          </div>
+          <p style={{ fontSize: 13, color: T.muted, margin: 0 }}>
+            {sp.caseCountry} · ${sp.amount}/month · {sp.category} · Since {sp.startedAt}
+          </p>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 6, color: T.muted, flexShrink: 0 }}>
+          <span style={{ fontSize: 12, fontWeight: 600 }}>{open ? "Collapse" : "Expand"}</span>
+          {open ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+        </div>
+      </div>
+
+      {/* Expanded body */}
+      {open && (
+        <div style={{ borderTop: `1px solid ${T.border}`, padding: "24px 22px" }}>
+
+          {/* Section A — WDC Goal */}
+          <div style={{ marginBottom: 28 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
+              <Target size={15} style={{ color: T.blue }} />
+              <span style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase",
+                             letterSpacing: "0.10em", color: T.blue }}>WDC Goal</span>
+            </div>
+            <p style={{ fontSize: 15, fontWeight: 700, color: T.fg, margin: "0 0 4px" }}>
+              {sp.goal.title}
+            </p>
+            <p style={{ fontSize: 12, color: T.muted, margin: "0 0 14px" }}>
+              Due: {sp.goal.dueDate}
+            </p>
+
+            {/* Progress bar */}
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+              <div style={{ flex: 1, height: 8, borderRadius: 100,
+                            background: "rgba(60,60,67,.10)", overflow: "hidden" }}>
+                <div style={{ width: `${pct}%`, height: "100%", borderRadius: 100,
+                              background: `linear-gradient(90deg, ${T.blue}, #0072BC)` }} />
+              </div>
+              <span style={{ fontSize: 12, fontWeight: 700, color: T.fg, whiteSpace: "nowrap" }}>
+                {doneCount}/{totalCount} milestones
+              </span>
+            </div>
+
+            {/* Milestone checklist */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {sp.goal.milestones.map((m, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+                  <div style={{ width: 20, height: 20, borderRadius: "50%", flexShrink: 0, marginTop: 1,
+                                background: m.done ? `rgba(22,163,74,.12)` : "rgba(60,60,67,.08)",
+                                border: `1.5px solid ${m.done ? "#16a34a" : T.border}`,
+                                display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    {m.done
+                      ? <CheckCircle size={12} style={{ color: "#16a34a" }} />
+                      : <div style={{ width: 6, height: 6, borderRadius: "50%",
+                                      background: "rgba(60,60,67,.25)" }} />
+                    }
+                  </div>
+                  <div>
+                    <span style={{ fontSize: 13, color: m.done ? T.fg : T.muted,
+                                   fontWeight: m.done ? 600 : 400 }}>
+                      {m.label}
+                    </span>
+                    {m.done && m.date && (
+                      <span style={{ fontSize: 11, color: T.muted, marginLeft: 8 }}>— {m.date}</span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Section B — Growth Timeline */}
+          <div style={{ marginBottom: 28 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
+              <Heart size={15} style={{ color: "#ec4899" }} />
+              <span style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase",
+                             letterSpacing: "0.10em", color: "#ec4899" }}>Growth Timeline</span>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12, maxHeight: 320,
+                          overflowY: "auto", paddingRight: 4 }}>
+              {sp.updates.map((u) => (
+                <div key={u.id} style={{ background: T.bg, borderRadius: 14, padding: "14px 16px",
+                                         border: `1px solid ${T.border}` }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                    <span style={{ fontSize: 16 }}>{UPDATE_ICONS[u.type] || "📋"}</span>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: T.fg }}>{u.date}</span>
+                  </div>
+                  <p style={{ fontSize: 13, color: T.fg, margin: "0 0 6px", lineHeight: 1.6 }}>
+                    {u.text}
+                  </p>
+                  <p style={{ fontSize: 11, color: T.muted, margin: 0 }}>
+                    Posted by WDC Field Officer · {u.date}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Section C — Message Thread */}
+          <div style={{ marginBottom: 20 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
+              <MessageSquare size={15} style={{ color: T.darkBlue }} />
+              <span style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase",
+                             letterSpacing: "0.10em", color: T.darkBlue }}>Message Thread</span>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 14,
+                          maxHeight: 280, overflowY: "auto", paddingRight: 4 }}>
+              {sp.messages.map((msg) => {
+                const isCoord = msg.sender === "coordinator";
+                return (
+                  <div key={msg.id} style={{ display: "flex",
+                                             flexDirection: isCoord ? "row" : "row-reverse",
+                                             alignItems: "flex-end", gap: 8 }}>
+                    <div style={{ maxWidth: "72%" }}>
+                      <p style={{ fontSize: 11, color: T.muted, margin: "0 0 4px",
+                                  textAlign: isCoord ? "left" : "right" }}>
+                        {msg.senderName} · {msg.date}
+                      </p>
+                      <div style={{ padding: "10px 14px", borderRadius: isCoord ? "4px 16px 16px 16px" : "16px 4px 16px 16px",
+                                    background: isCoord ? "rgba(60,60,67,.08)" : T.blue,
+                                    color: isCoord ? T.fg : "#fff", fontSize: 13, lineHeight: 1.6 }}>
+                        {msg.text}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Input row */}
+            <div style={{ display: "flex", gap: 10, position: "relative" }}>
+              <input
+                value={msgInput}
+                onChange={e => setMsgInput(e.target.value)}
+                onKeyDown={e => e.key === "Enter" && sendMessage()}
+                placeholder="Type a message to your WDC coordinator…"
+                style={{ flex: 1, padding: "10px 16px", borderRadius: 100,
+                         border: `1px solid ${T.border}`, fontSize: 13, color: T.fg,
+                         background: T.bg, outline: "none", fontFamily: "inherit" }}
+              />
+              <button onClick={sendMessage}
+                style={{ padding: "10px 18px", borderRadius: 100, background: T.blue,
+                         border: "none", color: "#fff", cursor: "pointer",
+                         display: "flex", alignItems: "center", gap: 6, fontSize: 13, fontWeight: 700 }}>
+                <Send size={14} /> Send
+              </button>
+              {toastVisible && (
+                <div style={{ position: "absolute", bottom: "calc(100% + 10px)", right: 0,
+                              background: "#1D1D1F", color: "#fff", fontSize: 12, fontWeight: 600,
+                              padding: "6px 14px", borderRadius: 100, whiteSpace: "nowrap",
+                              boxShadow: T.shadowMd, animation: "fadeUp .2s ease both" }}>
+                  Message sent ✓
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Monthly Impact Report */}
+          <div style={{ borderTop: `1px solid ${T.border}`, paddingTop: 20 }}>
+            <button onClick={() => setReportOpen(r => !r)}
+              style={{ display: "flex", alignItems: "center", gap: 8, background: "none",
+                       border: "none", cursor: "pointer", padding: 0, marginBottom: reportOpen ? 14 : 0 }}>
+              <Trophy size={15} style={{ color: "#F59E0B" }} />
+              <span style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase",
+                             letterSpacing: "0.10em", color: "#F59E0B" }}>Monthly Impact Report</span>
+              {reportOpen ? <ChevronUp size={14} style={{ color: T.muted }} /> : <ChevronDown size={14} style={{ color: T.muted }} />}
+            </button>
+            {reportOpen && (
+              <div style={{ background: `linear-gradient(135deg, rgba(245,158,11,.06) 0%, rgba(245,158,11,.02) 100%)`,
+                            border: `1px solid rgba(245,158,11,.25)`, borderRadius: 16, padding: "18px 20px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: T.fg }}>September 2026</span>
+                </div>
+                <p style={{ fontSize: 13, color: T.muted, margin: "0 0 10px" }}>
+                  Your <strong style={{ color: T.fg }}>$25</strong> this month covered:
+                </p>
+                <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 14 }}>
+                  {[
+                    { icon: "💊", label: "Health", amount: "$10" },
+                    { icon: "📚", label: "Education", amount: "$8" },
+                    { icon: "🏠", label: "Shelter", amount: "$7" },
+                  ].map(item => (
+                    <div key={item.label} style={{ padding: "8px 14px", borderRadius: 100,
+                                                   background: T.surface, border: `1px solid ${T.border}`,
+                                                   display: "flex", alignItems: "center", gap: 6 }}>
+                      <span style={{ fontSize: 15 }}>{item.icon}</span>
+                      <span style={{ fontSize: 13, fontWeight: 700, color: T.fg }}>{item.amount}</span>
+                      <span style={{ fontSize: 12, color: T.muted }}>{item.label}</span>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
+                  <div style={{ flex: 1, minWidth: 180 }}>
+                    <p style={{ fontSize: 11, fontWeight: 700, color: T.muted, textTransform: "uppercase",
+                                letterSpacing: "0.08em", margin: "0 0 4px" }}>Key achievement</p>
+                    <p style={{ fontSize: 13, color: T.fg, margin: 0 }}>
+                      Amina's school application submitted
+                    </p>
+                  </div>
+                  <div style={{ flex: 1, minWidth: 180 }}>
+                    <p style={{ fontSize: 11, fontWeight: 700, color: T.muted, textTransform: "uppercase",
+                                letterSpacing: "0.08em", margin: "0 0 4px" }}>Next month goal</p>
+                    <p style={{ fontSize: 13, color: T.fg, margin: 0 }}>
+                      Purchase school uniform and books
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function DisasterHeroesDashboard() {
   const navigate = useNavigate();
   const [hero, setHero] = useState(null);
@@ -150,10 +449,12 @@ export default function DisasterHeroesDashboard() {
   }
 
   const tabs = [
-    { id: "overview",  label: "Overview" },
-    { id: "training",  label: "Training" },
-    { id: "benefits",  label: "Benefits" },
-    { id: "profile",   label: "My Profile" },
+    { id: "overview",      label: "Overview" },
+    { id: "training",      label: "Training" },
+    { id: "benefits",      label: "Benefits" },
+    { id: "profile",       label: "My Profile" },
+    { id: "sponsorships",  label: "My Sponsorships" },
+    { id: "badges",        label: "Badges" },
   ];
 
   return (
@@ -479,6 +780,164 @@ export default function DisasterHeroesDashboard() {
                            display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
                   Go to Training Academy <ChevronRight size={14} />
                 </Link>
+              </div>
+            </div>
+          )}
+
+          {/* SPONSORSHIPS TAB */}
+          {tab === "sponsorships" && (
+            <div style={{ animation: "fadeUp .35s ease both" }}>
+              <div style={{ marginBottom: 24 }}>
+                <h2 style={{ fontSize: 22, fontWeight: 800, color: T.fg, margin: "0 0 8px", letterSpacing: "-0.02em" }}>
+                  My Sponsorships
+                </h2>
+                <p style={{ fontSize: 15, color: T.muted, margin: 0, lineHeight: 1.6 }}>
+                  Track every person you are supporting — their goals, growth, and your messages.
+                </p>
+              </div>
+
+              {/* Impact summary bar */}
+              <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 28 }}>
+                {[
+                  { label: "Total given", value: "$50", color: "#16a34a" },
+                  { label: "Cases supported", value: "1", color: T.blue },
+                  { label: "Months active", value: "2", color: "#7c3aed" },
+                  { label: "Lives touched", value: "1", color: "#ec4899" },
+                ].map(stat => (
+                  <div key={stat.label}
+                    style={{ flex: "1 1 140px", background: T.surface, borderRadius: 16,
+                             padding: "16px 20px", boxShadow: T.shadow, border: `1px solid ${T.border}`,
+                             textAlign: "center" }}>
+                    <p style={{ fontSize: 26, fontWeight: 800, color: stat.color, margin: "0 0 4px",
+                                letterSpacing: "-0.03em" }}>{stat.value}</p>
+                    <p style={{ fontSize: 12, color: T.muted, margin: 0 }}>{stat.label}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Sponsorship cards */}
+              {MOCK_SPONSORSHIPS.map(sp => (
+                <SponsorshipCard key={sp.caseId} sp={sp} />
+              ))}
+
+              {MOCK_SPONSORSHIPS.length === 0 && (
+                <div style={{ textAlign: "center", padding: "60px 24px", color: T.muted }}>
+                  <Heart size={40} style={{ opacity: 0.25, marginBottom: 12 }} />
+                  <p style={{ fontSize: 16, fontWeight: 600, margin: "0 0 6px" }}>No active sponsorships yet</p>
+                  <p style={{ fontSize: 13, margin: 0 }}>
+                    Visit <Link to="/sponsor" style={{ color: T.blue, fontWeight: 600 }}>our sponsorship page</Link> to start supporting someone today.
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* BADGES TAB */}
+          {tab === "badges" && (
+            <div style={{ animation: "fadeUp .35s ease both" }}>
+              <div style={{ marginBottom: 24 }}>
+                <h2 style={{ fontSize: 22, fontWeight: 800, color: T.fg, margin: "0 0 8px", letterSpacing: "-0.02em" }}>
+                  Badges
+                </h2>
+                <p style={{ fontSize: 15, color: T.muted, margin: 0, lineHeight: 1.6 }}>
+                  Earn badges as your impact grows. Every badge reflects a real milestone in someone's life.
+                </p>
+              </div>
+
+              {/* Hero rank section */}
+              {(() => {
+                const earnedCount = 1; // mock: First Spark earned
+                const currentRank = HERO_RANKS.filter(r => earnedCount >= r.minBadges).pop() || HERO_RANKS[0];
+                const nextRank = HERO_RANKS.find(r => r.minBadges > earnedCount);
+                const rankPct = Math.round((earnedCount / HERO_BADGES.length) * 100);
+                return (
+                  <div style={{ background: `linear-gradient(135deg, ${T.navy} 0%, #002a5c 100%)`,
+                                borderRadius: 20, padding: "24px 28px", marginBottom: 28, color: "#fff" }}>
+                    <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between",
+                                  gap: 16, flexWrap: "wrap" }}>
+                      <div>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+                          <Trophy size={18} style={{ color: "#F59E0B" }} />
+                          <span style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase",
+                                         letterSpacing: "0.12em", color: "rgba(255,255,255,.55)" }}>
+                            Your Hero Rank
+                          </span>
+                        </div>
+                        <p style={{ fontSize: 24, fontWeight: 800, margin: "0 0 6px", letterSpacing: "-0.02em" }}>
+                          {currentRank.name}
+                        </p>
+                        {nextRank && (
+                          <p style={{ fontSize: 13, color: "rgba(255,255,255,.60)", margin: 0 }}>
+                            Next rank: <strong style={{ color: "#F59E0B" }}>{nextRank.name}</strong>
+                            {nextRank.name === "Shield Bearer" ? " (sponsor $25+/month — you're almost there!)" : ""}
+                          </p>
+                        )}
+                      </div>
+                      <div style={{ textAlign: "right" }}>
+                        <p style={{ fontSize: 28, fontWeight: 800, color: "#F59E0B", margin: "0 0 4px" }}>
+                          {earnedCount}/{HERO_BADGES.length}
+                        </p>
+                        <p style={{ fontSize: 12, color: "rgba(255,255,255,.50)", margin: 0 }}>badges earned</p>
+                      </div>
+                    </div>
+                    <div style={{ marginTop: 18 }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+                        <span style={{ fontSize: 11, color: "rgba(255,255,255,.45)" }}>Progress to next rank</span>
+                        <span style={{ fontSize: 11, fontWeight: 700, color: "#F59E0B" }}>{rankPct}%</span>
+                      </div>
+                      <div style={{ height: 8, borderRadius: 100, background: "rgba(255,255,255,.12)", overflow: "hidden" }}>
+                        <div style={{ width: `${rankPct}%`, height: "100%", borderRadius: 100,
+                                      background: "linear-gradient(90deg, #F59E0B, #fbbf24)" }} />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* Badge wall grid */}
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 16 }}>
+                {HERO_BADGES.map(badge => {
+                  const earned = badge.id === "first_spark";
+                  return (
+                    <div key={badge.id} className="dash-card"
+                      style={{ background: T.surface, borderRadius: 18, padding: "24px 20px",
+                               boxShadow: T.shadow, border: `1px solid ${earned ? "rgba(22,163,74,.30)" : T.border}`,
+                               textAlign: "center", opacity: earned ? 1 : 0.7,
+                               position: "relative", overflow: "hidden" }}>
+                      {!earned && (
+                        <div style={{ position: "absolute", top: 10, right: 10 }}>
+                          <Lock size={14} style={{ color: T.muted }} />
+                        </div>
+                      )}
+                      <div style={{ width: 64, height: 64, borderRadius: "50%", margin: "0 auto 14px",
+                                    background: earned ? "rgba(22,163,74,.10)" : "rgba(60,60,67,.07)",
+                                    border: `2px solid ${earned ? "rgba(22,163,74,.30)" : T.border}`,
+                                    display: "flex", alignItems: "center", justifyContent: "center",
+                                    fontSize: 30, filter: earned ? "none" : "grayscale(0.6)" }}>
+                        {badge.icon}
+                      </div>
+                      <p style={{ fontSize: 15, fontWeight: 800, color: T.fg, margin: "0 0 6px" }}>
+                        {badge.name}
+                      </p>
+                      <p style={{ fontSize: 12, color: T.muted, margin: "0 0 14px", lineHeight: 1.5 }}>
+                        {badge.desc}
+                      </p>
+                      {earned ? (
+                        <span style={{ display: "inline-flex", alignItems: "center", gap: 4,
+                                       fontSize: 12, fontWeight: 700, padding: "4px 12px",
+                                       borderRadius: 100, background: "rgba(22,163,74,.10)", color: "#16a34a" }}>
+                          <CheckCircle size={12} /> Earned
+                        </span>
+                      ) : (
+                        <span style={{ display: "inline-flex", alignItems: "center", gap: 4,
+                                       fontSize: 11, fontWeight: 600, padding: "4px 12px",
+                                       borderRadius: 100, background: "rgba(60,60,67,.07)", color: T.muted }}>
+                          <Lock size={11} /> {badge.desc}
+                        </span>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}
