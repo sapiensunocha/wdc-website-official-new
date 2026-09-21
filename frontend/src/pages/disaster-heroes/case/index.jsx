@@ -580,6 +580,100 @@ export default function DisasterHeroesCase() {
                 </div>
               </AnimateIn>
 
+              {/* Financial Transparency */}
+              <AnimateIn variant="fadeUp" delay={0.07}>
+                <details
+                  className="rounded-2xl overflow-hidden"
+                  style={{ border: "1px solid #E5E7EB" }}
+                >
+                  <summary
+                    className="flex items-center gap-2 cursor-pointer select-none"
+                    style={{ padding: "14px 20px", fontWeight: 700, color: NAVY, listStyle: "none" }}
+                  >
+                    <span>💰</span>
+                    <span>Financial Transparency</span>
+                    <span className="ml-auto text-gray-400 text-xs font-normal">Click to expand</span>
+                  </summary>
+                  <div
+                    style={{ padding: "0 20px 20px", background: "#fff" }}
+                  >
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm mb-4">
+                        <thead>
+                          <tr style={{ borderBottom: "2px solid #f1f5f9" }}>
+                            <th className="text-left py-2 pr-4 text-xs font-black" style={{ color: NAVY }}>Item</th>
+                            <th className="text-left py-2 pr-4 text-xs font-black" style={{ color: NAVY }}>Monthly Allocation</th>
+                            <th className="text-left py-2 text-xs font-black" style={{ color: NAVY }}>% of Goal</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {Object.entries(c.needs).map(([need, amt], i) => {
+                            const needLabel = {
+                              health: "Health Coverage",
+                              education: "Education Support",
+                              shelter: "Shelter & Safety",
+                            };
+                            const total = Object.values(c.needs).reduce((a, b) => a + b, 0);
+                            return (
+                              <tr key={need} style={{ borderBottom: "1px solid #f8fafc" }}>
+                                <td className="py-2.5 pr-4 text-xs" style={{ color: NAVY }}>
+                                  {CATEGORY_ICONS[need]?.icon} {needLabel[need] || need}
+                                </td>
+                                <td className="py-2.5 pr-4 text-xs font-black" style={{ color: PRIMARY }}>
+                                  ${amt} / month
+                                </td>
+                                <td className="py-2.5 text-xs text-gray-400">
+                                  {Math.round((amt / c.monthlyGoal) * 100)}%
+                                </td>
+                              </tr>
+                            );
+                          })}
+                          <tr style={{ borderBottom: "1px solid #f8fafc" }}>
+                            <td className="py-2.5 pr-4 text-xs" style={{ color: NAVY }}>🏢 Field Officer Fee</td>
+                            <td className="py-2.5 pr-4 text-xs font-black" style={{ color: "#94a3b8" }}>$2 / month</td>
+                            <td className="py-2.5 text-xs text-gray-400">Fixed WDC fee</td>
+                          </tr>
+                          <tr style={{ borderTop: "2px solid #f1f5f9" }}>
+                            <td className="py-2.5 pr-4 text-xs font-black" style={{ color: NAVY }}>Total</td>
+                            <td className="py-2.5 pr-4 text-xs font-black" style={{ color: PRIMARY }}>
+                              ${Object.values(c.needs).reduce((a, b) => a + b, 0) + 2} / month
+                            </td>
+                            <td className="py-2.5 text-xs text-gray-400">Full coverage</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    {/* Progress bar */}
+                    <div className="mb-4">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-xs text-gray-400">Monthly funding progress</span>
+                        <span className="text-xs font-black" style={{ color: PRIMARY }}>
+                          {Math.min(100, Math.round((c.fundedMonthly / c.monthlyGoal) * 100))}%
+                        </span>
+                      </div>
+                      <div className="w-full h-2 rounded-full" style={{ background: "#e5e7eb" }}>
+                        <div
+                          className="h-full rounded-full"
+                          style={{
+                            width: `${Math.min(100, Math.round((c.fundedMonthly / c.monthlyGoal) * 100))}%`,
+                            background: PRIMARY,
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <p className="text-[11px] text-gray-400 leading-relaxed mb-2">
+                      All funds are tracked on the WDC ledger. Field officers submit monthly reports to confirm
+                      allocations are used as specified above.
+                    </p>
+                    <p className="text-[11px] text-gray-400">
+                      <strong className="text-gray-600">Verified by:</strong> {c.verifiedBy}
+                    </p>
+                  </div>
+                </details>
+              </AnimateIn>
+
               {/* Updates feed */}
               <AnimateIn variant="fadeUp" delay={0.08}>
                 <div

@@ -91,6 +91,9 @@ import DisasterHeroesAdmin from "./pages/disaster-heroes/admin";
 import DisasterHeroesDashboard from "./pages/disaster-heroes/dashboard";
 import DisasterHeroesFeed from "./pages/disaster-heroes/feed";
 import DisasterHeroesResetPassword from "./pages/disaster-heroes/reset-password";
+import DisasterHeroesOrgs from "./pages/disaster-heroes/organizations";
+import DisasterHeroesOrgsRegister from "./pages/disaster-heroes/organizations/register";
+import DisasterHeroesOrgsDashboard from "./pages/disaster-heroes/organizations/dashboard";
 
 const App = () => {
   const [loading, setLoading] = useState(false);
@@ -170,6 +173,9 @@ const App = () => {
           <Route path="/disaster-heroes/dashboard" element={<DisasterHeroesDashboard />} />
           <Route path="/disaster-heroes/feed" element={<DisasterHeroesFeed />} />
           <Route path="/disaster-heroes/reset-password" element={<DisasterHeroesResetPassword />} />
+          <Route path="/disaster-heroes/organizations" element={<DisasterHeroesOrgs />} />
+          <Route path="/disaster-heroes/organizations/register" element={<DisasterHeroesOrgsRegister />} />
+          <Route path="/disaster-heroes/organizations/dashboard" element={<DisasterHeroesOrgsDashboard />} />
 
           {/* Campaigns */}
           <Route path="/campaigns" element={<CampaignsPage />} />
