@@ -553,8 +553,9 @@ function WorldMap({ cases, michaelAlerts }) {
         attributionControl={false} zoomControl={true} scrollWheelZoom={false}
       >
         <TileLayer
-          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-          attribution='&copy; <a href="https://carto.com/">CARTO</a>'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          className="dh-dark-tiles"
         />
 
         {cases.map(c => {
@@ -1585,6 +1586,7 @@ export default function DisasterHeroesHome() {
       {/* ── Responsive styles ── */}
       <style>{`
         @keyframes dhpulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+        .dh-dark-tiles { filter: invert(1) hue-rotate(180deg) brightness(0.85) contrast(1.05) saturate(0.7); }
 
         .dh-hero-inner {
           display: flex;
