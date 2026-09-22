@@ -79,6 +79,109 @@ const SEVERITY_META = {
 const TRENDING_TAGS  = [];
 const ACTIVE_HEROES  = [];
 
+// ─── Simulated live activity (until real backend websocket is wired) ──────────
+const SIM_ACTIVITY = [
+  { icon: "💛", text: "Anonymous from 🇩🇪 Germany just sponsored The Khalil Family · Syria" },
+  { icon: "🛡️", text: "James M. from 🇺🇸 USA just became a Disaster Hero" },
+  { icon: "💛", text: "WDC Partner sponsored Sophonie Jean-Pierre · Haiti Education Fund" },
+  { icon: "🚨", text: "New critical case submitted in Sudan — needs urgent sponsorship" },
+  { icon: "💛", text: "Anonymous from 🇬🇧 UK sponsored The Osman Family · Somalia" },
+  { icon: "✅", text: "The Mwangi Family just reached 40% monthly funding — thank you!" },
+  { icon: "💛", text: "Sarah K. from 🇨🇦 Canada sponsored Mariam Al-Sayed · Sudan" },
+  { icon: "🌍", text: "New partner organization registered in Kenya — cases coming soon" },
+  { icon: "💛", text: "Anonymous from 🇳🇱 Netherlands sponsored Emmanuel Kamba · DRC" },
+  { icon: "🚨", text: "MICHAEL alert: Flood risk rising in Bay Region, Somalia" },
+  { icon: "💛", text: "Dr. A. from 🇿🇦 South Africa sponsored Fatima Baldé · Guinea" },
+  { icon: "✅", text: "Sophonie Jean-Pierre has started school — thanks to your support!" },
+];
+
+// ─── Live Ticker ─────────────────────────────────────────────────────────────
+function LiveTicker({ alerts, loading }) {
+  const events = alerts
+    .filter(a => a.severity_level >= 4 && a.location_name)
+    .slice(0, 30);
+  if (loading || events.length === 0) return null;
+  const items = [...events, ...events];
+  return (
+    <div style={{ background: "#060d1a", borderBottom: "1px solid rgba(251,191,36,0.12)", overflow: "hidden", height: 34 }}>
+      <div style={{ display: "flex", alignItems: "center", height: "100%" }}>
+        <div style={{
+          background: "#fbbf24", color: "#060d1a",
+          fontSize: 9, fontWeight: 900, padding: "0 12px", height: "100%",
+          display: "flex", alignItems: "center", flexShrink: 0, letterSpacing: "0.12em", gap: 5,
+        }}>
+          <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#EF4444", display: "inline-block", animation: "dhpulse 1s infinite" }} />
+          MICHAEL LIVE
+        </div>
+        <div style={{ flex: 1, overflow: "hidden", position: "relative" }}>
+          <div style={{ display: "flex", gap: 48, animation: "dh-ticker 70s linear infinite", whiteSpace: "nowrap", willChange: "transform" }}>
+            {items.map((a, i) => (
+              <span key={i} style={{ fontSize: 11, color: "rgba(255,255,255,0.65)", flexShrink: 0 }}>
+                <span style={{ fontWeight: 800, color: a.severity_level >= 5 ? "#EF4444" : "#fbbf24" }}>
+                  {TYPE_ICON[normType(a.event_type)] || "⚠️"} {normType(a.event_type)}
+                </span>
+                {" — "}
+                {a.location_name}
+                {a.fatalities ? ` · ${a.fatalities} fatalities` : ""}
+                <span style={{ color: "rgba(255,255,255,0.3)", marginLeft: 6 }}>SEV {a.severity_level}</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Live Notifications ───────────────────────────────────────────────────────
+function LiveNotifications() {
+  const [notif, setNotif] = useState(null);
+  const [idx, setIdx] = useState(Math.floor(Math.random() * SIM_ACTIVITY.length));
+
+  useEffect(() => {
+    let hideTimer;
+    const showTimer = setTimeout(() => {
+      const item = SIM_ACTIVITY[idx % SIM_ACTIVITY.length];
+      setNotif(item);
+      hideTimer = setTimeout(() => {
+        setNotif(null);
+        setTimeout(() => setIdx(i => i + 1), 500);
+      }, 4500);
+    }, 7000 + Math.random() * 5000);
+    return () => { clearTimeout(showTimer); clearTimeout(hideTimer); };
+  }, [idx]);
+
+  return (
+    <AnimatePresence>
+      {notif && (
+        <motion.div
+          key={idx}
+          initial={{ opacity: 0, x: 60, y: 0 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 60 }}
+          transition={{ type: "spring", stiffness: 280, damping: 22 }}
+          style={{
+            position: "fixed", bottom: 88, right: 16, zIndex: 4000,
+            background: "#fff", borderRadius: 14, padding: "10px 14px",
+            boxShadow: "0 8px 32px rgba(0,0,0,0.18)", border: "1px solid #e2e8f0",
+            maxWidth: 290, display: "flex", alignItems: "flex-start", gap: 10,
+          }}
+        >
+          <span style={{ fontSize: 20, flexShrink: 0, lineHeight: 1.2 }}>{notif.icon}</span>
+          <div>
+            <p style={{ fontSize: 11, color: "#334155", lineHeight: 1.45, margin: 0 }}>{notif.text}</p>
+            <p style={{ fontSize: 10, color: "#94a3b8", margin: "3px 0 0", fontWeight: 600 }}>just now</p>
+          </div>
+          <div style={{
+            position: "absolute", bottom: 0, left: 0, height: 3, borderRadius: "0 0 14px 14px",
+            background: PRIMARY, animation: "dh-bar 4.5s linear forwards",
+          }} />
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 // ─── Compose Modal ────────────────────────────────────────────────────────────
 function ComposeModal({ open, onClose }) {
   const [type, setType]       = useState("field_update");
@@ -664,13 +767,16 @@ function ViewFeed({ michaelAlerts, michaelLoading, onCompose }) {
             border: "1px solid #e2e8f0", boxShadow: "0 1px 4px rgba(0,0,0,0.04)", marginBottom: 14,
           }}>
             <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
-              <div style={{
-                width: 38, height: 38, borderRadius: "50%", background: PRIMARY,
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontWeight: 900, fontSize: 16, color: "#fff", flexShrink: 0,
-              }}>
+              <button
+                onClick={() => onCompose("field_update")}
+                style={{
+                  width: 38, height: 38, borderRadius: "50%", background: PRIMARY,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  color: "#fff", flexShrink: 0, border: "none", cursor: "pointer",
+                }}
+              >
                 <Plus size={18} />
-              </div>
+              </button>
               <button
                 onClick={() => onCompose("field_update")}
                 style={{
@@ -1118,9 +1224,19 @@ function ViewMap({ michaelAlerts, michaelLoading }) {
 // ─── VIEW D: Dashboard ────────────────────────────────────────────────────────
 function ViewDashboard({ michaelAlerts, michaelLoading, onCompose }) {
   const totalCases    = CRISIS_CASES.length;
+  const criticalCases = CRISIS_CASES.filter(c => c.urgency === "critical").length;
   const familyCases   = CRISIS_CASES.filter(c => c.caseType === "family").length;
   const countries     = [...new Set(CRISIS_CASES.map(c => c.country))].length;
   const activeDonors  = CRISIS_CASES.reduce((s, c) => s + (c.sponsors || 0), 0);
+  const totalPeople   = CRISIS_CASES.reduce((s, c) => s + (c.caseType === "family" ? (c.familySize || 0) : 1), 0);
+  const totalGoal     = CRISIS_CASES.reduce((s, c) => s + (c.monthlyGoal || 0), 0);
+  const totalFunded   = CRISIS_CASES.reduce((s, c) => s + (c.fundedMonthly || 0), 0);
+  const fundingGap    = totalGoal - totalFunded;
+
+  const totalHealth    = CRISIS_CASES.reduce((s, c) => s + (c.needs?.health    || 0), 0);
+  const totalEducation = CRISIS_CASES.reduce((s, c) => s + (c.needs?.education || 0), 0);
+  const totalShelter   = CRISIS_CASES.reduce((s, c) => s + (c.needs?.shelter   || 0), 0);
+  const maxNeed        = Math.max(totalHealth, totalEducation, totalShelter, 1);
 
   const typeCounts = {};
   michaelAlerts.forEach(a => {
@@ -1129,66 +1245,131 @@ function ViewDashboard({ michaelAlerts, michaelLoading, onCompose }) {
   });
   const topTypes6 = Object.entries(typeCounts).sort((a, b) => b[1] - a[1]).slice(0, 6);
   const maxTypeCount = topTypes6.length > 0 ? topTypes6[0][1] : 1;
-  const criticals = michaelAlerts.filter(a => (a.severity_level || 0) >= 4).length;
+  const michaelCriticals = michaelAlerts.filter(a => (a.severity_level || 0) >= 5).length;
   const lastUpdated = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
-  const totalHealth    = CRISIS_CASES.reduce((s, c) => s + (c.needs?.health    || 0), 0);
-  const totalEducation = CRISIS_CASES.reduce((s, c) => s + (c.needs?.education || 0), 0);
-  const totalShelter   = CRISIS_CASES.reduce((s, c) => s + (c.needs?.shelter   || 0), 0);
-  const maxNeed        = Math.max(totalHealth, totalEducation, totalShelter, 1);
-
-  const totalGoal    = CRISIS_CASES.reduce((s, c) => s + (c.monthlyGoal    || 0), 0);
-  const totalFunded  = CRISIS_CASES.reduce((s, c) => s + (c.fundedMonthly  || 0), 0);
-
+  const urgentCases = CRISIS_CASES.filter(c => c.urgency === "critical").slice(0, 4);
   const recentPosts = COMMUNITY_POSTS.slice(0, 3);
-
-  const STAT_CARDS = [
-    { label: "Total Open Cases",  value: totalCases,   icon: "📋" },
-    { label: "Family Cases",      value: familyCases,  icon: "👨‍👩‍👧‍👦" },
-    { label: "Countries Covered", value: countries,    icon: "🌍" },
-    { label: "Active Donors",     value: activeDonors, icon: "💛" },
-  ];
 
   return (
     <div style={{ background: BG, paddingTop: "1.75rem", paddingBottom: "4rem" }}>
       <div className="container">
-        {/* Row 1: Stat cards */}
+
+        {/* ── ADVOCACY BANNER ── */}
+        <div style={{
+          background: `linear-gradient(135deg, ${NAVY} 0%, #0a2240 60%, #001a3a 100%)`,
+          borderRadius: 20, padding: "2rem 2.5rem", marginBottom: "1.75rem",
+          position: "relative", overflow: "hidden",
+        }}>
+          <div style={{ position: "absolute", top: -40, right: -40, width: 280, height: 280, borderRadius: "50%", background: "rgba(0,158,219,0.07)", pointerEvents: "none" }} />
+          <div style={{ position: "absolute", bottom: -60, left: 100, width: 200, height: 200, borderRadius: "50%", background: "rgba(251,191,36,0.04)", pointerEvents: "none" }} />
+          <div style={{ position: "relative", zIndex: 1 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+              <span style={{ fontSize: 10, fontWeight: 900, letterSpacing: "0.2em", color: PRIMARY, textTransform: "uppercase" }}>WDC Impact Statement</span>
+            </div>
+            <p style={{ fontSize: "clamp(1.1rem, 2.5vw, 1.5rem)", fontWeight: 900, color: "#fff", lineHeight: 1.3, maxWidth: 700, marginBottom: 12 }}>
+              "{totalPeople} people across {countries} countries are waiting for a Disaster Hero.
+              {" "}<span style={{ color: PRIMARY }}>The gap is ${fundingGap.toLocaleString()}/month.</span>{" "}
+              You can close it — one family at a time."
+            </p>
+            <p style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", marginBottom: 20 }}>
+              — World Disaster Center · Crisis Connect Platform
+            </p>
+            <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+              <Link to="/disaster-heroes#cases"
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 6,
+                  background: PRIMARY, color: "#fff", borderRadius: 10,
+                  padding: "10px 20px", fontWeight: 800, fontSize: 13, textDecoration: "none",
+                }}>
+                Browse Open Cases <ArrowRight size={13} />
+              </Link>
+              <Link to="/disaster-heroes/organizations/register"
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 6,
+                  background: "rgba(255,255,255,0.08)", color: "#fff", borderRadius: 10,
+                  padding: "10px 20px", fontWeight: 700, fontSize: 13, textDecoration: "none",
+                  border: "1px solid rgba(255,255,255,0.15)",
+                }}>
+                Register Your Org <Building2 size={13} />
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* ── KEY IMPACT STATS ── */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          {STAT_CARDS.map(s => (
+          {[
+            { label: "People Needing Help",   value: totalPeople,                  icon: "👥", color: NAVY },
+            { label: "Monthly Funding Gap",   value: `$${fundingGap.toLocaleString()}`, icon: "💰", color: "#EF4444", isMoney: true },
+            { label: "Critical Urgency Cases", value: criticalCases,               icon: "🚨", color: "#EF4444" },
+            { label: "Active Sponsors",        value: activeDonors,                icon: "💛", color: "#d97706" },
+          ].map(s => (
             <div key={s.label} style={{
               background: "#fff", borderRadius: 16, padding: "1.25rem",
-              border: "1px solid #e2e8f0", boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
+              border: s.label === "Monthly Funding Gap" ? "1px solid #FEE2E2" : "1px solid #e2e8f0",
+              boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
             }}>
               <div style={{ fontSize: 24, marginBottom: 8 }}>{s.icon}</div>
-              <p style={{ fontWeight: 900, fontSize: 28, color: NAVY, lineHeight: 1 }}>{s.value.toLocaleString()}</p>
+              <p style={{ fontWeight: 900, fontSize: s.isMoney ? 22 : 28, color: s.color || NAVY, lineHeight: 1 }}>{String(s.value)}</p>
               <p style={{ fontSize: 12, color: "#64748b", marginTop: 4 }}>{s.label}</p>
             </div>
           ))}
         </div>
 
-        {/* Row 2: Two columns */}
+        {/* ── URGENT CASES STRIP ── */}
+        {urgentCases.length > 0 && (
+          <div style={{
+            background: "#FEF2F2", border: "1px solid #FECACA", borderRadius: 16,
+            padding: "1.1rem 1.25rem", marginBottom: "1.5rem",
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+              <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#EF4444", display: "inline-block", animation: "dhpulse 1s infinite" }} />
+              <p style={{ fontWeight: 900, fontSize: 13, color: "#991b1b", margin: 0 }}>Urgent — needs sponsors now</p>
+            </div>
+            <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+              {urgentCases.map(c => (
+                <Link
+                  key={c.id}
+                  to={`/disaster-heroes/case/${c.id}`}
+                  style={{
+                    display: "flex", alignItems: "center", gap: 10,
+                    background: "#fff", border: "1px solid #FECACA", borderRadius: 12,
+                    padding: "10px 14px", textDecoration: "none", flex: "1 1 200px", maxWidth: 260,
+                  }}
+                >
+                  <span style={{ fontSize: 22 }}>{c.flag}</span>
+                  <div style={{ minWidth: 0 }}>
+                    <p style={{ fontWeight: 800, fontSize: 12, color: NAVY, margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                      {c.caseType === "family" ? c.familyName : `${c.name}${c.age ? `, ${c.age}` : ""}`}
+                    </p>
+                    <p style={{ fontSize: 10, color: "#94a3b8", margin: "2px 0 0" }}>{c.country} · {pct(c.fundedMonthly, c.monthlyGoal)}% funded</p>
+                  </div>
+                  <ArrowRight size={12} style={{ color: "#EF4444", flexShrink: 0 }} />
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ── MAIN COLUMNS ── */}
         <div className="dh-dash-cols">
-          {/* Left 2/3 */}
+          {/* Left */}
           <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-            {/* MICHAEL Global Intelligence */}
-            <div style={{
-              background: "#0a0f1e", borderRadius: 18, padding: "1.5rem",
-              border: "1px solid rgba(251,191,36,0.2)",
-            }}>
+
+            {/* MICHAEL Intelligence */}
+            <div style={{ background: "#0a0f1e", borderRadius: 18, padding: "1.5rem", border: "1px solid rgba(251,191,36,0.2)" }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <span>⚡</span>
-                  <span style={{ fontWeight: 900, fontSize: 14, color: "#fbbf24" }}>MICHAEL LIVE</span>
+                  <span style={{ fontWeight: 900, fontSize: 14, color: "#fbbf24" }}>MICHAEL LIVE INTELLIGENCE</span>
                   {!michaelLoading && <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#22c55e", display: "inline-block" }} />}
                 </div>
-                <button
-                  onClick={() => window.location.reload()}
-                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "5px 8px", color: "#94a3b8", cursor: "pointer", display: "flex", alignItems: "center" }}
-                >
+                <button onClick={() => window.location.reload()}
+                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "5px 8px", color: "#94a3b8", cursor: "pointer", display: "flex", alignItems: "center" }}>
                   <RefreshCw size={12} />
                 </button>
               </div>
-
               {michaelLoading ? (
                 <div style={{ display: "flex", alignItems: "center", gap: 8, color: "rgba(255,255,255,0.4)", fontSize: 13 }}>
                   <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#fbbf24", animation: "dhpulse 1.5s infinite" }} />
@@ -1197,44 +1378,39 @@ function ViewDashboard({ michaelAlerts, michaelLoading, onCompose }) {
               ) : (
                 <>
                   <div style={{ display: "flex", gap: 20, marginBottom: 20, flexWrap: "wrap" }}>
-                    <div>
-                      <p style={{ color: "#fff", fontWeight: 900, fontSize: 28, lineHeight: 1 }}>{michaelAlerts.length.toLocaleString()}</p>
-                      <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 4 }}>Active Events</p>
-                    </div>
-                    <div>
-                      <p style={{ color: "#EF4444", fontWeight: 900, fontSize: 28, lineHeight: 1 }}>{criticals}</p>
-                      <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 4 }}>Critical</p>
-                    </div>
+                    {[
+                      { label: "Active Events", value: michaelAlerts.length.toLocaleString(), color: "#fff" },
+                      { label: "Severity 5", value: michaelCriticals, color: "#EF4444" },
+                      { label: "Countries", value: [...new Set(michaelAlerts.map(a => a.location_name).filter(Boolean))].length, color: "#fbbf24" },
+                    ].map(s => (
+                      <div key={s.label}>
+                        <p style={{ color: s.color, fontWeight: 900, fontSize: 28, lineHeight: 1 }}>{s.value}</p>
+                        <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 4 }}>{s.label}</p>
+                      </div>
+                    ))}
                   </div>
-
+                  <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 11, marginBottom: 10 }}>Crisis type breakdown:</p>
                   <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                     {topTypes6.map(([type, count]) => (
                       <div key={type} style={{ display: "flex", alignItems: "center", gap: 10 }}>
                         <span style={{ fontSize: 14, width: 20, textAlign: "center", flexShrink: 0 }}>{TYPE_ICON[type] || "⚠️"}</span>
                         <span style={{ fontSize: 12, color: "rgba(255,255,255,0.6)", width: 80, flexShrink: 0 }}>{type}</span>
                         <div style={{ flex: 1, height: 6, background: "rgba(255,255,255,0.08)", borderRadius: 3 }}>
-                          <div style={{
-                            height: "100%", borderRadius: 3, background: PRIMARY,
-                            width: `${Math.round((count / maxTypeCount) * 100)}%`,
-                          }} />
+                          <div style={{ height: "100%", borderRadius: 3, background: PRIMARY, width: `${Math.round((count / maxTypeCount) * 100)}%` }} />
                         </div>
-                        <span style={{ fontSize: 11, color: "#fff", fontWeight: 700, width: 28, textAlign: "right", flexShrink: 0 }}>{count}</span>
-                        <span style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", width: 36, textAlign: "right", flexShrink: 0 }}>
-                          {michaelAlerts.length > 0 ? Math.round((count / michaelAlerts.length) * 100) : 0}%
+                        <span style={{ fontSize: 11, color: "#fff", fontWeight: 700, width: 30, textAlign: "right", flexShrink: 0 }}>{count}</span>
+                        <span style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", width: 32, textAlign: "right", flexShrink: 0 }}>
+                          {Math.round((count / michaelAlerts.length) * 100)}%
                         </span>
                       </div>
                     ))}
                   </div>
                 </>
               )}
-
               <p style={{ color: "rgba(255,255,255,0.25)", fontSize: 10, marginTop: 16 }}>
-                MICHAEL monitors 1,000+ events worldwide in real time ·{" "}
-                <a href="https://michael.worlddisastercenter.org" target="_blank" rel="noopener noreferrer" style={{ color: "#fbbf24", textDecoration: "none" }}>
-                  Open MICHAEL →
-                </a>
+                Last updated: {lastUpdated} ·{" "}
+                <a href="https://michael.worlddisastercenter.org" target="_blank" rel="noopener noreferrer" style={{ color: "#fbbf24", textDecoration: "none" }}>Open MICHAEL →</a>
               </p>
-              <p style={{ color: "rgba(255,255,255,0.2)", fontSize: 10, marginTop: 4 }}>Last updated: {lastUpdated}</p>
             </div>
 
             {/* Recent Platform Activity */}
@@ -1243,13 +1419,10 @@ function ViewDashboard({ michaelAlerts, michaelLoading, onCompose }) {
               {COMMUNITY_POSTS.length === 0 ? (
                 <div style={{ textAlign: "center", padding: "1.5rem 0" }}>
                   <p style={{ color: "#94a3b8", fontSize: 13, marginBottom: 12 }}>No activity yet — be the first to post</p>
-                  <button
-                    onClick={() => onCompose("field_update")}
-                    style={{
-                      background: PRIMARY, color: "#fff", border: "none",
-                      borderRadius: 100, padding: "8px 20px", fontWeight: 700, fontSize: 12, cursor: "pointer",
-                    }}
-                  >Compose Post</button>
+                  <button onClick={() => onCompose("field_update")}
+                    style={{ background: PRIMARY, color: "#fff", border: "none", borderRadius: 100, padding: "8px 20px", fontWeight: 700, fontSize: 12, cursor: "pointer" }}>
+                    Compose Post
+                  </button>
                 </div>
               ) : (
                 <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -1266,18 +1439,13 @@ function ViewDashboard({ michaelAlerts, michaelLoading, onCompose }) {
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 2 }}>
                             <span style={{ fontWeight: 800, fontSize: 12, color: NAVY }}>{post.author?.name}</span>
-                            <span style={{
-                              fontSize: 9, fontWeight: 700, padding: "2px 6px", borderRadius: 20,
-                              background: meta.bg, color: meta.color,
-                            }}>{meta.label}</span>
+                            <span style={{ fontSize: 9, fontWeight: 700, padding: "2px 6px", borderRadius: 20, background: meta.bg, color: meta.color }}>{meta.label}</span>
                           </div>
                           <p style={{ fontSize: 11, color: "#64748b", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                             {(post.text || "").slice(0, 80)}
                           </p>
                         </div>
-                        <span style={{ fontSize: 10, color: "#94a3b8", flexShrink: 0 }}>
-                          {post.timestamp ? timeAgo(post.timestamp) : ""}
-                        </span>
+                        <span style={{ fontSize: 10, color: "#94a3b8", flexShrink: 0 }}>{post.timestamp ? timeAgo(post.timestamp) : ""}</span>
                       </div>
                     );
                   })}
@@ -1286,93 +1454,97 @@ function ViewDashboard({ michaelAlerts, michaelLoading, onCompose }) {
             </div>
           </div>
 
-          {/* Right 1/3 */}
+          {/* Right */}
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {/* Needs Breakdown */}
-            <div style={{ background: "#fff", borderRadius: 18, padding: "1.25rem", border: "1px solid #e2e8f0" }}>
-              <p style={{ fontWeight: 900, fontSize: 14, color: NAVY, marginBottom: 14 }}>Needs Breakdown</p>
-              {CRISIS_CASES.length === 0 ? (
-                <p style={{ fontSize: 12, color: "#94a3b8", lineHeight: 1.6 }}>
-                  Submit your first case to see needs breakdown
-                </p>
-              ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                  {[
-                    { label: "Health",    value: totalHealth,    color: "#22c55e", icon: "💊" },
-                    { label: "Education", value: totalEducation, color: PRIMARY,    icon: "📚" },
-                    { label: "Shelter",   value: totalShelter,   color: "#F97316",  icon: "🏠" },
-                  ].map(item => (
-                    <div key={item.label}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
-                        <span style={{ fontSize: 12, color: "#64748b" }}>{item.icon} {item.label}</span>
-                        <span style={{ fontSize: 12, fontWeight: 700, color: NAVY }}>${item.value.toLocaleString()}/mo</span>
-                      </div>
-                      <div style={{ height: 8, background: "#f1f5f9", borderRadius: 4 }}>
-                        <div style={{
-                          height: "100%", borderRadius: 4, background: item.color,
-                          width: `${Math.round((item.value / maxNeed) * 100)}%`,
-                          transition: "width 0.6s ease",
-                        }} />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Organization Activity */}
-            <div style={{ background: "#fff", borderRadius: 18, padding: "1.25rem", border: "1px solid #e2e8f0" }}>
-              <p style={{ fontWeight: 900, fontSize: 14, color: NAVY, marginBottom: 14 }}>Organization Activity</p>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 14 }}>
-                {[
-                  { label: "Registered orgs",    value: 0 },
-                  { label: "Org-submitted cases", value: 0 },
-                ].map(item => (
-                  <div key={item.label} style={{ display: "flex", justifyContent: "space-between" }}>
-                    <span style={{ fontSize: 12, color: "#64748b" }}>{item.label}</span>
-                    <span style={{ fontSize: 12, fontWeight: 800, color: NAVY }}>{item.value}</span>
-                  </div>
-                ))}
-              </div>
-              <Link
-                to="/disaster-heroes/organizations/register"
-                style={{
-                  display: "inline-flex", alignItems: "center", gap: 6,
-                  fontSize: 12, fontWeight: 700, color: PRIMARY,
-                  background: PRIMARY + "12", border: `1px solid ${PRIMARY}30`,
-                  borderRadius: 10, padding: "8px 14px", textDecoration: "none",
-                }}
-              >
-                Register your organization <ArrowRight size={12} />
-              </Link>
-            </div>
 
             {/* Funding Overview */}
             <div style={{ background: "#fff", borderRadius: 18, padding: "1.25rem", border: "1px solid #e2e8f0" }}>
-              <p style={{ fontWeight: 900, fontSize: 14, color: NAVY, marginBottom: 14 }}>Funding Overview</p>
-              {totalGoal === 0 ? (
-                <p style={{ fontSize: 12, color: "#94a3b8" }}>No funding data yet</p>
-              ) : (
-                <>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-                    <span style={{ fontSize: 12, color: "#64748b" }}>Total monthly goal</span>
-                    <span style={{ fontSize: 12, fontWeight: 800, color: NAVY }}>${totalGoal.toLocaleString()}/mo</span>
-                  </div>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}>
-                    <span style={{ fontSize: 12, color: "#64748b" }}>Total funded</span>
-                    <span style={{ fontSize: 12, fontWeight: 800, color: PRIMARY }}>${totalFunded.toLocaleString()}/mo</span>
+              <p style={{ fontWeight: 900, fontSize: 14, color: NAVY, marginBottom: 4 }}>Funding Overview</p>
+              <p style={{ fontSize: 11, color: "#94a3b8", marginBottom: 14 }}>Across all {totalCases} open cases</p>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+                <span style={{ fontSize: 12, color: "#64748b" }}>Monthly goal</span>
+                <span style={{ fontSize: 12, fontWeight: 800, color: NAVY }}>${totalGoal.toLocaleString()}/mo</span>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
+                <span style={{ fontSize: 12, color: "#64748b" }}>Funded</span>
+                <span style={{ fontSize: 12, fontWeight: 800, color: "#22c55e" }}>${totalFunded.toLocaleString()}/mo</span>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}>
+                <span style={{ fontSize: 12, color: "#64748b" }}>Gap</span>
+                <span style={{ fontSize: 12, fontWeight: 800, color: "#EF4444" }}>${fundingGap.toLocaleString()}/mo</span>
+              </div>
+              <div style={{ height: 10, background: "#f1f5f9", borderRadius: 5 }}>
+                <div style={{ height: "100%", borderRadius: 5, background: `linear-gradient(90deg, #22c55e, ${PRIMARY})`, width: `${pct(totalFunded, totalGoal)}%`, transition: "width 0.7s ease" }} />
+              </div>
+              <p style={{ fontSize: 11, color: "#94a3b8", marginTop: 6 }}>{pct(totalFunded, totalGoal)}% of monthly goal met</p>
+            </div>
+
+            {/* Sector Needs */}
+            <div style={{ background: "#fff", borderRadius: 18, padding: "1.25rem", border: "1px solid #e2e8f0" }}>
+              <p style={{ fontWeight: 900, fontSize: 14, color: NAVY, marginBottom: 4 }}>Sector Needs</p>
+              <p style={{ fontSize: 11, color: "#94a3b8", marginBottom: 14 }}>Monthly requirements across all cases</p>
+              {[
+                { label: "Health",    value: totalHealth,    color: "#22c55e", icon: "💊", desc: "Medical care, nutrition, vaccines" },
+                { label: "Education", value: totalEducation, color: PRIMARY,   icon: "📚", desc: "School fees, supplies, tutoring" },
+                { label: "Shelter",   value: totalShelter,   color: "#F97316", icon: "🏠", desc: "Housing, materials, winterisation" },
+              ].map(item => (
+                <div key={item.label} style={{ marginBottom: 14 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 4 }}>
+                    <div>
+                      <span style={{ fontSize: 12, fontWeight: 700, color: NAVY }}>{item.icon} {item.label}</span>
+                      <p style={{ fontSize: 10, color: "#94a3b8", margin: "1px 0 0" }}>{item.desc}</p>
+                    </div>
+                    <span style={{ fontSize: 12, fontWeight: 800, color: item.color }}>${item.value.toLocaleString()}/mo</span>
                   </div>
                   <div style={{ height: 8, background: "#f1f5f9", borderRadius: 4 }}>
-                    <div style={{
-                      height: "100%", borderRadius: 4, background: PRIMARY,
-                      width: `${pct(totalFunded, totalGoal)}%`,
-                    }} />
+                    <div style={{ height: "100%", borderRadius: 4, background: item.color, width: `${Math.round((item.value / maxNeed) * 100)}%`, transition: "width 0.6s ease" }} />
                   </div>
-                  <p style={{ fontSize: 11, color: "#94a3b8", marginTop: 6 }}>
-                    {pct(totalFunded, totalGoal)}% of total monthly goal funded
-                  </p>
-                </>
-              )}
+                </div>
+              ))}
+            </div>
+
+            {/* Location summary */}
+            <div style={{ background: "#fff", borderRadius: 18, padding: "1.25rem", border: "1px solid #e2e8f0" }}>
+              <p style={{ fontWeight: 900, fontSize: 14, color: NAVY, marginBottom: 14 }}>Locations ({countries} countries)</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {[...new Set(CRISIS_CASES.map(c => c.country))].map(country => {
+                  const countryCases = CRISIS_CASES.filter(c => c.country === country);
+                  const flag = countryCases[0]?.flag || "🌍";
+                  const hasCritical = countryCases.some(c => c.urgency === "critical");
+                  return (
+                    <div key={country} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <span style={{ fontSize: 16 }}>{flag}</span>
+                      <span style={{ fontSize: 12, color: NAVY, fontWeight: 700, flex: 1 }}>{country}</span>
+                      <span style={{ fontSize: 11, color: "#64748b" }}>{countryCases.length} case{countryCases.length !== 1 ? "s" : ""}</span>
+                      {hasCritical && <span style={{ fontSize: 9, background: "#FEE2E2", color: "#EF4444", borderRadius: 6, padding: "2px 6px", fontWeight: 800 }}>CRITICAL</span>}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Org Activity */}
+            <div style={{ background: "#fff", borderRadius: 18, padding: "1.25rem", border: "1px solid #e2e8f0" }}>
+              <p style={{ fontWeight: 900, fontSize: 14, color: NAVY, marginBottom: 14 }}>Organization Activity</p>
+              {[
+                { label: "Registered orgs",     value: 0 },
+                { label: "Org-submitted cases",  value: totalCases },
+                { label: "Verified by WDC",      value: totalCases },
+              ].map(item => (
+                <div key={item.label} style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
+                  <span style={{ fontSize: 12, color: "#64748b" }}>{item.label}</span>
+                  <span style={{ fontSize: 12, fontWeight: 800, color: NAVY }}>{item.value}</span>
+                </div>
+              ))}
+              <Link to="/disaster-heroes/organizations/register"
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 6, marginTop: 8,
+                  fontSize: 12, fontWeight: 700, color: PRIMARY,
+                  background: PRIMARY + "12", border: `1px solid ${PRIMARY}30`,
+                  borderRadius: 10, padding: "8px 14px", textDecoration: "none",
+                }}>
+                Register your organization <ArrowRight size={12} />
+              </Link>
             </div>
           </div>
         </div>
@@ -1509,6 +1681,9 @@ export default function DisasterHeroesHome() {
         </div>
       </section>
 
+      {/* ── MICHAEL LIVE TICKER ── */}
+      <LiveTicker alerts={michaelAlerts} loading={michaelLoading} />
+
       {/* ── STICKY VIEW SWITCHER ── */}
       <div
         style={{
@@ -1583,9 +1758,14 @@ export default function DisasterHeroesHome() {
         )}
       </AnimatePresence>
 
+      {/* ── LIVE ACTIVITY NOTIFICATIONS ── */}
+      <LiveNotifications />
+
       {/* ── Responsive styles ── */}
       <style>{`
         @keyframes dhpulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+        @keyframes dh-ticker { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+        @keyframes dh-bar { from { width: 100% } to { width: 0% } }
         .dh-dark-tiles { filter: invert(1) hue-rotate(180deg) brightness(0.85) contrast(1.05) saturate(0.7); }
 
         .dh-hero-inner {
