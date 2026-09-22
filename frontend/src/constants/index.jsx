@@ -49,7 +49,10 @@ import microsoft from "../assets/logos/Microsoft-Logo.png";
 import techsoup from "../assets/logos/TechSoup_Logo.svg.png";
 import stripe from "../assets/logos/Stripe_Logo,_revised_2016.svg.png";
 import paypal from "../assets/logos/paypal-new-logo-v0-rn30nd8uqzpd1.jpg";
-// import raindrop from '../assets/'
+import worldbank from "../assets/logos/worldbank_logo.svg";
+import un from "../assets/logos/un_logo.svg";
+import unicef from "../assets/logos/unicef_logo.svg";
+import unhcr from "../assets/logos/unhcr_logo.svg";
 
 export const navigation = [
   {
@@ -111,6 +114,30 @@ export const technicalsponsor_companyLogos = [google, esri, techsoup];
 export const implmentationpartner_companyLogos = [undp, rha, ghtc];
 export const financialpartner_companyLogos = [equity];
 export const technicalpartner_companyLogos = [avielon, ifb];
+
+// All partners combined for homepage marquee
+export const allPartnerLogos = [
+  { src: un,           alt: "United Nations",          bg: "#fff" },
+  { src: unicef,       alt: "UNICEF",                  bg: "#fff" },
+  { src: unhcr,        alt: "UNHCR",                   bg: "#fff" },
+  { src: worldbank,    alt: "World Bank",               bg: "#fff" },
+  { src: undp,         alt: "UNDP",                    bg: "#fff" },
+  { src: esri,         alt: "Esri",                    bg: "#fff" },
+  { src: ifb,          alt: "Infinite Future Bank",     bg: "#fff" },
+  { src: google,       alt: "Google",                  bg: "#fff" },
+  { src: microsoft,    alt: "Microsoft",               bg: "#fff" },
+  { src: esa,          alt: "ESA",                     bg: "#fff" },
+  { src: canadagovernment, alt: "Government of Canada", bg: "#fff" },
+  { src: orange,       alt: "Orange",                  bg: "#fff" },
+  { src: techsoup,     alt: "TechSoup",                bg: "#fff" },
+  { src: avielon,      alt: "Avielon",                 bg: "#fff" },
+  { src: ghtc,         alt: "GHTC",                    bg: "#fff" },
+  { src: codeforafrica, alt: "Code for Africa",        bg: "#fff" },
+  { src: ada,          alt: "ADA",                     bg: "#fff" },
+  { src: pui,          alt: "PUI",                     bg: "#fff" },
+  { src: equity,       alt: "Equity Bank",             bg: "#fff" },
+  { src: rha,          alt: "RHA",                     bg: "#fff" },
+];
 
 export const brainwaveServices = ["Detection System", "Real-Time Alerts"];
 

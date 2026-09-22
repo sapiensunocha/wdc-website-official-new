@@ -2,10 +2,14 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import AnimateIn from "../../components/AnimateIn";
 import SEOMeta from "../../components/SEOMeta";
-import { ArrowRight, Share2, X, Loader2 } from "lucide-react";
+import {
+  ArrowRight, Share2, X, Loader2,
+  Radio, Bell, Shield, UserCheck, Landmark, Building, Heart,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import DOMPurify from "dompurify";
 import { supabase } from "../../lib/supabase";
+import { allPartnerLogos } from "../../constants";
 
 import Hero from "../../components/Hero";
 import VideoSection from "../../components/videosection";
@@ -68,53 +72,137 @@ const HomePage = () => {
               <span style={{ color: "#009EDB" }}>Being unprepared isn't.</span>
             </h2>
           </div>
+
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "2rem" }}>
             {[
               {
-                num: "01", icon: "📡", title: "Monitor",
+                num: "01",
+                Icon: Radio,
+                title: "Monitor",
                 desc: "MICHAEL — our AI platform — tracks 1,000+ live crisis events worldwide in real time: earthquakes, floods, conflict, disease outbreaks, and climate emergencies.",
-                link: { label: "Open MICHAEL →", href: "https://michael.worlddisastercenter.org", external: true },
+                link: { label: "Open MICHAEL", href: "https://michael.worlddisastercenter.org", external: true },
               },
               {
-                num: "02", icon: "⚡", title: "Alert",
+                num: "02",
+                Icon: Bell,
+                title: "Alert",
                 desc: "Field officers, partner organizations, and AI-powered early warning systems deliver life-saving alerts to communities before disasters escalate into catastrophe.",
-                link: { label: "See our campaigns →", to: "/campaigns", external: false },
+                link: { label: "See our campaigns", to: "/campaigns", external: false },
               },
               {
-                num: "03", icon: "🛡️", title: "Protect",
+                num: "03",
+                Icon: Shield,
+                title: "Protect",
                 desc: "Disaster Heroes sponsors, WDC partners, and our global network mobilize shelter, health care, education, and emergency relief for the most vulnerable people on Earth.",
-                link: { label: "Become a Disaster Hero →", to: "/disaster-heroes", external: false },
+                link: { label: "Become a Disaster Hero", to: "/disaster-heroes", external: false },
               },
             ].map((step) => (
               <div key={step.num} style={{ borderTop: "2px solid #009EDB", paddingTop: "1.5rem" }}>
                 <span style={{ fontSize: 10, fontWeight: 900, color: "#009EDB", letterSpacing: "0.22em", textTransform: "uppercase" }}>{step.num}</span>
-                <div style={{ fontSize: 38, margin: "0.85rem 0 1rem" }}>{step.icon}</div>
+                <div style={{ margin: "0.85rem 0 1rem", color: "#009EDB" }}>
+                  <step.Icon size={36} strokeWidth={1.5} />
+                </div>
                 <h3 style={{ fontSize: 22, fontWeight: 900, color: "#fff", marginBottom: "0.75rem" }}>{step.title}</h3>
                 <p style={{ fontSize: 14, color: "rgba(255,255,255,0.6)", lineHeight: 1.75, marginBottom: "1.25rem" }}>{step.desc}</p>
                 {step.link.external ? (
                   <a href={step.link.href} target="_blank" rel="noreferrer"
-                    style={{ fontSize: 12, fontWeight: 800, color: "#009EDB", textDecoration: "none" }}>
-                    {step.link.label}
+                    style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12, fontWeight: 800, color: "#009EDB", textDecoration: "none" }}>
+                    {step.link.label} <ArrowRight size={12} />
                   </a>
                 ) : (
-                  <Link to={step.link.to} style={{ fontSize: 12, fontWeight: 800, color: "#009EDB", textDecoration: "none" }}>
-                    {step.link.label}
+                  <Link to={step.link.to}
+                    style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12, fontWeight: 800, color: "#009EDB", textDecoration: "none" }}>
+                    {step.link.label} <ArrowRight size={12} />
                   </Link>
                 )}
               </div>
             ))}
           </div>
-          <div style={{ marginTop: "3rem", paddingTop: "2rem", borderTop: "1px solid rgba(255,255,255,0.08)", display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "center" }}>
-            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", margin: 0 }}>
+
+          {/* Disaster Heroes callout */}
+          <div style={{
+            marginTop: "2.5rem",
+            background: "linear-gradient(135deg, rgba(0,158,219,0.12) 0%, rgba(0,158,219,0.04) 100%)",
+            border: "1px solid rgba(0,158,219,0.25)",
+            borderRadius: 12,
+            padding: "1.5rem 2rem",
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "1.5rem",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+              <div style={{ background: "#009EDB", borderRadius: 10, padding: 10, flexShrink: 0 }}>
+                <Heart size={22} color="#fff" strokeWidth={1.8} />
+              </div>
+              <div>
+                <p style={{ margin: 0, fontSize: 16, fontWeight: 900, color: "#fff", lineHeight: 1.2 }}>
+                  Sponsor a real person in crisis — for as little as $20/month.
+                </p>
+                <p style={{ margin: "4px 0 0", fontSize: 13, color: "rgba(255,255,255,0.55)", lineHeight: 1.5 }}>
+                  Disaster Heroes connects you directly to verified individuals and families. Your monthly commitment continues for as long as they need you.
+                </p>
+              </div>
+            </div>
+            <Link to="/disaster-heroes"
+              style={{
+                flexShrink: 0,
+                display: "inline-flex", alignItems: "center", gap: 8,
+                background: "#009EDB", color: "#fff", borderRadius: 8,
+                padding: "11px 22px", fontWeight: 900, fontSize: 13,
+                textDecoration: "none", whiteSpace: "nowrap",
+              }}>
+              Find a case to support <ArrowRight size={14} />
+            </Link>
+          </div>
+
+          <div style={{ marginTop: "2rem", paddingTop: "1.5rem", borderTop: "1px solid rgba(255,255,255,0.06)", display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "center" }}>
+            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", margin: 0 }}>
               1 in 4 people live in a country affected by violent conflict or disaster.
             </p>
             <a href="https://www.paypal.com/donate/?hosted_button_id=XXS7D6VJDM2YE" target="_blank" rel="noreferrer"
               style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#009EDB", color: "#fff", borderRadius: 8, padding: "9px 20px", fontWeight: 800, fontSize: 13, textDecoration: "none" }}>
-              ❤️ Donate to WDC
+              Donate to WDC
             </a>
           </div>
         </div>
       </section>
+
+      {/* ── PARTNER LOGOS MARQUEE ── */}
+      <div style={{ background: "#f8fafc", borderTop: "1px solid #e8edf3", borderBottom: "1px solid #e8edf3", padding: "2rem 0", overflow: "hidden" }}>
+        <style>{`
+          @keyframes partner-scroll {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+        `}</style>
+        <p style={{ textAlign: "center", fontSize: 10, fontWeight: 900, letterSpacing: "0.22em", color: "#94a3b8", textTransform: "uppercase", marginBottom: "1.25rem" }}>
+          Trusted by leading organizations worldwide
+        </p>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <div style={{
+            display: "flex",
+            gap: 48,
+            alignItems: "center",
+            animation: "partner-scroll 40s linear infinite",
+            whiteSpace: "nowrap",
+          }}>
+            {[...allPartnerLogos, ...allPartnerLogos].map((p, i) => (
+              <div key={i} style={{ flexShrink: 0, width: 110, height: 48, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <img
+                  src={p.src}
+                  alt={p.alt}
+                  title={p.alt}
+                  style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain", filter: "grayscale(100%) opacity(0.55)", transition: "filter 0.3s" }}
+                  onMouseEnter={e => e.currentTarget.style.filter = "grayscale(0%) opacity(1)"}
+                  onMouseLeave={e => e.currentTarget.style.filter = "grayscale(100%) opacity(0.55)"}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
       {/* Solutions Switcher */}
       <div className="bg-surface-subtle">
@@ -335,7 +423,7 @@ const HomePage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {[
               {
-                emoji: "🧑‍💼",
+                Icon: UserCheck,
                 color: "#009EDB",
                 label: "Expert / Professional",
                 heading: "Apply to the Roster",
@@ -345,7 +433,7 @@ const HomePage = () => {
                 href: "/roster/apply",
               },
               {
-                emoji: "🏛️",
+                Icon: Landmark,
                 color: "#f97316",
                 label: "NGO / Government",
                 heading: "Request Deployment",
@@ -355,7 +443,7 @@ const HomePage = () => {
                 href: "/roster",
               },
               {
-                emoji: "🤝",
+                Icon: Building,
                 color: "#a855f7",
                 label: "Company / Funder",
                 heading: "Partner With WDC",
@@ -378,7 +466,9 @@ const HomePage = () => {
                   style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.2)" }}
                 >
                   <div className="flex items-center gap-3 mb-5">
-                    <span className="text-2xl">{card.emoji}</span>
+                    <div style={{ color: card.color }}>
+                      <card.Icon size={22} strokeWidth={1.6} />
+                    </div>
                     <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: card.color }}>{card.label}</span>
                   </div>
                   <h3 className="text-white font-black text-xl mb-3">{card.heading}</h3>

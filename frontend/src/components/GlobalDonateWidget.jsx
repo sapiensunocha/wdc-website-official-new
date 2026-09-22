@@ -1,38 +1,39 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
+import { Heart, Globe, Map, Users, TriangleAlert, ArrowRight, Shield, X } from "lucide-react";
 
 const PAYPAL_URL = "https://www.paypal.com/donate/?hosted_button_id=XXS7D6VJDM2YE";
 const MICHAEL_API = "https://michael-api-382117221028.us-central1.run.app/api/alerts";
 
-/* ── Donor pool ── */
 const DONORS = [
-  { name: "Sophie M.", country: "🇫🇷 France", amount: "$50/mo", msg: "just became a monthly supporter" },
-  { name: "James O.", country: "🇬🇧 UK", amount: "$100", msg: "made a one-time donation" },
-  { name: "Amara K.", country: "🇬🇭 Ghana", amount: "$25", msg: "donated to disaster relief" },
-  { name: "Lena B.", country: "🇩🇪 Germany", amount: "$200", msg: "made a one-time donation" },
-  { name: "Carlos R.", country: "🇲🇽 Mexico", amount: "$50/mo", msg: "just became a monthly supporter" },
-  { name: "Priya S.", country: "🇮🇳 India", amount: "$25", msg: "donated to disaster relief" },
-  { name: "David N.", country: "🇺🇸 USA", amount: "$150", msg: "made a one-time donation" },
-  { name: "Fatima A.", country: "🇸🇳 Senegal", amount: "$50/mo", msg: "just became a monthly supporter" },
-  { name: "Yuki T.", country: "🇯🇵 Japan", amount: "$100", msg: "made a one-time donation" },
-  { name: "Elena V.", country: "🇺🇦 Ukraine", amount: "$25", msg: "donated to disaster relief" },
-  { name: "Omar H.", country: "🇪🇬 Egypt", amount: "$75", msg: "made a one-time donation" },
-  { name: "Ingrid L.", country: "🇸🇪 Sweden", amount: "$200", msg: "made a one-time donation" },
-  { name: "Kofi A.", country: "🇨🇮 Côte d'Ivoire", amount: "$50/mo", msg: "just became a monthly supporter" },
-  { name: "Maria C.", country: "🇧🇷 Brazil", amount: "$25", msg: "donated to disaster relief" },
-  { name: "Tariq M.", country: "🇵🇰 Pakistan", amount: "$50", msg: "donated to disaster relief" },
+  { name: "Sophie M.", country: "France", amount: "$50/mo", msg: "just became a monthly supporter" },
+  { name: "James O.", country: "United Kingdom", amount: "$100", msg: "made a one-time donation" },
+  { name: "Amara K.", country: "Ghana", amount: "$25", msg: "donated to disaster relief" },
+  { name: "Lena B.", country: "Germany", amount: "$200", msg: "made a one-time donation" },
+  { name: "Carlos R.", country: "Mexico", amount: "$50/mo", msg: "just became a monthly supporter" },
+  { name: "Priya S.", country: "India", amount: "$25", msg: "donated to disaster relief" },
+  { name: "David N.", country: "USA", amount: "$150", msg: "made a one-time donation" },
+  { name: "Fatima A.", country: "Senegal", amount: "$50/mo", msg: "just became a monthly supporter" },
+  { name: "Yuki T.", country: "Japan", amount: "$100", msg: "made a one-time donation" },
+  { name: "Elena V.", country: "Ukraine", amount: "$25", msg: "donated to disaster relief" },
+  { name: "Omar H.", country: "Egypt", amount: "$75", msg: "made a one-time donation" },
+  { name: "Ingrid L.", country: "Sweden", amount: "$200", msg: "made a one-time donation" },
+  { name: "Kofi A.", country: "Côte d'Ivoire", amount: "$50/mo", msg: "just became a monthly supporter" },
+  { name: "Maria C.", country: "Brazil", amount: "$25", msg: "donated to disaster relief" },
+  { name: "Tariq M.", country: "Pakistan", amount: "$50", msg: "donated to disaster relief" },
 ];
 
-/* ── Rotating impact stats (built after we fetch event count) ── */
+const STAT_ICONS = [Globe, Map, Shield, Users, TriangleAlert];
+
 const buildStats = (eventCount) => [
-  { icon: "🌐", value: `${eventCount.toLocaleString()}+`, label: "live crises tracked by MICHAEL" },
-  { icon: "🗺️", value: "27+", label: "countries with WDC presence" },
-  { icon: "🦸", value: "43", label: "Disaster Heroes active this week" },
-  { icon: "❤️", value: "94", label: "people sponsored through platform" },
-  { icon: "🚨", value: "1,240+", label: "early warnings issued this month" },
+  { Icon: Globe,         value: `${eventCount.toLocaleString()}+`, label: "live crises tracked by MICHAEL" },
+  { Icon: Map,           value: "27+",                             label: "countries with WDC presence" },
+  { Icon: Shield,        value: "43",                              label: "Disaster Heroes active this week" },
+  { Icon: Users,         value: "94",                              label: "people sponsored through platform" },
+  { Icon: TriangleAlert, value: "1,240+",                          label: "early warnings issued this month" },
 ];
 
-/* ── keyframes injected once ── */
 const STYLE_ID = "gdw-keyframes";
 if (typeof document !== "undefined" && !document.getElementById(STYLE_ID)) {
   const style = document.createElement("style");
@@ -47,7 +48,7 @@ if (typeof document !== "undefined" && !document.getElementById(STYLE_ID)) {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   LEFT — sliding donation toasts
+   LEFT — sliding donation toasts (clickable → PayPal or Disaster Heroes)
 ═══════════════════════════════════════════════════════════════ */
 const DonationToast = ({ donor, onDone }) => {
   useEffect(() => {
@@ -66,38 +67,27 @@ const DonationToast = ({ donor, onDone }) => {
         bottom: 88,
         left: 20,
         zIndex: 9990,
-        width: 280,
+        width: 290,
         background: "#fff",
         borderRadius: 12,
         boxShadow: "0 8px 32px rgba(0,0,0,0.18)",
         overflow: "hidden",
         pointerEvents: "auto",
+        cursor: "pointer",
       }}
     >
       {/* countdown bar */}
-      <div
-        style={{
-          height: 3,
-          background: "#009EDB",
-          animation: "gdw-bar 5s linear forwards",
-        }}
-      />
-      <div style={{ padding: "10px 14px 12px", display: "flex", gap: 10, alignItems: "flex-start" }}>
-        {/* avatar placeholder */}
-        <div
-          style={{
-            width: 36,
-            height: 36,
-            borderRadius: "50%",
-            background: "#009EDB22",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexShrink: 0,
-            fontSize: 18,
-          }}
-        >
-          ❤️
+      <div style={{ height: 3, background: "#009EDB", animation: "gdw-bar 5s linear forwards" }} />
+
+      {/* main row */}
+      <div style={{ padding: "10px 14px 4px", display: "flex", gap: 10, alignItems: "flex-start" }}>
+        <div style={{
+          width: 36, height: 36, borderRadius: "50%",
+          background: "#EFF9FF",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          flexShrink: 0,
+        }}>
+          <Heart size={17} color="#009EDB" strokeWidth={2} />
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <p style={{ margin: 0, fontSize: 12, fontWeight: 800, color: "#111", lineHeight: 1.3 }}>
@@ -107,8 +97,42 @@ const DonationToast = ({ donor, onDone }) => {
             <span style={{ color: "#009EDB", fontWeight: 800 }}>{donor.amount}</span>{" "}
             {donor.msg}
           </p>
-          <p style={{ margin: "4px 0 0", fontSize: 10, color: "#aaa" }}>Just now · via PayPal</p>
+          <p style={{ margin: "2px 0 0", fontSize: 10, color: "#aaa" }}>Just now · via PayPal</p>
         </div>
+        <button
+          onClick={(e) => { e.stopPropagation(); onDone(); }}
+          style={{ background: "none", border: "none", cursor: "pointer", padding: 2, color: "#ccc", flexShrink: 0 }}
+        >
+          <X size={13} />
+        </button>
+      </div>
+
+      {/* two action buttons */}
+      <div style={{ display: "flex", gap: 6, padding: "8px 14px 12px" }}>
+        <a
+          href={PAYPAL_URL}
+          target="_blank"
+          rel="noreferrer"
+          onClick={(e) => e.stopPropagation()}
+          style={{
+            flex: 1, textAlign: "center", background: "#009EDB", color: "#fff",
+            fontWeight: 800, fontSize: 11, borderRadius: 7, padding: "7px 0",
+            textDecoration: "none",
+          }}
+        >
+          Donate now
+        </a>
+        <Link
+          to="/disaster-heroes"
+          onClick={(e) => e.stopPropagation()}
+          style={{
+            flex: 1, textAlign: "center", background: "#f0f7ff", color: "#009EDB",
+            fontWeight: 800, fontSize: 11, borderRadius: 7, padding: "7px 0",
+            textDecoration: "none", border: "1px solid #c8e6f7",
+          }}
+        >
+          Sponsor a case
+        </Link>
       </div>
     </motion.div>
   );
@@ -121,14 +145,12 @@ const ImpactWidget = ({ stats }) => {
   const [statIdx, setStatIdx] = useState(0);
   const [visible, setVisible] = useState(false);
 
-  /* show after 300px scroll */
   useEffect(() => {
     const handleScroll = () => setVisible(window.scrollY > 300);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  /* rotate stats every 4s */
   useEffect(() => {
     const t = setInterval(() => setStatIdx((i) => (i + 1) % stats.length), 4000);
     return () => clearInterval(t);
@@ -137,6 +159,7 @@ const ImpactWidget = ({ stats }) => {
   if (!visible || !stats.length) return null;
 
   const current = stats[statIdx];
+  const CurrentIcon = current.Icon;
 
   return (
     <motion.div
@@ -159,32 +182,18 @@ const ImpactWidget = ({ stats }) => {
       }}
     >
       {/* header */}
-      <div
-        style={{
-          background: "#009EDB",
-          padding: "6px 12px",
-          display: "flex",
-          alignItems: "center",
-          gap: 6,
-        }}
-      >
-        <span
-          style={{
-            width: 7,
-            height: 7,
-            borderRadius: "50%",
-            background: "#fff",
-            display: "inline-block",
-            animation: "pulse 1.5s ease-in-out infinite",
-          }}
-        />
+      <div style={{ background: "#009EDB", padding: "6px 12px", display: "flex", alignItems: "center", gap: 6 }}>
+        <span style={{
+          width: 7, height: 7, borderRadius: "50%", background: "#fff", display: "inline-block",
+          animation: "pulse 1.5s ease-in-out infinite",
+        }} />
         <span style={{ fontSize: 10, fontWeight: 900, color: "#fff", letterSpacing: "0.12em", textTransform: "uppercase" }}>
           Live Impact
         </span>
       </div>
 
       {/* rotating stat */}
-      <div style={{ padding: "12px 14px 4px", minHeight: 64, position: "relative", overflow: "hidden" }}>
+      <div style={{ padding: "12px 14px 4px", minHeight: 72, position: "relative", overflow: "hidden" }}>
         <AnimatePresence mode="wait">
           <motion.div
             key={statIdx}
@@ -193,8 +202,10 @@ const ImpactWidget = ({ stats }) => {
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.35 }}
           >
-            <p style={{ margin: 0, fontSize: 22, lineHeight: 1 }}>{current.icon}</p>
-            <p style={{ margin: "4px 0 2px", fontSize: 18, fontWeight: 900, color: "#fff", lineHeight: 1.1 }}>
+            <div style={{ color: "#009EDB", marginBottom: 6 }}>
+              <CurrentIcon size={20} strokeWidth={1.6} />
+            </div>
+            <p style={{ margin: "0 0 2px", fontSize: 20, fontWeight: 900, color: "#fff", lineHeight: 1.1 }}>
               {current.value}
             </p>
             <p style={{ margin: 0, fontSize: 10, color: "rgba(255,255,255,0.55)", lineHeight: 1.4 }}>
@@ -205,43 +216,44 @@ const ImpactWidget = ({ stats }) => {
       </div>
 
       {/* dot indicators */}
-      <div style={{ display: "flex", gap: 4, padding: "6px 14px 10px", justifyContent: "center" }}>
+      <div style={{ display: "flex", gap: 4, padding: "4px 14px 8px", justifyContent: "center" }}>
         {stats.map((_, i) => (
-          <span
-            key={i}
-            style={{
-              width: 5,
-              height: 5,
-              borderRadius: "50%",
-              background: i === statIdx ? "#009EDB" : "rgba(255,255,255,0.2)",
-              display: "inline-block",
-              transition: "background 0.3s",
-            }}
-          />
+          <span key={i} style={{
+            width: 5, height: 5, borderRadius: "50%",
+            background: i === statIdx ? "#009EDB" : "rgba(255,255,255,0.2)",
+            display: "inline-block", transition: "background 0.3s",
+          }} />
         ))}
       </div>
 
-      {/* donate button */}
-      <div style={{ padding: "0 12px 12px" }}>
+      {/* two action buttons */}
+      <div style={{ display: "flex", gap: 6, padding: "0 10px 12px" }}>
         <a
           href={PAYPAL_URL}
           target="_blank"
           rel="noreferrer"
           style={{
-            display: "block",
-            textAlign: "center",
-            background: "#009EDB",
-            color: "#fff",
-            fontWeight: 900,
-            fontSize: 12,
-            borderRadius: 8,
-            padding: "8px 0",
+            flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 5,
+            background: "#009EDB", color: "#fff",
+            fontWeight: 900, fontSize: 11, borderRadius: 8, padding: "8px 0",
             textDecoration: "none",
-            letterSpacing: "0.04em",
           }}
         >
-          Donate Now ❤️
+          <Heart size={11} strokeWidth={2} />
+          Donate
         </a>
+        <Link
+          to="/disaster-heroes"
+          style={{
+            flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 5,
+            background: "rgba(0,158,219,0.12)", color: "#009EDB",
+            fontWeight: 900, fontSize: 11, borderRadius: 8, padding: "8px 0",
+            textDecoration: "none", border: "1px solid rgba(0,158,219,0.25)",
+          }}
+        >
+          <Shield size={11} strokeWidth={2} />
+          Sponsor
+        </Link>
       </div>
     </motion.div>
   );
@@ -253,77 +265,51 @@ const ImpactWidget = ({ stats }) => {
 const GlobalDonateWidget = () => {
   const [eventCount, setEventCount] = useState(1000);
   const [stats, setStats] = useState([]);
-
   const [donorQueue, setDonorQueue] = useState([]);
   const [currentToast, setCurrentToast] = useState(null);
   const [toastKey, setToastKey] = useState(0);
 
-  /* fetch MICHAEL event count once */
   useEffect(() => {
     const fetchCount = async () => {
       try {
-        const res = await fetch(MICHAEL_API, {
-          headers: { "X-API-Key": "xeltis-prod-key-2026" },
-        });
+        const res = await fetch(MICHAEL_API, { headers: { "X-API-Key": "xeltis-prod-key-2026" } });
         if (res.ok) {
           const data = await res.json();
-          const count =
-            data?.total ||
-            data?.count ||
-            data?.data?.length ||
-            (Array.isArray(data) ? data.length : 1000);
+          const count = data?.total || data?.count || data?.data?.length || (Array.isArray(data) ? data.length : 1000);
           setEventCount(count || 1000);
         }
-      } catch {
-        /* fallback already set */
-      }
+      } catch { /* fallback */ }
     };
     fetchCount();
   }, []);
 
-  /* build stats once eventCount is known */
-  useEffect(() => {
-    setStats(buildStats(eventCount));
-  }, [eventCount]);
+  useEffect(() => { setStats(buildStats(eventCount)); }, [eventCount]);
 
-  /* shuffle donor queue */
   useEffect(() => {
-    const shuffled = [...DONORS].sort(() => Math.random() - 0.5);
-    setDonorQueue(shuffled);
+    setDonorQueue([...DONORS].sort(() => Math.random() - 0.5));
   }, []);
 
-  /* show toasts one at a time every 10–15s */
   useEffect(() => {
     if (donorQueue.length === 0) return;
-
-    const delay = 10000 + Math.random() * 5000; // 10–15s
+    const delay = 10000 + Math.random() * 5000;
     const t = setTimeout(() => {
       setDonorQueue((prev) => {
         const [next, ...rest] = prev;
         setCurrentToast(next);
         setToastKey((k) => k + 1);
-        // re-append to end so loop is infinite
         return [...rest, next];
       });
     }, delay);
-
     return () => clearTimeout(t);
   }, [donorQueue, toastKey]);
 
   return (
     <>
-      {/* LEFT — donation toast */}
       <AnimatePresence>
         {currentToast && (
-          <DonationToast
-            key={toastKey}
-            donor={currentToast}
-            onDone={() => setCurrentToast(null)}
-          />
+          <DonationToast key={toastKey} donor={currentToast} onDone={() => setCurrentToast(null)} />
         )}
       </AnimatePresence>
-
-      {/* RIGHT — persistent impact widget */}
       <AnimatePresence>
         <ImpactWidget stats={stats} />
       </AnimatePresence>

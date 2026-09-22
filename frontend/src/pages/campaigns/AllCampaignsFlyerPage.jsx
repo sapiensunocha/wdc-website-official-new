@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Printer, ChevronLeft, Smartphone, Check } from "lucide-react";
 import { WDC_CAMPAIGNS, PARTNER_TYPES, PROTECT_CYCLE } from "../../assets/data/campaigns";
 
 const PAYPAL_URL = "https://www.paypal.com/donate/?hosted_button_id=XXS7D6VJDM2YE";
@@ -88,7 +89,7 @@ function FlyerFooter() {
           flexShrink: 0,
         }}
       >
-        <div style={{ fontSize: 14 }}>📱</div>
+        <Smartphone size={18} color="#009EDB" strokeWidth={1.5} />
         <div style={{ fontSize: 7, color: "#9ca3af", textAlign: "center", lineHeight: 1.3, marginTop: 2 }}>
           Scan to donate
         </div>
@@ -145,7 +146,7 @@ export default function AllCampaignsFlyerPage() {
             gap: 6,
           }}
         >
-          ← Back to Campaigns
+          <ChevronLeft size={15} /> Back to Campaigns
         </Link>
         <span style={{ fontWeight: 800, fontSize: 14, color: "#fff", flex: 1, textAlign: "center" }}>
           WDC Campaign Portfolio — All 11 Campaigns
@@ -166,7 +167,7 @@ export default function AllCampaignsFlyerPage() {
             gap: 6,
           }}
         >
-          🖨️ Print / Save PDF
+          <Printer size={14} /> Print / Save PDF
         </button>
       </div>
 
@@ -241,7 +242,9 @@ export default function AllCampaignsFlyerPage() {
                   }}
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 5 }}>
-                    <span style={{ fontSize: 18 }}>{c.emoji}</span>
+                    <div style={{ width: 20, height: 20, borderRadius: 4, background: c.color, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <Check size={11} color="#fff" strokeWidth={2.5} />
+                    </div>
                     <span style={{ fontSize: 11, fontWeight: 900, color: "#111827", lineHeight: 1.2 }}>
                       {c.title}
                     </span>
@@ -357,7 +360,9 @@ export default function AllCampaignsFlyerPage() {
                     padding: "10px 12px",
                   }}
                 >
-                  <span style={{ fontSize: 22, flexShrink: 0 }}>{p.icon}</span>
+                  <div style={{ width: 22, height: 22, borderRadius: 4, background: "#001129", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <span style={{ fontSize: 8, fontWeight: 900, color: "#009EDB" }}>0{i + 1}</span>
+                  </div>
                   <div>
                     <div style={{ fontSize: 11, fontWeight: 900, color: "#111827", marginBottom: 3 }}>
                       {p.title}
@@ -428,7 +433,6 @@ export default function AllCampaignsFlyerPage() {
                   >
                     {i + 1}
                   </div>
-                  <div style={{ fontSize: 16, flexShrink: 0 }}>{step.icon}</div>
                   <div>
                     <div style={{ fontSize: 9, fontWeight: 800, color: "#111827" }}>{step.label}</div>
                     <div style={{ fontSize: 8, color: "#9ca3af", lineHeight: 1.3, marginTop: 1 }}>{step.desc}</div>
