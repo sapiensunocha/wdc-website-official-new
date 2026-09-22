@@ -54,6 +54,8 @@ import ClimateTracker from "./pages/trackers/climate";
 import PartnerWithUs from "./pages/partnerWithUs";
 import CampaignsPage from "./pages/campaigns";
 import CampaignDetail from "./pages/campaigns/CampaignDetail";
+import CampaignFlyerPage from "./pages/campaigns/CampaignFlyerPage";
+import AllCampaignsFlyerPage from "./pages/campaigns/AllCampaignsFlyerPage";
 import GlobalMonitor from "./pages/monitor";
 import TrainingPage from "./pages/training";
 import ServicesPage from "./pages/services";
@@ -180,6 +182,8 @@ const App = () => {
 
           {/* Campaigns */}
           <Route path="/campaigns" element={<CampaignsPage />} />
+          <Route path="/campaigns/flyer" element={<AllCampaignsFlyerPage />} />
+          <Route path="/campaigns/:slug/flyer" element={<CampaignFlyerPage />} />
           <Route path="/campaigns/:slug" element={<CampaignDetail />} />
 
           {/* Global Monitor */}

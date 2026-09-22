@@ -460,6 +460,17 @@ export default function CampaignDetail() {
                 onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.12)"}>
                 <Shield size={15} /> Become a Partner
               </Link>
+              <Link to={`/campaigns/${slug}/flyer`}
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 6,
+                  background: c.color + "18", color: c.color,
+                  border: `1px solid ${c.color}44`,
+                  borderRadius: 8, padding: "8px 14px", fontWeight: 700, fontSize: 12,
+                  textDecoration: "none",
+                }}
+              >
+                📄 Download Flyer
+              </Link>
               <button onClick={handleShare}
                 className="inline-flex items-center gap-2 text-white/60 hover:text-white font-bold px-5 py-3 rounded-xl transition-colors text-sm"
                 style={{ background: "rgba(255,255,255,0.06)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.12)" }}>

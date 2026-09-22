@@ -158,9 +158,21 @@ export default function CampaignsHub() {
           <AnimateIn variant="fadeUp">
             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#009EDB] mb-2">11 Campaign Families</p>
             <h2 className="text-3xl font-black text-white mb-2">WDC PROTECT Campaign Platform</h2>
-            <p className="text-white/50 mb-10 max-w-2xl text-sm leading-relaxed">
+            <p className="text-white/50 mb-6 max-w-2xl text-sm leading-relaxed">
               Each campaign targets a distinct form of vulnerability — but all share a common identity, a common methodology, and a common institutional promise. Click any campaign to explore its intelligence, outputs, and partnership opportunities.
             </p>
+            <div className="mb-10">
+              <Link to="/campaigns/flyer"
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 8,
+                  background: "#001129", color: "#fff", borderRadius: 10,
+                  padding: "10px 20px", fontWeight: 800, fontSize: 13, textDecoration: "none",
+                  border: "1px solid rgba(255,255,255,0.15)",
+                }}
+              >
+                📄 Download Campaign Portfolio →
+              </Link>
+            </div>
           </AnimateIn>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
