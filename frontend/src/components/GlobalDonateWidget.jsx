@@ -7,34 +7,33 @@ const PAYPAL_URL = "https://www.paypal.com/donate/?hosted_button_id=XXS7D6VJDM2Y
 const MICHAEL_API = "https://michael-api-382117221028.us-central1.run.app/api/alerts";
 
 const DONORS = [
-  { name: "Sophie M.", country: "France", amount: "$50/mo", msg: "just became a monthly supporter" },
-  { name: "James O.", country: "United Kingdom", amount: "$100", msg: "made a one-time donation" },
-  { name: "Amara K.", country: "Ghana", amount: "$25", msg: "donated to disaster relief" },
-  { name: "Lena B.", country: "Germany", amount: "$200", msg: "made a one-time donation" },
-  { name: "Carlos R.", country: "Mexico", amount: "$50/mo", msg: "just became a monthly supporter" },
-  { name: "Priya S.", country: "India", amount: "$25", msg: "donated to disaster relief" },
-  { name: "David N.", country: "USA", amount: "$150", msg: "made a one-time donation" },
-  { name: "Fatima A.", country: "Senegal", amount: "$50/mo", msg: "just became a monthly supporter" },
-  { name: "Yuki T.", country: "Japan", amount: "$100", msg: "made a one-time donation" },
-  { name: "Elena V.", country: "Ukraine", amount: "$25", msg: "donated to disaster relief" },
-  { name: "Omar H.", country: "Egypt", amount: "$75", msg: "made a one-time donation" },
-  { name: "Ingrid L.", country: "Sweden", amount: "$200", msg: "made a one-time donation" },
-  { name: "Kofi A.", country: "Côte d'Ivoire", amount: "$50/mo", msg: "just became a monthly supporter" },
-  { name: "Maria C.", country: "Brazil", amount: "$25", msg: "donated to disaster relief" },
-  { name: "Tariq M.", country: "Pakistan", amount: "$50", msg: "donated to disaster relief" },
+  { name: "Sophie M.", country: "France",        amount: "$50/mo", msg: "just became a monthly supporter" },
+  { name: "James O.", country: "United Kingdom", amount: "$100",   msg: "made a one-time donation" },
+  { name: "Amara K.", country: "Ghana",          amount: "$25",    msg: "donated to disaster relief" },
+  { name: "Lena B.",  country: "Germany",        amount: "$200",   msg: "made a one-time donation" },
+  { name: "Carlos R.",country: "Mexico",         amount: "$50/mo", msg: "just became a monthly supporter" },
+  { name: "Priya S.", country: "India",          amount: "$25",    msg: "donated to disaster relief" },
+  { name: "David N.", country: "USA",            amount: "$150",   msg: "made a one-time donation" },
+  { name: "Fatima A.",country: "Senegal",        amount: "$50/mo", msg: "just became a monthly supporter" },
+  { name: "Yuki T.",  country: "Japan",          amount: "$100",   msg: "made a one-time donation" },
+  { name: "Elena V.", country: "Ukraine",        amount: "$25",    msg: "donated to disaster relief" },
+  { name: "Omar H.",  country: "Egypt",          amount: "$75",    msg: "made a one-time donation" },
+  { name: "Ingrid L.",country: "Sweden",         amount: "$200",   msg: "made a one-time donation" },
+  { name: "Kofi A.",  country: "Côte d'Ivoire",  amount: "$50/mo", msg: "just became a monthly supporter" },
+  { name: "Maria C.", country: "Brazil",         amount: "$25",    msg: "donated to disaster relief" },
+  { name: "Tariq M.", country: "Pakistan",       amount: "$50",    msg: "donated to disaster relief" },
 ];
-
-const STAT_ICONS = [Globe, Map, Shield, Users, TriangleAlert];
 
 const buildStats = (eventCount) => [
   { Icon: Globe,         value: `${eventCount.toLocaleString()}+`, label: "live crises tracked by MICHAEL" },
   { Icon: Map,           value: "27+",                             label: "countries with WDC presence" },
   { Icon: Shield,        value: "43",                              label: "Disaster Heroes active this week" },
   { Icon: Users,         value: "94",                              label: "people sponsored through platform" },
-  { Icon: TriangleAlert, value: "1,240+",                          label: "early warnings issued this month" },
+  { Icon: TriangleAlert, value: "1,240+",                          label: "early warnings this month" },
 ];
 
-const STYLE_ID = "gdw-keyframes";
+/* ── inject CSS once ── */
+const STYLE_ID = "gdw-styles";
 if (typeof document !== "undefined" && !document.getElementById(STYLE_ID)) {
   const style = document.createElement("style");
   style.id = STYLE_ID;
@@ -43,12 +42,41 @@ if (typeof document !== "undefined" && !document.getElementById(STYLE_ID)) {
       from { width: 100%; }
       to   { width: 0%; }
     }
+    /* Desktop defaults */
+    .gdw-toast {
+      position: fixed;
+      bottom: 88px;
+      left: 20px;
+      z-index: 9990;
+      width: 290px;
+      pointer-events: auto;
+    }
+    .gdw-impact {
+      position: fixed;
+      bottom: 88px;
+      right: 80px;
+      z-index: 9990;
+      width: 220px;
+      pointer-events: auto;
+    }
+    /* Mobile: stack both at bottom, impact hidden */
+    @media (max-width: 640px) {
+      .gdw-toast {
+        left: 10px;
+        right: 10px;
+        width: auto;
+        bottom: 80px;
+      }
+      .gdw-impact {
+        display: none;
+      }
+    }
   `;
   document.head.appendChild(style);
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   LEFT — sliding donation toasts (clickable → PayPal or Disaster Heroes)
+   LEFT — sliding donation toasts
 ═══════════════════════════════════════════════════════════════ */
 const DonationToast = ({ donor, onDone }) => {
   useEffect(() => {
@@ -58,34 +86,25 @@ const DonationToast = ({ donor, onDone }) => {
 
   return (
     <motion.div
+      className="gdw-toast"
       initial={{ x: -320, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: -320, opacity: 0 }}
       transition={{ type: "spring", stiffness: 280, damping: 26 }}
       style={{
-        position: "fixed",
-        bottom: 88,
-        left: 20,
-        zIndex: 9990,
-        width: 290,
         background: "#fff",
         borderRadius: 12,
         boxShadow: "0 8px 32px rgba(0,0,0,0.18)",
         overflow: "hidden",
-        pointerEvents: "auto",
-        cursor: "pointer",
       }}
     >
       {/* countdown bar */}
       <div style={{ height: 3, background: "#009EDB", animation: "gdw-bar 5s linear forwards" }} />
 
-      {/* main row */}
       <div style={{ padding: "10px 14px 4px", display: "flex", gap: 10, alignItems: "flex-start" }}>
         <div style={{
-          width: 36, height: 36, borderRadius: "50%",
-          background: "#EFF9FF",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          flexShrink: 0,
+          width: 36, height: 36, borderRadius: "50%", background: "#EFF9FF",
+          display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
         }}>
           <Heart size={17} color="#009EDB" strokeWidth={2} />
         </div>
@@ -107,7 +126,6 @@ const DonationToast = ({ donor, onDone }) => {
         </button>
       </div>
 
-      {/* two action buttons */}
       <div style={{ display: "flex", gap: 6, padding: "8px 14px 12px" }}>
         <a
           href={PAYPAL_URL}
@@ -139,7 +157,7 @@ const DonationToast = ({ donor, onDone }) => {
 };
 
 /* ═══════════════════════════════════════════════════════════════
-   RIGHT — persistent compact impact widget
+   RIGHT — persistent compact impact widget (desktop only)
 ═══════════════════════════════════════════════════════════════ */
 const ImpactWidget = ({ stats }) => {
   const [statIdx, setStatIdx] = useState(0);
@@ -163,22 +181,17 @@ const ImpactWidget = ({ stats }) => {
 
   return (
     <motion.div
+      className="gdw-impact"
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 24 }}
       transition={{ type: "spring", stiffness: 260, damping: 24 }}
       style={{
-        position: "fixed",
-        bottom: 88,
-        right: 80,
-        zIndex: 9990,
-        width: 220,
         background: "#001B3A",
         border: "1px solid rgba(0,158,219,0.3)",
         borderRadius: 14,
         boxShadow: "0 8px 32px rgba(0,0,0,0.35)",
         overflow: "hidden",
-        pointerEvents: "auto",
       }}
     >
       {/* header */}
@@ -239,8 +252,7 @@ const ImpactWidget = ({ stats }) => {
             textDecoration: "none",
           }}
         >
-          <Heart size={11} strokeWidth={2} />
-          Donate
+          <Heart size={11} strokeWidth={2} /> Donate
         </a>
         <Link
           to="/disaster-heroes"
@@ -251,8 +263,7 @@ const ImpactWidget = ({ stats }) => {
             textDecoration: "none", border: "1px solid rgba(0,158,219,0.25)",
           }}
         >
-          <Shield size={11} strokeWidth={2} />
-          Sponsor
+          <Shield size={11} strokeWidth={2} /> Sponsor
         </Link>
       </div>
     </motion.div>
@@ -284,10 +295,7 @@ const GlobalDonateWidget = () => {
   }, []);
 
   useEffect(() => { setStats(buildStats(eventCount)); }, [eventCount]);
-
-  useEffect(() => {
-    setDonorQueue([...DONORS].sort(() => Math.random() - 0.5));
-  }, []);
+  useEffect(() => { setDonorQueue([...DONORS].sort(() => Math.random() - 0.5)); }, []);
 
   useEffect(() => {
     if (donorQueue.length === 0) return;

@@ -16,20 +16,36 @@ export default function CampaignFlyerPage() {
 
   return (
     <>
-      {/* ── Print styles ── */}
+      {/* ── Print + responsive styles ── */}
       <style>{`
         @media print {
           .flyer-controls { display: none !important; }
           body { margin: 0; padding: 0; }
           .flyer-page {
-            width: 210mm;
-            min-height: 297mm;
-            margin: 0;
-            box-shadow: none !important;
-            page-break-after: always;
+            width: 210mm; min-height: 297mm; margin: 0;
+            box-shadow: none !important; page-break-after: always;
           }
+          .flyer-scaler { transform: none !important; }
         }
         @page { size: A4 portrait; margin: 0; }
+        .flyer-scaler {
+          transform-origin: top center;
+        }
+        @media (max-width: 830px) {
+          .flyer-scaler {
+            transform: scale(calc((100vw - 16px) / 794));
+            margin-bottom: calc(-1123px * (1 - (100vw - 16px) / 794));
+          }
+        }
+        .flyer-controls {
+          display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+        }
+        @media (max-width: 500px) {
+          .flyer-controls { padding: 8px 12px !important; }
+          .flyer-controls-title { display: none; }
+          .flyer-controls-back { font-size: 12px !important; }
+          .flyer-controls-btn { padding: 7px 12px !important; font-size: 12px !important; }
+        }
       `}</style>
 
       {/* ── Controls bar (screen only) ── */}
@@ -38,22 +54,24 @@ export default function CampaignFlyerPage() {
         style={{
           position: "sticky", top: 0, zIndex: 100,
           background: "#001129", color: "#fff",
-          display: "flex", alignItems: "center", justifyContent: "space-between",
-          padding: "10px 24px", gap: 16,
+          justifyContent: "space-between",
+          padding: "10px 24px",
           boxShadow: "0 2px 12px rgba(0,0,0,0.3)",
         }}
       >
         <Link
           to={`/campaigns/${slug}`}
+          className="flyer-controls-back"
           style={{ color: "#009EDB", fontWeight: 700, fontSize: 13, textDecoration: "none", display: "flex", alignItems: "center", gap: 6 }}
         >
-          <ChevronLeft size={15} /> Back to Campaign
+          <ChevronLeft size={15} /> Back
         </Link>
-        <span style={{ fontWeight: 800, fontSize: 14, color: "#fff", flex: 1, textAlign: "center" }}>
-          {c.title} — Campaign Flyer
+        <span className="flyer-controls-title" style={{ fontWeight: 800, fontSize: 14, color: "#fff", flex: 1, textAlign: "center" }}>
+          {c.title} — Flyer
         </span>
         <button
           onClick={() => window.print()}
+          className="flyer-controls-btn"
           style={{
             background: c.color, color: "#fff", border: "none", borderRadius: 8,
             padding: "8px 18px", fontWeight: 800, fontSize: 13, cursor: "pointer",
@@ -65,11 +83,12 @@ export default function CampaignFlyerPage() {
       </div>
 
       {/* ── Flyer page ── */}
-      <div style={{ background: "#e5e7eb", padding: "24px 0", minHeight: "100vh" }}>
+      <div style={{ background: "#e5e7eb", padding: "16px 0", minHeight: "100vh", overflowX: "hidden" }}>
+        <div className="flyer-scaler" style={{ width: 794, margin: "0 auto" }}>
         <div
           className="flyer-page"
           style={{
-            width: 794, minHeight: 1123, margin: "0 auto",
+            width: 794, minHeight: 1123,
             background: "#fff", boxShadow: "0 8px 40px rgba(0,0,0,0.18)",
             display: "flex", flexDirection: "column",
             fontFamily: "'Inter', 'Helvetica Neue', Arial, sans-serif",
@@ -260,6 +279,7 @@ export default function CampaignFlyerPage() {
             </div>
           </div>
         </div>
+        </div>{/* end flyer-scaler */}
       </div>
     </>
   );

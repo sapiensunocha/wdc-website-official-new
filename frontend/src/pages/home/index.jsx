@@ -63,7 +63,7 @@ const HomePage = () => {
       <Benefits />
 
       {/* ── HOW WE WORK ── */}
-      <section style={{ background: "#001129", padding: "5rem 0" }}>
+      <section style={{ background: "#001129", padding: "clamp(2.5rem, 6vw, 5rem) 0" }}>
         <div className="container">
           <div style={{ marginBottom: "3rem" }}>
             <p style={{ fontSize: 11, fontWeight: 900, letterSpacing: "0.22em", color: "#009EDB", textTransform: "uppercase", marginBottom: 8 }}>Our Approach</p>
@@ -125,33 +125,33 @@ const HomePage = () => {
             background: "linear-gradient(135deg, rgba(0,158,219,0.12) 0%, rgba(0,158,219,0.04) 100%)",
             border: "1px solid rgba(0,158,219,0.25)",
             borderRadius: 12,
-            padding: "1.5rem 2rem",
+            padding: "clamp(1rem, 4vw, 1.5rem) clamp(1rem, 5vw, 2rem)",
             display: "flex",
             flexWrap: "wrap",
-            gap: "1.5rem",
+            gap: "1rem",
             alignItems: "center",
             justifyContent: "space-between",
           }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+            <div style={{ display: "flex", alignItems: "flex-start", gap: 14, flex: "1 1 260px", minWidth: 0 }}>
               <div style={{ background: "#009EDB", borderRadius: 10, padding: 10, flexShrink: 0 }}>
-                <Heart size={22} color="#fff" strokeWidth={1.8} />
+                <Heart size={20} color="#fff" strokeWidth={1.8} />
               </div>
-              <div>
-                <p style={{ margin: 0, fontSize: 16, fontWeight: 900, color: "#fff", lineHeight: 1.2 }}>
+              <div style={{ minWidth: 0 }}>
+                <p style={{ margin: 0, fontSize: "clamp(14px, 3.5vw, 16px)", fontWeight: 900, color: "#fff", lineHeight: 1.25 }}>
                   Sponsor a real person in crisis — for as little as $20/month.
                 </p>
-                <p style={{ margin: "4px 0 0", fontSize: 13, color: "rgba(255,255,255,0.55)", lineHeight: 1.5 }}>
-                  Disaster Heroes connects you directly to verified individuals and families. Your monthly commitment continues for as long as they need you.
+                <p style={{ margin: "4px 0 0", fontSize: "clamp(11px, 2.5vw, 13px)", color: "rgba(255,255,255,0.55)", lineHeight: 1.5 }}>
+                  Disaster Heroes connects you directly to verified individuals and families. Your commitment continues for as long as they need you.
                 </p>
               </div>
             </div>
             <Link to="/disaster-heroes"
               style={{
-                flexShrink: 0,
-                display: "inline-flex", alignItems: "center", gap: 8,
+                flex: "1 1 auto",
+                display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
                 background: "#009EDB", color: "#fff", borderRadius: 8,
                 padding: "11px 22px", fontWeight: 900, fontSize: 13,
-                textDecoration: "none", whiteSpace: "nowrap",
+                textDecoration: "none",
               }}>
               Find a case to support <ArrowRight size={14} />
             </Link>

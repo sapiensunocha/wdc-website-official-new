@@ -101,20 +101,29 @@ function FlyerFooter() {
 export default function AllCampaignsFlyerPage() {
   return (
     <>
-      {/* ── Print styles ── */}
+      {/* ── Print + responsive styles ── */}
       <style>{`
         @media print {
           .flyer-controls { display: none !important; }
           body { margin: 0; padding: 0; }
           .flyer-page {
-            width: 210mm;
-            min-height: 297mm;
-            margin: 0;
-            box-shadow: none !important;
-            page-break-after: always;
+            width: 210mm; min-height: 297mm; margin: 0;
+            box-shadow: none !important; page-break-after: always;
           }
+          .flyer-scaler { transform: none !important; }
         }
         @page { size: A4 portrait; margin: 0; }
+        .flyer-scaler { transform-origin: top center; }
+        @media (max-width: 830px) {
+          .flyer-scaler {
+            transform: scale(calc((100vw - 16px) / 794));
+            margin-bottom: calc(-1123px * (1 - (100vw - 16px) / 794));
+          }
+        }
+        @media (max-width: 500px) {
+          .flyer-controls { padding: 8px 12px !important; }
+          .flyer-controls-title { display: none; }
+        }
       `}</style>
 
       {/* ── Controls bar (screen only) ── */}
@@ -148,7 +157,7 @@ export default function AllCampaignsFlyerPage() {
         >
           <ChevronLeft size={15} /> Back to Campaigns
         </Link>
-        <span style={{ fontWeight: 800, fontSize: 14, color: "#fff", flex: 1, textAlign: "center" }}>
+        <span className="flyer-controls-title" style={{ fontWeight: 800, fontSize: 14, color: "#fff", flex: 1, textAlign: "center" }}>
           WDC Campaign Portfolio — All 11 Campaigns
         </span>
         <button
@@ -171,7 +180,8 @@ export default function AllCampaignsFlyerPage() {
         </button>
       </div>
 
-      <div style={{ background: "#e5e7eb", padding: "24px 0", minHeight: "100vh" }}>
+      <div style={{ background: "#e5e7eb", padding: "16px 0", minHeight: "100vh", overflowX: "hidden" }}>
+        <div className="flyer-scaler" style={{ width: 794, margin: "0 auto" }}>
 
         {/* ══════════════════════════════════════════════
             PAGE 1 — Campaign Overview
@@ -181,7 +191,7 @@ export default function AllCampaignsFlyerPage() {
           style={{
             width: 794,
             minHeight: 1123,
-            margin: "0 auto 32px",
+            marginBottom: 32,
             background: "#fff",
             boxShadow: "0 8px 40px rgba(0,0,0,0.18)",
             display: "flex",
@@ -494,6 +504,7 @@ export default function AllCampaignsFlyerPage() {
 
           <FlyerFooter />
         </div>
+        </div>{/* end flyer-scaler */}
       </div>
     </>
   );
