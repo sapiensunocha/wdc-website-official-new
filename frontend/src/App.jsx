@@ -8,6 +8,7 @@ import Layout from "./components/Layout";
 import ButtonGradient from "./assets/svg/ButtonGradient";
 import ChatBotComponent from "./components/chatbot";
 import GlobalDonateWidget from "./components/GlobalDonateWidget";
+import DonationGate from "./components/DonationGate";
 import LoaderAnimation from "./components/loading";
 import CookieConsent from "./components/CookieConsent.jsx";
 
@@ -240,6 +241,7 @@ const App = () => {
       <ChatBotComponent />
       <ButtonGradient />
       <GlobalDonateWidget />
+      <DonationGate />
     </HelmetProvider>
   );
 };

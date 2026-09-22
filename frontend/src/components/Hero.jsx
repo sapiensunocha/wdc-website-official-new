@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Heart } from "lucide-react";
 import { motion } from "framer-motion";
 import { curve } from "../assets";
 import GIF1 from "../assets/gif/WDC_Shorts.gif";
@@ -117,7 +117,7 @@ const Hero = () => {
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
             >
-              ❤️ Donate Now
+              <Heart size={15} strokeWidth={2} /> Donate Now
             </motion.a>
           </motion.div>
         </div>
