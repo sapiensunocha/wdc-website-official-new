@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import Layout from "./components/Layout";
 import ButtonGradient from "./assets/svg/ButtonGradient";
 import ChatBotComponent from "./components/chatbot";
+import GlobalDonateWidget from "./components/GlobalDonateWidget";
 import LoaderAnimation from "./components/loading";
 import CookieConsent from "./components/CookieConsent.jsx";
 
@@ -234,6 +235,7 @@ const App = () => {
       <CookieConsent />
       <ChatBotComponent />
       <ButtonGradient />
+      <GlobalDonateWidget />
     </HelmetProvider>
   );
 };

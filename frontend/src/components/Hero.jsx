@@ -43,6 +43,16 @@ const Hero = () => {
             Global Early Warning System
           </motion.span>
 
+          <motion.p
+            className="text-xl sm:text-2xl font-light text-white/90 italic mb-4 leading-snug"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.32, ease: [0.22, 1, 0.36, 1] }}
+          >
+            Disasters don't wait.{" "}
+            <span className="font-bold not-italic text-white">Neither do we.</span>
+          </motion.p>
+
           <motion.h1
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6"
             initial={{ opacity: 0, y: 40 }}
@@ -99,6 +109,16 @@ const Hero = () => {
                 Request a Demo
               </Link>
             </motion.div>
+            <motion.a
+              href="https://www.paypal.com/donate/?hosted_button_id=XXS7D6VJDM2YE"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-bold px-7 py-3.5 rounded transition-colors duration-200"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+            >
+              ❤️ Donate Now
+            </motion.a>
           </motion.div>
         </div>
       </div>
@@ -116,6 +136,26 @@ const Hero = () => {
           </Link>
         </div>
       </motion.div>
+
+      {/* Live stat strip */}
+      <div className="absolute bottom-24 left-0 right-0 z-10 hidden lg:block">
+        <div className="container">
+          <div className="flex items-center gap-6 bg-black/40 backdrop-blur-sm border border-white/10 rounded-xl px-5 py-3 w-fit">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse inline-block" />
+              <span className="text-white font-bold text-sm">LIVE</span>
+            </div>
+            <span className="text-white/60 text-xs">|</span>
+            <span className="text-white/80 text-sm">Tracking <strong className="text-white">1,000+</strong> active crises worldwide</span>
+            <span className="text-white/60 text-xs">|</span>
+            <span className="text-white/80 text-sm"><strong className="text-white">27</strong> countries with WDC field presence</span>
+            <span className="text-white/60 text-xs">|</span>
+            <a href="https://michael.worlddisastercenter.org" target="_blank" rel="noreferrer" className="text-[#009EDB] font-bold text-sm hover:underline">
+              Open MICHAEL →
+            </a>
+          </div>
+        </div>
+      </div>
 
       {/* Bottom gradient fade to white */}
       <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent" />

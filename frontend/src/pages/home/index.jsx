@@ -58,6 +58,64 @@ const HomePage = () => {
       <VideoSection />
       <Benefits />
 
+      {/* ── HOW WE WORK ── */}
+      <section style={{ background: "#001129", padding: "5rem 0" }}>
+        <div className="container">
+          <div style={{ marginBottom: "3rem" }}>
+            <p style={{ fontSize: 11, fontWeight: 900, letterSpacing: "0.22em", color: "#009EDB", textTransform: "uppercase", marginBottom: 8 }}>Our Approach</p>
+            <h2 style={{ fontSize: "clamp(1.6rem, 4vw, 2.5rem)", fontWeight: 900, color: "#fff", lineHeight: 1.15, marginBottom: 0 }}>
+              Disasters are inevitable.<br />
+              <span style={{ color: "#009EDB" }}>Being unprepared isn't.</span>
+            </h2>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "2rem" }}>
+            {[
+              {
+                num: "01", icon: "📡", title: "Monitor",
+                desc: "MICHAEL — our AI platform — tracks 1,000+ live crisis events worldwide in real time: earthquakes, floods, conflict, disease outbreaks, and climate emergencies.",
+                link: { label: "Open MICHAEL →", href: "https://michael.worlddisastercenter.org", external: true },
+              },
+              {
+                num: "02", icon: "⚡", title: "Alert",
+                desc: "Field officers, partner organizations, and AI-powered early warning systems deliver life-saving alerts to communities before disasters escalate into catastrophe.",
+                link: { label: "See our campaigns →", to: "/campaigns", external: false },
+              },
+              {
+                num: "03", icon: "🛡️", title: "Protect",
+                desc: "Disaster Heroes sponsors, WDC partners, and our global network mobilize shelter, health care, education, and emergency relief for the most vulnerable people on Earth.",
+                link: { label: "Become a Disaster Hero →", to: "/disaster-heroes", external: false },
+              },
+            ].map((step) => (
+              <div key={step.num} style={{ borderTop: "2px solid #009EDB", paddingTop: "1.5rem" }}>
+                <span style={{ fontSize: 10, fontWeight: 900, color: "#009EDB", letterSpacing: "0.22em", textTransform: "uppercase" }}>{step.num}</span>
+                <div style={{ fontSize: 38, margin: "0.85rem 0 1rem" }}>{step.icon}</div>
+                <h3 style={{ fontSize: 22, fontWeight: 900, color: "#fff", marginBottom: "0.75rem" }}>{step.title}</h3>
+                <p style={{ fontSize: 14, color: "rgba(255,255,255,0.6)", lineHeight: 1.75, marginBottom: "1.25rem" }}>{step.desc}</p>
+                {step.link.external ? (
+                  <a href={step.link.href} target="_blank" rel="noreferrer"
+                    style={{ fontSize: 12, fontWeight: 800, color: "#009EDB", textDecoration: "none" }}>
+                    {step.link.label}
+                  </a>
+                ) : (
+                  <Link to={step.link.to} style={{ fontSize: 12, fontWeight: 800, color: "#009EDB", textDecoration: "none" }}>
+                    {step.link.label}
+                  </Link>
+                )}
+              </div>
+            ))}
+          </div>
+          <div style={{ marginTop: "3rem", paddingTop: "2rem", borderTop: "1px solid rgba(255,255,255,0.08)", display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "center" }}>
+            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", margin: 0 }}>
+              1 in 4 people live in a country affected by violent conflict or disaster.
+            </p>
+            <a href="https://www.paypal.com/donate/?hosted_button_id=XXS7D6VJDM2YE" target="_blank" rel="noreferrer"
+              style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#009EDB", color: "#fff", borderRadius: 8, padding: "9px 20px", fontWeight: 800, fontSize: 13, textDecoration: "none" }}>
+              ❤️ Donate to WDC
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* Solutions Switcher */}
       <div className="bg-surface-subtle">
         <div className="container sm:px-2 py-16">
