@@ -15,6 +15,8 @@ import unescoEvent2  from "../../assets/media/unesco_event2.jpg";
 import unescoEvent3  from "../../assets/media/unesco_event3.jpg";
 import prrsFramework from "../../assets/media/prrs_framework.jpg";
 import lstSenegal    from "../../assets/media/lst_senegal.png";
+import drcMissionField    from "../../assets/media/drc_mission_field.jpg";
+import drcMissionBriefing from "../../assets/media/drc_mission_briefing.jpg";
 import wdcBanner2024 from "../../assets/video/WDC-Banner-2024.mp4";
 
 const SOCIAL = [
@@ -139,6 +141,16 @@ const STATIC_POSTS = [
     title: "🇳🇬 NEMA-WDC Strategic Partnership – Nigeria Resilient 2025",
     body: "WDC and Nigeria's National Emergency Management Agency (NEMA) have entered a strategic partnership to deploy the MaiLafiya app across Nigeria, train 50,000 local first responders, and establish 200 Resilience Hubs nationwide. Target: disaster response in under 24 hours.",
     image: null, tags: ["Nigeria", "NEMA", "Partnership", "MaiLafiya"], date: "2025", likes: 97,
+    link: "https://www.linkedin.com/company/worlddisastercenter" },
+  { id: "drc-mission-briefing", type: "photo", category: "Field Reports",
+    title: "DRC Mission Briefing – Stoppons l'Impact des Catastrophes en RDC",
+    body: "December 23, 2024 — WDC team presenting flood and disaster intelligence data during an operational briefing in Kinshasa, Democratic Republic of Congo. The session covered flood impact analysis (2010–2024), real-time crisis monitoring, and deployment of the Michael AI system for early warning across DRC provinces.",
+    image: drcMissionBriefing, tags: ["DRC", "Congo", "Field Mission", "Floods", "Michael"], date: "December 23, 2024", likes: 58,
+    link: "https://www.linkedin.com/company/worlddisastercenter" },
+  { id: "drc-mission-field", type: "photo", category: "Field Reports",
+    title: "WDC Team on the Ground – DRC Field Mission",
+    body: "World Disaster Center representative during the 30-day on-ground mission in Kinshasa and Goma (December 2024 – January 2025). WDC worked alongside MSF, UNICEF, and the Prime Minister's Office to deploy real-time crisis monitoring and counter misinformation using AI-driven disaster intelligence.",
+    image: drcMissionField, tags: ["DRC", "Congo", "Field Mission", "Team", "On The Ground"], date: "December 2024", likes: 43,
     link: "https://www.linkedin.com/company/worlddisastercenter" },
   { id: "drc-mission", type: "link", category: "Field Reports",
     title: "🇨🇩 DRC Field Mission – 30 Days in Kinshasa & Goma",
