@@ -11,6 +11,11 @@ export const logoutRosterMember = () => {
 // ─── Member Profile ────────────────────────────────────────────────────────────
 export const getMyRosterProfile = () => client.get("/api/roster/member/me");
 export const updateMyRosterProfile = (data) => client.put("/api/roster/member/me", data);
+export const uploadMemberCV = (file) => {
+  const fd = new FormData();
+  fd.append("cv", file);
+  return client.post("/api/roster/member/me/cv", fd, { headers: { "Content-Type": "multipart/form-data" } });
+};
 
 // ─── Member Opportunities & Deployments ────────────────────────────────────────
 export const getRosterOpportunities = (params) => client.get("/api/roster/member/opportunities", { params });

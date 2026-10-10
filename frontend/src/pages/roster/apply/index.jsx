@@ -5,9 +5,9 @@ import { toast } from "react-toastify";
 import {
   User, Briefcase, Globe, Award, MapPin, Users, FileText,
   ChevronRight, ChevronLeft, Check, Plus, X, Eye, EyeOff,
-  AlertCircle, LogIn,
+  AlertCircle, LogIn, Upload, Paperclip,
 } from "lucide-react";
-import { registerRosterMember, updateMyRosterProfile } from "../../../api/roster";
+import { registerRosterMember, updateMyRosterProfile, uploadMemberCV } from "../../../api/roster";
 import SearchableSelect from "../../../components/SearchableSelect";
 import AutocompleteInput from "../../../components/AutocompleteInput";
 
@@ -157,6 +157,9 @@ export default function RosterApplyPage() {
   const [memberId, setMemberId] = useState(null);
   const [alreadyExists, setAlreadyExists] = useState(false);
   const [fieldErrors, setFieldErrors]     = useState({});
+  const [cvFile, setCvFile]     = useState(null);
+  const [cvUrl, setCvUrl]       = useState("");
+  const [cvUploading, setCvUploading] = useState(false);
 
   const [form, setForm] = useState({
     firstName: "", lastName: "", email: "", password: "", phone: "",
@@ -218,6 +221,18 @@ export default function RosterApplyPage() {
         } finally { setLoading(false); }
       }
     }
+    // Upload CV when leaving Step 1, if a file was selected
+    if (step === 1 && cvFile && !cvUrl) {
+      setCvUploading(true);
+      try {
+        const { data } = await uploadMemberCV(cvFile);
+        setCvUrl(data.cvUrl);
+        toast.success("CV uploaded successfully!");
+      } catch {
+        toast.error("CV upload failed — you can re-upload from your dashboard.");
+      } finally { setCvUploading(false); }
+    }
+
     if (step < STEPS.length - 1) setStep(s => s + 1);
   }
 
@@ -232,6 +247,7 @@ export default function RosterApplyPage() {
         sectors: form.sectors, experience: form.experience,
         skills: form.skills, languages: form.languages,
         education: form.education, certifications: form.certifications,
+        references: form.references,
         deploymentType: form.deploymentType,
         availabilityDate: form.availabilityDate || null,
         preferredRegions: form.preferredRegions,
@@ -372,6 +388,26 @@ export default function RosterApplyPage() {
                 <Field label="Motivation Statement" hint="Why do you want to join the WDC Roster?">
                   <textarea rows={3} value={form.motivationStatement} onChange={e => set("motivationStatement", e.target.value)} className={inputCls}
                     placeholder="My motivation to join WDC..." />
+                </Field>
+                <Field label="CV / Resume" hint="PDF, DOC or DOCX — max 5 MB. Will be shared with WDC reviewers.">
+                  {cvUrl ? (
+                    <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-green-300 bg-green-50">
+                      <Paperclip size={15} className="text-green-600 shrink-0" />
+                      <span className="text-sm text-green-700 font-medium flex-1 truncate">CV uploaded</span>
+                      <a href={cvUrl} target="_blank" rel="noreferrer" className="text-xs text-primary font-bold hover:underline shrink-0">View</a>
+                      <button type="button" onClick={() => { setCvUrl(""); setCvFile(null); }} className="text-content-tertiary hover:text-red-500 transition-colors"><X size={14} /></button>
+                    </div>
+                  ) : (
+                    <label className={`flex items-center gap-3 px-3 py-2.5 rounded-xl border border-dashed border-border bg-surface-subtle cursor-pointer hover:border-primary transition-colors ${cvUploading ? "opacity-60 pointer-events-none" : ""}`}>
+                      <Upload size={15} className="text-content-tertiary shrink-0" />
+                      <span className="text-sm text-content-secondary flex-1">
+                        {cvFile ? cvFile.name : "Click to upload your CV"}
+                      </span>
+                      {cvUploading && <span className="text-xs text-primary font-medium animate-pulse">Uploading…</span>}
+                      <input type="file" accept=".pdf,.doc,.docx" className="hidden"
+                        onChange={e => { const f = e.target.files?.[0]; if (f) setCvFile(f); }} />
+                    </label>
+                  )}
                 </Field>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Field label="LinkedIn Profile">
@@ -636,6 +672,7 @@ export default function RosterApplyPage() {
                     ["Name",           `${form.firstName} ${form.lastName}`],
                     ["Email",          form.email],
                     ["Location",       `${form.city}, ${form.countryOfResidence}`],
+                    ["CV / Resume",    cvUrl ? "Uploaded" : "Not uploaded"],
                     ["Skills",         `${form.skills.length} added`],
                     ["Languages",      `${form.languages.length} added`],
                     ["Certifications", `${form.certifications.length} added`],

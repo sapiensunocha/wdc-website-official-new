@@ -207,7 +207,11 @@ export async function sendNewApplicationAlert(
   applicantName: string,
   applicantEmail: string,
   skills: string[],
-  country: string
+  country: string,
+  phone: string = '',
+  nationality: string = '',
+  sectors: string[] = [],
+  cvUrl: string = '',
 ) {
   const body = `
     <h2 style="margin:0 0 12px;font-size:22px;font-weight:800;color:${WDC_DARK};">New Roster Application</h2>
@@ -217,7 +221,7 @@ export async function sendNewApplicationAlert(
     <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:22px;margin:0 0 24px;">
       <table cellpadding="0" cellspacing="0" width="100%">
         <tr>
-          <td style="padding:6px 0;font-size:13px;color:#94a3b8;font-weight:600;width:120px;">Name</td>
+          <td style="padding:6px 0;font-size:13px;color:#94a3b8;font-weight:600;width:160px;">Name</td>
           <td style="padding:6px 0;font-size:14px;color:#1e293b;font-weight:700;">${applicantName}</td>
         </tr>
         <tr>
@@ -225,13 +229,29 @@ export async function sendNewApplicationAlert(
           <td style="padding:6px 0;font-size:14px;color:#1e293b;"><a href="mailto:${applicantEmail}" style="color:${WDC_BLUE};">${applicantEmail}</a></td>
         </tr>
         <tr>
-          <td style="padding:6px 0;font-size:13px;color:#94a3b8;font-weight:600;">Country</td>
+          <td style="padding:6px 0;font-size:13px;color:#94a3b8;font-weight:600;">Phone</td>
+          <td style="padding:6px 0;font-size:14px;color:#1e293b;">${phone || "—"}</td>
+        </tr>
+        <tr>
+          <td style="padding:6px 0;font-size:13px;color:#94a3b8;font-weight:600;">Nationality</td>
+          <td style="padding:6px 0;font-size:14px;color:#1e293b;">${nationality || "Not specified"}</td>
+        </tr>
+        <tr>
+          <td style="padding:6px 0;font-size:13px;color:#94a3b8;font-weight:600;">Country of Residence</td>
           <td style="padding:6px 0;font-size:14px;color:#1e293b;">${country || "Not specified"}</td>
+        </tr>
+        <tr>
+          <td style="padding:6px 0;font-size:13px;color:#94a3b8;font-weight:600;">Sectors</td>
+          <td style="padding:6px 0;font-size:14px;color:#1e293b;">${sectors?.slice(0, 5).join(", ") || "—"}</td>
         </tr>
         <tr>
           <td style="padding:6px 0;font-size:13px;color:#94a3b8;font-weight:600;">Skills</td>
           <td style="padding:6px 0;font-size:14px;color:#1e293b;">${skills?.slice(0, 5).join(", ") || "—"}</td>
         </tr>
+        ${cvUrl ? `<tr>
+          <td style="padding:6px 0;font-size:13px;color:#94a3b8;font-weight:600;">CV / Resume</td>
+          <td style="padding:6px 0;font-size:14px;"><a href="${cvUrl}" style="color:${WDC_BLUE};font-weight:600;">Download CV</a></td>
+        </tr>` : ''}
       </table>
     </div>
     ${btn("Review in Admin Panel", "https://worlddisastercenter.org/roster/admin")}`;

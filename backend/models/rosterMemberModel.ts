@@ -52,6 +52,9 @@ export interface IRosterMember {
   lastActive?: string;
   availabilityStatus?: string;
   motivationStatement?: string;
+  references?: { name: string; organization: string; email: string; phone: string }[];
+  cvUrl?: string;
+  applicationAlertSent?: boolean;
   resetPasswordToken?: string | null;
   resetPasswordExpiry?: string | null;
   createdAt?: Timestamp;

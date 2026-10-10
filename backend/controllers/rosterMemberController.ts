@@ -6,6 +6,7 @@ import { OpportunityFS, COLLECTION as OPP_COL } from '../models/opportunityModel
 import { RosterEventFS } from '../models/rosterEventModel';
 import { db, arrayUnion } from '../utils/firestore';
 import { sendWelcomeMemberEmail, sendNewApplicationAlert, sendPasswordResetEmail } from '../utils/resend';
+import cloudinary from '../utils/cloudinary';
 
 type FSFilter = [string, WhereFilterOp, unknown];
 
@@ -91,13 +92,15 @@ export const registerRosterMember: RequestHandler = async (req: Request, res: Re
       lastActive: new Date().toISOString(),
       availabilityStatus: 'available',
       motivationStatement: '',
+      references: [],
+      cvUrl: '',
+      applicationAlertSent: false,
     });
     const token = setMemberJwtCookie(member.id, res);
     const memberObj = { ...member } as any;
     delete memberObj.password;
-    // Fire-and-forget emails — never block the response
+    // Welcome email only — admin alert fires after full profile is submitted
     sendWelcomeMemberEmail(email.toLowerCase(), firstName).catch(() => {});
-    sendNewApplicationAlert(`${firstName} ${lastName}`, email.toLowerCase(), [], '').catch(() => {});
     res.status(201).json({ message: 'Application submitted successfully', member: memberObj, token });
   } catch (error) {
     res.status(500).json({ message: 'Something went wrong', error });
@@ -166,6 +169,23 @@ export const updateMyProfile: RequestHandler = async (req: Request, res: Respons
     }
     const score = calcProfileScore(updated);
     await RosterMemberFS.update(member.id, { profileCompletionScore: score });
+
+    // Fire admin alert once — when applicant submits their full profile for the first time
+    if (!member.applicationAlertSent) {
+      const skillNames = (updated.skills || []).map((s: any) => s.name);
+      sendNewApplicationAlert(
+        `${updated.firstName} ${updated.lastName}`,
+        updated.email,
+        skillNames,
+        updated.countryOfResidence || '',
+        updated.phone || '',
+        updated.nationality || '',
+        updated.sectors || [],
+        updated.cvUrl || '',
+      ).catch(() => {});
+      await RosterMemberFS.update(member.id, { applicationAlertSent: true });
+    }
+
     const memberObj = { ...updated } as any;
     delete memberObj.password;
     res.status(200).json({ message: 'Profile updated', member: { ...memberObj, profileCompletionScore: score } });
@@ -298,5 +318,27 @@ export const resetPassword: RequestHandler = async (req: Request, res: Response)
     res.status(200).json({ message: 'Password updated successfully. You can now sign in.' });
   } catch (error) {
     res.status(500).json({ message: 'Something went wrong', error });
+  }
+};
+
+export const uploadCV: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const member = req.user as any;
+    if (!member) { res.status(401).json({ message: 'Not authorized' }); return; }
+    if (!req.file) { res.status(400).json({ message: 'No file uploaded' }); return; }
+
+    const b64 = req.file.buffer.toString('base64');
+    const dataUri = `data:${req.file.mimetype};base64,${b64}`;
+    const result = await cloudinary.uploader.upload(dataUri, {
+      resource_type: 'raw',
+      folder: 'roster/cvs',
+      public_id: `cv_${member.id}`,
+      overwrite: true,
+    });
+
+    await RosterMemberFS.update(member.id, { cvUrl: result.secure_url });
+    res.status(200).json({ message: 'CV uploaded successfully', cvUrl: result.secure_url });
+  } catch (error) {
+    res.status(500).json({ message: 'CV upload failed', error });
   }
 };
